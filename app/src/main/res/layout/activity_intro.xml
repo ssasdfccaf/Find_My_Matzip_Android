@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/design_default_color_primary"
+    android:fontFamily="@font/nexonlight"
+    tools:context=".IntroActivity">
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        >
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nexonbold"
+            android:text="MatZip Mobile"
+            android:textColor="#FFFFFF"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="170dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="12dp"
+            android:rotationX="22"
+            android:rotationY="12"
+            android:src="@drawable/intro"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"/>
+
+        <TextView
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nexonlight"
+            android:text="MatZip Loading.."
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            />
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
