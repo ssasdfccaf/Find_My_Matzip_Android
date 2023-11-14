@@ -3,6 +3,7 @@ package com.example.find_my_matzip.NavTab
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.find_my_matzip.NavTab.NavTabFragment.HomeFragment
 import com.example.find_my_matzip.NavTab.NavTabFragment.MapFragment
 import com.example.find_my_matzip.NavTab.NavTabFragment.MyPageFragment
 import com.example.find_my_matzip.NavTab.NavTabFragment.RankingFragment
@@ -48,7 +49,7 @@ class TabActivity : AppCompatActivity() {
             }
         }
 
-        // Load the initial fragment
+
         replaceFragment(HomeFragment())
     }
 
