@@ -14,18 +14,15 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 툴바 붙이기
+        // 툴바 , 업버튼
         setSupportActionBar(binding.toolbar)
-
-        //시스템에 있는 액션바에 업버튼 붙이기
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         toggle = ActionBarDrawerToggle(
             this@HomeActivity, binding.drawer, R.string.open, R.string.close
         )
-        // 화면에 붙이는 작업, 적용하기.
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        // 버튼 클릭시, 동기화, 드러워 화면을 열어주는 기능.
+
+        // 드로워 열어주기
         toggle.syncState()
 
 
