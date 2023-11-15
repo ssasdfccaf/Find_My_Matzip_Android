@@ -1,30 +1,39 @@
-package com.example.find_my_matzip.NavTab
+package com.example.find_my_matzip
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import com.example.find_my_matzip.NavTab.NavTabFragment.HomeFragment
 import com.example.find_my_matzip.NavTab.NavTabFragment.MapFragment
 import com.example.find_my_matzip.NavTab.NavTabFragment.MyPageFragment
 import com.example.find_my_matzip.NavTab.NavTabFragment.RankingFragment
 import com.example.find_my_matzip.NavTab.NavTabFragment.SearchReviewFragment
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.ActivityTabBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.find_my_matzip.databinding.ActivityHomeTabBinding
 
-class TabActivity : AppCompatActivity() {
-    lateinit var binding: ActivityTabBinding
+class HomeTabActivity : AppCompatActivity() {
+    lateinit var binding: ActivityHomeTabBinding
+    lateinit var toggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTabBinding.inflate(layoutInflater)
+        binding = ActivityHomeTabBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 툴바 , 업버튼
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        toggle = ActionBarDrawerToggle(
+            this@HomeTabActivity, binding.drawer, R.string.open, R.string.close
+        )
+
+        // 드로워 열어주기
+        toggle.syncState()
 
         // 탭 레이아웃
         val tabLayout = binding.bottomNavigationView
-
-
-        //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        //bottomNavigationView.setOnNavigationItemSelectedListener {
 
         tabLayout.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -39,11 +48,20 @@ class TabActivity : AppCompatActivity() {
         }
         replaceFragment(HomeFragment())
 
-    }//onCreate 끝
+    }
 
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
