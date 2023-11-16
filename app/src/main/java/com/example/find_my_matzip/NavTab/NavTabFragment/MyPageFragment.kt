@@ -1,12 +1,10 @@
 package com.example.find_my_matzip.NavTab.NavTabFragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentMatZalalBinding
+import androidx.fragment.app.Fragment
 import com.example.find_my_matzip.databinding.FragmentMyPageBinding
 
 
@@ -24,6 +22,7 @@ class MyPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMyPageBinding.inflate(layoutInflater, container, false)
+
         return binding.root
     }
 }
