@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".navTab.navTabFragment.HomeFragment">
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -19,17 +15,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="메인화면 리사이클러뷰"
+            android:text="홈화면 리사이클러뷰"
             android:textSize="20dp"
             android:gravity="center"
             ></TextView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/retrofitRecyclerView2"
+            android:id="@+id/homeRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ></androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent"
+            >
+
+<!--            여기다가 뷰페이저 넣을예정-->
+        </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
-
-</FrameLayout>

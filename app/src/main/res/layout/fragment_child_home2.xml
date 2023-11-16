@@ -9,7 +9,7 @@
     >
 
     <ImageView
-        android:id="@+id/childFlagImg1"
+        android:id="@+id/childFlagImg2"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:src="@drawable/loading"
@@ -24,19 +24,19 @@
         android:layout_gravity="center"
         >
         <TextView
-            android:id="@+id/childFlagTitle1"
+            android:id="@+id/childFlagTitle2"
             android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Child title 1"
+            android:text="Child title 2"
             ></TextView>
         <TextView
             android:layout_marginTop="10dp"
-            android:id="@+id/childFlagContent1"
+            android:id="@+id/childFlagContent2"
             android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="content1"
+            android:text="content2"
             ></TextView>
     </LinearLayout>
 
