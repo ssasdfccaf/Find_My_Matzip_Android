@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.NavTab.NavTabFragment
+package com.example.find_my_matzip.navTab.navTabFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

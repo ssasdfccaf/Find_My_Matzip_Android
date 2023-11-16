@@ -27,7 +27,7 @@
             android:name=".MyPageActivity"
             android:exported="true" />
         <activity
-            android:name=".NavTab.TabActivity"
+            android:name=".navTab.TabActivity"
             android:exported="true" />
         <activity
             android:name=".HomeActivity"
