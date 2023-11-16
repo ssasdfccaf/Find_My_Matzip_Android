@@ -25,6 +25,9 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMapBinding.inflate(layoutInflater, container, false)
+
         return binding.root
     }
+
+
 }
