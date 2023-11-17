@@ -5,7 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".MyPageActivity">
+    >
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MyPageFragment">
     <!--전체 리니어 -->
     <LinearLayout
         android:id="@+id/lay1"
@@ -242,4 +247,5 @@
         </GridLayout>
 
     </LinearLayout>
+    </FrameLayout>
 </ScrollView>

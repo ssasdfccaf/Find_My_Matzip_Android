@@ -48,7 +48,8 @@
                     android:id="@+id/resultImageSP"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"></ImageView>
+                    android:layout_gravity="center"
+                    android:src="@drawable/image1"></ImageView>
             </androidx.cardview.widget.CardView>
 
             <TextView
