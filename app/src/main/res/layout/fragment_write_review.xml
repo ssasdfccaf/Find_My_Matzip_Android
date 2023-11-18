@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".WriteReviewFragment">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:id="@+id/lay1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="40dp"
+                android:paddingBottom="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/nexonbold"
+                    android:paddingBottom="20dp"
+                    android:text="Review"
+                    android:textColor="@color/design_default_color_primary"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
+                <RadioGroup
+                    android:id="@+id/testRadioGroup"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <RadioButton
+                        android:id="@+id/radio1"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="일반글"></RadioButton>
+
+                    <RadioButton
+                        android:id="@+id/radio2"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="비밀글">
+
+                    </RadioButton>
+                </RadioGroup>
+
+
+
+
+
+
+                <EditText
+                    android:id="@+id/resultNameSP"
+                    android:layout_width="300dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/radius"
+                    android:fontFamily="@font/nexonlight"
+                    android:hint="리뷰제목"
+                    android:paddingLeft="30dp"
+                    android:text=""
+                    android:textColor="#B3B3B3"
+                    android:textSize="15sp"></EditText>
+
+                <EditText
+                    android:layout_width="300dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/radius"
+                    android:fontFamily="@font/nexonlight"
+                    android:hint="평점"
+                    android:paddingLeft="30dp"
+                    android:text=""
+                    android:textColor="#B3B3B3"
+                    android:textSize="15sp"></EditText>
+
+                <EditText
+                    android:layout_width="300dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/radius"
+                    android:fontFamily="@font/nexonlight"
+                    android:hint="리뷰상세내용"
+                    android:paddingLeft="30dp"
+                    android:text=""
+                    android:textColor="#B3B3B3"
+                    android:textSize="15sp"></EditText>
+
+                <Button
+                    android:layout_width="300dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/design_default_color_primary"
+                    android:fontFamily="@font/nexonmed"
+                    android:text="리뷰이미지등록1"></Button>
+                <Button
+                    android:layout_width="300dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/design_default_color_primary"
+                    android:fontFamily="@font/nexonmed"
+                    android:text="리뷰이미지등록2"></Button>
+                <!--        -->
+                <LinearLayout
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="100dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/updateBtn"
+                        android:layout_width="300dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/black"
+                        android:fontFamily="@font/nexonmed"
+                        android:text="등록"></Button>
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </ScrollView>
