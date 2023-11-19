@@ -1,14 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NavTab.NavTabFragment.MyPageFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:background="#FFFFFF"
+    >
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="5" />
+        tools:context=".MyPageFragment">
+    <!--전체 리니어 -->
+    <LinearLayout
+        android:id="@+id/lay1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="30dp"
+        android:paddingBottom="50dp"
+     >
 
-</FrameLayout>
+        <!--     사용자 아이디   -->
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/nexonbold"
+            android:text="findbyMatZip"
+            android:textSize="25sp">
+
+        </TextView>
+        <!--      프로필 이미지 +게시물+ 팔로워 + 팔로잉 -->
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+
+                app:cardCornerRadius="75dp">
+
+                <ImageView
+                    android:id="@+id/resultImageSP"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/profile"></ImageView>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 게시물, 팔로워 팔로잉을 묶어주는 리니어 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:orientation="horizontal">
+
+                <!--게시물 묶기 -->
+                <LinearLayout
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/nexonmed"
+                        android:text="0"></TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/nexonbold"
+                        android:text="게시물"></TextView>
+                </LinearLayout>
+                <!--팔로워 -->
+                <LinearLayout
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/nexonmed"
+                        android:text="0"></TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="팔로워"
+                        android:fontFamily="@font/nexonbold"></TextView>
+                </LinearLayout>
+                <!--팔로잉 -->
+                <LinearLayout
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="0"
+                        android:fontFamily="@font/nexonmed"></TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="팔로잉"
+                        android:fontFamily="@font/nexonbold"></TextView>
+                </LinearLayout>
+                <!--             팔로잉 닫기   -->
+            </LinearLayout>
+            <!--            텍스트 전체 리니어 닫기 -->
+
+
+        </LinearLayout>
+        <!--        이미지뷰+ 텍스트 리니어 닫기 -->
+
+        <!--        -->
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/updateBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:fontFamily="@font/nexonmed"
+                android:text="프로필 편집"></Button>
+
+            <Button
+                android:id="@+id/deleteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:fontFamily="@font/nexonmed"
+                android:text="게시글 작성"></Button>
+        </LinearLayout>
+
+        <GridLayout
+            android:id="@+id/lay5"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:columnCount="3"
+            android:orientation="horizontal"
+            android:rowCount="9">
+
+            <!-- 첫 번째 행 -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image1" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image2" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image3" />
+            <!-- 첫 번째 행 -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image3" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image1" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image2" />
+            <!-- 세 번째 행 -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image3" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image1" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image2" />
+
+        </GridLayout>
+
+    </LinearLayout>
+    </FrameLayout>
+</ScrollView>

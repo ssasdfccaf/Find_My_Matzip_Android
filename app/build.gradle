@@ -34,17 +34,25 @@ android {
     viewBinding {
         enabled = true
     }
+    buildFeatures {
+        dataBinding true
+    }
 }
 
 dependencies {
+    // 지도 추가
+    implementation("com.naver.maps:map-sdk:3.16.2")
+    // 위치 추가
+    implementation "com.google.android.gms:play-services-location:20.0.0"
+
     //뷰페이저 추가
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
-
     //retrofit추가
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     // json 변환하기 위한 또라이브러리, gson 예시.
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

@@ -1,30 +1,28 @@
-package com.example.find_my_matzip.NavTab.NavTabFragment
+package com.example.find_my_matzip.navTab.navTabFragment.homeFragChildFrags
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentMapBinding
+import com.example.find_my_matzip.databinding.FragmentChildHome1Binding
 
 
+class ChildHomeFragment1 : Fragment() {
+    lateinit var binding : FragmentChildHome1Binding
 
-
-class MapFragment : Fragment() {
-    lateinit var binding: FragmentMapBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = FragmentMapBinding.inflate(layoutInflater)
-
-
+        binding = FragmentChildHome1Binding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMapBinding.inflate(layoutInflater, container, false)
+        binding = FragmentChildHome1Binding.inflate(layoutInflater,container,false)
         return binding.root
     }
+
+
 }

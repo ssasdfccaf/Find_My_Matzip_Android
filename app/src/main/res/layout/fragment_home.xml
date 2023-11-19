@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".NavTab.NavTabFragment.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
 
-</FrameLayout>
+        <!--텍스트뷰, 리사이클러뷰 붙이기-->
+        <TextView
+            android:id="@+id/firsttext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HomeFragment" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="홈화면 리사이클러뷰"
+            android:textSize="20dp"
+            android:gravity="center"
+            ></TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+<!--            여기다가 뷰페이저 넣을예정-->
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
