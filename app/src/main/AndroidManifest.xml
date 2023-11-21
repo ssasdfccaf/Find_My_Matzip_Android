@@ -21,6 +21,9 @@
         android:theme="@style/Theme.Find_My_Matzip"
         tools:targetApi="31">
         <activity
+            android:name=".NaverMapActivity"
+            android:exported="true" />
+        <activity
             android:name=".HomeTabActivity"
             android:exported="true" />
         <activity
@@ -47,6 +50,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="1w46shh6nb" />
