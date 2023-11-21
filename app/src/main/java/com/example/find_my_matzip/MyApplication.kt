@@ -13,8 +13,8 @@ class MyApplication : Application() {
 
     //통신할 서버의 URL주소 등록
     val retrofit = Retrofit.Builder()
-//        .baseUrl("http://10.100.104.54:80/")
-            .baseUrl("http://192.168.0.69:80/")
+        // 학원 ip?
+        .baseUrl("http://10.100.104.54:80/")
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create())) //형변환
         .build()
 
