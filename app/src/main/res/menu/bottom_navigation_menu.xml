@@ -6,12 +6,12 @@
 
     <item
         android:id="@+id/tab2"
-        android:title="지도"
-        android:icon="@drawable/baseline_location_on_24" />
+        android:title="식당목록"
+        android:icon="@drawable/baseline_home_24" />
     <item
         android:id="@+id/tab3"
-        android:title="검색및리뷰"
-        android:icon="@drawable/baseline_home_24" />
+        android:title="지도"
+        android:icon="@drawable/baseline_location_on_24" />
 
     <item
         android:id="@+id/tab4"
