@@ -1,22 +1,27 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentHomeBinding
+import com.example.find_my_matzip.databinding.ViewPagerHomeColorBinding
 import com.example.find_my_matzip.navTab.adapter.HomeRecyclerAdapter
 import com.example.find_my_matzip.navTab.adapter.RecyclerItem
 
 
-class HomeFragment : Fragment() {
+class     HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
+    lateinit var binding2:ViewPagerHomeColorBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding2 = ViewPagerHomeColorBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -39,6 +44,13 @@ class HomeFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+//        binding.
+
+//        //이거 지금 동작안함... 왜이러는지 물어보자
+//        binding2.pagerImg.setOnClickListener {
+//            Toast.makeText(requireContext(),"뷰페이저 터치됨",Toast.LENGTH_SHORT).show();
+//            Log.d("kkt","뷰페이저 사진 선택됨")
+//        } -> 뷰 페이저 동작 관련은 HomeViewPagerAdapter에서 설정하자
 
         return binding.root
     }
