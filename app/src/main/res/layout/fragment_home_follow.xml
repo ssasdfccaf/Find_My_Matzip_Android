@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--    android:id="@+id/fragment_home_follow"-->
+<LinearLayout
+    android:id="@+id/fragment_home_follow"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--텍스트뷰, 리사이클러뷰 붙이기-->
+    <TextView
+        android:id="@+id/firsttext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FollowHomeFragment" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/toHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/fragmentContainer"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="팔로우게시판화면 리사이클러뷰"
+        android:textSize="20dp"
+        android:gravity="center"
+        ></TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/homeRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>
