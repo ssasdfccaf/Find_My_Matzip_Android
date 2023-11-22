@@ -7,9 +7,9 @@ import com.example.find_my_matzip.navTab.navTabFragment.HomeFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MapFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RankingFragment
-import com.example.find_my_matzip.navTab.navTabFragment.SearchReviewFragment
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.ActivityTabBinding
+import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
 
 class TabActivity : AppCompatActivity() {
     lateinit var binding: ActivityTabBinding
@@ -28,8 +28,8 @@ class TabActivity : AppCompatActivity() {
         tabLayout.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.tab1 -> {replaceFragment(HomeFragment())}
-                R.id.tab2 -> {replaceFragment(MapFragment())}
-                R.id.tab3 -> {replaceFragment(SearchReviewFragment())}
+                R.id.tab2 -> {replaceFragment(RestaurantFragment())}
+                R.id.tab3 -> {replaceFragment(MapFragment())}
                 R.id.tab4 -> {replaceFragment(RankingFragment())}
                 R.id.tab5 -> {replaceFragment(MyPageFragment())}
                 else -> false
