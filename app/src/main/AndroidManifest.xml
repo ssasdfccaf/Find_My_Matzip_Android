@@ -10,7 +10,12 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" /> <!-- 외부 통신 위한 인터넷 퍼미션 추가 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--    안드로이드 기본이 통신 https 기본 인데, -->
+    <!--    서버가 통신 http로 해야 함 .  android:usesCleartextTraffic="true"-->
+    <!--    공공데이터 https 다 되어 있어서 크게 상관 없고-->
+
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,7 +24,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Find_My_Matzip"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".NaverMapActivity"
+            android:exported="true" />
         <activity
             android:name=".HomeTabActivity"
             android:exported="true" />
@@ -47,6 +56,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="1w46shh6nb" />
