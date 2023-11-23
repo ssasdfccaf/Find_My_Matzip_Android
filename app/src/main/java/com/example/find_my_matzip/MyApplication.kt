@@ -1,6 +1,7 @@
 package com.example.find_my_matzip
 
 import android.app.Application
+import com.example.find_my_matzip.retrofit.BoardService
 import com.example.find_my_matzip.retrofit.RestaurantService
 import com.example.find_my_matzip.retrofit.UserService
 import com.google.gson.GsonBuilder
@@ -12,6 +13,7 @@ class MyApplication : Application() {
 
     var userService: UserService
     val restaurantService: RestaurantService
+    var boardService : BoardService
 
     //통신할 서버의 URL주소 등록
     val retrofit = Retrofit.Builder()
@@ -23,6 +25,7 @@ class MyApplication : Application() {
     init {
         userService = retrofit.create(UserService::class.java)
         restaurantService = retrofit.create(RestaurantService::class.java)
+        boardService = retrofit.create(BoardService::class.java)
     }
 
 }
