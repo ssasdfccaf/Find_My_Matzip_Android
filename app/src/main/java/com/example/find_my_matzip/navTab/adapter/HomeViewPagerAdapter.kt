@@ -19,7 +19,7 @@ class HomeViewPagerAdapter  : RecyclerView.Adapter<HomeViewPagerAdapter.ViewHold
 
     class ViewHolder(val binding: ViewPagerHomeColorBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: String) {
-            binding.viewPagerColor.text = item
+//            binding.viewPagerColor.text = item
             binding.pagerImg.setOnClickListener {
                 Toast.makeText(binding.root.context,"뷰페이저 터치됨",Toast.LENGTH_SHORT).show();
                 Log.d("kkt","뷰페이저 사진 선택됨")
