@@ -48,18 +48,18 @@ class MyPageFragment : Fragment() {
 
         val userService = (context?.applicationContext as MyApplication).userService
         val profileList = userService.getProfile("matzip5")
-        Log.d("syyy", "profileList.enqueue 호출전 : ")
+        Log.d("MyPageFragment", "profileList.enqueue 호출전 : ")
 
         profileList.enqueue(object : Callback<ProfileDto> {
             override fun onResponse(call: Call<ProfileDto>, response: Response<ProfileDto>) {
-                Log.d("syyy", "도착 확인: ")
+                Log.d("MyPageFragment", "도착 확인: ")
                 val profileDto = response.body()
-                Log.d("syyy1", "도착 확인1: profileList $profileDto")
-                Log.d("syyy2", "도착 확인2: profileList ${profileDto?.boards}")
-                Log.d("syyy3", "도착 확인3: countFromUser ${profileDto?.countFromUser}")
-                Log.d("syyy4", "도착 확인4: countToUser ${profileDto?.countToUser}")
-                Log.d("syyy5", "도착 확인5: followerDtoList ${profileDto?.followerDtoList}")
-                Log.d("syyy5", "도착 확인5: followCheck ${profileDto?.followCheck}")
+                Log.d("MyPageFragment", "도착 확인1: profileList $profileDto")
+                Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
+                Log.d("MyPageFragment", "도착 확인3: countFromUser ${profileDto?.countFromUser}")
+                Log.d("MyPageFragment", "도착 확인4: countToUser ${profileDto?.countToUser}")
+                Log.d("MyPageFragment", "도착 확인5: followerDtoList ${profileDto?.followerDtoList}")
+                Log.d("MyPageFragment", "도착 확인5: followCheck ${profileDto?.followCheck}")
                 if (profileDto != null) {
                     // 팔로워 팔로우수
                     binding.countFromUser.text=profileDto.countFromUser.toString()
@@ -85,7 +85,7 @@ class MyPageFragment : Fragment() {
                         .override(900, 900)
                         .into(binding.userImage)
 
-                    Log.d("syyy2", "도착 확인2: profileList ${profileDto?.boards}")
+                    Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
                     ProfileAdapter(this@MyPageFragment, listOf(profileDto.pageUserDto))
 
                     binding.boardRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -95,14 +95,14 @@ class MyPageFragment : Fragment() {
 
 
                 } else {
-                    Log.e("syyy", "Response body is null.")
+                    Log.e("MyPageFragment", "Response body is null.")
                 }
             }
 
             override fun onFailure(call: Call<ProfileDto>, t: Throwable) {
                 t.printStackTrace()
                 call.cancel()
-                Log.e("syyy", " 통신 실패")
+                Log.e("MyPageFragment", " 통신 실패")
             }
         })
 
