@@ -17,6 +17,7 @@ import com.example.find_my_matzip.databinding.FragmentMapBinding
 import com.example.find_my_matzip.model.RestaurantDto
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -78,6 +79,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
     }
 
     override fun onMapReady(naverMap: NaverMap) {
+
         Log.d("sdo", "onMapReady")
         val cameraPosition = CameraPosition(
             LatLng(35.15690579523921, 129.05957113473747),  // 지도 시작 위치 지정
@@ -108,6 +110,19 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 
                         marker.setOnClickListener(Overlay.OnClickListener {
                             val intent = Intent(context, ResInfoActivity::class.java)
+                            intent.putExtra("resInfoName", currentRestaurant.res_name)
+                            intent.putExtra("resInfoMenu", currentRestaurant.res_menu)
+                            intent.putExtra("resInfoOT", currentRestaurant.operate_time)
+                            intent.putExtra("resInfoIntro", currentRestaurant.res_intro)
+                            intent.putExtra("resInfoThumbnail", currentRestaurant.res_thumbnail)
+
+//                            Log.d("infotest", "식당사진 ${currentRestaurant.res_thumbnail}")
+//                            Log.d("infotest", "식당이름 ${currentRestaurant.res_name}")
+//                            Log.d("infotest", "식당메뉴 ${currentRestaurant.res_menu}")
+//                            Log.d("infotest", "영업시간 ${currentRestaurant.operate_time}")
+//                            Log.d("infotest", "식당소개 ${currentRestaurant.res_intro}")
+
+
                             startActivity(intent)
                             false
                         })
@@ -121,10 +136,6 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 
                 }
             }
-
-
-
-
             override fun onFailure(call: Call<List<RestaurantDto>>, t: Throwable) {
                 t.printStackTrace()
                 call.cancel()
@@ -132,8 +143,10 @@ class MapFragment : Fragment() , OnMapReadyCallback {
             }
         })
 
+
       //  marker.position = LatLng(35.15690579523921, 129.05957113473747)
       //  marker.map = naverMap
+
 
         naverMap.cameraPosition = cameraPosition
 
@@ -143,7 +156,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         // 현재 위치 버튼 기능
         naverMap.uiSettings.isLocationButtonEnabled = true
         // 위치를 추적하면서 카메라도 따라 움직인다.
-        // naverMap.locationTrackingMode = LocationTrackingMode.Follow
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
     }
 
 

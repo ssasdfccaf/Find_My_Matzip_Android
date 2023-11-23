@@ -6,8 +6,13 @@ import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Gravity
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.R
 import kotlin.math.roundToInt
 
@@ -17,6 +22,37 @@ class ResInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_res_info)
+
+        val resInfoName = intent.getStringExtra("resInfoName")
+        val textViewresInfoName = findViewById<TextView>(R.id.resInfoName)
+        textViewresInfoName.text = resInfoName
+
+        val resInfoMenu = intent.getStringExtra("resInfoMenu")
+        val textViewresInfoMenu = findViewById<TextView>(R.id.resInfoMenu)
+        textViewresInfoMenu.text = resInfoMenu
+
+        val resInfoOT = intent.getStringExtra("resInfoOT")
+        val textViewresInfoOT = findViewById<TextView>(R.id.resInfoOT)
+        textViewresInfoOT.text = resInfoOT
+
+        val resInfoIntro = intent.getStringExtra("resInfoIntro")
+        val textViewresInfoIntro = findViewById<TextView>(R.id.resInfoIntro)
+        textViewresInfoIntro.text = resInfoIntro
+
+        val imageUrl = intent.getStringExtra("resInfoThumbnail")
+
+        val imageView = findViewById<ImageView>(R.id.resInfoThumbnail)
+
+        Glide.with(this)
+            .load(imageUrl)
+            .apply(
+                RequestOptions()
+                    .placeholder(R.drawable.logo_b) // 이미지 로딩 중 표시할 임시 이미지
+                    .error(R.drawable.logo_b) // 이미지 로딩 실패 시 표시할 이미지
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) // 디스크 캐시 전략 설정
+            )
+            .into(imageView)
+
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -44,5 +80,18 @@ class ResInfoActivity : AppCompatActivity() {
         window.setGravity(Gravity.BOTTOM)
         window.setLayout((width *0.99).roundToInt(), (height *0.3).roundToInt())
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))    // 배경화면 투명하게 하는 코드
+
+
     }
+
+
+//    override fun onTouchEvent(event: MotionEvent?): Boolean {
+//        // 화면 터치 시 취소 키로 간주하고 액티비티 종료
+//        if (event?.action == MotionEvent.ACTION_DOWN) {
+//            finish()
+//            return true
+//        }
+//        return super.onTouchEvent(event)
+//    }
+
 }
