@@ -8,11 +8,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.startActivity
 import com.example.find_my_matzip.databinding.ActivityLoginBinding
 import com.example.find_my_matzip.model.LoginDto
 import com.example.find_my_matzip.model.ResultDto
 import com.example.find_my_matzip.retrofit.UserService
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -75,12 +75,7 @@ class LoginActivity : AppCompatActivity() {
 //                                Log.d(TAG, "===========response.body()의 값 : ${response.body()}")
 
                             // 로그인된 유저 정보 저장
-                            val loginSharedPref =
-                                getSharedPreferences("loginUser", Context.MODE_PRIVATE)
-                            loginSharedPref.edit().run {
-                                putString("userId", loginId)
-                                commit()
-                            }
+                            SharedPreferencesManager.setLoginInfo(this@LoginActivity,loginId,loginPw);
 
                         } else {
                             Log.d(TAG, "로그인 실패")
