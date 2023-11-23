@@ -1,39 +1,44 @@
 package com.example.find_my_matzip.navTab.adapter
-
+import android.content.ClipData.Item
+import com.example.find_my_matzip.databinding.HomeFragmentItemBinding
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.find_my_matzip.databinding.HomeFragmentItemBinding
+import com.bumptech.glide.Glide
+import com.example.find_my_matzip.databinding.ItemMainboardBinding
+import com.example.find_my_matzip.model.MainBoardDto
+import com.example.find_my_matzip.navTab.navTabFragment.HomeFragment
 
-class HomeRecyclerAdapter : RecyclerView.Adapter<HomeRecyclerAdapter.ViewHolder>() {
-    lateinit var items: ArrayList<RecyclerItem>
+class MainBoardViewHolder(val binding : ItemMainboardBinding) : RecyclerView.ViewHolder(binding.root)
 
-    fun build(i: ArrayList<RecyclerItem>): HomeRecyclerAdapter {
-        items = i
-        return this
-    }
-
-    class ViewHolder(val binding: HomeFragmentItemBinding, val context: Context) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: RecyclerItem) {
-            with(binding)
-            {
-                tvPalette.text = item.name
-                viewPager.adapter = HomeViewPagerAdapter().build(item.colors)
-            }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeRecyclerAdapter.ViewHolder =
-        ViewHolder(
-            HomeFragmentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            parent.context
+class HomeRecyclerAdapter(val context: HomeFragment, val  datas : List<MainBoardDto>?) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return MainBoardViewHolder(
+            ItemMainboardBinding.inflate(
+                LayoutInflater.from(parent.context),parent,
+                false
+            )
         )
-
-    override fun onBindViewHolder(holder: HomeRecyclerAdapter.ViewHolder, position: Int) {
-        holder.bind(items[position])
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int {
+        return datas?.size ?: 0
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val binding = (holder as MainBoardViewHolder).binding
+        val Item = datas?.get(position)
+
+        binding.boardId.text = Item?.id
+        binding.boardTitle.text = Item?.boardTitle
+        binding.Score.text = Item?.score.toString()
+
+        Glide.with(context)
+            .load(Item?.imgUrl)
+            .override(900, 900)
+            .into(binding.boardThumbnail)
+    }
+
 }
