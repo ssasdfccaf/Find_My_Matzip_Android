@@ -17,16 +17,17 @@
         android:orientation="horizontal">
         <ImageView
             android:id="@+id/resInfoThumbnail"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/image2"
-            android:layout_gravity="center"/>
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/logo_b"
+            android:layout_gravity="center"
+            />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="5dp"
             android:orientation="vertical">
 
             <TextView
@@ -57,11 +58,5 @@
                 android:text="가게소개"
                 android:textSize="12dp" />
         </LinearLayout>
-        <ImageButton
-            android:id="@+id/map_info_button"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@android:drawable/ic_media_play"
-            android:layout_gravity="center"/>
     </LinearLayout>
 </LinearLayout>
