@@ -1,10 +1,8 @@
 package com.example.find_my_matzip.model
 
-data class ResListModel (
-    val page:String,
-    val perPage:String,
-    val total:String,
-    val totalPages:String,
+import com.google.gson.annotations.SerializedName
 
+data class ResListModel (
+    @SerializedName("RESINFO")
     val data:List<RestaurantDto>
 )

@@ -79,4 +79,5 @@ class NaverMapActivity : AppCompatActivity(), OnMapReadyCallback {
         // 위치를 추적하면서 카메라도 따라 움직인다.
           naverMap.locationTrackingMode = LocationTrackingMode.Follow
     }
+
 }
