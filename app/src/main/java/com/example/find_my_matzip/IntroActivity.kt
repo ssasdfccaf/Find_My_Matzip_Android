@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.core.content.ContextCompat.startActivity
 import com.example.find_my_matzip.databinding.ActivityIntroBinding
+import com.example.find_my_matzip.utils.PermissionManager
 
 class IntroActivity : AppCompatActivity() {
     lateinit var binding:ActivityIntroBinding
@@ -13,6 +14,9 @@ class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityIntroBinding.inflate(layoutInflater)
+
+        PermissionManager.checkPermission(this@IntroActivity)
+
         val handler = Handler()
         handler.postDelayed(Runnable {
             val intent = Intent(applicationContext, MainActivity::class.java)
