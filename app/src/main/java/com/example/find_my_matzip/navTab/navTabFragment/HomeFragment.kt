@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentHomeBinding
+import com.example.find_my_matzip.databinding.ItemMainboardBinding
 import com.example.find_my_matzip.model.MainBoardDto
 import com.example.find_my_matzip.navTab.adapter.HomeRecyclerAdapter
 import retrofit2.Call
@@ -20,12 +21,10 @@ import retrofit2.Response
 class     HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     lateinit var adapter : HomeRecyclerAdapter
-//    lateinit var binding2:ViewPagerHomeColorBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
-//        binding2 = ViewPagerHomeColorBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
