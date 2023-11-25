@@ -12,9 +12,11 @@ import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.ProfileUpdateFragment
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentMyPageBinding
+import com.example.find_my_matzip.model.LoginDto
 import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
 import com.example.find_my_matzip.navTab.adapter.ProfileAdapter
+import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,10 +47,16 @@ class MyPageFragment : Fragment() {
             transaction.commit()
         }
 
+        val loginInfo = SharedPreferencesManager.getLoginInfo() ?: emptyMap()
+        val userId = loginInfo["id"]
+
+
 
         val userService = (context?.applicationContext as MyApplication).userService
-        val profileList = userService.getProfile("matzip5")
+        val profileList = userService.getProfile(userId)
+
         Log.d("MyPageFragment", "profileList.enqueue 호출전 : ")
+
 
         profileList.enqueue(object : Callback<ProfileDto> {
             override fun onResponse(call: Call<ProfileDto>, response: Response<ProfileDto>) {
