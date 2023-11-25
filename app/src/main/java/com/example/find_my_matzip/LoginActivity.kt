@@ -12,7 +12,7 @@ import com.example.find_my_matzip.databinding.ActivityLoginBinding
 import com.example.find_my_matzip.model.LoginDto
 import com.example.find_my_matzip.model.ResultDto
 import com.example.find_my_matzip.retrofit.UserService
-import com.example.find_my_matzip.utils.SharedPreferencesManager
+import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,41 +45,43 @@ class LoginActivity : AppCompatActivity() {
 
             //로그인 요청 정보 객체에 담기
             val loginRequest = LoginDto(
-                id = loginId,
-                pw = loginPw
+                userid = loginId,
+                user_pwd = loginPw
             )
 
             //연결 요청
             userService = (applicationContext as MyApplication).userService
             //로그인 요청
             val call = userService.login(loginRequest)
-            Log.d(TAG, "로그인 요청 - ID: ${loginRequest.id}, PW: ${loginRequest.pw}")
+            Log.d(TAG, "로그인 요청 - ID: ${loginRequest.userid}, PW: ${loginRequest.user_pwd}")
 
             //응답받은 정보 확인
             call.enqueue(object : Callback<ResultDto> {
                 override fun onResponse(call: Call<ResultDto>, response: Response<ResultDto>) {
                     if (response.isSuccessful) {
-                        // (jwt)API 요청 처리 성공
-                        //val token = response.headers().get("token")
-                        //val loginState = response.body()
 
+                        // API 요청 처리 성공
+                        val token = response.headers().get("Authorization")
+                        val loginState = response.body()
 
-//                        if (loginState != null) {
-//                            if(token != null){
-                        if (response.body()?.state.equals("success")) {
-                            Log.d(TAG, "로그인 성공")
-                            showDialog("success")
+                        if (loginState != null) {
+                            if(token != null){
+                                Log.d(TAG, "로그인 성공")
 
-//                                val header = response.headers()
-//                                Log.d(TAG, "===========response.toString()의 값 : $response")
-//                                Log.d(TAG, "===========response.body()의 값 : ${response.body()}")
+                                // 로그인된 유저 정보 저장
+                                SharedPreferencesManager.setLoginInfo(loginId,loginPw,token);
 
-                            // 로그인된 유저 정보 저장
-                            SharedPreferencesManager.setLoginInfo(this@LoginActivity,loginId,loginPw);
+                                showDialog("success")
 
-                        } else {
-                            Log.d(TAG, "로그인 실패")
-                            showDialog("fail")
+                                val header = response.headers()
+                                Log.d(TAG, "===========response.body()의 값 : ${response.body()}")
+                                Log.d(TAG, "===========response token의 값 : $token")
+
+                            }
+                            else{
+                                Log.d(TAG, "로그인 실패")
+                                showDialog("fail")
+                            }
                         }
 
                     } else {

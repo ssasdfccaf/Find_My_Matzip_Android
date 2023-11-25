@@ -19,11 +19,11 @@ interface UserService {
     fun newUsers(@Body user: UsersFormDto): Call<Unit>
 
     //로그인
-    @POST("users/login")
+    @POST("/login")
     fun login(@Body loginDto: LoginDto): Call<ResultDto>
 
     //회원 조회
-    @GET("users/users")
+    @GET("users/admin/userList")
     fun getAll(): Call<UserListModel>
 
 

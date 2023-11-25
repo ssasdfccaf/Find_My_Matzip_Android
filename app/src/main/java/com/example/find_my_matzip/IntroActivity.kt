@@ -15,8 +15,6 @@ class IntroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityIntroBinding.inflate(layoutInflater)
 
-        PermissionManager.checkPermission(this@IntroActivity)
-
         val handler = Handler()
         handler.postDelayed(Runnable {
             val intent = Intent(applicationContext, MainActivity::class.java)

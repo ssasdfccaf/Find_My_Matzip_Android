@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.databinding.ActivityJoinBinding
 import com.example.find_my_matzip.model.UsersFormDto
+import com.example.find_my_matzip.utils.PermissionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +33,9 @@ class JoinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityJoinBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //갤러리 접근권한 질문
+        PermissionManager.checkPermission(this@JoinActivity)
 
 
         //갤러리에서 사진 선택 후
