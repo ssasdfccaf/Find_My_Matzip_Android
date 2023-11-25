@@ -43,19 +43,19 @@ class HomeFollowFragment : Fragment() {
     }
 
     val items = arrayListOf<RecyclerItem2>(
-        RecyclerItem2("cozy", arrayListOf("pink", "purple", "sky blue", "white")),
-        RecyclerItem2(
-            "rainbow",
-            arrayListOf("red", "orange", "yellow", "green", "blue", "indigo", "purple")
-        ),
-        RecyclerItem2(
-            "Healthy Leaves",
-            arrayListOf("Olive Green", "Lime Green", "Yellow Green", "Green")
-        ),
-        RecyclerItem2("korea", arrayListOf("white", "black", "blue", "red")),
-        RecyclerItem2("usa", arrayListOf("blue", "red", "white")),
-        RecyclerItem2("italy", arrayListOf("green", "white", "red")),
-        RecyclerItem2("china", arrayListOf("red", "yellow")),
-        RecyclerItem2("google", arrayListOf("red", "yellow", "green", "blue")),
+//        RecyclerItem2("cozy", arrayListOf("pink", "purple", "sky blue", "white")),
+//        RecyclerItem2(
+//            "rainbow",
+//            arrayListOf("red", "orange", "yellow", "green", "blue", "indigo", "purple")
+//        ),
+//        RecyclerItem2(
+//            "Healthy Leaves",
+//            arrayListOf("Olive Green", "Lime Green", "Yellow Green", "Green")
+//        ),
+//        RecyclerItem2("korea", arrayListOf("white", "black", "blue", "red")),
+//        RecyclerItem2("usa", arrayListOf("blue", "red", "white")),
+//        RecyclerItem2("italy", arrayListOf("green", "white", "red")),
+//        RecyclerItem2("china", arrayListOf("red", "yellow")),
+//        RecyclerItem2("google", arrayListOf("red", "yellow", "green", "blue")),
     )
 }
