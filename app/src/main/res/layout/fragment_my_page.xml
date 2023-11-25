@@ -87,14 +87,14 @@
                     </LinearLayout>
                     <!--팔로워 -->
                     <LinearLayout
-
+                        android:id="@+id/follower"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/countFromUser"
+                            android:id="@+id/countToUser"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -110,13 +110,14 @@
                     </LinearLayout>
                     <!--팔로잉 -->
                     <LinearLayout
+                        android:id="@+id/following"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/countToUser"
+                            android:id="@+id/countFromUser"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -141,37 +142,37 @@
 
             </LinearLayout>
             <!--        이미지뷰+ 텍스트 리니어 닫기 -->
-            <LinearLayout
-                android:layout_width="350dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center">
-                <Button
-                    android:id="@+id/followCheck"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="팔로우체크"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/nexonbold"
-                    android:visibility="gone"></Button>
+<!--            <LinearLayout-->
+<!--                android:layout_width="350dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_gravity="center">-->
+<!--                <Button-->
+<!--                    android:id="@+id/followCheck"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:text="팔로우체크"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:fontFamily="@font/nexonbold"-->
+<!--                    android:visibility="gone"></Button>-->
 
-                <Button
-                    android:id="@+id/followBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="팔로우"
-                    android:fontFamily="@font/nexonbold"></Button>
-                <Button
-                    android:id="@+id/unfollowBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="언팔로우"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/nexonbold"></Button>
-            </LinearLayout>
+<!--                <Button-->
+<!--                    android:id="@+id/followBtn"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="팔로우"-->
+<!--                    android:fontFamily="@font/nexonbold"></Button>-->
+<!--                <Button-->
+<!--                    android:id="@+id/unfollowBtn"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:text="언팔로우"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:fontFamily="@font/nexonbold"></Button>-->
+<!--            </LinearLayout>-->
             <!--        -->
             <LinearLayout
                 android:id="@+id/MyButton"
