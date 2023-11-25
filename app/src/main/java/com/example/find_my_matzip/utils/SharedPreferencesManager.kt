@@ -13,17 +13,16 @@ object SharedPreferencesManager{
     fun init(context: Context){
         prefs = context.getSharedPreferences("auto_login", Context.MODE_PRIVATE)
         editor = prefs?.edit()
-        //어플 시작시 초기화
-        //setLoginInfo("","","")
     }
 
 
     //로그인 정보 저장
     //사용 예시 : SharedPreferencesManager.setLoginInfo("id" , "pw");
-    fun setLoginInfo(id: String?, pw: String?,token:String?) {
+    fun setLoginInfo(id: String?, pw: String?,token:String?,autoLogin:Boolean) {
         editor?.putString("id", id)
         editor?.putString("pw", pw)
         editor?.putString("token", token)
+        editor?.putBoolean("autoLogin", autoLogin)
         editor?.apply()
     }
 
@@ -34,15 +33,19 @@ object SharedPreferencesManager{
     //  if (!loginInfo.isEmpty()){
     //      String email    = loginInfo.get("email");
     //      String password = loginInfo.get("password");
-    //  } -> 후에 서버에 로그인 리퀘스트 하면 자동 로그인 가능
-    fun getLoginInfo(): Map<String, String?>? {
-        val loginInfo: MutableMap<String, String?> = HashMap()
+    //      String token = loginInfo.get("token");
+    //      boolean autoLogin = loginInfo.get("autoLogin");
+    //  }
+    fun getLoginInfo(): Map<String, Any?>? {
+        val loginInfo: MutableMap<String, Any?> = HashMap()
         val id = prefs?.getString("id", "")
         val pw = prefs?.getString("pw", "")
         val token = prefs?.getString("token","")
+        val autoLogin = prefs?.getBoolean("autoLogin",false)
         loginInfo["id"] = id
         loginInfo["pw"] = pw
         loginInfo["token"] = token
+        loginInfo["autoLogin"] = autoLogin
         return loginInfo
     }
 
@@ -58,6 +61,11 @@ object SharedPreferencesManager{
     //사용 예시 : getString(this, id, "") => "유저아이디"
     fun getString(key:String,defValue:String):String{
         return prefs?.getString(key, defValue).toString()
+    }
+
+    //boolean형태의 값(autoLogin)가져올때 사용
+    fun getBoolean(key: String, defValue: Boolean): Boolean {
+        return prefs?.getBoolean(key, defValue) ?: defValue
     }
 
 

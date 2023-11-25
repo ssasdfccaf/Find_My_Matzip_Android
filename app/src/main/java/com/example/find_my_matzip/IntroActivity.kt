@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.core.content.ContextCompat.startActivity
 import com.example.find_my_matzip.databinding.ActivityIntroBinding
+import com.example.find_my_matzip.utils.ForcedTerminationService
 import com.example.find_my_matzip.utils.PermissionManager
 
 class IntroActivity : AppCompatActivity() {
@@ -14,6 +15,10 @@ class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityIntroBinding.inflate(layoutInflater)
+
+        //백그라운드 서비스 start
+        //이 서비스가 앱 강제종료여부 확인하고 같이 종료될것임.
+        startService(Intent(this, ForcedTerminationService::class.java))
 
         val handler = Handler()
         handler.postDelayed(Runnable {

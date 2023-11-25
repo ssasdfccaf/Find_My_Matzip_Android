@@ -67,9 +67,10 @@ class LoginActivity : AppCompatActivity() {
                         if (loginState != null) {
                             if(token != null){
                                 Log.d(TAG, "로그인 성공")
+                                val autoLogin = binding.autoLoginBtn.isChecked
 
                                 // 로그인된 유저 정보 저장
-                                SharedPreferencesManager.setLoginInfo(loginId,loginPw,token);
+                                SharedPreferencesManager.setLoginInfo(loginId,loginPw,token,autoLogin);
 
                                 showDialog("success")
 
@@ -100,6 +101,12 @@ class LoginActivity : AppCompatActivity() {
                 }
 
             })
+        }
+
+        //회원가입창으로 이동
+        binding.joinUs.setOnClickListener{
+            val intent = Intent(this@LoginActivity, JoinActivity::class.java)
+            startActivity(intent)
         }
 
     }//onCreate

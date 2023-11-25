@@ -55,8 +55,7 @@ class MyPageFragment : Fragment() {
 
 
         //로그인 정보
-        val loginInfo = SharedPreferencesManager.getLoginInfo() ?: emptyMap()
-        val userId = loginInfo["id"]
+        val userId = SharedPreferencesManager.getString("id","")
 
 
         val userService = (context?.applicationContext as MyApplication).userService
