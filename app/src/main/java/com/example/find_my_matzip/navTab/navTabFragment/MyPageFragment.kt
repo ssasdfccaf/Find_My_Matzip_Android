@@ -155,7 +155,7 @@ class MyPageFragment : Fragment() {
                             )
                         }
 
-                        ShowMessage("팔로우 목록", buffer.toString())
+                        ShowMessage("팔로워 목록", buffer.toString())
 
                     }
                 } else {
