@@ -10,25 +10,38 @@ import com.example.find_my_matzip.databinding.ItemDialogBinding
 //
 //class FollowerViewHolder(val binding: ItemDialogBinding) : RecyclerView.ViewHolder(binding.root)
 
+// FollowerAdapter 클래스는 RecyclerView의 어댑터로, 데이터를 받아와 화면에 표시하는 역할을 합니다.
 class FollowerAdapter(val context: Context, var datas: List<String>?, private val listener: OnFollowerClickListener) :
     RecyclerView.Adapter<FollowerAdapter.FollowerViewHolder>() {
 
+    // ViewHolder를 생성하는 함수
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowerViewHolder {
         val binding = ItemDialogBinding.inflate(LayoutInflater.from(context), parent, false)
         return FollowerViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
+        // datas가 null이면 0을 반환, 그렇지 않으면 datas의 크기를 반환
         return datas?.size ?: 0
     }
+
+
+    // ViewHolder에 데이터를 바인딩하는 함수
     override fun onBindViewHolder(holder: FollowerViewHolder, position: Int) {
-        val followerId = datas?.get(position)
-        holder.bind(followerId)
+        // 현재 위치의 데이터를 가져와서 ViewHolder에 바인딩
+        val Item = datas?.get(position)
+        holder.bind(Item)
     }
+
+    // 내부 클래스로 정의된 FollowerViewHolder는 각 아이템 뷰의 구성요소를 관리합니다.
     inner class FollowerViewHolder(val binding: ItemDialogBinding) : RecyclerView.ViewHolder(binding.root) {
+        // 아이템 뷰에 데이터를 바인딩하는 함수
         fun bind(followerId: String?) {
+            // 뷰 바인딩 객체를 통해 아이템의 텍스트 설정
             binding.dialogUserid.text = followerId
+            // 아이템 뷰를 클릭했을 때의 동작 정의
             binding.root.setOnClickListener {
+                // 클릭 시 리스너의 onFollowClick 메서드 호출
                 listener.onFollowClick(followerId ?: "")
             }
         }

@@ -23,7 +23,8 @@ class CustomDialog(context: Context, private val datas: List<String>) {
 
 
     init {
-        // 기본 다이얼로그 설정
+        // 다이얼로그 초기화 및 설정
+        // 기본 다이얼로그
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         // 다이얼로그 투명도임.
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -39,10 +40,12 @@ class CustomDialog(context: Context, private val datas: List<String>) {
         window?.attributes = layoutParams
     }
 
+    // 다이얼로그 버튼 클릭 리스너 설정
     fun setOnClickListener(listener: OnDialogClickListener) {
         onClickListener = listener
     }
 
+    // 다이얼로그 표시
     fun showDialog() {
         dialog.findViewById<Button>(R.id.dialogButton)?.setOnClickListener {
             dialog.dismiss()
@@ -52,6 +55,8 @@ class CustomDialog(context: Context, private val datas: List<String>) {
         dialog.show()
     }
 
+
+    // 다이얼로그 내용 설정
     fun setContent() {
         // 리사이클러뷰 초기화
         val recyclerView: RecyclerView = dialog.findViewById(R.id.recyclerView)
@@ -61,8 +66,10 @@ class CustomDialog(context: Context, private val datas: List<String>) {
             dialog.context,
             datas,
             object : FollowerAdapter.OnFollowerClickListener {
-                override fun onFollowClick(followerId: String) {
-                    onClickListener.onClicked(followerId)
+                override fun onFollowClick(Item: String) {
+                    // 팔로워 아이템 클릭 시의 동작 정의
+                    onClickListener.onClicked(Item)
+                    // 다이얼로그 닫기
                     dialog.dismiss()
                 }
             })

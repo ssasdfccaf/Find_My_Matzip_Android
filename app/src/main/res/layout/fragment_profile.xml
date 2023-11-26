@@ -21,7 +21,7 @@
 
             <!--     사용자 아이디   -->
             <TextView
-                android:id="@+id/userId"
+                android:id="@+id/pageUserId"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
