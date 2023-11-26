@@ -42,17 +42,6 @@ class MyPageFragment : Fragment() {
 
 
 
-
-        binding.updateBtn.setOnClickListener {
-//            profileUpdateFragment 회원수정창(타 프레그먼트로) 이동하는 코드
-            val profileUpdateFragment = ProfileUpdateFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainer, profileUpdateFragment)
-            transaction.addToBackStack(null) //백스택에 지금 재배치한 fragment추가
-            transaction.commit()
-        }
-
-
         //로그인 정보
         val userId = SharedPreferencesManager.getString("id","")
 
@@ -168,6 +157,17 @@ class MyPageFragment : Fragment() {
                 Log.e("MyPageFragment", " 통신 실패")
             }
         })
+
+
+        //프로필 편집
+        binding.updateBtn.setOnClickListener {
+            //profileUpdateFragment 회원수정창(타 프레그먼트로) 이동하는 코드
+            val profileUpdateFragment = ProfileUpdateFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainer, profileUpdateFragment)
+            transaction.addToBackStack(null) //백스택에 지금 재배치한 fragment추가
+            transaction.commit()
+        }
 
         return binding.root
     }
