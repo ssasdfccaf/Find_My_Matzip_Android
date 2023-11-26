@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialogLinearLayout"
+    android:layout_width="380dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/radius"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+
+    <TextView
+        android:id="@+id/headText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nexonmed"
+        android:gravity="center"
+        android:textSize="25dp"
+        tools:text="팔로워리스트"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"/>
+
+<!--    리사이클러 뷰 추가 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/dialogButton"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="7dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/design_default_color_primary"
+        android:text="화면닫기"
+        android:textSize="14sp" />
+
+
+
+
+</LinearLayout>
+
+        <!--        <Button-->
+        <!--            android:id="@+id/yesButton"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="40dp"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:text="확인"-->
+        <!--            android:textSize="14sp" />-->
+
+
+
+

@@ -6,20 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.ProfileUpdateFragment
 import com.example.find_my_matzip.R
+import com.example.find_my_matzip.databinding.DialogCustomBinding
 import com.example.find_my_matzip.databinding.FragmentMyPageBinding
 import com.example.find_my_matzip.model.FollowerDto
 import com.example.find_my_matzip.model.FollowingDto
 import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
-
 import com.example.find_my_matzip.navTab.adapter.ProfileAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.CustomDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,19 +32,15 @@ class MyPageFragment : Fragment() {
     lateinit var adapter: ProfileAdapter
     lateinit var boardAdapter: BoardRecyclerAdapter
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentMyPageBinding.inflate(layoutInflater, container, false)
-        // 보드 어댑터
+        // 보드 어댑터 초기화
         boardAdapter = BoardRecyclerAdapter(this@MyPageFragment, emptyList())
         binding.boardRecyclerView.adapter = boardAdapter
-        // 팔로잉
-
-
-
 
         binding.updateBtn.setOnClickListener {
 //            profileUpdateFragment 회원수정창(타 프레그먼트로) 이동하는 코드
@@ -54,10 +52,8 @@ class MyPageFragment : Fragment() {
         }
 
 
-        //로그인 정보
+        // 로그인한 사용자의 아이디를 가져와서 해당 사용자의 프로필 정보를 서버에서 조회
         val userId = SharedPreferencesManager.getString("id","")
-
-
         val userService = (context?.applicationContext as MyApplication).userService
         val profileList = userService.getProfile(userId)
 
@@ -74,6 +70,7 @@ class MyPageFragment : Fragment() {
                 Log.d("MyPageFragment", "도착 확인5: followerDtoList ${profileDto?.followerDtoList}")
                 Log.d("MyPageFragment", "도착 확인5: followCheck ${profileDto?.followCheck}")
                 if (profileDto != null) {
+                    // 팔로워, 팔로잉, 게시물 수 업데이트
                     // 팔로워 팔로우수
                     binding.countFromUser.text = profileDto.countFromUser.toString()
                     binding.countToUser.text = profileDto.countToUser.toString()
@@ -97,72 +94,98 @@ class MyPageFragment : Fragment() {
                         .into(binding.userImage)
 
                     Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
-
+                    // 프로필 어댑터 및 보드 어댑터 업데이트
                     ProfileAdapter(this@MyPageFragment, listOf(profileDto.pageUserDto))
                     boardAdapter = BoardRecyclerAdapter(this@MyPageFragment, profileDto.boards.content)
-
                     binding.boardRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                     binding.boardRecyclerView.adapter = boardAdapter
 
-                    // 팔로잉
+                    // 팔로잉 목록 클릭 시 다이얼로그 표시
                     binding.following.setOnClickListener {
-                        val followList: List<FollowingDto> = profileDto.followingDtoList ?: emptyList()
-                        Log.d("MyPageFragment", "도착 확인6: followingDtoList $followList")
-                        if (followList.isEmpty()) {
-                            ShowMessage("실패", "데이터를 찾을 수 없습니다.")
-                            return@setOnClickListener
+                        val followingList: List<FollowingDto> = profileDto.followingDtoList ?: emptyList()
+                        Log.d("MyPageFragment", "도착 확인6: followingDtoList $followingList")
+//                        if (followingList.isEmpty()) {
+//                            ShowMessage("실패", "데이터를 찾을 수 없습니다.")
+//                            return@setOnClickListener
+//                        }
+//
+//                        val buffer = StringBuffer()
+//                        for (followDto in followingList) {
+//                            buffer.append(
+//                                // 코틀린 3중 따옴표, 멀티 라인.
+//                                // FollowDto의 각 속성을 가져와서 문자열로 만듭니다.
+//                                """
+//                        ID: ${followDto.id}
+//                        이름: ${followDto.name}
+//                        프로필 이미지: ${followDto.profileImage}
+//                        구독 상태: ${followDto.subscribeState}
+//                    """.trimIndent()
+//                            )
+//                        }
+//
+//                        ShowMessage("회원목록", buffer.toString())
+                        CustomDialog(requireContext(), followingList.map { it.id }, CustomDialog.DialogType.FOLLOWING).apply {
+                            setOnClickListener(object : CustomDialog.OnDialogClickListener {
+                                override fun onClicked(name: String) {
+                                    // 클릭한 팔로워의 프로필로 이동하는 코드 추가
+                                    navigateToUserProfile(name)
+                                    Log.d("CustomDialog", "팔로잉아이디 클릭! : ID: $name")
+                                }
+                            })
+                            // 다이얼로그 표시 및 내용 설정
+                            showDialog()
+                            setContent()
                         }
-
-                        val buffer = StringBuffer()
-                        for (followDto in followList) {
-                            buffer.append(
-                                // 코틀린 3중 따옴표, 멀티 라인.
-                                // FollowDto의 각 속성을 가져와서 문자열로 만듭니다.
-                                """
-                        ID: ${followDto.id}
-                        이름: ${followDto.name}
-                        프로필 이미지: ${followDto.profileImage}
-                        구독 상태: ${followDto.subscribeState}
-                    """.trimIndent()
-                            )
-                        }
-
-                        ShowMessage("회원목록", buffer.toString())
                     }
 
-                    // 팔로워
+
+                    // 팔로워 목록 클릭 시 다이얼로그 표시
                     binding.follower.setOnClickListener {
-                        // 팔로워 리스트 가져오기
+//                        // 팔로워 리스트 가져오기
+//                        val followerList: List<FollowerDto> = profileDto.followerDtoList
+//                        Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
+//
+//                        // 다이얼로그 생성
+//                        val dialog = CustomDialog(requireContext(), followerList.map { it.id })
+//                        // 다이얼로그 내용 설정
+//                        dialog.setOnClickListener(object : CustomDialog.OnDialogClickListener {
+//                            override fun onClicked(name: String) {
+//                                // 클릭한 팔로워의 프로필로 이동하는 코드 추가
+//                                navigateToUserProfile(name)
+//                                Log.d("CustomDialog", "팔로워아이디 클릭! : ID: $name")
+//                            }
+//                        })
+//                        // 다이얼로그 표시
+//                        dialog.showDialog()
+//                        // 다이얼로그 내용 설정
+//                        dialog.setContent()
+//                    }
+// 팔로워 리스트 가져오기
                         val followerList: List<FollowerDto> = profileDto.followerDtoList
                         Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
-                        if (followerList.isEmpty()) {
-                            ShowMessage("실패", "데이터를 찾을 수 없습니다.")
-                            return@setOnClickListener
+
+                        CustomDialog(requireContext(), followerList.map { it.id }, CustomDialog.DialogType.FOLLOWER).apply {
+                            setOnClickListener(object : CustomDialog.OnDialogClickListener {
+                                override fun onClicked(name: String) {
+                                    // 클릭한 팔로워의 프로필로 이동하는 코드 추가
+                                    navigateToUserProfile(name)
+                                    Log.d("CustomDialog", "팔로워아이디 클릭! : ID: $name")
+                                }
+                            })
+                            // 다이얼로그 표시 및 내용 설정
+                            showDialog()
+                            setContent()
                         }
-
-                        val buffer = StringBuffer()
-                        for (followingDto in followerList) {
-                            buffer.append(
-                                // 코틀린 3중 따옴표, 멀티 라인.
-                                // FollowDto의 각 속성을 가져와서 문자열로 만듭니다.
-                                """
-                        ID: ${followingDto.id}
-                        이름: ${followingDto.name}
-                        프로필 이미지: ${followingDto.profileImage}
-                        구독 상태: ${followingDto.subscribeState}
-                    """.trimIndent()
-                            )
-                        }
-
-                        ShowMessage("팔로워 목록", buffer.toString())
-
                     }
-                } else {
+                }
+
+                else {
                     Log.e("MyPageFragment", "Response body is null.")
                 }
             }
 
 
+            // 통신 실패 시 로그 출력
             override fun onFailure(call: Call<ProfileDto>, t: Throwable) {
                 t.printStackTrace()
                 call.cancel()
@@ -179,5 +202,13 @@ class MyPageFragment : Fragment() {
         builder.setTitle(title)
         builder.setMessage(Message)
         builder.show()
+    }
+    private fun navigateToUserProfile(userId: String) {
+        // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
+        val profileFragment = ProfileFragment.newInstance(userId)
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragmentContainer, profileFragment)
+        //    transaction.addToBackStack(null)
+        transaction.commit()
     }
 }
