@@ -52,100 +52,230 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@drawable/image1"></ImageView>
+                    android:src="@drawable/profile"></ImageView>
             </androidx.cardview.widget.CardView>
 
-            <EditText
-                android:id="@+id/userId"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
+            <LinearLayout
+                android:layout_width="295dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/radius"
-                android:fontFamily="@font/nexonlight"
-                android:paddingLeft="30dp"
-                android:hint="UserId"
-                android:textColor="#B3B3B3"
-                android:textSize="15sp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:editable="false"
-                android:focusable="false"></EditText>
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/userPwd"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/radius"
-                android:fontFamily="@font/nexonlight"
-                android:paddingLeft="30dp"
-                android:hint="UserPassword"
-                android:textColor="#B3B3B3"
-                android:textSize="15sp"
-                android:ems="10"
-                android:inputType="textPassword"></EditText>
+                <Button
+                    android:id="@+id/galleryBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/design_default_color_primary"
+                    android:text="갤러리"></Button>
 
-            <EditText
-                android:id="@+id/userName"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/radius"
-                android:fontFamily="@font/nexonlight"
-                android:paddingLeft="30dp"
-                android:hint="UserName"
-                android:textColor="#B3B3B3"
-                android:textSize="15sp"
-                android:ems="10"
-                android:inputType="textPersonName"></EditText>
+                <Button
+                    android:id="@+id/cameraBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/design_default_color_primary"
+                    android:text="카메라"></Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ID"
+                    android:textSize="15sp"
+                    android:width="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="20dp"/>
+
+                <EditText
+                    android:id="@+id/userId"
+                    android:layout_width="280dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/radius"
+                    android:editable="false"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:fontFamily="@font/nexonlight"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="30dp"
+                    android:textColor="#B3B3B3"
+                    android:textSize="15sp"></EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PW"
+                    android:width="50dp"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="20dp"/>
+
+                <EditText
+                    android:id="@+id/userPwd"
+                    android:layout_width="200dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/radius_edittext_red"
+                    android:fontFamily="@font/nexonlight"
+                    android:paddingLeft="30dp"
+                    android:textColor="#B3B3B3"
+                    android:hint="비밀번호 입력"
+                    android:textSize="15sp"
+                    android:ems="10"
+                    android:inputType="textPassword"></EditText>
+
+                <Button
+                    android:id="@+id/pwCheckBtn"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    android:text="확인"
+                    android:textSize="11sp"
+                    android:layout_marginLeft="10dp"
+                    android:backgroundTint="@color/design_default_color_primary" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NAME"
+                    android:width="50dp"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="20dp"/>
+
+                <EditText
+                    android:id="@+id/userName"
+                    android:layout_width="280dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/radius"
+                    android:fontFamily="@font/nexonlight"
+                    android:paddingLeft="30dp"
+                    android:textColor="#B3B3B3"
+                    android:textSize="15sp"
+                    android:ems="10"
+                    android:inputType="textPersonName"></EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PHONE"
+                    android:width="50dp"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="20dp"/>
+
+                <EditText
+                    android:id="@+id/userPhone"
+                    android:layout_width="280dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/radius"
+                    android:fontFamily="@font/nexonlight"
+                    android:paddingLeft="30dp"
+                    android:textColor="#B3B3B3"
+                    android:textSize="15sp"
+                    android:ems="10"
+                    android:inputType="textPhonetic"
+                    ></EditText>
+            </LinearLayout>
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
-            <EditText
-                android:id="@+id/userPhone"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/radius"
-                android:fontFamily="@font/nexonlight"
-                android:paddingLeft="30dp"
-                android:hint="UserPhoneNum"
-                android:textColor="#B3B3B3"
-                android:textSize="15sp"
-                android:ems="10"
-                android:inputType="textPhonetic"
-                ></EditText>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADDRESS"
+                    android:width="50dp"
+                    android:textSize="10sp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="20dp"/>
 
-            <EditText
-                android:id="@+id/userAddress"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/radius"
-                android:fontFamily="@font/nexonlight"
-                android:paddingLeft="30dp"
-                android:hint="Address"
-                android:textColor="#B3B3B3"
-                android:textSize="15sp"
-                android:ems="10"></EditText>
+                <EditText
+                    android:id="@+id/userAddress"
+                    android:layout_width="280dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/radius"
+                    android:fontFamily="@font/nexonlight"
+                    android:paddingLeft="30dp"
+                    android:hint="주소 검색"
+                    android:textColor="#B3B3B3"
+                    android:textSize="15sp"
+                    android:ems="10"
+                    android:focusable="false"></EditText>
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/userAddress_Detail"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/radius"
-                android:ems="10"
-                android:fontFamily="@font/nexonlight"
-                android:hint="Address Detail"
-                android:paddingLeft="30dp"
-                android:textColor="#B3B3B3"
-                android:textSize="15sp"></EditText>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:width="50dp"
+                    android:textSize="10sp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="20dp"/>
+
+                <EditText
+                    android:id="@+id/userAddress_Detail"
+                    android:layout_width="300dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/radius"
+                    android:ems="10"
+                    android:fontFamily="@font/nexonlight"
+                    android:hint="상세 주소"
+                    android:paddingLeft="30dp"
+                    android:textColor="#B3B3B3"
+                    android:textSize="15sp"
+                    android:visibility="gone"></EditText>
+            </LinearLayout>
 
             <LinearLayout
 
@@ -181,7 +311,7 @@
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="100dp"
                 android:orientation="horizontal">
 

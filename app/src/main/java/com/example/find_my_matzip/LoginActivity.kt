@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import com.example.find_my_matzip.databinding.ActivityLoginBinding
 import com.example.find_my_matzip.model.LoginDto
@@ -22,10 +24,17 @@ class LoginActivity : AppCompatActivity() {
     lateinit var binding: ActivityLoginBinding
     lateinit var userService : UserService
 
+    //editview 밖의 공간 클릭시 키보드 내리기 기능 구현
+    //설정 1)
+    private lateinit var imm: InputMethodManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //설정 2)
+        imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         // 툴바 붙이기
         setSupportActionBar(binding.toolbar)
@@ -107,6 +116,18 @@ class LoginActivity : AppCompatActivity() {
         binding.joinUs.setOnClickListener{
             val intent = Intent(this@LoginActivity, JoinActivity::class.java)
             startActivity(intent)
+        }
+
+        //설정 3)
+        binding.root.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                // Hide the keyboard when the user clicks outside of the EditText
+                val view = this.currentFocus
+                if (view != null) {
+                    imm.hideSoftInputFromWindow(view.windowToken, 0)
+                }
+            }
+            false
         }
 
     }//onCreate
