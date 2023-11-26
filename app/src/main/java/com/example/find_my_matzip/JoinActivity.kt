@@ -1,14 +1,18 @@
 package com.example.find_my_matzip
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -27,6 +31,9 @@ class JoinActivity : AppCompatActivity() {
     lateinit var binding: ActivityJoinBinding
     private val TAG: String = "JoinActivity"
 
+    //editview 밖의 공간 클릭시 키보드 내리기 기능 구현
+    //설정 1)
+    private lateinit var imm: InputMethodManager
 
     // 갤러리에서 선택된 , 파일의 위치(로컬)
     lateinit var filePath : String
@@ -35,6 +42,9 @@ class JoinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityJoinBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //설정 2)
+        imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         //갤러리 접근권한 질문
         PermissionManager.checkPermission(this@JoinActivity)
@@ -198,6 +208,18 @@ class JoinActivity : AppCompatActivity() {
             //주소 검색 화면으로 이동
             val intent = Intent(this@JoinActivity, SearchAddressActivity::class.java)
             getSearchResult.launch(intent)
+        }
+
+        //설정 3)
+        binding.root.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                // Hide the keyboard when the user clicks outside of the EditText
+                val view = this.currentFocus
+                if (view != null) {
+                    imm.hideSoftInputFromWindow(view.windowToken, 0)
+                }
+            }
+            false
         }
 
 
