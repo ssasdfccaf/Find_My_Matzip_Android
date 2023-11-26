@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.databinding.ActivityJoinBinding
@@ -22,9 +23,9 @@ import java.util.Date
 import java.util.UUID
 
 class JoinActivity : AppCompatActivity() {
-
-    private val TAG: String = "JoinActivity"
     lateinit var binding: ActivityJoinBinding
+    private val TAG: String = "JoinActivity"
+
 
     // 갤러리에서 선택된 , 파일의 위치(로컬)
     lateinit var filePath : String
@@ -109,7 +110,7 @@ class JoinActivity : AppCompatActivity() {
                 userid = binding.userId.text.toString(),
                 user_pwd = binding.userPwd.text.toString(),
                 username = binding.userName.text.toString(),
-                user_address = binding.userAddress.text.toString(),
+                user_address = binding.searchAddress.text.toString() + binding.userAddressDetail.text,
                 user_role = "ADMIN",
                 userphone = binding.userPhone.text.toString(),
                 user_image = imgStorageUrl,
@@ -168,7 +169,27 @@ class JoinActivity : AppCompatActivity() {
 
 
             })
-        }//buttonInsert
+        }//회원가입
+
+        //주소 검색후 결과값 받아오는 후처리 함수
+        val getSearchResult = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                if (result.data != null) {
+                    val data = result.data!!.getStringExtra("data")
+                    binding.searchAddress.setText(data)
+                }
+            }
+        }
+
+
+        //주소 검색
+        binding.searchAddress.setOnClickListener{
+            //주소 검색 화면으로 이동
+            val intent = Intent(this@JoinActivity, SearchAddressActivity::class.java)
+            getSearchResult.launch(intent)
+        }
 
 
     }
@@ -186,4 +207,6 @@ class JoinActivity : AppCompatActivity() {
         }
         return pickValue
     }
+
+
 }

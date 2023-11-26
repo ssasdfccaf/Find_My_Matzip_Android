@@ -43,7 +43,7 @@ class ProfileUpdateFragment : Fragment() {
 
         //로그인 정보
         val userId = SharedPreferencesManager.getString("id","")
-        val userPwd = SharedPreferencesManager.getString("pw","")
+        val userPwd = SharedPreferencesManager.getString("pw","") //pw는 서버에서 못가져와서 가지고 있는 정보 사용
 
         val userService = (context?.applicationContext as MyApplication).userService
         val userProfile = userService.findbyId(userId)
@@ -69,7 +69,7 @@ class ProfileUpdateFragment : Fragment() {
 
 
                     binding.userId.text = Editable.Factory.getInstance().newEditable(originUserId)
-                    binding.userPwd.text = Editable.Factory.getInstance().newEditable(userPwd) //pw는 못가져와서 가지고 있는 정보 사용
+                    binding.userPwd.text = Editable.Factory.getInstance().newEditable(userPwd)
                     binding.userName.text = Editable.Factory.getInstance().newEditable(originUsername)
                     binding.userAddress.text = Editable.Factory.getInstance().newEditable(originUserAddr)
                     binding.userPhone.text = Editable.Factory.getInstance().newEditable(originUserPhone)
