@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.databinding.ActivityJoinBinding
 import com.example.find_my_matzip.model.UsersFormDto
 import com.example.find_my_matzip.utils.PermissionManager
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -100,10 +101,10 @@ class JoinActivity : AppCompatActivity() {
             val uuid = binding.userId.text.toString()+Date()+System.currentTimeMillis();
 
             // 이미지 저장될 위치 및 파일명(파이어베이스)
-            val imgRef = storageRef.child("users_img/${binding.userId.text.toString()}.jpg")
+            val imgRef = storageRef.child("users_img/${binding.userId.text}.jpg")
 
             //이미지 url
-            val imgStorageUrl = "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/users_img%2F${binding.userId.text.toString()}.jpg?alt=media"
+            val imgStorageUrl = "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/users_img%2F${binding.userId.text}.jpg?alt=media"
 
             //회원가입 요청할 user객체 구성
             var usersFormDto = UsersFormDto(
@@ -151,11 +152,19 @@ class JoinActivity : AppCompatActivity() {
 
                         startActivity(intent)
                     }else {
-                        // Log the raw response for debugging purposes
                         Log.d(TAG, "서버 응답 실패: ${response.code()}")
                         try {
                             val errorBody = response.errorBody()?.string()
+
+                            val jsonError = JSONObject(errorBody)
+                            val errorMessage = jsonError.optString("message", "Unknown Error")
+
                             Log.d(TAG, "Error Body: $errorBody")
+                            Log.d(TAG, "Error errorMessage: ${errorMessage}")
+
+                            if(errorMessage.equals("이미 가입된 회원입니다.")){
+                                Toast.makeText(this@JoinActivity,"중복된 아이디입니다.", Toast.LENGTH_SHORT).show()
+                            }
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
