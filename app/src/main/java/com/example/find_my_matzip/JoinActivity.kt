@@ -108,7 +108,7 @@ class JoinActivity : AppCompatActivity() {
             val storageRef = storage.reference
 
             // 파일명 생성 : userid+현재시간
-            val uuid = binding.userId.text.toString()+Date()+System.currentTimeMillis();
+           // val uuid = binding.userId.text.toString()+Date()+System.currentTimeMillis();
 
             // 이미지 저장될 위치 및 파일명(파이어베이스)
             val imgRef = storageRef.child("users_img/${binding.userId.text}.jpg")

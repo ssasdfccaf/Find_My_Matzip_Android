@@ -34,4 +34,8 @@ interface UserService {
     @GET("users/profile/{pageUserid}")
     fun getProfile(@Path("pageUserid") pageUserid: String?): Call<ProfileDto>
 
+    //회원 정보 수정
+    @POST("/users/updateUsers")
+    fun updateUsers(@Body usersFormDto: UsersFormDto): Call<Unit>
+
 }
