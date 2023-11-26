@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.find_my_matzip.navTab.navTabFragment.HomeFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MapFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
@@ -64,6 +65,9 @@ class HomeTabActivity : AppCompatActivity() {
 
                 //로그인 정보 지우기
                 SharedPreferencesManager.clearPreferences()
+
+                // BackStack의 모든 데이터 삭제
+                supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
                 //로그인 화면으로 이동
                 val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
