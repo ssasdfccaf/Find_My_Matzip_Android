@@ -26,9 +26,16 @@ interface UserService {
     @GET("users/admin/userList")
     fun getAll(): Call<UserListModel>
 
+    //회원 한명 정보 조회
+    @GET("users/aboutUsers/{userid}")
+    fun findbyId(@Path("userid") userid: String?): Call<UsersFormDto>
 
 
     @GET("users/profile/{pageUserid}")
     fun getProfile(@Path("pageUserid") pageUserid: String?): Call<ProfileDto>
+
+    //회원 정보 수정
+    @POST("/users/updateUsers")
+    fun updateUsers(@Body usersFormDto: UsersFormDto): Call<Unit>
 
 }
