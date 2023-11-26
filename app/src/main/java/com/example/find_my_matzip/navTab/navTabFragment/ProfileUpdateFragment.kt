@@ -36,7 +36,7 @@ class ProfileUpdateFragment : Fragment() {
     lateinit var binding: FragmentProfileUpdateBinding
 
     // 갤러리에서 선택된 , 파일의 위치(로컬)
-    lateinit var filePath : String
+    private var filePath : String? = null
     
     //비밀번호 확인 여부
     private var pwCheck = false
@@ -92,6 +92,7 @@ class ProfileUpdateFragment : Fragment() {
                     binding.userName.text = Editable.Factory.getInstance().newEditable(originUsername)
                     binding.userAddress.text = Editable.Factory.getInstance().newEditable(originUserAddr)
                     binding.userPhone.text = Editable.Factory.getInstance().newEditable(originUserPhone)
+
 
                     if(originUserGender.equals("남자")){
                         binding.radio1.isChecked = true
@@ -190,24 +191,27 @@ class ProfileUpdateFragment : Fragment() {
                             if (resultState != null) {
                                 Log.d(TAG, "회원 수정 성공")
 
-                                //firebase에 이미지 저장
-                                val file = Uri.fromFile(File(filePath))
+                                //이미지 변동 있었을 경우에만 이미지 저장
+                                if(filePath != null){
+                                    //firebase에 이미지 저장
+                                    val file = Uri.fromFile(File(filePath))
 
-                                // 파이어베이스 스토리지에 업로드하는 함수.
-                                imgRef.putFile(file)
-                                    // 업로드 후, 수행할 콜백 함수 정의. 실패했을 경우 콜백함수 정의
-                                    .addOnCompleteListener{task ->
-                                        if (task.isSuccessful) {
-                                            Toast.makeText(requireContext(),"스토리지 업로드 완료",Toast.LENGTH_SHORT).show()
-                                            //UI다시 로드
-                                            //handleUploadComplete()
-                                        }else {
-                                            Toast.makeText(requireContext(), "스토리지 업로드 실패", Toast.LENGTH_SHORT).show()
+                                    // 파이어베이스 스토리지에 업로드하는 함수.
+                                    imgRef.putFile(file)
+                                        // 업로드 후, 수행할 콜백 함수 정의. 실패했을 경우 콜백함수 정의
+                                        .addOnCompleteListener{task ->
+                                            if (task.isSuccessful) {
+                                                Toast.makeText(requireContext(),"스토리지 업로드 완료",Toast.LENGTH_SHORT).show()
+                                                //UI다시 로드
+                                                //handleUploadComplete()
+                                            }else {
+                                                Toast.makeText(requireContext(), "스토리지 업로드 실패", Toast.LENGTH_SHORT).show()
+                                            }
                                         }
-                                   }
-                                    .addOnFailureListener { exception ->
-                                        Toast.makeText(requireContext(),"스토리지 업로드 실패 : ${exception.message}", Toast.LENGTH_SHORT).show()
-                                    }
+                                        .addOnFailureListener { exception ->
+                                            Toast.makeText(requireContext(),"스토리지 업로드 실패 : ${exception.message}", Toast.LENGTH_SHORT).show()
+                                        }
+                                }
 
                             }
 

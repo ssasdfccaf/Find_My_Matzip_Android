@@ -6,14 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.ProfileUpdateFragment
 import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.DialogCustomBinding
 import com.example.find_my_matzip.databinding.FragmentMyPageBinding
 import com.example.find_my_matzip.model.FollowerDto
 import com.example.find_my_matzip.model.FollowingDto
@@ -192,6 +189,16 @@ class MyPageFragment : Fragment() {
                 Log.e("MyPageFragment", " 통신 실패")
             }
         })
+
+        //프로필 편집
+        binding.updateBtn.setOnClickListener {
+            //profileUpdateFragment 회원수정창(타 프레그먼트로) 이동하는 코드
+            val profileUpdateFragment = ProfileUpdateFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainer, profileUpdateFragment)
+            transaction.addToBackStack(null) //백스택에 지금 재배치한 fragment추가
+            transaction.commit()
+        }
 
         return binding.root
     }
