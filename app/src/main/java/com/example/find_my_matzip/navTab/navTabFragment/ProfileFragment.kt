@@ -106,7 +106,8 @@ class ProfileFragment : Fragment() {
                         Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
 
                         // 다이얼로그 생성
-                        val dialog = CustomDialog(requireContext(), followerList.map { it.id })
+                        val dialog = CustomDialog(requireContext(), followerList.map { it.id }, CustomDialog.DialogType.FOLLOWER)
+
 
                         // 다이얼로그 내용 설정
                         dialog.setOnClickListener(object : CustomDialog.OnDialogClickListener {

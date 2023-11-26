@@ -15,12 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.DialogCustomBinding
 import com.example.find_my_matzip.navTab.adapter.FollowerAdapter
+import com.example.find_my_matzip.navTab.adapter.FollowingAdapter
 
-class CustomDialog(context: Context, private val datas: List<String>) {
+class CustomDialog(context: Context, private val datas: List<String>, private val dialogType: DialogType
+) {
     private val dialog = Dialog(context)
     private lateinit var onClickListener: OnDialogClickListener
-    lateinit var binding: FollowerAdapter
-
+    lateinit var adapter: RecyclerView.Adapter<*>
 
     init {
         // 다이얼로그 초기화 및 설정
@@ -54,31 +55,47 @@ class CustomDialog(context: Context, private val datas: List<String>) {
         // 다이얼로그를 표시
         dialog.show()
     }
-
+    enum class DialogType {
+        FOLLOWER, FOLLOWING
+    }
 
     // 다이얼로그 내용 설정
     fun setContent() {
         // 리사이클러뷰 초기화
         val recyclerView: RecyclerView = dialog.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(dialog.context)
-        // 어댑터 설정
-        val followerAdapter = FollowerAdapter(
-            dialog.context,
-            datas,
-            object : FollowerAdapter.OnFollowerClickListener {
-                override fun onFollowClick(Item: String) {
-                    // 팔로워 아이템 클릭 시의 동작 정의
-                    onClickListener.onClicked(Item)
-                    // 다이얼로그 닫기
-                    dialog.dismiss()
+
+        // 팔로워 또는 팔로잉에 따라 어댑터 생성
+        adapter = when (dialogType) {
+            DialogType.FOLLOWER -> FollowerAdapter(
+                dialog.context,
+                datas,
+                object : FollowerAdapter.OnFollowerClickListener {
+                    override fun onFollowClick(item: String) {
+                        onClickListener.onClicked(item)
+                        dialog.dismiss()
+                    }
                 }
-            })
-        recyclerView.adapter = followerAdapter
+            )
+
+            DialogType.FOLLOWING -> FollowingAdapter(
+                dialog.context,
+                datas,
+                object : FollowingAdapter.OnFollowingClickListener {
+                    override fun onFollowingClick(item: String) {
+                        onClickListener.onClicked(item)
+                        dialog.dismiss()
+                    }
+                }
+            )
+        }
+
+        recyclerView.adapter = adapter
 
         // 다이얼로그의 헤더 텍스트 설정
-        dialog.findViewById<TextView>(R.id.headText)?.text = "팔로워리스트"
+        dialog.findViewById<TextView>(R.id.headText)?.text =
+            if (dialogType == DialogType.FOLLOWER) "팔로워 리스트" else "팔로잉 리스트"
     }
-
 //    fun setContent(content: String) {
 //        // 수정: 다이얼로그의 레이아웃을 새로 inflate하고 설정
 //        val customBinding = DialogCustomBinding.inflate(LayoutInflater.from(dialog.context))

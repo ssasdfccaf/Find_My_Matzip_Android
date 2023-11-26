@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -103,51 +104,79 @@ class MyPageFragment : Fragment() {
                     binding.following.setOnClickListener {
                         val followingList: List<FollowingDto> = profileDto.followingDtoList ?: emptyList()
                         Log.d("MyPageFragment", "도착 확인6: followingDtoList $followingList")
-                        if (followingList.isEmpty()) {
-                            ShowMessage("실패", "데이터를 찾을 수 없습니다.")
-                            return@setOnClickListener
+//                        if (followingList.isEmpty()) {
+//                            ShowMessage("실패", "데이터를 찾을 수 없습니다.")
+//                            return@setOnClickListener
+//                        }
+//
+//                        val buffer = StringBuffer()
+//                        for (followDto in followingList) {
+//                            buffer.append(
+//                                // 코틀린 3중 따옴표, 멀티 라인.
+//                                // FollowDto의 각 속성을 가져와서 문자열로 만듭니다.
+//                                """
+//                        ID: ${followDto.id}
+//                        이름: ${followDto.name}
+//                        프로필 이미지: ${followDto.profileImage}
+//                        구독 상태: ${followDto.subscribeState}
+//                    """.trimIndent()
+//                            )
+//                        }
+//
+//                        ShowMessage("회원목록", buffer.toString())
+                        CustomDialog(requireContext(), followingList.map { it.id }, CustomDialog.DialogType.FOLLOWING).apply {
+                            setOnClickListener(object : CustomDialog.OnDialogClickListener {
+                                override fun onClicked(name: String) {
+                                    // 클릭한 팔로워의 프로필로 이동하는 코드 추가
+                                    navigateToUserProfile(name)
+                                    Log.d("CustomDialog", "팔로잉아이디 클릭! : ID: $name")
+                                }
+                            })
+                            // 다이얼로그 표시 및 내용 설정
+                            showDialog()
+                            setContent()
                         }
-
-                        val buffer = StringBuffer()
-                        for (followDto in followingList) {
-                            buffer.append(
-                                // 코틀린 3중 따옴표, 멀티 라인.
-                                // FollowDto의 각 속성을 가져와서 문자열로 만듭니다.
-                                """
-                        ID: ${followDto.id}
-                        이름: ${followDto.name}
-                        프로필 이미지: ${followDto.profileImage}
-                        구독 상태: ${followDto.subscribeState}
-                    """.trimIndent()
-                            )
-                        }
-
-                        ShowMessage("회원목록", buffer.toString())
                     }
+
 
                     // 팔로워 목록 클릭 시 다이얼로그 표시
                     binding.follower.setOnClickListener {
-                        // 팔로워 리스트 가져오기
+//                        // 팔로워 리스트 가져오기
+//                        val followerList: List<FollowerDto> = profileDto.followerDtoList
+//                        Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
+//
+//                        // 다이얼로그 생성
+//                        val dialog = CustomDialog(requireContext(), followerList.map { it.id })
+//                        // 다이얼로그 내용 설정
+//                        dialog.setOnClickListener(object : CustomDialog.OnDialogClickListener {
+//                            override fun onClicked(name: String) {
+//                                // 클릭한 팔로워의 프로필로 이동하는 코드 추가
+//                                navigateToUserProfile(name)
+//                                Log.d("CustomDialog", "팔로워아이디 클릭! : ID: $name")
+//                            }
+//                        })
+//                        // 다이얼로그 표시
+//                        dialog.showDialog()
+//                        // 다이얼로그 내용 설정
+//                        dialog.setContent()
+//                    }
+// 팔로워 리스트 가져오기
                         val followerList: List<FollowerDto> = profileDto.followerDtoList
                         Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
 
-                        // 다이얼로그 생성
-                        val dialog = CustomDialog(requireContext(), followerList.map { it.id })
-                        // 다이얼로그 내용 설정
-                        dialog.setOnClickListener(object : CustomDialog.OnDialogClickListener {
-                            override fun onClicked(name: String) {
-                                // 클릭한 팔로워의 프로필로 이동하는 코드 추가
-                                navigateToUserProfile(name)
-                                Log.d("CustomDialog", "팔로워아이디 클릭! : ID: $name")
-                            }
-                        })
-                        // 다이얼로그 표시
-                        dialog.showDialog()
-                        // 다이얼로그 내용 설정
-                        dialog.setContent()
+                        CustomDialog(requireContext(), followerList.map { it.id }, CustomDialog.DialogType.FOLLOWER).apply {
+                            setOnClickListener(object : CustomDialog.OnDialogClickListener {
+                                override fun onClicked(name: String) {
+                                    // 클릭한 팔로워의 프로필로 이동하는 코드 추가
+                                    navigateToUserProfile(name)
+                                    Log.d("CustomDialog", "팔로워아이디 클릭! : ID: $name")
+                                }
+                            })
+                            // 다이얼로그 표시 및 내용 설정
+                            showDialog()
+                            setContent()
+                        }
                     }
-
-
                 }
 
                 else {
