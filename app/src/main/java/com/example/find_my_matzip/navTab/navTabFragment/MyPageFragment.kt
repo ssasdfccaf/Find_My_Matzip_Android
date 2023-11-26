@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.ProfileUpdateFragment
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentMyPageBinding
 import com.example.find_my_matzip.model.FollowerDto
@@ -49,7 +48,7 @@ class MyPageFragment : Fragment() {
             val profileUpdateFragment = ProfileUpdateFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragmentContainer, profileUpdateFragment)
-            transaction.addToBackStack(null)
+            transaction.addToBackStack(null) //백스택에 지금 재배치한 fragment추가
             transaction.commit()
         }
 

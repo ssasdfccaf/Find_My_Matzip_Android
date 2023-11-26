@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileUpdateFragment">
+    tools:context=".navTab.navTabFragment.ProfileUpdateFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/signUp"
+                android:id="@+id/userUpdate"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -45,7 +45,7 @@
                 app:cardElevation="20dp">
 
                 <ImageView
-                    android:id="@+id/resultImageSP"
+                    android:id="@+id/myProfileImg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -53,21 +53,22 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/resultEmailSP"
+                android:id="@+id/userId"
                 android:layout_width="300dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:background="@drawable/radius"
                 android:fontFamily="@font/nexonlight"
-                android:hint="UserEmail"
+                android:hint="userId"
                 android:paddingLeft="30dp"
                 android:paddingTop="20dp"
                 android:text=""
                 android:textColor="#B3B3B3"
-                android:textSize="15sp"></TextView>
+                android:textSize="15sp"
+                ></TextView>
 
             <TextView
-                android:id="@+id/resultNameSP"
+                android:id="@+id/userName"
                 android:layout_width="300dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
@@ -82,7 +83,7 @@
                 android:textSize="15sp"></TextView>
 
             <TextView
-                android:id="@+id/resultPasswordSP"
+                android:id="@+id/UserPassword"
                 android:layout_width="300dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
@@ -97,7 +98,7 @@
                 android:textSize="15sp"></TextView>
 
             <TextView
-                android:id="@+id/resultAddressSP"
+                android:id="@+id/UserAdress"
                 android:layout_width="300dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
@@ -112,21 +113,20 @@
                 android:textSize="15sp"></TextView>
 
             <TextView
-                android:id="@+id/resultPhoneSP"
+                android:id="@+id/UserPhone"
                 android:layout_width="300dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/radius"
                 android:fontFamily="@font/nexonlight"
-                android:hint="UserPhoneSp"
+                android:hint="UserPhone"
                 android:paddingLeft="30dp"
                 android:paddingTop="20dp"
                 android:text=""
                 android:textColor="#B3B3B3"
                 android:textSize="15sp"></TextView>
 
-            <!--        -->
             <LinearLayout
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
@@ -145,13 +145,13 @@
                     android:text="수정"></Button>
 
                 <Button
-                    android:id="@+id/deleteBtn"
+                    android:id="@+id/cancelBtn"
                     android:layout_width="150dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
                     android:backgroundTint="@color/black"
                     android:fontFamily="@font/nexonmed"
-                    android:text="삭제"></Button>
+                    android:text="취소"></Button>
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

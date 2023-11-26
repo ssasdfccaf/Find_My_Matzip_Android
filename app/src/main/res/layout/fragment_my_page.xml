@@ -184,7 +184,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/follow"
+                    android:id="@+id/updateBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_gravity="center"
@@ -194,7 +194,7 @@
                     android:text="프로필편집"
                     android:visibility="visible"></Button>
                 <Button
-                    android:id="@+id/updateBtn"
+                    android:id="@+id/writeBoardBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_gravity="center"

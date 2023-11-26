@@ -116,6 +116,21 @@
                 android:inputType="textPersonName"></EditText>
 
             <EditText
+                android:id="@+id/userPwd"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/radius"
+                android:fontFamily="@font/nexonlight"
+                android:paddingLeft="30dp"
+                android:hint="UserPassword"
+                android:textColor="#B3B3B3"
+                android:textSize="15sp"
+                android:ems="10"
+                android:inputType="textPassword"></EditText>
+
+            <EditText
                 android:id="@+id/userName"
                 android:layout_width="300dp"
                 android:layout_height="60dp"
@@ -130,20 +145,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"></EditText>
 
-            <EditText
-                android:id="@+id/userPwd"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/radius"
-                android:fontFamily="@font/nexonlight"
-                android:paddingLeft="30dp"
-                android:hint="UserPassword"
-                android:textColor="#B3B3B3"
-                android:textSize="15sp"
-                android:ems="10"
-                android:inputType="textPassword"></EditText>
+
 
             <EditText
                 android:id="@+id/userPhone"
