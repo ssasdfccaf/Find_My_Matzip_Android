@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 //{
 //    "userid": "1234",
 //    "user_pwd": null,
-//    "username": "남자",
+//    "username": "남성",
 //    "user_address": "서울 강남구 선릉로161길 24",
 //    "user_role": "ADMIN",
 //    "userphone": "01012345678",

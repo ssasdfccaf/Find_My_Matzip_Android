@@ -94,9 +94,9 @@ class ProfileUpdateFragment : Fragment() {
                     binding.userPhone.text = Editable.Factory.getInstance().newEditable(originUserPhone)
 
 
-                    if(originUserGender.equals("남자")){
+                    if(originUserGender.equals("남성")){
                         binding.radio1.isChecked = true
-                    }else if(originUserGender.equals("여자")){
+                    }else if(originUserGender.equals("여성")){
                         binding.radio2.isChecked = true
                     }
 
