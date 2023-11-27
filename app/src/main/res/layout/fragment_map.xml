@@ -4,13 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".navTab.navTabFragment.MapFragment">
 
-    <com.naver.maps.map.MapView
-        android:id="@+id/map"
-        android:name="com.naver.maps.map.MapFragment"
+    <!-- MapView를 감싸는 FrameLayout 추가 -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
+        <!-- MapView -->
+        <com.naver.maps.map.MapView
+            android:id="@+id/map"
+            android:name="com.naver.maps.map.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- 플로팅 버튼 (여기에 버튼을 추가하십시오) -->
+        <Button
+            android:id="@+id/searchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:layout_margin="16dp"
+            android:text="내 근처 맛집 찾기"
+            />
+    </FrameLayout>
+
+    <!-- 기타 뷰나 레이아웃 추가 가능 -->
 
 </LinearLayout>
