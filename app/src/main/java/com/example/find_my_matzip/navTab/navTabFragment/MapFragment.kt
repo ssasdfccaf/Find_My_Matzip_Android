@@ -152,6 +152,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
       //  marker.position = LatLng(35.15690579523921, 129.05957113473747)
       //  marker.map = naverMap
 
+        // ㅁㄴ
 
         naverMap.cameraPosition = cameraPosition
 
