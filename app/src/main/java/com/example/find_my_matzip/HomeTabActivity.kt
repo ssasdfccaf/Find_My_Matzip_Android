@@ -1,8 +1,10 @@
 package com.example.find_my_matzip
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
@@ -18,14 +20,25 @@ import com.example.find_my_matzip.navTab.navTabFragment.SearchReviewFragment
 import com.example.find_my_matzip.databinding.ActivityHomeTabBinding
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.LoadingDialog
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
 
 class HomeTabActivity : AppCompatActivity() {
     lateinit var binding: ActivityHomeTabBinding
     lateinit var toggle: ActionBarDrawerToggle
+
+    private val TAG: String = "HomeTabActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeTabBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //로딩 다이얼로그
+        val loadingDialog = LoadingDialog(this)
 
         // 툴바 , 업버튼
         setSupportActionBar(binding.toolbar)
@@ -106,12 +119,73 @@ class HomeTabActivity : AppCompatActivity() {
                         
                         val enteredPassword = passwordEditText.text.toString()
 
+                        //로딩창 띄우기
+                        loadingDialog.show()
+
                         //비밀번호 확인
                         if (isCorrectPassword(enteredPassword)) {
+                            
                             //회원정보 삭제 로직 추가
                             //1.DB에서 DATA 삭제
-                            //2.firebase에서 이미지삭제
+                            val userService = (applicationContext as MyApplication).userService
+                            val deleteUserId = SharedPreferencesManager.getString("id","")
+                            val call = userService.deleteById(deleteUserId)
 
+                            call.enqueue(object: Callback<Unit> {
+                                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+
+                                    Log.d(TAG, "Request URL: ${call.request().url()}")
+                                    Log.d(TAG, "Request Body: ${call.request().body()}")
+                                    Log.d(TAG, "Response Code: ${response.code()}")
+                                    if(response.isSuccessful) {
+                                        Log.d(TAG, "삭제 성공")
+
+                                        //2.firebase에서 이미지삭제
+                                        // 스토리지 접근 도구 ,인스턴스
+                                        val storage = MyApplication.storage
+                                        // 스토리지에 저장할 인스턴스
+                                        val storageRef = storage.getReference("images")
+
+                                        // storage에서 삭제 할 파일명
+                                        val fileName = "${deleteUserId}"
+
+                                        // 이미지 저장될 위치 및 파일명(파이어베이스)
+                                        val imgRef = storageRef.child("users_img/${fileName}.jpg")
+
+
+                                        val deleteTask = imgRef.delete()
+                                        deleteTask.addOnCompleteListener {
+                                            // 파일 삭제 성공
+                                            Log.d(TAG, " firestore 파일 삭제 성공")
+                                        }.addOnFailureListener {
+                                            // 파일 삭제 실패
+                                            Log.d(TAG, "firestore 파일 삭제 실패")
+                                        }
+
+                                        //로딩창 지우기
+                                        loadingDialog.dismiss()
+
+                                        val intent = Intent(this@HomeTabActivity, MainActivity::class.java)
+                                        startActivity(intent)
+
+                                    }else {
+                                        Log.d(TAG, "서버 응답 실패: ${response.code()}")
+
+                                        //로딩창 지우기
+                                        loadingDialog.dismiss()
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<Unit>, t: Throwable) {
+                                    Log.d(TAG, "실패 ${t.message}")
+
+                                    //로딩창 지우기
+                                    loadingDialog.dismiss()
+                                    call.cancel()
+                                }
+
+
+                            })
 
                             Toast.makeText(this@HomeTabActivity, "비밀번호 확인 성공", Toast.LENGTH_SHORT).show()
                         } else {

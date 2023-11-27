@@ -7,6 +7,7 @@ import com.example.find_my_matzip.model.UserListModel
 import com.example.find_my_matzip.model.UsersFormDto
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -29,6 +30,10 @@ interface UserService {
     //회원 한명 정보 조회
     @GET("users/aboutUsers/{userid}")
     fun findbyId(@Path("userid") userid: String?): Call<UsersFormDto>
+
+    //회원 삭제
+    @DELETE("users/delete/{userid}")
+    fun deleteById(@Path("userid") userid: String?): Call<Unit>
 
 
     @GET("users/profile/{pageUserid}")
