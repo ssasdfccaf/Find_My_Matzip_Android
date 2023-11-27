@@ -60,6 +60,9 @@ class ProfileUpdateFragment : Fragment() {
     ): View? {
         binding = FragmentProfileUpdateBinding.inflate(layoutInflater, container, false)
 
+        //로딩 다이얼로그
+        val loadingDialog = LoadingDialog(requireContext())
+
         //로그인 정보
         val userId = SharedPreferencesManager.getString("id","")
         val userPwd = SharedPreferencesManager.getString("pw","") //pw는 서버에서 못가져와서 가지고 있는 정보 사용
@@ -142,7 +145,7 @@ class ProfileUpdateFragment : Fragment() {
             if(pwCheck){
 
                 //로딩창 띄우기
-                LoadingDialog(requireContext()).show()
+                loadingDialog.show()
 
                 // 스토리지 접근 도구 ,인스턴스
                 val storage = MyApplication.storage
@@ -206,26 +209,23 @@ class ProfileUpdateFragment : Fragment() {
                                         .addOnCompleteListener{task ->
                                             if (task.isSuccessful) {
                                                 Toast.makeText(requireContext(),"스토리지 업로드 완료",Toast.LENGTH_SHORT).show()
-                                                //초기화
-                                                filePath = null
                                                 //로딩창 지우기
-                                                LoadingDialog(requireContext()).cancel()
-                                                //UI다시 로드
-                                                //handleUploadComplete()
+                                                loadingDialog.dismiss()
+
                                             }else {
                                                 Toast.makeText(requireContext(), "스토리지 업로드 실패", Toast.LENGTH_SHORT).show()
                                                 //로딩창 지우기
-                                                LoadingDialog(requireContext()).cancel()
+                                                loadingDialog.dismiss()
                                             }
                                         }
                                         .addOnFailureListener { exception ->
                                             Toast.makeText(requireContext(),"스토리지 업로드 실패 : ${exception.message}", Toast.LENGTH_SHORT).show()
                                             //로딩창 지우기
-                                            LoadingDialog(requireContext()).cancel()
+                                            loadingDialog.dismiss()
                                         }
                                 }else{
                                     //로딩창 지우기
-                                    LoadingDialog(requireContext()).cancel()
+                                    loadingDialog.dismiss()
                                 }
 
                             }
