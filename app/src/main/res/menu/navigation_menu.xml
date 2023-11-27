@@ -12,7 +12,7 @@
     </item>
     <item
         android:icon="@drawable/baseline_home_24"
-        android:title="메인가기">
+        android:title="회원 탈퇴">
 
     </item>
 </menu>

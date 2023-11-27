@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -81,13 +82,63 @@ class HomeTabActivity : AppCompatActivity() {
                 val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
                 startActivity(intent)
             }
-            else if (it.title == "메인가기") {
-                Toast.makeText(this@HomeTabActivity,"메인가기 화면 이동", Toast.LENGTH_SHORT).show()
+            else if (it.title == "회원 탈퇴") {
+                val builder = AlertDialog.Builder(this@HomeTabActivity)
+                builder.setTitle("회원 탈퇴")
+                builder.setMessage("정말 탈퇴하시겠습니까???????")
+                builder.setNegativeButton("아니오") { dialog, which ->
+                    // 아무 작업도 수행하지 않음
+                }
+                builder.setPositiveButton("예") { dialog, which ->
 
+                    // 회원 탈퇴 전 본인 확인
+                    val passwordBuilder = AlertDialog.Builder(this@HomeTabActivity)
+                    builder.setTitle("본인 확인")
+                    builder.setMessage("비밀번호를 입력해주세요")
+
+                    val inflater = layoutInflater
+                    val passwordDialogView = inflater.inflate(R.layout.dialog_password, null)
+                    passwordBuilder.setView(passwordDialogView)
+
+                    val passwordEditText = passwordDialogView.findViewById<EditText>(R.id.editTextPassword)
+
+                    passwordBuilder.setPositiveButton("확인") { dialog, which ->
+                        
+                        val enteredPassword = passwordEditText.text.toString()
+
+                        //비밀번호 확인
+                        if (isCorrectPassword(enteredPassword)) {
+                            //회원정보 삭제 로직 추가
+                            //1.DB에서 DATA 삭제
+                            //2.firebase에서 이미지삭제
+
+
+                            Toast.makeText(this@HomeTabActivity, "비밀번호 확인 성공", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this@HomeTabActivity, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    passwordBuilder.setNegativeButton("취소") { dialog, which ->
+                        // Cancelled password input
+                        Toast.makeText(this@HomeTabActivity, "비밀번호 입력이 취소되었습니다", Toast.LENGTH_SHORT).show()
+                    }
+
+                    builder.show()
+
+
+                }
+                builder.show()
             }
             true
         }
 
+    }
+
+    //비밀번호 확인
+    private fun isCorrectPassword(enteredPassword: String): Boolean {
+        val correctPw = SharedPreferencesManager.getString("pw","")
+        return correctPw == enteredPassword
     }
 
     private fun replaceFragment(fragment: Fragment) {
