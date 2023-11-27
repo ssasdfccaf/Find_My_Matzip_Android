@@ -16,6 +16,7 @@ import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.DialogCustomBinding
 import com.example.find_my_matzip.navTab.adapter.FollowerAdapter
 import com.example.find_my_matzip.navTab.adapter.FollowingAdapter
+import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
 
 class CustomDialog(context: Context, private val datas: List<String>, private val dialogType: DialogType
 ) {
@@ -73,6 +74,7 @@ class CustomDialog(context: Context, private val datas: List<String>, private va
                 object : FollowerAdapter.OnFollowerClickListener {
                     override fun onFollowClick(item: String) {
                         onClickListener.onClicked(item)
+
                         dialog.dismiss()
                     }
                 }
@@ -121,4 +123,5 @@ class CustomDialog(context: Context, private val datas: List<String>, private va
     interface OnDialogClickListener {
         fun onClicked(name: String)
     }
+
 }

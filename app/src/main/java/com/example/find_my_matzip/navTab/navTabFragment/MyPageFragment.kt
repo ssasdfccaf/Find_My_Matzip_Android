@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentMyPageBinding
@@ -89,6 +90,8 @@ class MyPageFragment : Fragment() {
 
                     Glide.with(requireContext())
                         .load(profileDto.pageUserDto.user_image)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
+                        .skipMemoryCache(true)// 메모리 캐시 저장 off
                         .override(900, 900)
                         .into(binding.userImage)
 

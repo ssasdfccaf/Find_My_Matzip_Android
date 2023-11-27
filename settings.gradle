@@ -13,6 +13,7 @@ dependencyResolutionManagement {
         maven {
             url 'https://naver.jfrog.io/artifactory/maven/'
         }
+        maven { url "https://jitpack.io" } // JitPack 저장소 추가(로딩 이미지)
     }
 }
 
