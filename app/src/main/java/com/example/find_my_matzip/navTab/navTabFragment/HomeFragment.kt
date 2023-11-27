@@ -44,10 +44,16 @@ class     HomeFragment : Fragment() {
                 .commit()
         }
 
-        val boardService = (context?.applicationContext as MyApplication).boardService
+        adapter = HomeRecyclerAdapter(this).apply {
+            setOnItemClickListener { boardId ->
+                navigateToBoardDetail(boardId)
+            }
+        }
+
         val layoutManager = LinearLayoutManager(requireContext())
         binding.homeRecyclerView.layoutManager = layoutManager
-        adapter = HomeRecyclerAdapter(this)
+
+//        adapter = HomeRecyclerAdapter(this)
         binding.homeRecyclerView.adapter = adapter
 
         binding.homeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -66,8 +72,17 @@ class     HomeFragment : Fragment() {
         })
 
         loadNextPageData(currentPage)
+
         return binding.root
     }
+    private fun navigateToBoardDetail(boardId: String) {
+        val fragment = boardDtlFragment.newInstance(boardId)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun loadNextPageData(page: Int) {
         val boardService = (context?.applicationContext as MyApplication).boardService
         val boardList = boardService.getAllBoardsPager(page)

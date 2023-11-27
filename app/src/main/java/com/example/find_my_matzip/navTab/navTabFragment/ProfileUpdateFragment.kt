@@ -208,7 +208,7 @@ class ProfileUpdateFragment : Fragment() {
                                         // 업로드 후, 수행할 콜백 함수 정의. 실패했을 경우 콜백함수 정의
                                         .addOnCompleteListener{task ->
                                             if (task.isSuccessful) {
-                                                Toast.makeText(requireContext(),"스토리지 업로드 완료",Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(requireContext(),"회원정보 수정 완료",Toast.LENGTH_SHORT).show()
                                                 //로딩창 지우기
                                                 loadingDialog.dismiss()
 
@@ -302,10 +302,8 @@ class ProfileUpdateFragment : Fragment() {
                     .with(requireContext())
                     // 사진을 읽기.
                     .load(it.data?.data)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
-                    .skipMemoryCache(true)// 메모리 캐시 저장 off
                     // 크기 지정 , 가로,세로
-                    .apply(RequestOptions().override(250,200))
+                    .apply(RequestOptions().override(900, 900))
                     // 선택된 사진 크기 자동 조정
                     .centerCrop()
                     // 결과 뷰에 사진 넣기.

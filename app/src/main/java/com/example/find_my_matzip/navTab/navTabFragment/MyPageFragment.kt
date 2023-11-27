@@ -35,6 +35,8 @@ class MyPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+
+
         binding = FragmentMyPageBinding.inflate(layoutInflater, container, false)
         // 보드 어댑터 초기화
         boardAdapter = BoardRecyclerAdapter(this@MyPageFragment, emptyList())
