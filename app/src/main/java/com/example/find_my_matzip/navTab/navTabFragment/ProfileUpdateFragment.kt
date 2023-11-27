@@ -302,10 +302,8 @@ class ProfileUpdateFragment : Fragment() {
                     .with(requireContext())
                     // 사진을 읽기.
                     .load(it.data?.data)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
-                    .skipMemoryCache(true)// 메모리 캐시 저장 off
                     // 크기 지정 , 가로,세로
-                    .apply(RequestOptions().override(250,200))
+                    .apply(RequestOptions().override(900, 900))
                     // 선택된 사진 크기 자동 조정
                     .centerCrop()
                     // 결과 뷰에 사진 넣기.
