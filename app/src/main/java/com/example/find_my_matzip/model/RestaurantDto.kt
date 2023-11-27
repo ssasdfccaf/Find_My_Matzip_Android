@@ -17,5 +17,5 @@ data class RestaurantDto(
     @SerializedName("res_name") val res_name: String,
     @SerializedName("res_phone") val res_phone: String,
     @SerializedName("res_thumbnail") val res_thumbnail: String,
-   // val avgScore:Double,
+    val avgScore:Double,
 )

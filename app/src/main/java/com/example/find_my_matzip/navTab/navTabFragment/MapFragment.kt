@@ -8,12 +8,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentMapBinding
+import com.example.find_my_matzip.model.ResWithScoreDto
 import com.example.find_my_matzip.model.RestaurantDto
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
@@ -86,12 +89,12 @@ class MapFragment : Fragment() , OnMapReadyCallback {
             14.0 // 줌 레벨
         )
         val restaurantService = (context?.applicationContext as MyApplication).restaurantService
-        val restaurantList = restaurantService.getResList()
+        val restaurantList = restaurantService.getAllRestaurantsByAvgScore()
 
-        restaurantList.enqueue(object : Callback<List<RestaurantDto>> {
+        restaurantList.enqueue(object : Callback<List<ResWithScoreDto>> {
             override fun onResponse(
-                call: Call<List<RestaurantDto>>,
-                response: Response<List<RestaurantDto>>
+                call: Call<List<ResWithScoreDto>>,
+                response: Response<List<ResWithScoreDto>>
             ) {
                 val restaurantList = response.body()
                 if (restaurantList != null && restaurantList.isNotEmpty()) {
@@ -111,6 +114,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                         marker.setOnClickListener(Overlay.OnClickListener {
                             val intent = Intent(context, ResInfoActivity::class.java)
                             intent.putExtra("resInfoName", currentRestaurant.res_name)
+                            intent.putExtra("resInfoAvgScore", currentRestaurant.avgScore)
                             intent.putExtra("resInfoMenu", currentRestaurant.res_menu)
                             intent.putExtra("resInfoOT", currentRestaurant.operate_time)
                             intent.putExtra("resInfoIntro", currentRestaurant.res_intro)
@@ -121,6 +125,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 //                            Log.d("infotest", "식당메뉴 ${currentRestaurant.res_menu}")
 //                            Log.d("infotest", "영업시간 ${currentRestaurant.operate_time}")
 //                            Log.d("infotest", "식당소개 ${currentRestaurant.res_intro}")
+                            Log.d("infotest", "식당평점 ${currentRestaurant.avgScore}")
 
 
                             startActivity(intent)
@@ -136,7 +141,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 
                 }
             }
-            override fun onFailure(call: Call<List<RestaurantDto>>, t: Throwable) {
+            override fun onFailure(call: Call<List<ResWithScoreDto>>, t: Throwable) {
                 t.printStackTrace()
                 call.cancel()
                 Log.e("sdo", " 통신 실패")
@@ -147,6 +152,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
       //  marker.position = LatLng(35.15690579523921, 129.05957113473747)
       //  marker.map = naverMap
 
+        // ㅁㄴ
 
         naverMap.cameraPosition = cameraPosition
 
@@ -158,6 +164,8 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         // 위치를 추적하면서 카메라도 따라 움직인다.
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
     }
+
+
 
 
 }

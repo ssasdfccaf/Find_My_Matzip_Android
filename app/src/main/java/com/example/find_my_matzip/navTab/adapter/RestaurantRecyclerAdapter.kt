@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.databinding.RestaurantListBinding
-import com.example.find_my_matzip.model.RestaurantDto
+import com.example.find_my_matzip.model.ResWithScoreDto
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
 
 class RestaurantViewHolder(val binding: RestaurantListBinding) : RecyclerView.ViewHolder(binding.root)
 
-class RestaurantRecyclerAdapter(val context: RestaurantFragment, val datas: List<RestaurantDto>?) :
+class RestaurantRecyclerAdapter(val context: RestaurantFragment, val datas: List<ResWithScoreDto>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -32,12 +32,12 @@ class RestaurantRecyclerAdapter(val context: RestaurantFragment, val datas: List
 
         binding.resName.text = Item?.res_name
         binding.resMenu.text = Item?.res_menu
-        binding.resIntro.text = Item?.res_intro.toString()
+        binding.resIntro.text = Item?.res_intro
+        binding.avgScore.text = Item?.avgScore.toString()
 
         Glide.with(context)
             .load(Item?.res_thumbnail)
-            .override(900, 900)
+            .override(900,900)
             .into(binding.resThumbnail)
-
     }
 }
