@@ -34,7 +34,7 @@ class MyApplication : Application() {
     //통신할 서버의 URL주소 등록
     val retrofit = Retrofit.Builder()
         // 학원 ip?
-        .baseUrl("http://192.168.0.37:80/")
+        .baseUrl("http://10.100.104.54:80/")
         //인터셉터 적용
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
