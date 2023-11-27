@@ -293,13 +293,13 @@
                         android:id="@+id/radio1"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="남자"></RadioButton>
+                        android:text="남성"></RadioButton>
 
                     <RadioButton
                         android:id="@+id/radio2"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="여자">
+                        android:text="여성">
 
                     </RadioButton>
                 </RadioGroup>
