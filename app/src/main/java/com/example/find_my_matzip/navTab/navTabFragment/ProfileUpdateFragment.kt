@@ -2,12 +2,12 @@ package com.example.find_my_matzip.navTab.navTabFragment
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -16,21 +16,21 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.set
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
 import com.example.find_my_matzip.SearchAddressActivity
 import com.example.find_my_matzip.databinding.FragmentProfileUpdateBinding
 import com.example.find_my_matzip.model.UsersFormDto
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.LoadingDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.util.Date
+
 
 class ProfileUpdateFragment : Fragment() {
     lateinit var binding: FragmentProfileUpdateBinding
@@ -60,6 +60,8 @@ class ProfileUpdateFragment : Fragment() {
     ): View? {
         binding = FragmentProfileUpdateBinding.inflate(layoutInflater, container, false)
 
+        //로딩 다이얼로그
+        val loadingDialog = LoadingDialog(requireContext())
 
         //로그인 정보
         val userId = SharedPreferencesManager.getString("id","")
@@ -103,6 +105,8 @@ class ProfileUpdateFragment : Fragment() {
 
                     Glide.with(requireContext())
                         .load(originUserImg)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
+                        .skipMemoryCache(true)// 메모리 캐시 저장 off
                         .override(900, 900)
                         .into(binding.myProfileImg)
                 }
@@ -126,7 +130,7 @@ class ProfileUpdateFragment : Fragment() {
             //pw가 로그인된 사용자 정보와 일치하다면
             if(inputPw.toString()==userPwd){
                 pwCheck = true
-                binding.userPwd.setBackgroundResource(R.drawable.radius_edittext_green)
+                binding.userPwd.setBackgroundResource(com.example.find_my_matzip.R.drawable.radius_edittext_green)
                 Toast.makeText(requireContext(),"비밀번호 확인되었습니다..", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(requireContext(),"잘못된 비밀번호입니다.", Toast.LENGTH_SHORT).show()
@@ -137,8 +141,11 @@ class ProfileUpdateFragment : Fragment() {
 
         //업데이트 버튼 클릭
         binding.updateBtn.setOnClickListener {
+            //비밀번호가 확인됐다면 회원정보 변경 가능
             if(pwCheck){
-                //비밀번호가 확인됐다면 회원정보 변경 가능
+
+                //로딩창 띄우기
+                loadingDialog.show()
 
                 // 스토리지 접근 도구 ,인스턴스
                 val storage = MyApplication.storage
@@ -202,15 +209,23 @@ class ProfileUpdateFragment : Fragment() {
                                         .addOnCompleteListener{task ->
                                             if (task.isSuccessful) {
                                                 Toast.makeText(requireContext(),"스토리지 업로드 완료",Toast.LENGTH_SHORT).show()
-                                                //UI다시 로드
-                                                //handleUploadComplete()
+                                                //로딩창 지우기
+                                                loadingDialog.dismiss()
+
                                             }else {
                                                 Toast.makeText(requireContext(), "스토리지 업로드 실패", Toast.LENGTH_SHORT).show()
+                                                //로딩창 지우기
+                                                loadingDialog.dismiss()
                                             }
                                         }
                                         .addOnFailureListener { exception ->
                                             Toast.makeText(requireContext(),"스토리지 업로드 실패 : ${exception.message}", Toast.LENGTH_SHORT).show()
+                                            //로딩창 지우기
+                                            loadingDialog.dismiss()
                                         }
+                                }else{
+                                    //로딩창 지우기
+                                    loadingDialog.dismiss()
                                 }
 
                             }
@@ -287,6 +302,8 @@ class ProfileUpdateFragment : Fragment() {
                     .with(requireContext())
                     // 사진을 읽기.
                     .load(it.data?.data)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
+                    .skipMemoryCache(true)// 메모리 캐시 저장 off
                     // 크기 지정 , 가로,세로
                     .apply(RequestOptions().override(250,200))
                     // 선택된 사진 크기 자동 조정
