@@ -152,7 +152,8 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:fontFamily="@font/nexonbold"
-                    android:text="팔로우" />
+                    android:text="팔로우"
+                    android:visibility="visible"/>
 
                 <Button
                     android:id="@+id/unfollowBtn"
@@ -161,7 +162,8 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:fontFamily="@font/nexonbold"
-                    android:text="언팔로우" />
+                    android:text="언팔로우"
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/writeBtn"
@@ -170,7 +172,8 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:fontFamily="@font/nexonbold"
-                    android:text="게시물작성" />
+                    android:text="게시물작성"
+                   />
             </LinearLayout>
             <!--        -->
 

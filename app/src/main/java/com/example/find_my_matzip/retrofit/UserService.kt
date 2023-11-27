@@ -7,6 +7,7 @@ import com.example.find_my_matzip.model.UserListModel
 import com.example.find_my_matzip.model.UsersFormDto
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -37,5 +38,13 @@ interface UserService {
     //회원 정보 수정
     @POST("/users/updateUsers")
     fun updateUsers(@Body usersFormDto: UsersFormDto): Call<Unit>
+
+    @DELETE("/users/deleteFollow/{toUserId}")
+    fun deleteFollow(@Path("toUserId") toUserId: String): Call<Unit>
+
+    @GET("/users/insertFollow/{toUserId}")
+    fun insertFollow(@Path("toUserId") toUserId: String): Call<Unit>
+
+
 
 }
