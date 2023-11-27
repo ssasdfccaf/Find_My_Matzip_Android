@@ -9,6 +9,6 @@ data class ProfileDto(
     val loginUserDto: UsersFormDto,
     val countFromUser: Int,
     val countToUser: Int,
-    val followCheck: Boolean,
+    val followcheck: Boolean,
 
     )

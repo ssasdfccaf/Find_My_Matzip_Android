@@ -5,21 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentMyPageBinding
 import com.example.find_my_matzip.databinding.FragmentProfileBinding
-import com.example.find_my_matzip.databinding.FragmentSearchReviewBinding
 import com.example.find_my_matzip.model.FollowerDto
+import com.example.find_my_matzip.model.FollowingDto
 import com.example.find_my_matzip.model.ProfileDto
-import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
 import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter2
-import com.example.find_my_matzip.navTab.adapter.ProfileAdapter
 import com.example.find_my_matzip.navTab.adapter.ProfileAdapter2
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.CustomDialog
@@ -38,6 +34,7 @@ class ProfileFragment : Fragment() {
             // 2. Bundle 객체를 만들어서 그 안에 "userId"라는 키로 전달받은 userId 값을 넣습니다.
             val args = Bundle()
             args.putString("userId", userId)
+            Log.d("ProfileFragment", "번들에 담은 아이디: userId ====================$userId")
             // 3. ProfileFragment의 arguments 속성에 해당 Bundle을 설정합니다.
             fragment.arguments = args
             // 4. 설정된 프래그먼트를 반환합니다.
@@ -48,6 +45,7 @@ class ProfileFragment : Fragment() {
     lateinit var binding: FragmentProfileBinding
     lateinit var adapter: ProfileAdapter2
     lateinit var boardAdapter: BoardRecyclerAdapter2
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,39 +55,128 @@ class ProfileFragment : Fragment() {
         boardAdapter = BoardRecyclerAdapter2(this@ProfileFragment, emptyList())
         binding.boardRecyclerView.adapter = boardAdapter
 
-// 전달된 userId 값 확인
+// 전달된 userId 값 확인 userId : matzuo
         val pageUserId = arguments?.getString("userId")
         if (pageUserId != null) {
-            val currentUserId = SharedPreferencesManager.getString("id", "")
-            if (currentUserId == pageUserId) {
+            val loginUserId = SharedPreferencesManager.getString("id", "")
+            if (loginUserId == pageUserId) {
                 Log.d(
                     "ProfileFragment",
-                    "현재 사용자 아이디 ID: $currentUserId, 페이지 사용자 ID: $pageUserId"
+                    "현재 사용자 아이디 ID: $loginUserId, 페이지 사용자 ID: $pageUserId"
                 )
                 Log.d("ProfileFragment", "마이페이지로 이동")
+                Log.d("ProfileFragment", "$pageUserId")
+
                 // 마이페이지 프래그먼트로 이동
                 navigateToMyPageFragment()
             } else {
                 // userId를 사용하여 프로필을 조회 -- 팔로워 팔로우 목록에서 해당아이디의 프로필을 조회 하는것임
                 val userService = (context?.applicationContext as MyApplication).userService
-//            profileList에 해당 유저의 프로필 정보가 담기는것
+//            profileList에 해당 유저의 프로필 정보가 담기는것, matzip
                 val profileList = userService.getProfile(pageUserId)
 
                 profileList.enqueue(object : Callback<ProfileDto> {
                     override fun onResponse(
                         call: Call<ProfileDto>,
-                        response: Response<ProfileDto>
+                        response: Response<ProfileDto>,
+
                     ) {
                         val profileDto = response.body()
                         if (profileDto != null) {
+                            // matzip 의 정보를 갖고 있네. matzip 의 정보네.
+                            Log.d("ProfileFragment", "도착 확인5: followcheck ${profileDto?.followcheck}")
+                            // 사용자가 이미 팔로우 중인지 확인
+                            val followcheck = profileDto.followcheck
+                            // 팔로우 버튼 초기 상태 설정
+                            val followBtn: Button = binding.followBtn
+                            val unfollowBtn: Button = binding.unfollowBtn
+                            // 언팔로우 버튼 클릭 리스너
+
+                            // 초기 상태 설정
+                            if (followcheck) {
+                                // 이미 팔로우 중인 경우
+                                followBtn.visibility = View.GONE
+                                unfollowBtn.visibility = View.VISIBLE
+                            } else {
+                                // 팔로우 중이 아닌 경우
+                                followBtn.visibility = View.VISIBLE
+                                unfollowBtn.visibility = View.GONE
+                            }
+
+                            // 팔로우 버튼 클릭 리스너
+                            followBtn.setOnClickListener {
+                                Log.d("ProfileFragment", "팔로우 버튼클릭")
+                                // 현재, 상대방의 페이지, matzip
+                                // 하려는게, matzip5 이 matzip 한테, 팔로우, 언팔로우
+                                // 스프링에서는 principal 에 이미 로그인한 정보가 있어요. matzip5
+                                // 이미 있는 5번 말고, 상대방 아이디를 보내기.
+                                pageUserId?.let { toUserId ->
+                                    userService.insertFollow(toUserId)
+                                        .enqueue(object : Callback<Unit> {
+                                            override fun onResponse(
+                                                call: Call<Unit>,
+                                                response: Response<Unit>
+                                            ) {
+                                                if (response.isSuccessful) {
+                                                    // 성공적으로 팔로우한 경우
+                                                    followBtn.visibility = View.GONE
+                                                    unfollowBtn.visibility = View.VISIBLE
+                                                } else {
+                                                    Log.d("ProfileFragment", "팔로우 요청 실패 - Code: ${response.code()}, Message: ${response.message()}")
+                                                }
+                                            }
+
+                                            override fun onFailure(
+                                                call: Call<Unit>,
+                                                t: Throwable?
+                                            ) {
+                                                Log.e("ProfileFragment", "팔로우 onFailure", t)
+                                            }
+                                        })
+                                }
+                            }
+                            unfollowBtn.setOnClickListener {
+                                Log.d("ProfileFragment", "언팔로우 버튼클릭")
+                                // loginUserId : matzip5
+                                // toUserId : matzip
+                                pageUserId?.let { toUserId ->
+                                    userService.deleteFollow(toUserId)
+                                        .enqueue(object : Callback<Unit> {
+                                            override fun onResponse(
+                                                call: Call<Unit>,
+                                                response: Response<Unit>
+                                            ) {
+                                                Log.d("ProfileFragment", "팔로우 onResponse: ${response.code()}")
+                                                if (response.isSuccessful) {
+                                                    // 성공적으로 언팔로우한 경우
+                                                    followBtn.visibility = View.VISIBLE
+                                                    unfollowBtn.visibility = View.GONE
+                                                } else {
+                                                    Log.d("ProfileFragment", "팔로우 요청실패")
+                                                }
+                                            }
+
+                                            override fun onFailure(
+                                                call: Call<Unit>,
+                                                t: Throwable?
+                                            ) {
+                                                // 네트워크 오류 등 예외 처리
+                                            }
+                                        })
+                                }
+                            }
+
+
                             // 팔로워 팔로우수
                             binding.countFromUser.text = profileDto.countFromUser.toString()
                             binding.countToUser.text = profileDto.countToUser.toString()
                             binding.countBoard.text = profileDto.countBoard.toString()
+
 //                    binding.followCheck.text=profileDto.followCheck.toString()
 
-                            // 유저정보
+                            // 유저정보 matzip
                             binding.pageUserId.text = profileDto.pageUserDto.userid
+
                             Log.d(
                                 "ProfileFragment",
                                 "Page User ID: ${profileDto.pageUserDto.userid}"
@@ -121,38 +208,65 @@ class ProfileFragment : Fragment() {
                             binding.boardRecyclerView.adapter = boardAdapter
 
 
-                        }
-
-                        // 팔로워 목록 클릭 시 다이얼로그로 팔로워 리스트 (리사이클러)
-                        binding.follower.setOnClickListener {
-                            val followerList: List<FollowerDto> =
-                                profileDto?.followerDtoList ?: emptyList()
-                            Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
-
-                            // 다이얼로그 생성
-                            val dialog = CustomDialog(
-                                requireContext(),
-                                followerList.map { it.id },
-                                CustomDialog.DialogType.FOLLOWER
-                            )
+                            // 팔로잉 목록 클릭 시 다이얼로그 표시
+                            binding.following.setOnClickListener {
+                                val followingList: List<FollowingDto> =
+                                    profileDto?.followingDtoList ?: emptyList()
+                                Log.d("MyPageFragment", "도착 확인6: followingDtoList $followingList")
 
 
-                            // 다이얼로그 내용 설정
-                            dialog.setOnClickListener(object : CustomDialog.OnDialogClickListener {
-                                override fun onClicked(name: String) {
-                                    // 클릭한 팔로워의 프로필로 이동하는 코드 추가
-                                    navigateToUserProfile(name)
-                                    Log.d("CustomDialog", "팔로워아이디 클릭! : ID: $name")
+                                CustomDialog(
+                                    requireContext(),
+                                    followingList.map { it.id },
+                                    CustomDialog.DialogType.FOLLOWING
+                                ).apply {
+                                    setOnClickListener(object : CustomDialog.OnDialogClickListener {
+                                        override fun onClicked(name: String) {
+                                            // 클릭한 팔로워의 프로필로 이동하는 코드 추가
+                                            navigateToUserProfile(name)
+                                            Log.d("CustomDialog", "팔로잉아이디 클릭! : ID: $name")
+                                        }
+                                    })
+                                    // 다이얼로그 표시 및 내용 설정
+                                    showDialog()
+                                    setContent()
                                 }
-                            })
-
-                            // 다이얼로그 표시
-                            dialog.showDialog()
-                            // 다이얼로그 내용 설정
-                            dialog.setContent()
 
 
+                            }
+                            // 팔로워 목록 클릭 시 다이얼로그로 팔로워 리스트 (리사이클러)
+                            binding.follower.setOnClickListener {
+                                val followerList: List<FollowerDto> =
+                                    profileDto?.followerDtoList ?: emptyList()
+                                Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
+
+                                // 다이얼로그 생성
+                                val dialog = CustomDialog(
+                                    requireContext(),
+                                    followerList.map { it.id },
+                                    CustomDialog.DialogType.FOLLOWER
+                                )
+
+
+                                // 다이얼로그 내용 설정
+                                dialog.setOnClickListener(object :
+                                    CustomDialog.OnDialogClickListener {
+                                    override fun onClicked(name: String) {
+                                        // 클릭한 팔로워의 프로필로 이동하는 코드 추가
+                                        navigateToUserProfile(name)
+                                        Log.d("CustomDialog", "팔로워아이디 클릭! : ID: $name")
+                                    }
+                                })
+
+                                // 다이얼로그 표시
+                                dialog.showDialog()
+                                // 다이얼로그 내용 설정
+                                dialog.setContent()
+
+
+                            }
                         }
+
                     }
 
                     override fun onFailure(call: Call<ProfileDto>, t: Throwable) {
@@ -160,19 +274,18 @@ class ProfileFragment : Fragment() {
                         call.cancel()
                         Log.e("MyPageFragment", " 통신 실패")
                     }
-                })}
+                })
             }
-
-            return binding.root
         }
-
+        return binding.root
+    } // onCreateView 메서드의 마지막 부분
 
     // MyPageFragment로 이동하는 메서드
     private fun navigateToMyPageFragment() {
         // MyPageFragment로 이동하는 코드를 추가
         val myPageFragment = MyPageFragment()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragmentContainer,myPageFragment)
+        transaction.replace(R.id.fragmentContainer, myPageFragment)
         transaction.addToBackStack(null)
         transaction.commit()
 //        if (currentUserId == pageUserId) {
@@ -205,4 +318,7 @@ class ProfileFragment : Fragment() {
             // 상태가 저장된 경우에는 커밋을 허용하지 않고 로그를 출력
             Log.w("ProfileFragment", "Transaction not committed: Fragment state already saved")
         }
-    }}
+
+
+    }
+}

@@ -66,7 +66,7 @@ class MyPageFragment : Fragment() {
                 Log.d("MyPageFragment", "도착 확인3: countFromUser ${profileDto?.countFromUser}")
                 Log.d("MyPageFragment", "도착 확인4: countToUser ${profileDto?.countToUser}")
                 Log.d("MyPageFragment", "도착 확인5: followerDtoList ${profileDto?.followerDtoList}")
-                Log.d("MyPageFragment", "도착 확인5: followCheck ${profileDto?.followCheck}")
+                Log.d("MyPageFragment", "도착 확인5: followcheck ${profileDto?.followcheck}")
                 if (profileDto != null) {
                     // 팔로워, 팔로잉, 게시물 수 업데이트
                     // 팔로워 팔로우수
