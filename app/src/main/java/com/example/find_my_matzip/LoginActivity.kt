@@ -10,11 +10,13 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.find_my_matzip.databinding.ActivityLoginBinding
 import com.example.find_my_matzip.model.LoginDto
 import com.example.find_my_matzip.model.ResultDto
 import com.example.find_my_matzip.retrofit.UserService
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.LoadingDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,6 +35,9 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //로딩 다이얼로그
+        val loadingDialog = LoadingDialog(this)
+
         //설정 2)
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -44,6 +49,9 @@ class LoginActivity : AppCompatActivity() {
 
         //로그인 버튼 클릭시
         binding.loginBtn.setOnClickListener {
+            //로딩창 띄우기
+            loadingDialog.show()
+
             val loginId = binding.userId.text.toString()
             val loginPw = binding.userPwd.text.toString()
 
@@ -87,9 +95,14 @@ class LoginActivity : AppCompatActivity() {
                                 Log.d(TAG, "===========response.body()의 값 : ${response.body()}")
                                 Log.d(TAG, "===========response token의 값 : $token")
 
+                                //로딩창 지우기
+                                loadingDialog.dismiss()
+
                             }
                             else{
                                 Log.d(TAG, "로그인 실패")
+                                //로딩창 지우기
+                                loadingDialog.dismiss()
                                 showDialog("fail")
                             }
                         }
@@ -97,6 +110,8 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         // API 요청 실패 처리
                         Log.d(TAG, "API 요청 실패")
+                        //로딩창 지우기
+                        loadingDialog.dismiss()
                         showDialog("fail")
                     }
                     Log.d(TAG, "통신 성공 - HTTP 상태 코드: ${response.code()}")
@@ -104,6 +119,8 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ResultDto>, t: Throwable) {
+                    //로딩창 지우기
+                    loadingDialog.dismiss()
                     // 통신 실패 처리
                     showDialog("fail")
                     Log.e(TAG, "통신 실패: ${t.message}")

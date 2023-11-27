@@ -21,6 +21,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.databinding.ActivityJoinBinding
 import com.example.find_my_matzip.model.UsersFormDto
+import com.example.find_my_matzip.utils.LoadingDialog
 import com.example.find_my_matzip.utils.PermissionManager
 import org.json.JSONObject
 import retrofit2.Call
@@ -50,6 +51,9 @@ class JoinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityJoinBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //로딩 다이얼로그
+        val loadingDialog = LoadingDialog(this)
 
         //설정 2)
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -194,6 +198,9 @@ class JoinActivity : AppCompatActivity() {
         //회원가입 버튼
         binding.buttonInsert.setOnClickListener {
 
+            //로딩창 띄우기
+            loadingDialog.show()
+
             // 스토리지 접근 도구 ,인스턴스
             val storage = MyApplication.storage
             // 스토리지에 저장할 인스턴스
@@ -243,9 +250,17 @@ class JoinActivity : AppCompatActivity() {
                         imgRef.putFile(file)
                             // 업로드 후, 수행할 콜백 함수 정의. 실패했을 경우 콜백함수 정의
                             .addOnCompleteListener{
+                                //로딩창 지우기
+                                loadingDialog.dismiss()
                                 Toast.makeText(this@JoinActivity,"스토리지 업로드 완료",Toast.LENGTH_SHORT).show()
                             }
                             .addOnFailureListener {
+                                //로딩창 지우기
+                                loadingDialog.dismiss()
+                                
+                                //db의 유저정보 지우기
+
+
                                 Toast.makeText(this@JoinActivity,"스토리지 업로드 실패",Toast.LENGTH_SHORT).show()
                             }
 
@@ -254,6 +269,8 @@ class JoinActivity : AppCompatActivity() {
                         startActivity(intent)
                     }else {
                         Log.d(TAG, "서버 응답 실패: ${response.code()}")
+                        //로딩창 지우기
+                        loadingDialog.dismiss()
                         try {
                             val errorBody = response.errorBody()?.string()
 
@@ -274,6 +291,8 @@ class JoinActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<Unit>, t: Throwable) {
                     Log.d(TAG, "실패 ${t.message}")
+                    //로딩창 지우기
+                    loadingDialog.dismiss()
                     call.cancel()
                 }
 
