@@ -3,6 +3,7 @@ package com.example.find_my_matzip.navTab.navTabFragment
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,9 +28,14 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.await
+import kotlin.math.pow
 
 
 class MapFragment : Fragment() , OnMapReadyCallback {
@@ -37,6 +43,8 @@ class MapFragment : Fragment() , OnMapReadyCallback {
     lateinit var binding: FragmentMapBinding
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
+    private lateinit var searchBtn: Button
+    var restaurantsInsideCircle = mutableListOf<ResWithScoreDto>()
 
 
     private val PERMISSIONS = arrayOf(
@@ -82,8 +90,6 @@ class MapFragment : Fragment() , OnMapReadyCallback {
     }
 
     override fun onMapReady(naverMap: NaverMap) {
-
-        Log.d("sdo", "onMapReady")
         val cameraPosition = CameraPosition(
             LatLng(35.15690579523921, 129.05957113473747),  // 지도 시작 위치 지정
             14.0 // 줌 레벨
@@ -98,8 +104,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
             ) {
                 val restaurantList = response.body()
                 if (restaurantList != null && restaurantList.isNotEmpty()) {
-                    for(i in restaurantList.indices)
-                    {
+                    for (i in restaurantList.indices) {
                         val currentRestaurant = restaurantList[i]
                         val latitude: Double = currentRestaurant.res_lat.toDouble()
                         val longitude: Double = currentRestaurant.res_lng.toDouble()
@@ -132,15 +137,16 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                             false
                         })
 
-                    //    Log.d("sdo", "식당 $i - 위도: ${currentRestaurant.res_lat}, 경도: ${currentRestaurant.res_lng}")
+                        //    Log.d("sdo", "식당 $i - 위도: ${currentRestaurant.res_lat}, 경도: ${currentRestaurant.res_lng}")
 
                     }
-                //    Log.d("sdo", "Full Response: $restaurantList")
+                    //    Log.d("sdo", "Full Response: $restaurantList")
                 } else {
-                //    Log.e("sdo", "Response body is null or empty.")
+                    //    Log.e("sdo", "Response body is null or empty.")
 
                 }
             }
+
             override fun onFailure(call: Call<List<ResWithScoreDto>>, t: Throwable) {
                 t.printStackTrace()
                 call.cancel()
@@ -149,10 +155,9 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         })
 
 
-      //  marker.position = LatLng(35.15690579523921, 129.05957113473747)
-      //  marker.map = naverMap
+        //  marker.position = LatLng(35.15690579523921, 129.05957113473747)
+        //  marker.map = naverMap
 
-        // ㅁㄴ
 
         naverMap.cameraPosition = cameraPosition
 
@@ -163,9 +168,112 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         naverMap.uiSettings.isLocationButtonEnabled = true
         // 위치를 추적하면서 카메라도 따라 움직인다.
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
+
+
+        // Btn 시작
+
+        searchBtn = binding.searchBtn
+
+        // 이전에 생성된 PolylineOverlay를 저장할 변수
+        var perimeterOverlay: com.naver.maps.map.overlay.PolylineOverlay? = null
+
+        // searchBtn에 OnClickListener 설정
+        searchBtn.setOnClickListener {
+
+            // 현재 지도 중심 좌표 가져오기
+            val center = naverMap.cameraPosition.target
+
+            // 반경 10km에 해당하는 둘레 좌표 계산
+            val perimeterPoints = mutableListOf<LatLng>()
+            val numberOfPoints = 100 // 둘레를 부드럽게 만들려면 값을 증가시킵니다.
+            val radius = 1000.0 // 1km를 미터로 변환
+
+            for (i in 0 until numberOfPoints) {
+                val theta = (i.toDouble() / numberOfPoints) * (2.0 * Math.PI)
+                val x = center.longitude + radius / 111000.0 * Math.cos(theta)
+                val y = center.latitude + radius / 111000.0 * Math.sin(theta)
+                perimeterPoints.add(LatLng(y, x))
+            }
+
+            // 새로운 PolylineOverlay 설정
+            val newPerimeterOverlay = com.naver.maps.map.overlay.PolylineOverlay()
+            newPerimeterOverlay.coords = perimeterPoints
+            newPerimeterOverlay.color =
+                ContextCompat.getColor(requireContext(), R.color.black) // 원하는 색상으로 변경
+            newPerimeterOverlay.width = 5 // 테두리 두께 조절
+
+            // 이전에 생성된 PolylineOverlay 제거
+            perimeterOverlay?.map = null
+
+            // 현재 PolylineOverlay 지도에 추가
+            newPerimeterOverlay.map = naverMap
+
+            // 이전 PolylineOverlay를 새로 생성된 것으로 업데이트
+            perimeterOverlay = newPerimeterOverlay
+
+            val restaurantService = (context?.applicationContext as MyApplication).restaurantService
+            val nearRestaurantList = restaurantService.getAllRestaurantsByAvgScore()
+
+            CoroutineScope(Dispatchers.Main).launch {
+                try {
+                    val nearRestaurants = nearRestaurantList.await()
+                    // 원 안에 있는 식당들을 저장할 배열
+                    val restaurantsInsideCircle = mutableListOf<ResWithScoreDto>()
+                    if (nearRestaurants != null && nearRestaurants.isNotEmpty()) {
+                        for (currentRestaurant in nearRestaurants) {
+                            val restaurantLatLng = LatLng(
+                                currentRestaurant.res_lat.toDouble(),
+                                currentRestaurant.res_lng.toDouble()
+                            )
+                            Log.d("LatLnttest","${restaurantLatLng}")
+                            Log.d("LatLnttest","${center}")
+
+                            // 식당 좌표가 원 안에 속하는지 확인
+                            if (isLatLngInsideCircle(restaurantLatLng, center, radius)) {
+                                restaurantsInsideCircle.add(currentRestaurant)
+                            }
+                        }
+                        Toast.makeText(requireContext(), "원 안의 식당 ${restaurantsInsideCircle.size}개", Toast.LENGTH_SHORT).show()
+
+                        Log.d("nearres", "원 안에 있는 식당: ${restaurantsInsideCircle}")
+
+                        // 추가로 필요한 작업 수행
+                    } else {
+                        // Response body is null or empty.
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.e("sdo", "통신 실패")
+                }
+            }
+        }
     }
 
+    // 원 안에 포함되는지 확인하는 함수
+    private fun isLatLngInsideCircle(point: LatLng, center: LatLng, radius: Double): Boolean {
+        val distance = calculateDistanceBetweenPoints(point, center)
+        return distance <= radius
+    }
 
+    // 두 지점 간의 거리를 계산하는 함수
+    private fun calculateDistanceBetweenPoints(point1: LatLng, point2: LatLng): Double {
+        val lat1 = Math.toRadians(point1.latitude)
+        val lon1 = Math.toRadians(point1.longitude)
+        val lat2 = Math.toRadians(point2.latitude)
+        val lon2 = Math.toRadians(point2.longitude)
+
+        // Haversine 공식을 사용한 거리 계산
+        val dlon = lon2 - lon1
+        val dlat = lat2 - lat1
+        val a = Math.sin(dlat / 2).pow(2.0) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dlon / 2).pow(2.0)
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+        // 지구 반지름 (미터)
+        val earthRadius = 6371000.0
+
+        // 거리 반환 (미터)
+        return earthRadius * c
+    }
 
 
 }

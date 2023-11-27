@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
             android:layout_margin="16dp"
-            android:text="내 근처 맛집 찾기"
+            android:text="현 지도에서 재검색"
             />
     </FrameLayout>
 
