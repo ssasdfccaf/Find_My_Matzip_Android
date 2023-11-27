@@ -60,23 +60,40 @@ class ProfileFragment : Fragment() {
 // 전달된 userId 값 확인
         val pageUserId = arguments?.getString("userId")
         if (pageUserId != null) {
-            // userId를 사용하여 프로필을 조회하거나 다른 작업 수행
-            val userService = (context?.applicationContext as MyApplication).userService
-            val profileList = userService.getProfile(pageUserId)
+            val currentUserId = SharedPreferencesManager.getString("id", "")
+            if (currentUserId == pageUserId) {
+                Log.d(
+                    "ProfileFragment",
+                    "현재 사용자 아이디 ID: $currentUserId, 페이지 사용자 ID: $pageUserId"
+                )
+                Log.d("ProfileFragment", "마이페이지로 이동")
+                // 마이페이지 프래그먼트로 이동
+                navigateToMyPageFragment()
+            } else {
+                // userId를 사용하여 프로필을 조회 -- 팔로워 팔로우 목록에서 해당아이디의 프로필을 조회 하는것임
+                val userService = (context?.applicationContext as MyApplication).userService
+//            profileList에 해당 유저의 프로필 정보가 담기는것
+                val profileList = userService.getProfile(pageUserId)
 
-            profileList.enqueue(object : Callback<ProfileDto> {
-                override fun onResponse(call: Call<ProfileDto>, response: Response<ProfileDto>) {
-                    val profileDto = response.body()
-                    if (profileDto != null) {
-                        // 팔로워 팔로우수
-                        binding.countFromUser.text = profileDto.countFromUser.toString()
-                        binding.countToUser.text = profileDto.countToUser.toString()
-                        binding.countBoard.text = profileDto.countBoard.toString()
+                profileList.enqueue(object : Callback<ProfileDto> {
+                    override fun onResponse(
+                        call: Call<ProfileDto>,
+                        response: Response<ProfileDto>
+                    ) {
+                        val profileDto = response.body()
+                        if (profileDto != null) {
+                            // 팔로워 팔로우수
+                            binding.countFromUser.text = profileDto.countFromUser.toString()
+                            binding.countToUser.text = profileDto.countToUser.toString()
+                            binding.countBoard.text = profileDto.countBoard.toString()
 //                    binding.followCheck.text=profileDto.followCheck.toString()
 
-                        // 유저정보
-                        binding.pageUserId.text = profileDto.pageUserDto.userid
-                        Log.d("ProfileFragment", "Page User ID: ${profileDto.pageUserDto.userid}")
+                            // 유저정보
+                            binding.pageUserId.text = profileDto.pageUserDto.userid
+                            Log.d(
+                                "ProfileFragment",
+                                "Page User ID: ${profileDto.pageUserDto.userid}"
+                            )
 //                    binding.userName.text = profileDto.pageUserDto.username
 //                    binding.userAddress.text = profileDto.pageUserDto.user_address
 //                    binding.userPhone.text = profileDto.pageUserDto.userphone
@@ -84,72 +101,70 @@ class ProfileFragment : Fragment() {
 //                    binding.gender.text = profileDto.pageUserDto.gender
 
 
-                        // 다른 필요한 데이터들도 마찬가지로 설정
-                        Glide.with(requireContext())
-                            .load(profileDto.pageUserDto.user_image)
-                            .override(900, 900)
-                            .into(binding.userImage)
+                            // 다른 필요한 데이터들도 마찬가지로 설정
+                            Glide.with(requireContext())
+                                .load(profileDto.pageUserDto.user_image)
+                                .override(900, 900)
+                                .into(binding.userImage)
 
-                        Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
-                        // 프로필 어댑터 및 보드 어댑터 업데이트
-                        ProfileAdapter2(this@ProfileFragment, listOf(profileDto.pageUserDto))
-                        boardAdapter =
-                            BoardRecyclerAdapter2(this@ProfileFragment, profileDto.boards.content)
+                            Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
+                            // 프로필 어댑터 및 보드 어댑터 업데이트
+                            ProfileAdapter2(this@ProfileFragment, listOf(profileDto.pageUserDto))
+                            boardAdapter =
+                                BoardRecyclerAdapter2(
+                                    this@ProfileFragment,
+                                    profileDto.boards.content
+                                )
 
-                        binding.boardRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                        binding.boardRecyclerView.adapter = boardAdapter
-
-                    } // 팔로워 목록 클릭 시 다이얼로그로 팔로워 리스트 (리사이클러)
-                    binding.follower.setOnClickListener {
-                        val followerList: List<FollowerDto> =
-                            profileDto?.followerDtoList ?: emptyList()
-                        Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
-
-                        // 다이얼로그 생성
-                        val dialog = CustomDialog(requireContext(), followerList.map { it.id }, CustomDialog.DialogType.FOLLOWER)
+                            binding.boardRecyclerView.layoutManager =
+                                LinearLayoutManager(requireContext())
+                            binding.boardRecyclerView.adapter = boardAdapter
 
 
-                        // 다이얼로그 내용 설정
-                        dialog.setOnClickListener(object : CustomDialog.OnDialogClickListener {
-                            override fun onClicked(name: String) {
-                                // 현재 사용자의 아이디 가져오기
-                                // 현재 사용자(나)의경우 MyPageFragment로 이동 헸으면 좋겠는데..
-                                val currentUserId = SharedPreferencesManager.getString("id", "")
-                                Log.d("ProfileFragment", "현재 사용자 아이디 ID: $currentUserId, 페이지 사용자 ID: $pageUserId")
+                        }
 
-                                // 만약 현재 사용자가 페이지 사용자와 같다면
-                                if (currentUserId == pageUserId) {
-                                    Log.d("ProfileFragment", "마이페이지로 이동")
-                                    // 마이페이지 프래그먼트로 이동
-                                    navigateToMyPageFragment()
+                        // 팔로워 목록 클릭 시 다이얼로그로 팔로워 리스트 (리사이클러)
+                        binding.follower.setOnClickListener {
+                            val followerList: List<FollowerDto> =
+                                profileDto?.followerDtoList ?: emptyList()
+                            Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
 
-                                } else {
-                                    // 이전 데이터를 클리어하거나 필요한 컴포넌트를 초기화 (필요 시)
-                                    // 예를 들어, 어댑터 내의 이전 데이터를 클리어하거나 필요한 UI 컴포넌트를 초기화
-                                    // 그 후 클릭한 팔로워의 프로필로 이동
+                            // 다이얼로그 생성
+                            val dialog = CustomDialog(
+                                requireContext(),
+                                followerList.map { it.id },
+                                CustomDialog.DialogType.FOLLOWER
+                            )
+
+
+                            // 다이얼로그 내용 설정
+                            dialog.setOnClickListener(object : CustomDialog.OnDialogClickListener {
+                                override fun onClicked(name: String) {
+                                    // 클릭한 팔로워의 프로필로 이동하는 코드 추가
                                     navigateToUserProfile(name)
-                                    Log.d("CustomDialog", "클릭한 팔로워 아이디: $name")
+                                    Log.d("CustomDialog", "팔로워아이디 클릭! : ID: $name")
                                 }
+                            })
 
-                            }
-                        })
-                        // 다이얼로그 표시
-                        dialog.showDialog()
-                        // 다이얼로그 내용 설정
-                        dialog.setContent()
-                    }}
+                            // 다이얼로그 표시
+                            dialog.showDialog()
+                            // 다이얼로그 내용 설정
+                            dialog.setContent()
 
 
-                override fun onFailure(call: Call<ProfileDto>, t: Throwable) {
-                    t.printStackTrace()
-                    call.cancel()
-                    Log.e("MyPageFragment", " 통신 실패")
-                }
-            })
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ProfileDto>, t: Throwable) {
+                        t.printStackTrace()
+                        call.cancel()
+                        Log.e("MyPageFragment", " 통신 실패")
+                    }
+                })}
+            }
+
+            return binding.root
         }
-
-        return binding.root
-    }
 
 
     // MyPageFragment로 이동하는 메서드
@@ -157,21 +172,33 @@ class ProfileFragment : Fragment() {
         // MyPageFragment로 이동하는 코드를 추가
         val myPageFragment = MyPageFragment()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragmentContainer, myPageFragment)
+        transaction.replace(R.id.fragmentContainer,myPageFragment)
         transaction.addToBackStack(null)
         transaction.commit()
+//        if (currentUserId == pageUserId) {
+//            // MyPageFragment로 이동하는 코드를 추가
+//            val myPageFragment = MyPageFragment()
+//            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//            transaction.replace(R.id.fragmentContainer, myPageFragment)
+//            transaction.addToBackStack(null)
+//            transaction.commit()
+//        } else {
+//            // 현재 사용자가 페이지 사용자와 같지 않은 경우의 처리
+//            // 필요에 따라 메시지를 표시하거나 다른 작업을 수행할 수 있습니다.
+//            Log.d("ProfileFragment", "현재 사용자와 페이지 사용자가 일치하지 않습니다. 다른 작업 수행.")
+//        }
     }
 
 
     // 팔로워의 프로필로 이동하는 메서드
     private fun navigateToUserProfile(userId: String) {
         // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
-        val userProfileFragment = ProfileFragment.newInstance(userId)
+        val profileFragment = ProfileFragment.newInstance(userId)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
 
         // 추가된 부분
         if (!isStateSaved) {
-            transaction.replace(R.id.fragmentContainer, userProfileFragment)
+            transaction.replace(R.id.fragmentContainer, profileFragment)
             transaction.addToBackStack(null)
             transaction.commit()
         } else {
