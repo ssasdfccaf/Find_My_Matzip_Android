@@ -29,83 +29,13 @@
 
                 <!-- 이미지뷰 -->
                 <ImageView
-                    android:id="@+id/boardThumbnail"
+                    android:id="@+id/resThumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/burger" />
+                    android:src="@drawable/readyimg" />
 
                 <!-- 사용자 프로필 + 점수 레이아웃 -->
-                <LinearLayout
-                    android:background="#70FFFFFF"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:orientation="horizontal">
-
-                    <!-- 사용자 프로필 이미지 -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="75dp">
-
-                        <ImageView
-                            android:id="@+id/userProfileImg"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:src="@drawable/profile" />
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- 사용자 이름과 팔로워 -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:textColor="@color/black"
-                            android:id="@+id/userName"
-                            android:textSize="25dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left"
-                            android:fontFamily="@font/nexonbold"
-                            android:text="사용자 이름" />
-
-                        <TextView
-                            android:textColor="@color/black"
-                            android:id="@+id/userFollower"
-                            android:textSize="15dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left"
-                            android:fontFamily="@font/nexonbold"
-                            android:text="팔로워 100만명" />
-                    </LinearLayout>
-
-                    <!-- 점수 -->
-                    <TextView
-                        android:textColor="@color/black"
-                        android:id="@+id/boardScore"
-                        android:textSize="25dp"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|right"
-                        android:fontFamily="@font/nexonbold"
-                        android:text="점수 : 4.5점" />
-                    <TextView
-                        android:textColor="@color/black"
-                        android:textSize="25dp"
-                        android:layout_width="30dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center|right"
-                        android:fontFamily="@font/nexonbold"
-                        android:text="점" />
-                </LinearLayout>
             </FrameLayout>
             <!--게시글프로필사진끝-->
 
@@ -185,7 +115,6 @@
                 ></LinearLayout>
             <!--        식당 + 식당점수-->
             <LinearLayout
-                android:id="@+id/toResDtl"
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -259,7 +188,7 @@
                 </LinearLayout>
             </LinearLayout><!--        사용자 프로필 + 점수-->
 
-
+<!--===================================================================================-->
             <!--제목-->
             <!-- 게시물, 팔로워 팔로잉을 묶어주는 리니어 -->
             <LinearLayout
@@ -282,24 +211,26 @@
                         android:layout_height="match_parent"
                         android:gravity="center|right"
                         android:fontFamily="@font/nexonbold"
-                        android:text="제목" />
+                        android:text="영업 시간" />
 
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/boardDtlTitle"
+                    android:id="@+id/operationTime"
                     android:textSize="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:fontFamily="@font/nexonbold"
-                    android:text="제목 불러오는중" />
+                    android:text="영업시간 불러오는중" />
             </LinearLayout>
             <!--제목-->
+            <!--===================================================================================-->
+
             <!--제목-->
             <!-- 게시물, 팔로워 팔로잉을 묶어주는 리니어 -->
             <LinearLayout
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="#20000000"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -319,22 +250,133 @@
                         android:layout_height="match_parent"
                         android:gravity="center|right"
                         android:fontFamily="@font/nexonbold"
-                        android:text="내용" />
+                        android:text="메뉴" />
 
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/boardDtlContent"
+                    android:id="@+id/resMenu"
                     android:textSize="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:fontFamily="@font/nexonbold"
-                    android:text="내용 불러오는중ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ" />
+                    android:text="메뉴 불러오는중" />
             </LinearLayout>
-
-
             <!--제목-->
+            <!--========================================================================================-->
+            <!--제목-->
+            <!-- 게시물, 팔로워 팔로잉을 묶어주는 리니어 -->
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:background="#20000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:textSize="25dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center|right"
+                        android:fontFamily="@font/nexonbold"
+                        android:text="연락처" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/resPhone"
+                    android:textSize="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:fontFamily="@font/nexonbold"
+                    android:text="연락처 불러오는중" />
+            </LinearLayout>
+            <!--제목-->
+            <!--========================================================================================-->
+            <!--제목-->
+            <!-- 게시물, 팔로워 팔로잉을 묶어주는 리니어 -->
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:background="#20000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:textSize="25dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center|right"
+                        android:fontFamily="@font/nexonbold"
+                        android:text="식당소개" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/resIntro"
+                    android:textSize="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:fontFamily="@font/nexonbold"
+                    android:text="설명 불러오는중" />
+            </LinearLayout>
+            <!--제목-->
+            <!--========================================================================================-->
+            <!--제목-->
+            <!-- 게시물, 팔로워 팔로잉을 묶어주는 리니어 -->
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:textSize="25dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center|right"
+                        android:fontFamily="@font/nexonbold"
+                        android:text="리뷰 목록" />
+
+                </LinearLayout>
+            </LinearLayout>
+            <!--제목-->
+            <!--========================================================================================-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+
+            <!--========================================================================================-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
