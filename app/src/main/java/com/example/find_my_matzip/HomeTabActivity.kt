@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.find_my_matzip.navTab.navTabFragment.HomeFragment
@@ -54,11 +55,18 @@ class HomeTabActivity : AppCompatActivity() {
 
         //Drawer 네비게이션
         binding.mainDrawerView.setNavigationItemSelectedListener {
-            if (it.title == "로그인"){
-                Toast.makeText(this@HomeTabActivity,"로그인 화면 이동", Toast.LENGTH_SHORT).show()
-                //로그인 화면으로 이동
-                val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
-                startActivity(intent)
+            if (it.title == "종료"){
+                val builder = AlertDialog.Builder(this@HomeTabActivity)
+                builder.setTitle("Exit?")
+                builder.setMessage("앱을 종료하시겠습니까?")
+                builder.setNegativeButton("아니오") { dialog, which ->
+                    // 아무 작업도 수행하지 않음
+                }
+                builder.setPositiveButton("예") { dialog, which ->
+                    // stack 전부 지우고 앱 종료
+                    finishAffinity()
+                }
+                builder.show()
             }
             else if (it.title == "로그아웃") {
                 Toast.makeText(this@HomeTabActivity,"로그아웃 화면 이동", Toast.LENGTH_SHORT).show()
@@ -66,8 +74,8 @@ class HomeTabActivity : AppCompatActivity() {
                 //로그인 정보 지우기
                 SharedPreferencesManager.clearPreferences()
 
-                // BackStack의 모든 데이터 삭제
-                supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                // BackStack의 fragment전부 삭제
+                clearBackStack()
 
                 //로그인 화면으로 이동
                 val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
@@ -95,5 +103,14 @@ class HomeTabActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    //backstack의 fragment전부 삭제
+    private fun clearBackStack() {
+        val fragmentManager = supportFragmentManager
+        val count = fragmentManager.backStackEntryCount
+        for (i in 0 until count) {
+            fragmentManager.popBackStack()
+        }
     }
 }
