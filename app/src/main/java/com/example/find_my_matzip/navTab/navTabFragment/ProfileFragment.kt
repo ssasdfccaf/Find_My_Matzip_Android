@@ -121,6 +121,16 @@ class ProfileFragment : Fragment() {
                                                     // 성공적으로 팔로우한 경우
                                                     followBtn.visibility = View.GONE
                                                     unfollowBtn.visibility = View.VISIBLE
+                                                    // 현재의 프래그먼트를 제거
+                                                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                                                    transaction.remove(this@ProfileFragment).commit()
+
+                                                    // 새로운 인스턴스를 생성하여 추가
+                                                    val newFragment = ProfileFragment.newInstance(pageUserId)
+                                                    val newTransaction = requireActivity().supportFragmentManager.beginTransaction()
+                                                    newTransaction.replace(R.id.fragmentContainer, newFragment)
+                                                    newTransaction.addToBackStack(null)
+                                                    newTransaction.commit()
                                                 } else {
                                                     Log.d("ProfileFragment", "팔로우 요청 실패 - Code: ${response.code()}, Message: ${response.message()}")
                                                 }
@@ -151,6 +161,16 @@ class ProfileFragment : Fragment() {
                                                     // 성공적으로 언팔로우한 경우
                                                     followBtn.visibility = View.VISIBLE
                                                     unfollowBtn.visibility = View.GONE
+                                                    // 현재의 프래그먼트를 제거
+                                                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                                                    transaction.remove(this@ProfileFragment).commit()
+
+                                                    // 새로운 인스턴스를 생성하여 추가
+                                                    val newFragment = ProfileFragment.newInstance(pageUserId)
+                                                    val newTransaction = requireActivity().supportFragmentManager.beginTransaction()
+                                                    newTransaction.replace(R.id.fragmentContainer, newFragment)
+                                                    newTransaction.addToBackStack(null)
+                                                    newTransaction.commit()
                                                 } else {
                                                     Log.d("ProfileFragment", "팔로우 요청실패")
                                                 }
