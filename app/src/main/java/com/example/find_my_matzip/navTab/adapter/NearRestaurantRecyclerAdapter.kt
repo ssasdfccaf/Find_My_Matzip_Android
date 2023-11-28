@@ -1,12 +1,18 @@
 package com.example.find_my_matzip.navTab.adapter
 
+import android.R
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.databinding.NearRestaurantListBinding
 import com.example.find_my_matzip.model.ResWithScoreDto
 import com.example.find_my_matzip.navTab.navTabFragment.NearRestaurantFragment
+import com.example.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
+
 
 class NearRestaurantViewHolder(val binding: NearRestaurantListBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -37,6 +43,7 @@ class NearRestaurantRecyclerAdapter(
                 val binding = holder.binding
                 val item = nearRestaurantList[position]
 
+                binding.resId.text = item.res_id
                 binding.resName.text = item.res_name
                 binding.resMenu.text = item.res_menu
                 binding.resPhone.text = item.res_phone
@@ -49,5 +56,29 @@ class NearRestaurantRecyclerAdapter(
                                 .override(150, 150)
                                 .into(binding.resThumbnail)
                 }
+
+
+                binding.toResDtl.setOnClickListener {
+                        val resId = item.res_id
+                        Toast.makeText(binding.root.context, "resId : ${resId}", Toast.LENGTH_SHORT).show()
+
+                        // 데이터를 전달하기 위한 Bundle 생성
+                        val bundle = Bundle().apply {
+                                putString("resId", resId)
+                        }
+                        // RestaurantDtlFragment의 인스턴스 생성
+                        val restaurantDtlFragment = RestaurantDtlFragment()
+                        // 인자로 데이터 전달
+                        restaurantDtlFragment.arguments = bundle
+
+                        fragment.requireActivity().supportFragmentManager.beginTransaction()
+                                .add(com.example.find_my_matzip.R.id.fragmentContainer, restaurantDtlFragment)
+                                .addToBackStack(null)
+                                .commit()
+
+                }
+
+
         }
+
 }

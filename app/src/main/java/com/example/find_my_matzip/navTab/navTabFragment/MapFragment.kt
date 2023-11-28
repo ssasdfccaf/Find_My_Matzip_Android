@@ -13,11 +13,11 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentMapBinding
 import com.example.find_my_matzip.model.ResWithScoreDto
-import com.example.find_my_matzip.navTab.adapter.NearRestaurantRecyclerAdapter
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.LocationTrackingMode
@@ -116,26 +116,63 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                         marker.map = naverMap
 
                         marker.setOnClickListener(Overlay.OnClickListener {
-                            val intent = Intent(context, ResInfoActivity::class.java)
-                            intent.putExtra("resInfoName", currentRestaurant.res_name)
-                            intent.putExtra("resInfoAvgScore", currentRestaurant.avgScore)
-                            intent.putExtra("resInfoMenu", currentRestaurant.res_menu)
-                            intent.putExtra("resInfoOT", currentRestaurant.operate_time)
-                            intent.putExtra("resInfoIntro", currentRestaurant.res_intro)
-                            intent.putExtra("resInfoThumbnail", currentRestaurant.res_thumbnail)
+                            val bundle = Bundle().apply {
+                                putString("resInfoId", currentRestaurant.res_id)
+                                putString("resInfoName", currentRestaurant.res_name)
+                                putDouble("resInfoAvgScore", currentRestaurant.avgScore)
+                                putString("resInfoMenu", currentRestaurant.res_menu)
+                                putString("resInfoOT", currentRestaurant.operate_time)
+                                putString("resInfoIntro", currentRestaurant.res_intro)
+                                putString("resInfoThumbnail", currentRestaurant.res_thumbnail)
+                            }
 
-//                            Log.d("infotest", "식당사진 ${currentRestaurant.res_thumbnail}")
-//                            Log.d("infotest", "식당이름 ${currentRestaurant.res_name}")
-//                            Log.d("infotest", "식당메뉴 ${currentRestaurant.res_menu}")
-//                            Log.d("infotest", "영업시간 ${currentRestaurant.operate_time}")
-//                            Log.d("infotest", "식당소개 ${currentRestaurant.res_intro}")
-                            Log.d("infotest", "식당평점 ${currentRestaurant.avgScore}")
-                            Log.d("infotest", "식당아디 ${currentRestaurant.res_id}")
+                            var resInfoFragment = ResInfoFragment()
+                            resInfoFragment.arguments = bundle
+
+                            // 기존에 생성된 ResInfoFragment가 있으면 숨기기
+                            resInfoFragment?.let {
+                                parentFragmentManager.beginTransaction().hide(it).commit()
+                            }
+
+                            // 새로운 ResInfoFragment 생성 또는 업데이트
+                            if (resInfoFragment == null) {
+                                resInfoFragment = ResInfoFragment()
+                            }
+                            val transaction = parentFragmentManager.beginTransaction()
+                            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            transaction.add(R.id.fragmentContainer, resInfoFragment)
+                            transaction.addToBackStack(null)
+                            transaction.show(resInfoFragment)
+                            transaction.commit()
 
 
-                            startActivity(intent)
+
+
                             false
                         })
+
+//                        marker.setOnClickListener(Overlay.OnClickListener {
+//                            val intent = Intent(context, ResInfoActivity::class.java)
+//                            intent.putExtra("resInfoId", currentRestaurant.res_id)
+//                            intent.putExtra("resInfoName", currentRestaurant.res_name)
+//                            intent.putExtra("resInfoAvgScore", currentRestaurant.avgScore)
+//                            intent.putExtra("resInfoMenu", currentRestaurant.res_menu)
+//                            intent.putExtra("resInfoOT", currentRestaurant.operate_time)
+//                            intent.putExtra("resInfoIntro", currentRestaurant.res_intro)
+//                            intent.putExtra("resInfoThumbnail", currentRestaurant.res_thumbnail)
+//
+////                            Log.d("infotest", "식당사진 ${currentRestaurant.res_thumbnail}")
+////                            Log.d("infotest", "식당이름 ${currentRestaurant.res_name}")
+////                            Log.d("infotest", "식당메뉴 ${currentRestaurant.res_menu}")
+////                            Log.d("infotest", "영업시간 ${currentRestaurant.operate_time}")
+////                            Log.d("infotest", "식당소개 ${currentRestaurant.res_intro}")
+//                            Log.d("infotest", "식당평점 ${currentRestaurant.avgScore}")
+//                            Log.d("infotest", "식당아디 ${currentRestaurant.res_id}")
+//
+//
+//                            startActivity(intent)
+//                            false
+//                        })
 
                         //    Log.d("sdo", "식당 $i - 위도: ${currentRestaurant.res_lat}, 경도: ${currentRestaurant.res_lng}")
 

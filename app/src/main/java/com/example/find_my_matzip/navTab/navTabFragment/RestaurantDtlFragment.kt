@@ -17,6 +17,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RestaurantDtlFragment : Fragment() {
+    private var resId: String? = null
     lateinit var binding : FragmentRestaurantDtlBinding
 
     //resId 값으로 식당상세페이지 이동
@@ -39,6 +40,7 @@ class RestaurantDtlFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        resId = arguments?.getString("resId")
         binding = FragmentRestaurantDtlBinding.inflate(layoutInflater,container,false)
 
         val restaurantService = (context?.applicationContext as MyApplication).restaurantService
