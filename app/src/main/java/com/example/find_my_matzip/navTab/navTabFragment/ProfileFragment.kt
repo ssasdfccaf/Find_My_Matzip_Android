@@ -208,11 +208,15 @@ class ProfileFragment : Fragment() {
 //                    binding.gender.text = profileDto.pageUserDto.gender
 
 
-                            // 다른 필요한 데이터들도 마찬가지로 설정
-                            Glide.with(requireContext())
-                                .load(profileDto.pageUserDto.user_image)
-                                .override(900, 900)
-                                .into(binding.userImage)
+                            if(profileDto.pageUserDto.user_image != "") {
+                                // 다른 필요한 데이터들도 마찬가지로 설정
+                                Glide.with(requireContext())
+                                    .load(profileDto.pageUserDto.user_image)
+                                    .override(900, 900)
+                                    .error(R.drawable.profile)
+                                    .into(binding.userImage)
+                            }
+
 
                             Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
                             // 프로필 어댑터 및 보드 어댑터 업데이트

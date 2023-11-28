@@ -31,6 +31,10 @@ interface UserService {
     @GET("users/aboutUsers/{userid}")
     fun findbyId(@Path("userid") userid: String?): Call<UsersFormDto>
 
+    //회원 삭제
+    @DELETE("users/delete/{userid}")
+    fun deleteById(@Path("userid") userid: String?): Call<Unit>
+
 
     @GET("users/profile/{pageUserid}")
     fun getProfile(@Path("pageUserid") pageUserid: String?): Call<ProfileDto>

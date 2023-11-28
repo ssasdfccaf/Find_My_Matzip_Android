@@ -1,10 +1,12 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.util.Log
@@ -16,11 +18,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.MyApplication
+import com.example.find_my_matzip.R
 import com.example.find_my_matzip.SearchAddressActivity
 import com.example.find_my_matzip.databinding.FragmentProfileUpdateBinding
 import com.example.find_my_matzip.model.UsersFormDto
@@ -30,6 +34,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 
 
 class ProfileUpdateFragment : Fragment() {
@@ -37,6 +43,9 @@ class ProfileUpdateFragment : Fragment() {
 
     // 갤러리에서 선택된 , 파일의 위치(로컬)
     private var filePath : String? = null
+
+    // 카메라 이미지 파일 위치
+    lateinit var profileImageUri : String
     
     //비밀번호 확인 여부
     private var pwCheck = false
@@ -91,9 +100,9 @@ class ProfileUpdateFragment : Fragment() {
 
 
                     binding.userId.text = Editable.Factory.getInstance().newEditable(originUserId)
-                    binding.userName.text = Editable.Factory.getInstance().newEditable(originUsername)
-                    binding.userAddress.text = Editable.Factory.getInstance().newEditable(originUserAddr)
-                    binding.userPhone.text = Editable.Factory.getInstance().newEditable(originUserPhone)
+                    binding.userName.text = Editable.Factory.getInstance().newEditable(originUsername?: "")
+                    binding.userAddress.text = Editable.Factory.getInstance().newEditable(originUserAddr?: "")
+                    binding.userPhone.text = Editable.Factory.getInstance().newEditable(originUserPhone?: "")
 
 
                     if(originUserGender.equals("남성")){
@@ -103,12 +112,16 @@ class ProfileUpdateFragment : Fragment() {
                     }
 
 
-                    Glide.with(requireContext())
-                        .load(originUserImg)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
-                        .skipMemoryCache(true)// 메모리 캐시 저장 off
-                        .override(900, 900)
-                        .into(binding.myProfileImg)
+                    if(originUserImg != ""){
+                        Glide.with(requireContext())
+                            .load(originUserImg)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
+                            .skipMemoryCache(true)// 메모리 캐시 저장 off
+                            .override(900, 900)
+                            .error(R.drawable.profile)
+                            .into(binding.myProfileImg)
+                    }
+
                 }
             }
 
@@ -151,9 +164,6 @@ class ProfileUpdateFragment : Fragment() {
                 val storage = MyApplication.storage
                 // 스토리지에 저장할 인스턴스
                 val storageRef = storage.reference
-
-                // 파일명 생성 : userid+현재시간
-                //val uuid = binding.userId.text.toString()+ Date() +System.currentTimeMillis();
 
                 // 이미지 저장될 위치 및 파일명(파이어베이스)
                 val imgRef = storageRef.child("users_img/${userId}.jpg")
@@ -307,6 +317,7 @@ class ProfileUpdateFragment : Fragment() {
                     // 선택된 사진 크기 자동 조정
                     .centerCrop()
                     // 결과 뷰에 사진 넣기.
+                    .error(R.drawable.profile)
                     .into(binding.myProfileImg)
 
                 // filePath, 갤러리에서 불러온 이미지 파일 정보 가져오기.
@@ -336,6 +347,86 @@ class ProfileUpdateFragment : Fragment() {
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*"
             )
             requestLauncher.launch(intent)
+        }
+
+        //카메라 호출해서, 사진 촬영된 사진 가져오기.
+        // 2) 후처리하는 함수를 이용해서, 촬영된 사진을 결과 뷰에 출력하는 로직.
+        val requestCameraFileLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == Activity.RESULT_OK) {
+
+                profileImageUri = Uri.fromFile(File(filePath)).toString()
+
+                Log.d(TAG,"profileImageUri : $profileImageUri")
+
+                Glide
+                    .with(this@ProfileUpdateFragment)
+                    .load(profileImageUri)
+                    .apply(RequestOptions().override(900, 900))
+                    .centerCrop()
+                    .error(R.drawable.profile)
+                    .into(binding.myProfileImg)
+
+
+            } else if (it.resultCode == Activity.RESULT_CANCELED) {
+                // The user canceled the camera capture
+                Log.d(TAG, "카메라 기능 취소됨")
+            } else {
+                // Handle other cases if needed
+                Log.d(TAG, "카메라 기능 로딩 실패: ${it.resultCode}")
+            }
+
+
+        }
+
+        // 1) 카메라 호출하는 버튼 , 액션 문자열로 카메라 외부앱 연동.
+        binding.cameraBtn.setOnClickListener {
+            // 사진이 촬영이되고, 저장이될 때, 파일이름을 정하기.
+            // 중복이 안되게끔 이름을 작성, UUID를 많이 쓰는데,
+            // 일단, 날짜를 기준으로 사진의 파일명을 구분 짓기.
+
+            //파일 이름 준비하기.
+            val timeStamp : String =
+                SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+
+            Log.d(TAG,"timeStamp : $timeStamp")
+
+            // 촬영된 사진의 저장소 위치 정하기.
+            // Environment.DIRECTORY_PICTURES : 정해진 위치, 갤러리
+            val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+
+            // 위에서 만든 파일이름과, 저장소위치에 실제 물리 파일 생성하기.
+            // 빈 파일.
+            val file = File.createTempFile(
+                "JPEG_${timeStamp}_",
+                ".jpg",
+                storageDir
+            )
+
+            // 실제 사진 파일 저장소 위치 정의 , 절대 경로
+            // 전역으로 빼기.
+            // 위에서 선언만하고, 실제 파일위치가 나올 이 때, 할당을 하는 구조.
+            filePath = file.absolutePath
+
+            Log.d(TAG,"file.absolutePath : $filePath")
+
+            //콘텐츠 프로바이더를 이용해서, 데이터를 가져와야 함.
+            // provider에서 정한 authorities 값이 필요함.
+            // 매니페스트 파일에 가서,
+            var photoURI:Uri = FileProvider.getUriForFile(
+                requireContext(),
+                "com.example.find_my_matzip",
+                file
+            )
+            // 카메라를 촬영하는 정해진 액션 문자열
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            // 인텐트 데이터를 담아서 전달.
+            // 키: MediaStore.EXTRA_OUTPUT , 값 : photoURI
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+            // 후처리 함수로 촬영된 사진을 처리하는 로직.
+            requestCameraFileLauncher.launch(intent)
+
         }
 
 
