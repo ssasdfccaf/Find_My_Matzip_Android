@@ -235,9 +235,9 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                         }
                         showNearbyRestaurants(restaurantsInsideCircle)
 
-                        Toast.makeText(requireContext(), "원 안의 식당 ${restaurantsInsideCircle.size}개", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(requireContext(), "원 안의 식당 ${restaurantsInsideCircle.size}개", Toast.LENGTH_SHORT).show()
 
-                        Log.d("nearres", "원 안에 있는 식당: ${restaurantsInsideCircle}")
+                       // Log.d("nearres", "원 안에 있는 식당: ${restaurantsInsideCircle}")
 
 
                         // 추가로 필요한 작업 수행
@@ -257,11 +257,14 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         nearRestaurantFragment.restaurantsInsideCircle = restaurants
 
         // FragmentTransaction을 사용하여 NearRestaurantFragment를 표시하는 코드를 작성
-        val transaction = parentFragmentManager.beginTransaction()
-        transaction.hide(this)
-        transaction.add(R.id.fragmentContainer, nearRestaurantFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+//        val transaction = parentFragmentManager.beginTransaction()
+//        transaction.hide(this)
+//        transaction.add(R.id.fragmentContainer, nearRestaurantFragment)
+//        transaction.addToBackStack(null)
+//        transaction.commit()
+        // 아래는 변경된 부분입니다
+        nearRestaurantFragment.show(parentFragmentManager, nearRestaurantFragment.tag)
+
     }
 
     // 원 안에 포함되는지 확인하는 함수
