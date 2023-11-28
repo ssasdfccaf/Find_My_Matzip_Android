@@ -7,6 +7,7 @@ import com.example.find_my_matzip.model.UserListModel
 import com.example.find_my_matzip.model.UsersFormDto
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -19,16 +20,35 @@ interface UserService {
     fun newUsers(@Body user: UsersFormDto): Call<Unit>
 
     //로그인
-    @POST("users/login")
+    @POST("/login")
     fun login(@Body loginDto: LoginDto): Call<ResultDto>
 
     //회원 조회
-    @GET("users/users")
+    @GET("users/admin/userList")
     fun getAll(): Call<UserListModel>
 
+    //회원 한명 정보 조회
+    @GET("users/aboutUsers/{userid}")
+    fun findbyId(@Path("userid") userid: String?): Call<UsersFormDto>
+
+    //회원 삭제
+    @DELETE("users/delete/{userid}")
+    fun deleteById(@Path("userid") userid: String?): Call<Unit>
 
 
     @GET("users/profile/{pageUserid}")
     fun getProfile(@Path("pageUserid") pageUserid: String?): Call<ProfileDto>
+
+    //회원 정보 수정
+    @POST("/users/updateUsers")
+    fun updateUsers(@Body usersFormDto: UsersFormDto): Call<Unit>
+
+    @DELETE("/users/deleteFollow/{toUserId}")
+    fun deleteFollow(@Path("toUserId") toUserId: String): Call<Unit>
+
+    @GET("/users/insertFollow/{toUserId}")
+    fun insertFollow(@Path("toUserId") toUserId: String): Call<Unit>
+
+
 
 }

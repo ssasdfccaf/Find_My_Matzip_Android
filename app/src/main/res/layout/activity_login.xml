@@ -23,93 +23,93 @@
             app:layout_constraintTop_toTopOf="parent">
 
         </androidx.appcompat.widget.Toolbar>
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="200dp"
-       android:orientation="vertical">
-    <TextView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="65dp"
-        android:fontFamily="@font/nexonbold"
-        android:gravity="left"
-        android:text="Sign In"
-        android:textColor="#fff"
-        android:textSize="40dp"></TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="65dp"
+                android:fontFamily="@font/nexonbold"
+                android:gravity="left"
+                android:text="Sign In"
+                android:textColor="#fff"
+                android:textSize="40dp"></TextView>
 
-    <TextView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="18dp"
-        android:fontFamily="@font/nexonmed"
-        android:gravity="left"
-        android:text="환영합니다 부산 맛집입니다"
-        android:textColor="#fff"
-        android:textSize="18sp"></TextView>
-   </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/radius2"
-        android:orientation="vertical"
-        android:paddingTop="70dp"
-
-        >
-
-
-<!--        <TextView-->
-<!--            android:layout_width="300dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:fontFamily="@font/nexonbold"-->
-<!--            android:paddingBottom="30dp"-->
-<!--            android:text="Login"-->
-<!--            android:textColor="@color/design_default_color_primary"-->
-<!--            android:textSize="35sp"-->
-<!--            android:textStyle="bold"-->
-<!--            android:paddingLeft="10dp"/>-->
-
-
-        <EditText
-            android:id="@+id/userId"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:background="@drawable/radius"
-            android:fontFamily="@font/nexonlight"
-            android:hint="아이디 입력하기."
-            android:paddingLeft="30dp"
-            android:textColor="#B3B3B3"
-            android:textSize="15sp"></EditText>
-
-
-        <EditText
-            android:id="@+id/userPwd"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/radius"
-            android:fontFamily="@font/nexonlight"
-            android:hint="패스워드를 입력하기."
-            android:inputType="textPassword"
-            android:paddingLeft="30dp"
-            android:textColor="#B3B3B3"
-            android:textSize="15sp"></EditText>
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="18dp"
+                android:fontFamily="@font/nexonmed"
+                android:gravity="left"
+                android:text="환영합니다 부산 맛집입니다"
+                android:textColor="#fff"
+                android:textSize="18sp"></TextView>
+        </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/radius2"
             android:orientation="vertical"
-            android:layout_marginTop="15sp">
+            android:paddingTop="70dp"
+
+            >
+
+
+            <!--        <TextView-->
+            <!--            android:layout_width="300dp"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_gravity="center"-->
+            <!--            android:fontFamily="@font/nexonbold"-->
+            <!--            android:paddingBottom="30dp"-->
+            <!--            android:text="Login"-->
+            <!--            android:textColor="@color/design_default_color_primary"-->
+            <!--            android:textSize="35sp"-->
+            <!--            android:textStyle="bold"-->
+            <!--            android:paddingLeft="10dp"/>-->
+
+
+            <EditText
+                android:id="@+id/userId"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:background="@drawable/radius"
+                android:fontFamily="@font/nexonlight"
+                android:hint="아이디 입력하기."
+                android:paddingLeft="30dp"
+                android:textColor="#B3B3B3"
+                android:textSize="15sp"></EditText>
+
+
+            <EditText
+                android:id="@+id/userPwd"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/radius"
+                android:fontFamily="@font/nexonlight"
+                android:hint="패스워드를 입력하기."
+                android:inputType="textPassword"
+                android:paddingLeft="30dp"
+                android:textColor="#B3B3B3"
+                android:textSize="15sp"></EditText>
+
 
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_marginTop="15sp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -117,22 +117,22 @@
                     android:gravity="right"
                     >
 
-                <TextView
-                        android:id="@+id/findPwd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/nexonmed"
-                        android:text="forgetPassword?"
-                        android:textSize="15sp"
-                        ></TextView>
+                    <!--                <TextView-->
+                    <!--                        android:id="@+id/findPwd"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:fontFamily="@font/nexonmed"-->
+                    <!--                        android:text="forgetPassword?"-->
+                    <!--                        android:textSize="15sp"-->
+                    <!--                        ></TextView>-->
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" | "
-                        ></TextView>
+                    <!--                <TextView-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:text=" | "-->
+                    <!--                        ></TextView>-->
 
-                <TextView
+                    <TextView
                         android:id="@+id/joinUs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -140,20 +140,36 @@
                         android:text="join us?"
                         android:textSize="15sp"></TextView>
 
-            </LinearLayout>
+                </LinearLayout>
 
-            <Button
-                android:id="@+id/loginBtn"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:backgroundTint="@color/black"
-                android:fontFamily="@font/nexonmed"
-                android:text="로그인"
-                ></Button>
+                <Button
+                    android:id="@+id/loginBtn"
+                    android:layout_width="300dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/black"
+                    android:fontFamily="@font/nexonmed"
+                    android:text="로그인"
+                    ></Button>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/autoLoginBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="자동 로그인" />
+
+            </LinearLayout>
 
 
         </LinearLayout>
-    </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

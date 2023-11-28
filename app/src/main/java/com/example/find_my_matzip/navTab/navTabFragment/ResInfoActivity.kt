@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Gravity
 import android.widget.ImageView
 import android.widget.TextView
@@ -26,6 +27,13 @@ class ResInfoActivity : AppCompatActivity() {
         val resInfoName = intent.getStringExtra("resInfoName")
         val textViewresInfoName = findViewById<TextView>(R.id.resInfoName)
         textViewresInfoName.text = resInfoName
+        Log.d("acttest","${resInfoName}")
+
+        val resInfoAvgScore = intent.getDoubleExtra("resInfoAvgScore", 0.0)
+        val textViewresInfoAvgScore = findViewById<TextView>(R.id.resInfoAvgScore)
+        textViewresInfoAvgScore.text = resInfoAvgScore.toString()
+        Log.d("acttest","${resInfoAvgScore}")
+
 
         val resInfoMenu = intent.getStringExtra("resInfoMenu")
         val textViewresInfoMenu = findViewById<TextView>(R.id.resInfoMenu)
