@@ -15,11 +15,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 class NearRestaurantFragment : BottomSheetDialogFragment() {
+
     lateinit var binding: FragmentNearRestaurantBinding
     lateinit var adapter: NearRestaurantRecyclerAdapter
     var restaurantsInsideCircle: List<ResWithScoreDto> = emptyList() // 이 부분을 추가하고 초기화
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = FragmentNearRestaurantBinding.inflate(layoutInflater)
 
