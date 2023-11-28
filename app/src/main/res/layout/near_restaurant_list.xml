@@ -18,6 +18,13 @@
         android:layout_gravity="center"
         android:scaleType="centerCrop"
         android:src="@drawable/image2"></ImageView>
+        <TextView
+            android:id="@+id/resId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:visibility="invisible"
+            />
 
     <LinearLayout
         android:layout_width="match_parent"

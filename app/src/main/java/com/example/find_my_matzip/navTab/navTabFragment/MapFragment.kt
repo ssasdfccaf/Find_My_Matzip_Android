@@ -18,7 +18,6 @@ import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentMapBinding
 import com.example.find_my_matzip.model.ResWithScoreDto
-import com.example.find_my_matzip.navTab.adapter.NearRestaurantRecyclerAdapter
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.LocationTrackingMode

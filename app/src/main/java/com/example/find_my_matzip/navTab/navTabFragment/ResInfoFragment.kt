@@ -35,11 +35,11 @@ class ResInfoFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_res_info, container, false)
 
         val resInfoId = arguments?.getString("resInfoId")
-        rootView.findViewById<LinearLayout>(R.id.toResDtl).setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("resId", resInfoId)
-
-        }
+//        rootView.findViewById<LinearLayout>(R.id.toResDtl).setOnClickListener {
+//            val bundle = Bundle()
+//            bundle.putString("resId", resInfoId)
+//
+//        }
 
         val resInfoName = arguments?.getString("resInfoName")
         val textViewResInfoName = rootView.findViewById<TextView>(R.id.resInfoName)
