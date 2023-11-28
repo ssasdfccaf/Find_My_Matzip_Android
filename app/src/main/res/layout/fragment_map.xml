@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:elevation="0dp"
     tools:context=".navTab.navTabFragment.MapFragment">
 
     <!-- MapView를 감싸는 FrameLayout 추가 -->
@@ -32,10 +33,5 @@
 
 
     </FrameLayout>
-    <!-- RecyclerView 추가 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>
