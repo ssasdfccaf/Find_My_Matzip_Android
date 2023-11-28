@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -22,6 +24,7 @@ import com.example.find_my_matzip.databinding.ActivityHomeTabBinding
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
+import com.google.android.material.navigation.NavigationView
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,6 +36,8 @@ class HomeTabActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
 
     private val TAG: String = "HomeTabActivity"
+    private var loginUserId:String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeTabBinding.inflate(layoutInflater)
@@ -82,7 +87,7 @@ class HomeTabActivity : AppCompatActivity() {
 
         //Drawer 네비게이션
         binding.mainDrawerView.setNavigationItemSelectedListener {
-            if (it.title == "종료") {
+            if (it.title == "앱 종료") {
 
                 // 팝업 띄우기 (stack 전부 지우고 앱 종료)
                 showExitBuilder()
@@ -113,9 +118,17 @@ class HomeTabActivity : AppCompatActivity() {
                 }
                 builder.show()
             }
+
             true
         }
 
+
+        //Drawer에 사용자 ID 넣기
+        loginUserId = SharedPreferencesManager.getString("id","")
+
+        val header: View? = binding.mainDrawerView.getHeaderView(0)
+        val text:TextView = header?.findViewById(R.id.userIdTextView) as TextView
+        text.text = "$loginUserId 님"
     }
 
 
@@ -201,8 +214,7 @@ class HomeTabActivity : AppCompatActivity() {
                             //회원정보 삭제 로직 추가
                             //1.DB에서 DATA 삭제
                             val userService = (applicationContext as MyApplication).userService
-                            val deleteUserId = SharedPreferencesManager.getString("id","")
-                            val call = userService.deleteById(deleteUserId)
+                            val call = userService.deleteById(loginUserId)
 
                             call.enqueue(object: Callback<Unit> {
                                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
@@ -220,7 +232,7 @@ class HomeTabActivity : AppCompatActivity() {
                                         val storageRef = storage.reference
 
                                         // 이미지 저장될 위치 및 파일명(파이어베이스)
-                                        val imgRef = storageRef.child("users_img/${deleteUserId}.jpg")
+                                        val imgRef = storageRef.child("users_img/${loginUserId}.jpg")
 
 
                                         imgRef.delete().addOnCompleteListener {
