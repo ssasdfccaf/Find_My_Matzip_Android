@@ -9,6 +9,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,7 +50,7 @@ class CustomDialog(context: Context, private val datas: List<String>, private va
 
     // 다이얼로그 표시
     fun showDialog() {
-        dialog.findViewById<Button>(R.id.dialogButton)?.setOnClickListener {
+        dialog.findViewById<ImageButton>(R.id.dialogButton)?.setOnClickListener {
             dialog.dismiss()
         }
 
