@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +14,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentMyPageBinding
-import com.example.find_my_matzip.model.FollowerDto
+import com.example.find_my_matzip.model.FollowDto
 import com.example.find_my_matzip.model.FollowingDto
 import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
@@ -67,7 +68,7 @@ class MyPageFragment : Fragment() {
                 Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
                 Log.d("MyPageFragment", "도착 확인3: countFromUser ${profileDto?.countFromUser}")
                 Log.d("MyPageFragment", "도착 확인4: countToUser ${profileDto?.countToUser}")
-                Log.d("MyPageFragment", "도착 확인5: followerDtoList ${profileDto?.followerDtoList}")
+                Log.d("MyPageFragment", "도착 확인5: followerDtoList ${profileDto?.followDtoList}")
                 Log.d("MyPageFragment", "도착 확인5: followcheck ${profileDto?.followcheck}")
                 if (profileDto != null) {
                     // 팔로워, 팔로잉, 게시물 수 업데이트
@@ -98,15 +99,20 @@ class MyPageFragment : Fragment() {
                     }
 
                     Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
+
+
+                    //여기서 만들필요가있나..?
                     // 프로필 어댑터 및 보드 어댑터 업데이트
-                    ProfileAdapter(this@MyPageFragment, listOf(profileDto.pageUserDto))
+                    //adapter = ProfileAdapter(this@MyPageFragment, listOf(profileDto.pageUserDto))
+
+
                     boardAdapter = BoardRecyclerAdapter(this@MyPageFragment, profileDto.boards.content)
                     binding.boardRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                     binding.boardRecyclerView.adapter = boardAdapter
 
                     // 팔로잉 목록 클릭 시 다이얼로그 표시
                     binding.following.setOnClickListener {
-                        val followingList: List<FollowingDto> = profileDto.followingDtoList ?: emptyList()
+                        val followingList: List<FollowDto> = profileDto.followingDtoList ?: emptyList()
                         Log.d("MyPageFragment", "도착 확인6: followingDtoList $followingList")
 //                        if (followingList.isEmpty()) {
 //                            ShowMessage("실패", "데이터를 찾을 수 없습니다.")
@@ -128,18 +134,28 @@ class MyPageFragment : Fragment() {
 //                        }
 //
 //                        ShowMessage("회원목록", buffer.toString())
-                        CustomDialog(requireContext(), followingList.map { it.id }, CustomDialog.DialogType.FOLLOWING).apply {
-                            setOnClickListener(object : CustomDialog.OnDialogClickListener {
-                                override fun onClicked(name: String) {
-                                    // 클릭한 팔로워의 프로필로 이동하는 코드 추가
-                                    navigateToUserProfile(name)
-                                    Log.d("CustomDialog", "팔로잉아이디 클릭! : ID: $name")
-                                }
-                            })
-                            // 다이얼로그 표시 및 내용 설정
-                            showDialog()
-                            setContent()
+
+
+                        val followerList: List<FollowDto> = profileDto.followingDtoList
+
+
+                        if(followerList!=null){
+                            CustomDialog(requireContext(), followerList, CustomDialog.DialogType.FOLLOWING).apply {
+                                setOnClickListener(object : CustomDialog.OnDialogClickListener {
+                                    override fun onClicked(id: String) {
+                                        // 클릭한 팔로워의 프로필로 이동하는 코드 추가
+                                        navigateToUserProfile(id)
+                                        Log.d("CustomDialog", "팔로잉아이디 클릭! : ID: $id")
+                                    }
+                                })
+                                // 다이얼로그 표시 및 내용 설정
+                                showDialog()
+                                setContent()
+                            }
+                        }else{
+                            Toast.makeText(requireContext(), "팔로잉 없음", Toast.LENGTH_SHORT).show()
                         }
+
                     }
 
 
@@ -165,20 +181,24 @@ class MyPageFragment : Fragment() {
 //                        dialog.setContent()
 //                    }
 // 팔로워 리스트 가져오기
-                        val followerList: List<FollowerDto> = profileDto.followerDtoList
+                        val followerList: List<FollowDto> = profileDto.followDtoList
                         Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
 
-                        CustomDialog(requireContext(), followerList.map { it.id }, CustomDialog.DialogType.FOLLOWER).apply {
-                            setOnClickListener(object : CustomDialog.OnDialogClickListener {
-                                override fun onClicked(name: String) {
-                                    // 클릭한 팔로워의 프로필로 이동하는 코드 추가
-                                    navigateToUserProfile(name)
-                                    Log.d("CustomDialog", "팔로워아이디 클릭! : ID: $name")
-                                }
-                            })
-                            // 다이얼로그 표시 및 내용 설정
-                            showDialog()
-                            setContent()
+                        if(followerList != null){
+                            CustomDialog(requireContext(), followerList, CustomDialog.DialogType.FOLLOWER).apply {
+                                setOnClickListener(object : CustomDialog.OnDialogClickListener {
+                                    override fun onClicked(name: String) {
+                                        // 클릭한 팔로워의 프로필로 이동하는 코드 추가
+                                        navigateToUserProfile(name)
+                                        Log.d("CustomDialog", "팔로워아이디 클릭! : ID: $name")
+                                    }
+                                })
+                                // 다이얼로그 표시 및 내용 설정
+                                showDialog()
+                                setContent()
+                            }
+                        }else{
+                            Toast.makeText(requireContext(), "팔로워 없음", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentProfileBinding
-import com.example.find_my_matzip.model.FollowerDto
+import com.example.find_my_matzip.model.FollowDto
 import com.example.find_my_matzip.model.FollowingDto
 import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter2
@@ -234,14 +234,14 @@ class ProfileFragment : Fragment() {
 
                             // 팔로잉 목록 클릭 시 다이얼로그 표시
                             binding.following.setOnClickListener {
-                                val followingList: List<FollowingDto> =
+                                val followingList: List<FollowDto> =
                                     profileDto?.followingDtoList ?: emptyList()
                                 Log.d("MyPageFragment", "도착 확인6: followingDtoList $followingList")
 
 
                                 CustomDialog(
                                     requireContext(),
-                                    followingList.map { it.id },
+                                    followingList,
                                     CustomDialog.DialogType.FOLLOWING
                                 ).apply {
                                     setOnClickListener(object : CustomDialog.OnDialogClickListener {
@@ -260,14 +260,14 @@ class ProfileFragment : Fragment() {
                             }
                             // 팔로워 목록 클릭 시 다이얼로그로 팔로워 리스트 (리사이클러)
                             binding.follower.setOnClickListener {
-                                val followerList: List<FollowerDto> =
-                                    profileDto?.followerDtoList ?: emptyList()
+                                val followerList: List<FollowDto> =
+                                    profileDto?.followDtoList ?: emptyList()
                                 Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
 
                                 // 다이얼로그 생성
                                 val dialog = CustomDialog(
                                     requireContext(),
-                                    followerList.map { it.id },
+                                    followerList,
                                     CustomDialog.DialogType.FOLLOWER
                                 )
 

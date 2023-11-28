@@ -1,6 +1,6 @@
 package com.example.find_my_matzip.model
 
-data class FollowerDto(
+data class FollowDto(
     val id:String,
     val name:String,
     val profileImage:String,

@@ -4,14 +4,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.find_my_matzip.databinding.ItemDialogBinding
+import com.example.find_my_matzip.model.FollowDto
 
 
 //
 //class FollowerViewHolder(val binding: ItemDialogBinding) : RecyclerView.ViewHolder(binding.root)
 
 // FollowerAdapter 클래스는 RecyclerView의 어댑터로, 데이터를 받아와 화면에 표시하는 역할을 합니다.
-class FollowerAdapter(val context: Context, var datas: List<String>?, private val listener: OnFollowerClickListener) :
+class FollowerAdapter(val context: Context, var datas: List<FollowDto>, private val listener: OnFollowerClickListener) :
     RecyclerView.Adapter<FollowerAdapter.FollowerViewHolder>() {
 
     // ViewHolder를 생성하는 함수
@@ -36,13 +38,27 @@ class FollowerAdapter(val context: Context, var datas: List<String>?, private va
     // 내부 클래스로 정의된 FollowerViewHolder는 각 아이템 뷰의 구성요소를 관리합니다.
     inner class FollowerViewHolder(val binding: ItemDialogBinding) : RecyclerView.ViewHolder(binding.root) {
         // 아이템 뷰에 데이터를 바인딩하는 함수
-        fun bind(item: String?) {
+        fun bind(item: FollowDto?) {
             // 뷰 바인딩 객체를 통해 아이템의 텍스트 설정
-            binding.dialogUserid.text = item
+            binding.dialogUserid.text = item?.id
+            binding.dialogUserName.text = item?.name
+
+            val userImg = item?.profileImage
+            if(userImg != ""){
+                Glide.with(context)
+                    .load(userImg)
+//                    .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
+//                    .skipMemoryCache(true)// 메모리 캐시 저장 off
+                    .override(900, 900)
+                    .into(binding.dialogUserImg)
+
+            }
+
+
             // 아이템 뷰를 클릭했을 때의 동작 정의
             binding.root.setOnClickListener {
                 // 클릭 시 리스너의 onFollowClick 메서드 호출
-                listener.onFollowClick(item ?: "")
+                listener.onFollowClick(item?.id ?: "")
             }
         }
     }
