@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 // res 객체
 data class ResWithScoreDto(
-    @SerializedName("res_id") val res_id: String,
+    @SerializedName("resId") val res_id: String,
     @SerializedName("res_name") val res_name: String,
     @SerializedName("res_district") val res_district: String,
     @SerializedName("res_lng") val res_lng: String,
