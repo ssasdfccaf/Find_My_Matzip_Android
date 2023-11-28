@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
@@ -37,9 +38,6 @@ class HomeTabActivity : AppCompatActivity() {
         binding = ActivityHomeTabBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //로딩 다이얼로그
-        val loadingDialog = LoadingDialog(this)
-
         // 툴바 , 업버튼
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -56,11 +54,26 @@ class HomeTabActivity : AppCompatActivity() {
 
         tabLayout.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.tab1 -> {replaceFragment(HomeFragment())}
-                R.id.tab2 -> {replaceFragment(RestaurantFragment())}
-                R.id.tab3 -> {replaceFragment(MapFragment())}
-                R.id.tab4 -> {replaceFragment(RankingFragment())}
-                R.id.tab5 -> {replaceFragment(MyPageFragment())}
+                R.id.tab1 -> {
+                    replaceFragment(HomeFragment())
+                }
+
+                R.id.tab2 -> {
+                    replaceFragment(RestaurantFragment())
+                }
+
+                R.id.tab3 -> {
+                    replaceFragment(MapFragment())
+                }
+
+                R.id.tab4 -> {
+                    replaceFragment(RankingFragment())
+                }
+
+                R.id.tab5 -> {
+                    replaceFragment(MyPageFragment())
+                }
+
                 else -> false
             }
             return@setOnNavigationItemSelectedListener true
@@ -69,33 +82,23 @@ class HomeTabActivity : AppCompatActivity() {
 
         //Drawer 네비게이션
         binding.mainDrawerView.setNavigationItemSelectedListener {
-            if (it.title == "종료"){
-                val builder = AlertDialog.Builder(this@HomeTabActivity)
-                builder.setTitle("Exit?")
-                builder.setMessage("앱을 종료하시겠습니까?")
-                builder.setNegativeButton("아니오") { dialog, which ->
-                    // 아무 작업도 수행하지 않음
-                }
-                builder.setPositiveButton("예") { dialog, which ->
-                    // stack 전부 지우고 앱 종료
-                    finishAffinity()
-                }
-                builder.show()
-            }
-            else if (it.title == "로그아웃") {
-                Toast.makeText(this@HomeTabActivity,"로그아웃 화면 이동", Toast.LENGTH_SHORT).show()
+            if (it.title == "종료") {
 
-                //로그인 정보 지우기
-                SharedPreferencesManager.clearPreferences()
+                // 팝업 띄우기 (stack 전부 지우고 앱 종료)
+                showExitBuilder()
 
-                // BackStack의 fragment전부 삭제
-                clearBackStack()
+            } else if (it.title == "로그아웃") {
+                Toast.makeText(this@HomeTabActivity, "로그아웃 화면 이동", Toast.LENGTH_SHORT).show()
+
+                // sharedPreference, BackStack의 fragment전부 삭제
+                logOut()
 
                 //로그인 화면으로 이동
                 val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
                 startActivity(intent)
-            }
-            else if (it.title == "회원 탈퇴") {
+
+            } else if (it.title == "회원 탈퇴") {
+
                 val builder = AlertDialog.Builder(this@HomeTabActivity)
                 builder.setTitle("회원 탈퇴")
                 builder.setMessage("정말 탈퇴하시겠습니까???????")
@@ -104,103 +107,9 @@ class HomeTabActivity : AppCompatActivity() {
                 }
                 builder.setPositiveButton("예") { dialog, which ->
 
-                    // 회원 탈퇴 전 본인 확인
-                    val passwordBuilder = AlertDialog.Builder(this@HomeTabActivity)
-                    builder.setTitle("본인 확인")
-                    builder.setMessage("비밀번호를 입력해주세요")
-
-                    val inflater = layoutInflater
-                    val passwordDialogView = inflater.inflate(R.layout.dialog_password, null)
-                    passwordBuilder.setView(passwordDialogView)
-
-                    val passwordEditText = passwordDialogView.findViewById<EditText>(R.id.editTextPassword)
-
-                    passwordBuilder.setPositiveButton("확인") { dialog, which ->
-                        
-                        val enteredPassword = passwordEditText.text.toString()
-
-                        //로딩창 띄우기
-                        loadingDialog.show()
-
-                        //비밀번호 확인
-                        if (isCorrectPassword(enteredPassword)) {
-                            
-                            //회원정보 삭제 로직 추가
-                            //1.DB에서 DATA 삭제
-                            val userService = (applicationContext as MyApplication).userService
-                            val deleteUserId = SharedPreferencesManager.getString("id","")
-                            val call = userService.deleteById(deleteUserId)
-
-                            call.enqueue(object: Callback<Unit> {
-                                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-
-                                    Log.d(TAG, "Request URL: ${call.request().url()}")
-                                    Log.d(TAG, "Request Body: ${call.request().body()}")
-                                    Log.d(TAG, "Response Code: ${response.code()}")
-                                    if(response.isSuccessful) {
-                                        Log.d(TAG, "삭제 성공")
-
-                                        //2.firebase에서 이미지삭제
-                                        // 스토리지 접근 도구 ,인스턴스
-                                        val storage = MyApplication.storage
-                                        // 스토리지에 저장할 인스턴스
-                                        val storageRef = storage.getReference("images")
-
-                                        // storage에서 삭제 할 파일명
-                                        val fileName = "${deleteUserId}"
-
-                                        // 이미지 저장될 위치 및 파일명(파이어베이스)
-                                        val imgRef = storageRef.child("users_img/${fileName}.jpg")
-
-
-                                        val deleteTask = imgRef.delete()
-                                        deleteTask.addOnCompleteListener {
-                                            // 파일 삭제 성공
-                                            Log.d(TAG, " firestore 파일 삭제 성공")
-                                        }.addOnFailureListener {
-                                            // 파일 삭제 실패
-                                            Log.d(TAG, "firestore 파일 삭제 실패")
-                                        }
-
-                                        //로딩창 지우기
-                                        loadingDialog.dismiss()
-
-                                        val intent = Intent(this@HomeTabActivity, MainActivity::class.java)
-                                        startActivity(intent)
-
-                                    }else {
-                                        Log.d(TAG, "서버 응답 실패: ${response.code()}")
-
-                                        //로딩창 지우기
-                                        loadingDialog.dismiss()
-                                    }
-                                }
-
-                                override fun onFailure(call: Call<Unit>, t: Throwable) {
-                                    Log.d(TAG, "실패 ${t.message}")
-
-                                    //로딩창 지우기
-                                    loadingDialog.dismiss()
-                                    call.cancel()
-                                }
-
-
-                            })
-
-                            Toast.makeText(this@HomeTabActivity, "비밀번호 확인 성공", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(this@HomeTabActivity, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    passwordBuilder.setNegativeButton("취소") { dialog, which ->
-                        // Cancelled password input
-                        Toast.makeText(this@HomeTabActivity, "비밀번호 입력이 취소되었습니다", Toast.LENGTH_SHORT).show()
-                    }
-
-                    builder.show()
-
-
+                    // 1. 비밀번호 확인 창 띄우기
+                    // 2. 확인 후 DB삭제, firestore삭제
+                    showVertifyPw()
                 }
                 builder.show()
             }
@@ -209,9 +118,11 @@ class HomeTabActivity : AppCompatActivity() {
 
     }
 
+
+
     //비밀번호 확인
     private fun isCorrectPassword(enteredPassword: String): Boolean {
-        val correctPw = SharedPreferencesManager.getString("pw","")
+        val correctPw = SharedPreferencesManager.getString("pw", "")
         return correctPw == enteredPassword
     }
 
@@ -237,5 +148,147 @@ class HomeTabActivity : AppCompatActivity() {
         for (i in 0 until count) {
             fragmentManager.popBackStack()
         }
+    }
+
+    private fun logOut(){
+        //로그인 정보 지우기
+        SharedPreferencesManager.clearPreferences()
+
+        // BackStack의 fragment전부 삭제
+        clearBackStack()
+    }
+
+    private fun showExitBuilder(){
+        val builder = AlertDialog.Builder(this@HomeTabActivity)
+        builder.setTitle("Exit?")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        builder.setNegativeButton("아니오") { dialog, which ->
+            // 아무 작업도 수행하지 않음
+        }
+        builder.setPositiveButton("예") { dialog, which ->
+            // stack 전부 지우고 앱 종료
+            finishAffinity()
+        }
+        builder.show()
+    }
+
+    //비밀번호 확인 창
+    private fun showVertifyPw(){
+
+        //로딩 다이얼로그
+        val loadingDialog = LoadingDialog(this)
+
+        val et = EditText(this)
+        et.gravity = Gravity.CENTER
+
+        // 회원 탈퇴 전 본인 확인
+        val passwordBuilder = AlertDialog.Builder(this@HomeTabActivity)
+            .setTitle("본인 확인")
+            .setMessage("비밀번호를 입력해주세요")
+            .setView(et)
+            .setPositiveButton("확인") { dialog, which ->
+
+                val enteredPassword = et.text.toString()
+
+                Log.d(TAG, "enteredPassword : $enteredPassword")
+
+                //로딩창 띄우기
+                loadingDialog.show()
+
+                //비밀번호 확인
+                if (isCorrectPassword(enteredPassword)) {
+
+                            //회원정보 삭제 로직 추가
+                            //1.DB에서 DATA 삭제
+                            val userService = (applicationContext as MyApplication).userService
+                            val deleteUserId = SharedPreferencesManager.getString("id","")
+                            val call = userService.deleteById(deleteUserId)
+
+                            call.enqueue(object: Callback<Unit> {
+                                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+
+                                    Log.d(TAG, "Request URL: ${call.request().url()}")
+                                    Log.d(TAG, "Request Body: ${call.request().body()}")
+                                    Log.d(TAG, "Response Code: ${response.code()}")
+                                    if(response.isSuccessful) {
+                                        Log.d(TAG, "삭제 성공")
+
+                                        //2.firebase에서 이미지삭제
+                                        // 스토리지 접근 도구 ,인스턴스
+                                        val storage = MyApplication.storage
+                                        // 스토리지에 저장할 인스턴스
+                                        val storageRef = storage.reference
+
+                                        // 이미지 저장될 위치 및 파일명(파이어베이스)
+                                        val imgRef = storageRef.child("users_img/${deleteUserId}.jpg")
+
+
+                                        imgRef.delete().addOnCompleteListener {
+                                            // 파일 삭제 성공
+                                            Log.d(TAG, " firestore 파일 삭제 성공")
+
+                                            logOut()
+
+                                            //로딩창 지우기
+                                            loadingDialog.dismiss()
+
+                                            val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
+                                            startActivity(intent)
+
+                                        }.addOnFailureListener {
+                                            //로딩창 지우기
+                                            loadingDialog.dismiss()
+
+                                            // 파일 삭제 실패
+                                            Log.d(TAG, "firestore 파일 삭제 실패")
+                                        }
+
+
+                                    }else {
+                                        Log.d(TAG, "서버 응답 실패: ${response.code()}")
+
+                                        //로딩창 지우기
+                                        loadingDialog.dismiss()
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<Unit>, t: Throwable) {
+                                    Log.d(TAG, "실패 ${t.message}")
+
+                    //로딩창 지우기
+                    loadingDialog.dismiss()
+                                    call.cancel()
+                                }
+
+
+                            })
+
+                    Toast.makeText(
+                        this@HomeTabActivity,
+                        "비밀번호 확인 성공",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+
+
+                } else {
+
+                    //로딩창 지우기
+                    loadingDialog.dismiss()
+                    Toast.makeText(
+                        this@HomeTabActivity,
+                        "비밀번호가 일치하지 않습니다",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+        passwordBuilder.setNegativeButton("취소") { dialog, which ->
+            // Cancelled password input
+            Toast.makeText(this@HomeTabActivity, "비밀번호 입력이 취소되었습니다", Toast.LENGTH_SHORT)
+                .show()
+        }
+
+        passwordBuilder.show()
     }
 }
