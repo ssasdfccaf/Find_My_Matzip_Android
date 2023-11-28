@@ -44,9 +44,6 @@ class JoinActivity : AppCompatActivity() {
     // 카메라 이미지 파일 위치
     lateinit var profileImageUri : String
 
-    //갤러리사진, 카메라 사진 중 저장할 사진 선택
-    lateinit var checkImg : String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityJoinBinding.inflate(layoutInflater)
@@ -96,8 +93,6 @@ class JoinActivity : AppCompatActivity() {
                 }
                 Log.d(TAG,"갤러리 filePath : ${filePath}")
 
-                //갤러리 이미지로 저장하겠다.
-                checkImg = "갤러리"
 
             } // 조건문 닫는 블록
         }
@@ -130,15 +125,13 @@ class JoinActivity : AppCompatActivity() {
                     .centerCrop()
                     .into(binding.resultUserImage)
 
-                //카메라 이미지로 저장하겠다.
-                checkImg = "카메라"
 
             } else if (it.resultCode == Activity.RESULT_CANCELED) {
                 // The user canceled the camera capture
                 Log.d(TAG, "카메라 기능 취소됨")
             } else {
                 // Handle other cases if needed
-                Log.d(TAG, "카메라 기능 실패: ${it.resultCode}")
+                Log.d(TAG, "카메라 기능 로딩 실패: ${it.resultCode}")
             }
 
 

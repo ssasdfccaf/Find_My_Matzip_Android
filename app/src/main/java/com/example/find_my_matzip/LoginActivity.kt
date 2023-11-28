@@ -1,16 +1,17 @@
 package com.example.find_my_matzip
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import com.example.find_my_matzip.databinding.ActivityLoginBinding
 import com.example.find_my_matzip.model.LoginDto
 import com.example.find_my_matzip.model.ResultDto
@@ -20,6 +21,7 @@ import com.example.find_my_matzip.utils.LoadingDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class LoginActivity : AppCompatActivity() {
     private val TAG: String = "LoginActivity"
@@ -192,4 +194,23 @@ class LoginActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    //뒤로가기 비활성화
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        //super.onBackPressed()
+
+        val builder = AlertDialog.Builder(this@LoginActivity)
+        builder.setTitle("Exit?")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        builder.setNegativeButton("아니오") { dialog, which ->
+            // 아무 작업도 수행하지 않음
+        }
+        builder.setPositiveButton("예") { dialog, which ->
+            // stack 전부 지우고 앱 종료
+            finishAffinity()
+        }
+        builder.show()
+    }
+
 }
