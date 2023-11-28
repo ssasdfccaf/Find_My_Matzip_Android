@@ -68,7 +68,7 @@ class MyPageFragment : Fragment() {
                 Log.d("MyPageFragment", "도착 확인3: countFromUser ${profileDto?.countFromUser}")
                 Log.d("MyPageFragment", "도착 확인4: countToUser ${profileDto?.countToUser}")
                 Log.d("MyPageFragment", "도착 확인5: followerDtoList ${profileDto?.followerDtoList}")
-                Log.d("MyPageFragment", "도착 확인5: followCheck ${profileDto?.followCheck}")
+                Log.d("MyPageFragment", "도착 확인5: followcheck ${profileDto?.followcheck}")
                 if (profileDto != null) {
                     // 팔로워, 팔로잉, 게시물 수 업데이트
                     // 팔로워 팔로우수
@@ -88,12 +88,14 @@ class MyPageFragment : Fragment() {
 
                     // 다른 필요한 데이터들도 마찬가지로 설정
 
-                    Glide.with(requireContext())
-                        .load(profileDto.pageUserDto.user_image)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
-                        .skipMemoryCache(true)// 메모리 캐시 저장 off
-                        .override(900, 900)
-                        .into(binding.userImage)
+                    if(profileDto.pageUserDto.user_image != ""){
+                        Glide.with(requireContext())
+                            .load(profileDto.pageUserDto.user_image)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
+                            .skipMemoryCache(true)// 메모리 캐시 저장 off
+                            .override(900, 900)
+                            .into(binding.userImage)
+                    }
 
                     Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
                     // 프로필 어댑터 및 보드 어댑터 업데이트

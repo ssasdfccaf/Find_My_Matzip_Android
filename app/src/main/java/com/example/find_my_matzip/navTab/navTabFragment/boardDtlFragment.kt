@@ -45,7 +45,7 @@ class boardDtlFragment : Fragment() {
         val boardService = (context?.applicationContext as MyApplication).boardService
         val boardDtl = arguments?.getString("boardId")?.let { boardService.getBoardDtl(it) }
 //        val boardId = arguments?.getString("boardId")
-        Log.d("boardDtlFragment", "boardId.enqueue 호출전 $boardDtl")
+        Log.d("boardDtlFragment", "boardDtl.enqueue 호출전 $boardDtl")
 
 //        val boardDetail = boardService.getBoardDtl(boardId)
 
@@ -86,6 +86,29 @@ class boardDtlFragment : Fragment() {
 //                binding.boardRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 //                BoardRecyclerAdapter(this@MyPageFragment, profileDto.boards.content)
 //                binding.boardRecyclerView.adapter = boardAdapter
+
+
+                // toResDtl 클릭 이벤트 핸들러
+                fun navigateToResDetail(resId: String?) {
+                    if (resId.isNullOrEmpty()) {
+                        Log.d("kkt", "resId is null or empty")
+                        return
+                    }
+
+                    val fragment = RestaurantDtlFragment.newInstance(resId)
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, fragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+
+                binding.toResDtl.setOnClickListener {
+                    Log.d("kkt", "식당가기 클릭됨")
+                    Log.d("kkt", "resId: ${boardDto?.restaurant?.res_id}")
+                    val resId = boardDto?.restaurant?.res_id
+                    navigateToResDetail(resId)
+                }
+                // toResDtl 클릭 이벤트 핸들러
 
 
             }

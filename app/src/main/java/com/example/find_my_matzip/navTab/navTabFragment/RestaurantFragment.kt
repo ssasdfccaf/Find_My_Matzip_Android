@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.databinding.FragmentRestaurantBinding
 import com.example.find_my_matzip.model.ResWithScoreDto
-import com.example.find_my_matzip.model.RestaurantDto
 import com.example.find_my_matzip.navTab.adapter.RankingRecyclerAdapter
 import com.example.find_my_matzip.navTab.adapter.RestaurantRecyclerAdapter
 import retrofit2.Call
@@ -21,7 +20,6 @@ import retrofit2.Response
 class RestaurantFragment : Fragment() {
     lateinit var binding: FragmentRestaurantBinding
     lateinit var adapter: RestaurantRecyclerAdapter
-    lateinit var adapter2: RankingRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentRestaurantBinding.inflate(layoutInflater)

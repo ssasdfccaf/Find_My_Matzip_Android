@@ -39,5 +39,8 @@ class RestaurantRecyclerAdapter(val context: RestaurantFragment, val datas: List
             .load(Item?.res_thumbnail)
             .override(900,900)
             .into(binding.resThumbnail)
+
+
+
     }
 }

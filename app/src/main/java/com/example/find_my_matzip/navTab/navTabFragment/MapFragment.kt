@@ -3,7 +3,6 @@ package com.example.find_my_matzip.navTab.navTabFragment
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,7 +17,7 @@ import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentMapBinding
 import com.example.find_my_matzip.model.ResWithScoreDto
-import com.example.find_my_matzip.model.RestaurantDto
+import com.example.find_my_matzip.navTab.adapter.NearRestaurantRecyclerAdapter
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.LocationTrackingMode
@@ -69,9 +68,9 @@ class MapFragment : Fragment() , OnMapReadyCallback {
     }
     private fun initMapView() {
         val fm = childFragmentManager
-        val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
+        val mapFragment = fm.findFragmentById(com.example.find_my_matzip.R.id.map) as MapFragment?
             ?: MapFragment.newInstance().also {
-                fm.beginTransaction().add(R.id.map, it).commit()
+                fm.beginTransaction().add(com.example.find_my_matzip.R.id.map, it).commit()
             }
         // fragment의 getMapAsync() 메서드로 OnMapReadyCallback 콜백을 등록하면 비동기로 NaverMap 객체를 얻을 수 있다.
         mapFragment.getMapAsync(this)
@@ -131,6 +130,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 //                            Log.d("infotest", "영업시간 ${currentRestaurant.operate_time}")
 //                            Log.d("infotest", "식당소개 ${currentRestaurant.res_intro}")
                             Log.d("infotest", "식당평점 ${currentRestaurant.avgScore}")
+                            Log.d("infotest", "식당아디 ${currentRestaurant.res_id}")
 
 
                             startActivity(intent)
@@ -199,7 +199,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
             val newPerimeterOverlay = com.naver.maps.map.overlay.PolylineOverlay()
             newPerimeterOverlay.coords = perimeterPoints
             newPerimeterOverlay.color =
-                ContextCompat.getColor(requireContext(), R.color.black) // 원하는 색상으로 변경
+                ContextCompat.getColor(requireContext(), com.example.find_my_matzip.R.color.black) // 원하는 색상으로 변경
             newPerimeterOverlay.width = 5 // 테두리 두께 조절
 
             // 이전에 생성된 PolylineOverlay 제거
@@ -233,9 +233,12 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                                 restaurantsInsideCircle.add(currentRestaurant)
                             }
                         }
+                        showNearbyRestaurants(restaurantsInsideCircle)
+
                         Toast.makeText(requireContext(), "원 안의 식당 ${restaurantsInsideCircle.size}개", Toast.LENGTH_SHORT).show()
 
                         Log.d("nearres", "원 안에 있는 식당: ${restaurantsInsideCircle}")
+
 
                         // 추가로 필요한 작업 수행
                     } else {
@@ -247,6 +250,18 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                 }
             }
         }
+    }
+
+    private fun showNearbyRestaurants(restaurants: List<ResWithScoreDto>) {
+        val nearRestaurantFragment = NearRestaurantFragment()
+        nearRestaurantFragment.restaurantsInsideCircle = restaurants
+
+        // FragmentTransaction을 사용하여 NearRestaurantFragment를 표시하는 코드를 작성
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.hide(this)
+        transaction.add(R.id.fragmentContainer, nearRestaurantFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
     // 원 안에 포함되는지 확인하는 함수

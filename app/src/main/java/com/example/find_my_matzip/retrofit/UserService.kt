@@ -43,4 +43,12 @@ interface UserService {
     @POST("/users/updateUsers")
     fun updateUsers(@Body usersFormDto: UsersFormDto): Call<Unit>
 
+    @DELETE("/users/deleteFollow/{toUserId}")
+    fun deleteFollow(@Path("toUserId") toUserId: String): Call<Unit>
+
+    @GET("/users/insertFollow/{toUserId}")
+    fun insertFollow(@Path("toUserId") toUserId: String): Call<Unit>
+
+
+
 }

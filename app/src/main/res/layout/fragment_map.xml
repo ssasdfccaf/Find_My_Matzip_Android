@@ -29,8 +29,13 @@
             android:layout_margin="16dp"
             android:text="현 지도에서 재검색"
             />
-    </FrameLayout>
 
-    <!-- 기타 뷰나 레이아웃 추가 가능 -->
+
+    </FrameLayout>
+    <!-- RecyclerView 추가 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
