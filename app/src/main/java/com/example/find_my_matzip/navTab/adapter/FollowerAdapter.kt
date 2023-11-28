@@ -5,16 +5,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.find_my_matzip.MyApplication
+import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.ItemDialogBinding
 import com.example.find_my_matzip.model.FollowDto
+import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
+import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 //
 //class FollowerViewHolder(val binding: ItemDialogBinding) : RecyclerView.ViewHolder(binding.root)
 
 // FollowerAdapter 클래스는 RecyclerView의 어댑터로, 데이터를 받아와 화면에 표시하는 역할을 합니다.
+
+private val TAG: String = "FollowerAdapter"
+
 class FollowerAdapter(val context: Context, var datas: List<FollowDto>, private val listener: OnFollowerClickListener) :
     RecyclerView.Adapter<FollowerAdapter.FollowerViewHolder>() {
 
@@ -58,7 +69,7 @@ class FollowerAdapter(val context: Context, var datas: List<FollowDto>, private 
 
             val followcheck= item?.subscribeState
 
-            Log.d("MyPageFragment", "subscribeState $item.id , $followcheck")
+            Log.d(TAG, "subscribeState $item.id , $followcheck")
             if(followcheck == true){
                 // 팔로우 중
                 binding.followBtn.visibility = View.GONE
@@ -68,7 +79,75 @@ class FollowerAdapter(val context: Context, var datas: List<FollowDto>, private 
                 binding.followBtn.visibility = View.VISIBLE
                 binding.unfollowBtn.visibility = View.GONE
             }
+            val userService = (context?.applicationContext as MyApplication).userService
 
+            // 팔로우 버튼 클릭 리스너
+            binding.followBtn.setOnClickListener {
+                Log.d(TAG, "팔로우 버튼클릭")
+
+                item?.id?.let { toUserId ->
+                    userService.insertFollow(toUserId)
+                        .enqueue(object : Callback<Unit> {
+                            override fun onResponse(
+                                call: Call<Unit>,
+                                response: Response<Unit>
+                            ) {
+                                if (response.isSuccessful) {
+                                    // 성공적으로 팔로우한 경우
+                                    binding.followBtn.visibility = View.GONE
+                                    binding.unfollowBtn.visibility = View.VISIBLE
+
+                                    Toast.makeText(context, "팔로우 성공", Toast.LENGTH_SHORT).show()
+                                    Log.e(TAG, "팔로우 성공")
+
+                                } else {
+                                    Log.d(TAG, "팔로우 요청 실패 - Code: ${response.code()}, Message: ${response.message()}")
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: Call<Unit>,
+                                t: Throwable?
+                            ) {
+                                Log.e(TAG, "팔로우 onFailure")
+                            }
+                        })
+                }
+            }
+
+            // 팔로우 버튼 클릭 리스너
+            binding.unfollowBtn.setOnClickListener {
+                Log.d(TAG, "팔로우 버튼클릭")
+
+                item?.id?.let { toUserId ->
+                    userService.deleteFollow(toUserId)
+                        .enqueue(object : Callback<Unit> {
+                            override fun onResponse(
+                                call: Call<Unit>,
+                                response: Response<Unit>
+                            ) {
+                                if (response.isSuccessful) {
+                                    // 성공적으로 언팔로우한 경우
+                                    binding.followBtn.visibility = View.VISIBLE
+                                    binding.unfollowBtn.visibility = View.GONE
+
+                                    Toast.makeText(context, "언팔로우 성공", Toast.LENGTH_SHORT).show()
+                                    Log.e(TAG, "언팔로우 성공")
+
+                                } else {
+                                    Log.d(TAG, "언팔로우 요청 실패 - Code: ${response.code()}, Message: ${response.message()}")
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: Call<Unit>,
+                                t: Throwable?
+                            ) {
+                                Log.e(TAG, "팔로우 onFailure")
+                            }
+                        })
+                }
+            }
 
             // 아이템 뷰를 클릭했을 때의 동작 정의
             binding.root.setOnClickListener {
