@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:elevation="0dp"
     tools:context=".navTab.navTabFragment.MapFragment">
 
     <!-- MapView를 감싸는 FrameLayout 추가 -->
