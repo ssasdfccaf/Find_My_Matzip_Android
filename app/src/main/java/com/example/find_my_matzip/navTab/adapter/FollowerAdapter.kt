@@ -79,8 +79,6 @@ class FollowerAdapter(val context: Context, var datas: List<FollowDto>, private 
                 binding.followBtn.visibility = View.VISIBLE
                 binding.unfollowBtn.visibility = View.GONE
             }
-
-            val loginUserId = SharedPreferencesManager.getString("id", "")
             val userService = (context?.applicationContext as MyApplication).userService
 
             // 팔로우 버튼 클릭 리스너
@@ -117,6 +115,39 @@ class FollowerAdapter(val context: Context, var datas: List<FollowDto>, private 
                 }
             }
 
+            // 팔로우 버튼 클릭 리스너
+            binding.unfollowBtn.setOnClickListener {
+                Log.d(TAG, "팔로우 버튼클릭")
+
+                item?.id?.let { toUserId ->
+                    userService.deleteFollow(toUserId)
+                        .enqueue(object : Callback<Unit> {
+                            override fun onResponse(
+                                call: Call<Unit>,
+                                response: Response<Unit>
+                            ) {
+                                if (response.isSuccessful) {
+                                    // 성공적으로 언팔로우한 경우
+                                    binding.followBtn.visibility = View.VISIBLE
+                                    binding.unfollowBtn.visibility = View.GONE
+
+                                    Toast.makeText(context, "언팔로우 성공", Toast.LENGTH_SHORT).show()
+                                    Log.e(TAG, "언팔로우 성공")
+
+                                } else {
+                                    Log.d(TAG, "언팔로우 요청 실패 - Code: ${response.code()}, Message: ${response.message()}")
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: Call<Unit>,
+                                t: Throwable?
+                            ) {
+                                Log.e(TAG, "팔로우 onFailure")
+                            }
+                        })
+                }
+            }
 
             // 아이템 뷰를 클릭했을 때의 동작 정의
             binding.root.setOnClickListener {
