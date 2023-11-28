@@ -28,9 +28,12 @@ class ResInfoFragment : Fragment() {
 
 
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        // ResInfoFragment를 감추기
         super.onCreate(savedInstanceState)
         val rootView = inflater.inflate(R.layout.fragment_res_info, container, false)
 

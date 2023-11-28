@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.databinding.NearRestaurantListBinding
 import com.example.find_my_matzip.model.ResWithScoreDto
+import com.example.find_my_matzip.navTab.navTabFragment.MapFragment
 import com.example.find_my_matzip.navTab.navTabFragment.NearRestaurantFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
 
@@ -60,7 +61,7 @@ class NearRestaurantRecyclerAdapter(
 
                 binding.toResDtl.setOnClickListener {
                         val resId = item.res_id
-                        Toast.makeText(binding.root.context, "resId : ${resId}", Toast.LENGTH_SHORT).show()
+                        // Toast.makeText(binding.root.context, "resId: $resId", Toast.LENGTH_SHORT).show()
 
                         // 데이터를 전달하기 위한 Bundle 생성
                         val bundle = Bundle().apply {
@@ -71,7 +72,13 @@ class NearRestaurantRecyclerAdapter(
                         // 인자로 데이터 전달
                         restaurantDtlFragment.arguments = bundle
 
-                        fragment.requireActivity().supportFragmentManager.beginTransaction()
+                        val fragmentManager = fragment.requireActivity().supportFragmentManager
+
+
+
+                        // MapFragment 위에 RestaurantDtlFragment를 추가하고 백 스택에 추가하지 않음
+                        fragmentManager.beginTransaction()
+                                .remove(fragment)
                                 .add(com.example.find_my_matzip.R.id.fragmentContainer, restaurantDtlFragment)
                                 .addToBackStack(null)
                                 .commit()
@@ -79,6 +86,8 @@ class NearRestaurantRecyclerAdapter(
                 }
 
 
+
         }
+
 
 }
