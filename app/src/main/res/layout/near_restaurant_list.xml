@@ -7,6 +7,7 @@
     android:padding="10dp">
     <!--이미지 뷰 하나 텍스트뷰 3개-->
     <LinearLayout
+        android:id="@+id/toResDtl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

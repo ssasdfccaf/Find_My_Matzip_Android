@@ -40,20 +40,20 @@ class HomeRecyclerAdapter(private val context: HomeFragment) : RecyclerView.Adap
     }
 
     // 클릭 리스너 설정
-    private var onItemClickListener: ((String) -> Unit)? = null
+        private var onItemClickListener: ((String) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (String) -> Unit) {
-        onItemClickListener = listener
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainBoardViewHolder {
-        val itemBinding = ItemMainboardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MainBoardViewHolder(itemBinding) { boardId ->
-            onItemClickListener?.invoke(boardId)
+        fun setOnItemClickListener(listener: (String) -> Unit) {
+            onItemClickListener = listener
         }
-    }
 
-    override fun getItemCount(): Int {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainBoardViewHolder {
+            val itemBinding = ItemMainboardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return MainBoardViewHolder(itemBinding) { boardId ->
+                onItemClickListener?.invoke(boardId)
+            }
+        }
+
+        override fun getItemCount(): Int {
         return datas.size
     }
 
