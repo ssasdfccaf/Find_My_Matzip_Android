@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.MyApplication
+import com.example.find_my_matzip.R
 import com.example.find_my_matzip.SearchAddressActivity
 import com.example.find_my_matzip.databinding.FragmentProfileUpdateBinding
 import com.example.find_my_matzip.model.UsersFormDto
@@ -99,9 +100,9 @@ class ProfileUpdateFragment : Fragment() {
 
 
                     binding.userId.text = Editable.Factory.getInstance().newEditable(originUserId)
-                    binding.userName.text = Editable.Factory.getInstance().newEditable(originUsername)
-                    binding.userAddress.text = Editable.Factory.getInstance().newEditable(originUserAddr)
-                    binding.userPhone.text = Editable.Factory.getInstance().newEditable(originUserPhone)
+                    binding.userName.text = Editable.Factory.getInstance().newEditable(originUsername?: "")
+                    binding.userAddress.text = Editable.Factory.getInstance().newEditable(originUserAddr?: "")
+                    binding.userPhone.text = Editable.Factory.getInstance().newEditable(originUserPhone?: "")
 
 
                     if(originUserGender.equals("남성")){
@@ -111,12 +112,16 @@ class ProfileUpdateFragment : Fragment() {
                     }
 
 
-                    Glide.with(requireContext())
-                        .load(originUserImg)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
-                        .skipMemoryCache(true)// 메모리 캐시 저장 off
-                        .override(900, 900)
-                        .into(binding.myProfileImg)
+                    if(originUserImg != ""){
+                        Glide.with(requireContext())
+                            .load(originUserImg)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
+                            .skipMemoryCache(true)// 메모리 캐시 저장 off
+                            .override(900, 900)
+                            .error(R.drawable.profile)
+                            .into(binding.myProfileImg)
+                    }
+
                 }
             }
 
@@ -312,6 +317,7 @@ class ProfileUpdateFragment : Fragment() {
                     // 선택된 사진 크기 자동 조정
                     .centerCrop()
                     // 결과 뷰에 사진 넣기.
+                    .error(R.drawable.profile)
                     .into(binding.myProfileImg)
 
                 // filePath, 갤러리에서 불러온 이미지 파일 정보 가져오기.
@@ -359,6 +365,7 @@ class ProfileUpdateFragment : Fragment() {
                     .load(profileImageUri)
                     .apply(RequestOptions().override(900, 900))
                     .centerCrop()
+                    .error(R.drawable.profile)
                     .into(binding.myProfileImg)
 
 
