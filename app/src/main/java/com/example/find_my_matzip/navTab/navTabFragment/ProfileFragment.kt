@@ -261,7 +261,7 @@ class ProfileFragment : Fragment() {
                             // 팔로워 목록 클릭 시 다이얼로그로 팔로워 리스트 (리사이클러)
                             binding.follower.setOnClickListener {
                                 val followerList: List<FollowDto> =
-                                    profileDto?.followDtoList ?: emptyList()
+                                    profileDto?.followerDtoList ?: emptyList()
                                 Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
 
                                 // 다이얼로그 생성

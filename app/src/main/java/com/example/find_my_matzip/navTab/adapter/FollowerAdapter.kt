@@ -1,7 +1,9 @@
 package com.example.find_my_matzip.navTab.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -52,6 +54,19 @@ class FollowerAdapter(val context: Context, var datas: List<FollowDto>, private 
                     .override(900, 900)
                     .into(binding.dialogUserImg)
 
+            }
+
+            val followcheck= item?.subscribeState
+
+            Log.d("MyPageFragment", "subscribeState $item.id , $followcheck")
+            if(followcheck == true){
+                // 팔로우 중
+                binding.followBtn.visibility = View.GONE
+                binding.unfollowBtn.visibility = View.VISIBLE
+            }else{
+                // 팔로우 중이 아닌 경우
+                binding.followBtn.visibility = View.VISIBLE
+                binding.unfollowBtn.visibility = View.GONE
             }
 
 

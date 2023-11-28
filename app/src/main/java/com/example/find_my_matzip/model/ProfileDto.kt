@@ -3,7 +3,7 @@ package com.example.find_my_matzip.model
 data class ProfileDto(
     val boards : BoardsDto,
     val pageUserDto : PageUserDto,
-    val followDtoList : List<FollowDto>,
+    val followerDtoList : List<FollowDto>,
     val followingDtoList: List<FollowDto>,
     val countBoard: Int,
     val loginUserDto: UsersFormDto,
