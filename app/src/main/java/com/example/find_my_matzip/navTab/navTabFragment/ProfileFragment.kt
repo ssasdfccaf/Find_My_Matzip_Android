@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
@@ -47,6 +49,9 @@ class ProfileFragment : Fragment() {
     lateinit var binding: FragmentProfileBinding
     lateinit var adapter: ProfileAdapter2
     lateinit var boardAdapter: BoardRecyclerAdapter2
+    var isLoading = false
+    var isLastPage = false
+    var currentPage = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +62,47 @@ class ProfileFragment : Fragment() {
         boardAdapter = BoardRecyclerAdapter2(this@ProfileFragment, emptyList())
         binding.boardRecyclerView.adapter = boardAdapter
 
-// 전달된 userId 값 확인 userId : matzuo
+// 스크롤 리스너 설정
+        binding.boardRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                handleScroll(recyclerView)
+            }
+        })
+
+        // 데이터 로드
+        loadNextPageData(currentPage)
+
+        return binding.root
+    }
+    private fun handleScroll(recyclerView: RecyclerView) {
+        Log.d("MyPageFragment", "스크롤 리스닝 확인 1")
+        val layoutManager = LinearLayoutManager::class.java.cast(recyclerView.layoutManager)
+        val visibleItemCount = layoutManager?.childCount ?: 0
+        val totalItemCount = layoutManager?.itemCount ?: 0
+        val firstVisibleItemPosition = layoutManager?.findFirstVisibleItemPosition() ?: 0
+        Log.d("MyPageFragment", "스크롤 리스닝 확인 2")
+        Log.d("MyPageFragment", "isLoading : $isLoading, isLastPage : $isLastPage ")
+        Log.d("MyPageFragment", "visibleItemCount : $visibleItemCount, firstVisibleItemPosition : $firstVisibleItemPosition")
+        Log.d("MyPageFragment", "totalItemCount : $totalItemCount ")
+        if (!isLoading && !isLastPage) {
+            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                && firstVisibleItemPosition >= 0
+            ) {
+                Log.d("MyPageFragment", "33 currentPage 전 :$currentPage ")
+                Log.d("MyPageFragment", "스크롤 리스닝 확인 3")
+                loadNextPageData(currentPage)
+                Log.d("MyPageFragment", "스크롤 리스닝 확인 4")
+                Log.d("MyPageFragment", "44 currentPage 전 :$currentPage ")
+            }
+        }
+    }
+
+
+    private fun loadNextPageData(page: Int): FrameLayout {
+        isLoading = true
+
+        // 전달된 userId 값 확인 userId : matzuo
         val pageUserId = arguments?.getString("userId")
         if (pageUserId != null) {
             val loginUserId = SharedPreferencesManager.getString("id", "")
@@ -75,7 +120,7 @@ class ProfileFragment : Fragment() {
                 // userId를 사용하여 프로필을 조회 -- 팔로워 팔로우 목록에서 해당아이디의 프로필을 조회 하는것임
                 val userService = (context?.applicationContext as MyApplication).userService
 //            profileList에 해당 유저의 프로필 정보가 담기는것, matzip
-                val profileList = userService.getProfile(pageUserId)
+                val profileList = userService.getProfile(pageUserId,page)
 
                 profileList.enqueue(object : Callback<ProfileDto> {
                     override fun onResponse(
@@ -83,6 +128,7 @@ class ProfileFragment : Fragment() {
                         response: Response<ProfileDto>,
 
                     ) {
+                        isLoading = false
                         val profileDto = response.body()
                         if (profileDto != null) {
                             // matzip 의 정보를 갖고 있네. matzip 의 정보네.
@@ -222,19 +268,24 @@ class ProfileFragment : Fragment() {
 
                             Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
                             // 프로필 어댑터 및 보드 어댑터 업데이트
-                            ProfileAdapter2(this@ProfileFragment, listOf(profileDto.pageUserDto))
-                            boardAdapter =
-                                BoardRecyclerAdapter2(
-                                    this@ProfileFragment,
-                                    profileDto.boards.content
-                                )
 
+                            val newBoardList = profileDto.boards.content
+                            if (newBoardList.isNotEmpty() && currentPage == 0) {
+                            ProfileAdapter2(this@ProfileFragment, listOf(profileDto.pageUserDto))
+                            boardAdapter = BoardRecyclerAdapter2(this@ProfileFragment, profileDto.boards.content)
+                                currentPage++
 
                             val spanCount = 3 // 원하는 열의 수 ㅋㅋ 생각보다 간단하네..
                             val gridLayoutManager = GridLayoutManager(requireContext(), spanCount)
                             binding.boardRecyclerView.layoutManager = gridLayoutManager
                             binding.boardRecyclerView.adapter = boardAdapter
-
+                            } else if (newBoardList.isNotEmpty() && currentPage !== 0) {
+                                boardAdapter.addData(newBoardList)
+                                currentPage++
+                            }
+                            else {
+                                isLastPage = true
+                            }
 
                             // 팔로잉 목록 클릭 시 다이얼로그 표시
                             binding.following.setOnClickListener {
@@ -298,6 +349,7 @@ class ProfileFragment : Fragment() {
                     }
 
                     override fun onFailure(call: Call<ProfileDto>, t: Throwable) {
+                        isLoading = false
                         t.printStackTrace()
                         call.cancel()
                         Log.e("MyPageFragment", " 통신 실패")

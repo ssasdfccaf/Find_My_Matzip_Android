@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    >
     <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MyPageFragment">
+       >
         <!--전체 리니어 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".MyPageFragment">
+
         <LinearLayout
             android:id="@+id/lay1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="30dp"
-            android:paddingBottom="50dp"
+
             >
 
             <!--     사용자 아이디   -->
@@ -141,6 +144,7 @@
 
 
             </LinearLayout>
+
             <!--        이미지뷰+ 텍스트 리니어 닫기 -->
 <!--            <LinearLayout-->
 <!--                android:layout_width="350dp"-->
@@ -177,7 +181,7 @@
             <LinearLayout
                 android:id="@+id/MyButton"
                 android:layout_width="350dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
@@ -214,11 +218,27 @@
                 <!--                android:fontFamily="@font/nexonmed"-->
                 <!--                android:text="게시글 작성"></Button>-->
             </LinearLayout>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/boardRecyclerView"
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_boards"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/boardRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/item_boards"/>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            </LinearLayout>
+        </LinearLayout>
+
 
             <!--        <GridLayout-->
             <!--            android:id="@+id/lay5"-->
@@ -305,4 +325,3 @@
 
         </LinearLayout>
     </FrameLayout>
-</ScrollView>

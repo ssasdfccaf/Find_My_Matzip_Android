@@ -35,7 +35,11 @@ class BoardRecyclerAdapter2(val context: ProfileFragment, var datas: List<Conten
         return datas?.size ?: 0
     }
 
-
+    fun addData(newData: List<ContentDto>) {
+        val oldSize = datas?.size ?: 0
+        datas = datas.orEmpty() + newData
+        notifyItemRangeInserted(oldSize, newData.size)
+    }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as BoardsViewHoder2).binding
         val Item = datas?.get(position)

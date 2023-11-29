@@ -11,6 +11,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 // 스프링의 Controller 와 같은 구간으로 스프링과 안드로이드 연동을 위한 서비스 구간
 interface UserService {
@@ -36,8 +37,15 @@ interface UserService {
     fun deleteById(@Path("userid") userid: String?): Call<Unit>
 
 
+//    @GET("users/profile/{pageUserid}")
+//    fun getProfile(@Path("pageUserid"),@Query("page"), pageUserid: String?): Call<ProfileDto>
+//
+
     @GET("users/profile/{pageUserid}")
-    fun getProfile(@Path("pageUserid") pageUserid: String?): Call<ProfileDto>
+    fun getProfile(
+        @Path("pageUserid") pageUserid: String?,
+        @Query("page") page: Int // 페이지 값 추가
+    ): Call<ProfileDto>
 
     //회원 정보 수정
     @POST("/users/updateUsers")
