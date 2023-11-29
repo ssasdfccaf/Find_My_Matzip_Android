@@ -15,6 +15,9 @@ interface BoardService {
     @GET("pagerbleMain")
     fun getAllBoardsPager(@Query("page") page: Int): Call<List<MainBoardDto>>
 
+    @GET("pagerbleFollowerMain")
+    fun getFollowerBoardsPager(@Query("page") page: Int): Call<List<MainBoardDto>>
+
     @GET("board/{id}") // 게시글 상세페이지;
     fun getBoardDtl(@Path("id") id : String): Call<BoardDtlDto>
 
