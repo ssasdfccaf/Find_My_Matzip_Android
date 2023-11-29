@@ -1,11 +1,17 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.MyApplication
@@ -21,30 +27,44 @@ import retrofit2.Response
 class     HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     lateinit var adapter : HomeRecyclerAdapter
+    private val TAG: String = "HomeFragment"
+
+
+
     //페이징처리 1
     var currentPage = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("SdoLifeCycle","HomeFragment onCreate")
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
+
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("SdoLifeCycle","HomeFragment onCreateView")
+
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
         binding.toFollowHome.setOnClickListener {
             // 클릭 시 HomeFollowFragment로 이동하는 코드
             val fragment = HomeFollowFragment()
-            parentFragmentManager.beginTransaction()
+
+            // 트랜잭션에 이름 부여
+            val transaction = parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
-                .addToBackStack(null)
+                //    .addToBackStack("HomeFragment")
                 .commit()
+
+            // 현재의 HomeFragment를 백 스택에서 제거
+            parentFragmentManager.popBackStack("HomeFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
-        adapter = HomeRecyclerAdapter(this).apply {
+        adapter = HomeRecyclerAdapter(requireContext()).apply {
             setOnItemClickListener { boardId ->
                 navigateToBoardDetail(boardId)
             }
@@ -53,7 +73,6 @@ class     HomeFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext())
         binding.homeRecyclerView.layoutManager = layoutManager
 
-//        adapter = HomeRecyclerAdapter(this)
         binding.homeRecyclerView.adapter = adapter
 
         binding.homeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -73,8 +92,49 @@ class     HomeFragment : Fragment() {
 
         loadNextPageData(currentPage)
 
+
+        //검색창 관리
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                // 검색 버튼 누를 때 호출
+                if (!query.isNullOrBlank()) {
+                    Log.d(TAG, "검색 버튼 클릭: $query")
+
+                    //검색 수행
+                    loadSearchResultPageData(currentPage,query)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // 검색창에서 글자가 변경이 일어날 때마다 호출
+                //Log.d(TAG, "글자 변경 : $newText")
+                return true
+            }
+        })
+
+
+
         return binding.root
     }
+
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","HomeFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","HomeFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","HomeFragment onDestroy")
+        super.onDestroy()
+    }
+
     private fun navigateToBoardDetail(boardId: String) {
         val fragment = boardDtlFragment.newInstance(boardId)
         parentFragmentManager.beginTransaction()
@@ -103,10 +163,38 @@ class     HomeFragment : Fragment() {
             override fun onFailure(call: Call<List<MainBoardDto>>, t: Throwable) {
                 t.printStackTrace()
                 call.cancel()
-                Log.e("kkt", " 통신 실패")
+                Log.d(TAG, " 통신 실패")
             }
+
         })
     }
+
+    private fun loadSearchResultPageData(page: Int,text:String) {
+        val boardService = (context?.applicationContext as MyApplication).boardService
+        val boardList = boardService.getSearchMainBoards(page,text)
+
+        boardList.enqueue(object : Callback<List<MainBoardDto>> {
+            override fun onResponse(
+                call: Call<List<MainBoardDto>>,
+                response: Response<List<MainBoardDto>>
+            ) {
+                if (response.isSuccessful) {
+                    val newBoardList = response.body()
+                    newBoardList?.let {
+                        adapter.addData(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<MainBoardDto>>, t: Throwable) {
+                t.printStackTrace()
+                call.cancel()
+                Log.d(TAG, " 통신 실패")
+            }
+
+        })
+    }
+
 }
 
 

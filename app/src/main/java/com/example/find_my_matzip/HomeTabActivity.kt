@@ -1,11 +1,10 @@
 package com.example.find_my_matzip
 
 import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
@@ -13,23 +12,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import com.example.find_my_matzip.databinding.ActivityHomeTabBinding
 import com.example.find_my_matzip.navTab.navTabFragment.HomeFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MapFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RankingFragment
-import com.example.find_my_matzip.navTab.navTabFragment.SearchReviewFragment
-import com.example.find_my_matzip.databinding.ActivityHomeTabBinding
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
-import com.google.android.material.navigation.NavigationView
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 class HomeTabActivity : AppCompatActivity() {
     lateinit var binding: ActivityHomeTabBinding
@@ -303,4 +299,5 @@ class HomeTabActivity : AppCompatActivity() {
 
         passwordBuilder.show()
     }
+
 }

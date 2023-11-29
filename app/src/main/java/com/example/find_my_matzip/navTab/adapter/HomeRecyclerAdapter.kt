@@ -1,5 +1,6 @@
 package com.example.find_my_matzip.navTab.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
@@ -30,7 +31,7 @@ class MainBoardViewHolder(private val binding: ItemMainboardBinding, private val
     }
 }
 
-class HomeRecyclerAdapter(private val context: HomeFragment) : RecyclerView.Adapter<MainBoardViewHolder>() {
+class HomeRecyclerAdapter(context: Context) : RecyclerView.Adapter<MainBoardViewHolder>() {
 
     private val datas: MutableList<MainBoardDto> = mutableListOf()
 

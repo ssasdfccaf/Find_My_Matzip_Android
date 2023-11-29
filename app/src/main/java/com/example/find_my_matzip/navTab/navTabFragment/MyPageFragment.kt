@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
+import com.example.find_my_matzip.WriteReviewFragment
 import com.example.find_my_matzip.databinding.FragmentMyPageBinding
 import com.example.find_my_matzip.model.FollowDto
 import com.example.find_my_matzip.model.FollowingDto
@@ -72,6 +73,16 @@ class MyPageFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+
+        binding.writeBoardBtn.setOnClickListener {
+//            게시글작성창으로 이동
+            val WriteReviewFragment = WriteReviewFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainer, WriteReviewFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
 
 
         // 스크롤 리스너 설정

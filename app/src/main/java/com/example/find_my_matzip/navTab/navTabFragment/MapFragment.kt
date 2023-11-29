@@ -19,6 +19,7 @@ import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentMapBinding
 import com.example.find_my_matzip.model.ResWithScoreDto
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -26,6 +27,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
+import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -90,6 +92,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
     }
 
     override fun onMapReady(naverMap: NaverMap) {
+        val bounds = LatLngBounds(LatLng(34.0, 36.0), LatLng(128.0, 130.0))
         val cameraPosition = CameraPosition(
             LatLng(35.15690579523921, 129.05957113473747),  // 지도 시작 위치 지정
             14.0 // 줌 레벨
@@ -117,6 +120,14 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                         marker.map = naverMap
 
                         marker.setOnClickListener(Overlay.OnClickListener {
+                            // 클릭한 마커의 좌표를 destination에 설정
+//                            val destination = marker.position ?: return@OnClickListener true
+//
+//                            // 여기에 길 안내 코드 추가
+//                            val path = PathOverlay()
+//                            path.coords = listOf(naverMap.locationOverlay.position, destination)
+//                            path.map = naverMap
+//
                             val bundle = Bundle().apply {
                                 putString("resInfoId", currentRestaurant.res_id)
                                 putString("resInfoName", currentRestaurant.res_name)
@@ -126,6 +137,8 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                                 putString("resInfoIntro", currentRestaurant.res_intro)
                                 putString("resInfoThumbnail", currentRestaurant.res_thumbnail)
                             }
+
+
                             // 기존의 ResInfoFragment 인스턴스를 제거
 
                             var resInfoFragment = ResInfoFragment()
