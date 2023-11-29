@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.MyApplication
@@ -28,6 +29,7 @@ class HomeFollowFragment : Fragment() {
     var currentPage = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("SdoLifeCycle","FollowFragment onCreate")
         super.onCreate(savedInstanceState)
         binding = FragmentHomeFollowBinding.inflate(layoutInflater)
     }
@@ -36,6 +38,7 @@ class HomeFollowFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("SdoLifeCycle","FollowFragment onCreateView")
         binding = FragmentHomeFollowBinding.inflate(layoutInflater, container, false)
 
 //        binding.homeRecyclerView.apply {
@@ -47,10 +50,15 @@ class HomeFollowFragment : Fragment() {
         binding.toHome.setOnClickListener {
             // 클릭 시 HomeFragment로 이동하는 코드
             val fragment = HomeFragment()
-            parentFragmentManager.beginTransaction()
+
+            // 트랜잭션에 이름 부여
+            val transaction = parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
-                .addToBackStack(null)
+            //    .addToBackStack("HomeFollowFragment")
                 .commit()
+
+            // 현재의 HomeFollowFragment를 백 스택에서 제거
+            parentFragmentManager.popBackStack("HomeFollowFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
         //어댑터 연결
@@ -83,6 +91,22 @@ class HomeFollowFragment : Fragment() {
         loadNextPageData(currentPage)
 
         return binding.root
+    }
+
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","FollowFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","FollowFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","FollowFragment onDestroy")
+        super.onDestroy()
     }
 
     private fun navigateToBoardDetail(boardId: String) {
