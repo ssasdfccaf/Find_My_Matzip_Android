@@ -27,7 +27,7 @@
                 android:background="#70FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:orientation="horizontal"
                 android:gravity="left">
 
@@ -49,11 +49,11 @@
 
                 <TextView
                     android:id="@+id/userId"
-                    android:textSize="25dp"
+                    android:textSize="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/nexonbold"
                     android:layout_marginLeft="10dp"
+                    android:layout_gravity="center_vertical"
                     android:text="사용자 이름" />
 
 
@@ -86,6 +86,7 @@
                     style="@style/Widget.AppCompat.RatingBar.Indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:progressTint="#E91E63"
                     android:numStars="5"
                     android:rating="0"
                     android:stepSize="1" />
@@ -133,7 +134,6 @@
                     android:id="@+id/boardDtlContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/nexonbold"
                     android:lineSpacingExtra="5dp"
                     android:text="Content"
                     android:layout_marginTop="15dp"/>
@@ -145,7 +145,7 @@
             <LinearLayout
                 android:id="@+id/toResDtl"
                 android:background="#33673AB7"
-                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
                 android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -198,7 +198,6 @@
                             android:id="@+id/resAddress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/nexonbold"
                             android:lineSpacingExtra="5dp"
                             android:text="식당주소 불러오는중"></TextView>
 
@@ -208,7 +207,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:layout_weight="3">
+                        android:layout_weight="2">
 
                         <!-- 식당 평균 점수 -->
                         <TextView
@@ -216,14 +215,12 @@
                             android:textSize="15dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/nexonbold"
                             android:text="Default" />
 
                         <TextView
                             android:textSize="15dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/nexonbold"
                             android:text="점" />
 
                     </LinearLayout>
