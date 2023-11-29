@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.MyApplication
@@ -34,6 +35,7 @@ class     HomeFragment : Fragment() {
     var currentPage = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("SdoLifeCycle","HomeFragment onCreate")
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
@@ -44,15 +46,22 @@ class     HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("SdoLifeCycle","HomeFragment onCreateView")
+
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
         binding.toFollowHome.setOnClickListener {
             // 클릭 시 HomeFollowFragment로 이동하는 코드
             val fragment = HomeFollowFragment()
-            parentFragmentManager.beginTransaction()
+
+            // 트랜잭션에 이름 부여
+            val transaction = parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
-//                .addToBackStack(null)
+                //    .addToBackStack("HomeFragment")
                 .commit()
+
+            // 현재의 HomeFragment를 백 스택에서 제거
+            parentFragmentManager.popBackStack("HomeFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
         adapter = HomeRecyclerAdapter(requireContext()).apply {
@@ -109,6 +118,23 @@ class     HomeFragment : Fragment() {
 
         return binding.root
     }
+
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","HomeFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","HomeFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","HomeFragment onDestroy")
+        super.onDestroy()
+    }
+
     private fun navigateToBoardDetail(boardId: String) {
         val fragment = boardDtlFragment.newInstance(boardId)
         parentFragmentManager.beginTransaction()
