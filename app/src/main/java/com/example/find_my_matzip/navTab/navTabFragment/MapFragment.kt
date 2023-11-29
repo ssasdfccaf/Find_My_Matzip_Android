@@ -129,16 +129,9 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                             var resInfoFragment = ResInfoFragment()
                             resInfoFragment.arguments = bundle
 
-                            // 기존에 생성된 ResInfoFragment가 있으면 숨기기
-                            resInfoFragment?.let {
-                                parentFragmentManager.beginTransaction().hide(it).commit()
-                            }
 
-                            // 새로운 ResInfoFragment 생성 또는 업데이트
-                            if (resInfoFragment == null) {
-                                resInfoFragment = ResInfoFragment()
-                            }
                             val transaction = parentFragmentManager.beginTransaction()
+                            transaction.remove(resInfoFragment)
                             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             transaction.add(R.id.fragmentContainer, resInfoFragment)
                             transaction.addToBackStack(null)
