@@ -92,7 +92,7 @@ class WriteReviewFragment : Fragment() {
         // 로그인한 사용자의 아이디를 가져와서 해당 사용자의 프로필 정보를 서버에서 조회
         val userId = SharedPreferencesManager.getString("id","")
         val userService = (context?.applicationContext as MyApplication).userService
-        val profileList = userService.getProfile(userId)
+        val profileList = userService.getProfile(userId,5)
 
         Log.d("MyPageFragment", "profileList.enqueue 호출전 : ")
 

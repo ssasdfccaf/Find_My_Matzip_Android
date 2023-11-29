@@ -3,6 +3,7 @@ package com.example.find_my_matzip.navTab.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.R
@@ -68,10 +69,15 @@ class BoardRecyclerAdapter2(val context: ProfileFragment, var datas: List<Conten
             val parentFragmentManager = context.requireActivity().supportFragmentManager
             if (profileBoardDtlFragment != null) {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, profileBoardDtlFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .add(R.id.fragmentContainer, profileBoardDtlFragment)
                     .addToBackStack(null)
+                    .show(boardDtlFragment())
                     .commit()
+
+                false
             }
+
         }
     }
 
