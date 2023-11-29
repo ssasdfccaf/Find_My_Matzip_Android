@@ -38,10 +38,10 @@ class BoardRecyclerAdapter2(val context: ProfileFragment, var datas: List<Conten
         val binding = (holder as BoardsViewHoder2).binding
         val Item = datas?.get(position)
         Log.d("BoardRecyclerAdapter", "Item is not null: $Item")
-        binding.boardId.text = Item?.id
-        binding.boardTitle.text = Item?.board_title
-        binding.boardContent.text = Item?.content
-        binding.boardScore.text = Item?.score
+//        binding.boardId.text = Item?.id
+//        binding.boardTitle.text = Item?.board_title
+//        binding.boardContent.text = Item?.content
+//        binding.boardScore.text = Item?.score
 
         Glide.with(context)
             .load(Item?.imgUrl)
