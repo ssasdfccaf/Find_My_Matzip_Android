@@ -15,11 +15,13 @@ import com.example.find_my_matzip.model.BoardDtlDto
 import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
 import com.example.find_my_matzip.navTab.adapter.ProfileAdapter
 import com.example.find_my_matzip.retrofit.BoardService
+import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 class boardDtlFragment : Fragment() {
     lateinit var binding: FragmentBoardDtlBinding
+    private val TAG: String = "boardDtlFragment"
 
     companion object {
         fun newInstance(boardId: String): boardDtlFragment {
@@ -109,6 +111,41 @@ class boardDtlFragment : Fragment() {
                     navigateToResDetail(resId)
                 }
                 // toResDtl 클릭 이벤트 핸들러
+
+
+                // 유저 프로필로 이동 로직
+                fun navigateToUserProfile(userId: String?) {
+                    //만약 유저정보 없다면
+                    if (userId.isNullOrEmpty()) {
+                        Log.d(TAG, "userId is null or empty")
+                        return
+                    }
+
+                    val userFrag: Fragment
+
+                    if(SharedPreferencesManager.getString("id","") == userId){
+                        //내 프로필
+                        userFrag = MyPageFragment.newInstance(userId)
+
+                    }else{
+                        //다른사람 프로필
+                        userFrag = ProfileFragment.newInstance(userId)
+                    }
+                    val transaction =  parentFragmentManager.beginTransaction()
+
+                    transaction.replace(R.id.fragmentContainer, userFrag)
+                    transaction.addToBackStack(null) //백스택에 지금 재배치한 fragment추가
+                    transaction.commit()
+
+                }
+
+                //유저 정보 클릭
+                binding.userLinearLayout.setOnClickListener {
+                    Log.d(TAG, "유저프로필 클릭")
+                    Log.d(TAG, "userId: ${boardDto?.users?.userid}")
+                    val userId = boardDto?.users?.userid
+                    navigateToUserProfile(userId)
+                }
 
 
             }

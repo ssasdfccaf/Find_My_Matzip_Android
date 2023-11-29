@@ -37,6 +37,7 @@
 
                 <!-- 사용자 프로필 + 점수 레이아웃 -->
                 <LinearLayout
+                    android:id="@+id/userLinearLayout"
                     android:background="#70FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
