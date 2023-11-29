@@ -96,7 +96,7 @@ class HomeFollowFragment : Fragment() {
     //팔로우한 사람들의 게시글 데이터 가져오기
     private fun loadNextPageData(page: Int) {
         val boardService = (context?.applicationContext as MyApplication).boardService
-        val boardList = boardService.getFollowerBoardsPager(page)
+        val boardList = boardService.getMatjalalBoards(page)
 
         boardList.enqueue(object : Callback<List<MainBoardDto>> {
             override fun onResponse(
