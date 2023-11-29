@@ -397,7 +397,6 @@ class ProfileFragment : Fragment() {
         // 트랜잭션에 이름 부여
         val transaction = parentFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
             .commit()
 
         // 현재의 HomeFragment를 백 스택에서 제거
@@ -406,17 +405,17 @@ class ProfileFragment : Fragment() {
 
     @Override
     override fun onResume() {
-        Log.d("SdoLifeCycle","HomeFragment onResume")
+        Log.d("SdoLifeCycle","ProfileFragment onResume")
         super.onResume()
     }
     @Override
     override fun onPause() {
-        Log.d("SdoLifeCycle","HomeFragment onPause")
+        Log.d("SdoLifeCycle","ProfileFragment onPause")
         super.onPause()
     }
     @Override
     override fun onDestroy() {
-        Log.d("SdoLifeCycle","HomeFragment onDestroy")
+        Log.d("SdoLifeCycle","ProfileFragment onDestroy")
         super.onDestroy()
     }
 
