@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
@@ -15,6 +16,7 @@ import com.example.find_my_matzip.databinding.FragmentProfileBinding
 import com.example.find_my_matzip.model.FollowDto
 import com.example.find_my_matzip.model.FollowingDto
 import com.example.find_my_matzip.model.ProfileDto
+import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
 import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter2
 import com.example.find_my_matzip.navTab.adapter.ProfileAdapter2
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
@@ -227,8 +229,10 @@ class ProfileFragment : Fragment() {
                                     profileDto.boards.content
                                 )
 
-                            binding.boardRecyclerView.layoutManager =
-                                LinearLayoutManager(requireContext())
+
+                            val spanCount = 3 // 원하는 열의 수 ㅋㅋ 생각보다 간단하네..
+                            val gridLayoutManager = GridLayoutManager(requireContext(), spanCount)
+                            binding.boardRecyclerView.layoutManager = gridLayoutManager
                             binding.boardRecyclerView.adapter = boardAdapter
 
 
