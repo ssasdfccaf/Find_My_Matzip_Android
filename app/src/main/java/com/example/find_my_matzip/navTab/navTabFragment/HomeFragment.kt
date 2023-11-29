@@ -40,11 +40,11 @@ class     HomeFragment : Fragment() {
             val fragment = HomeFollowFragment()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
-                .addToBackStack(null)
+//                .addToBackStack(null)
                 .commit()
         }
 
-        adapter = HomeRecyclerAdapter(this).apply {
+        adapter = HomeRecyclerAdapter(requireContext()).apply {
             setOnItemClickListener { boardId ->
                 navigateToBoardDetail(boardId)
             }
