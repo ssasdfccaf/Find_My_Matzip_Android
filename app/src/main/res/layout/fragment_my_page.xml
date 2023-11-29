@@ -145,39 +145,6 @@
 
             </LinearLayout>
 
-            <!--        이미지뷰+ 텍스트 리니어 닫기 -->
-<!--            <LinearLayout-->
-<!--                android:layout_width="350dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_gravity="center">-->
-<!--                <Button-->
-<!--                    android:id="@+id/followCheck"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:text="팔로우체크"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:fontFamily="@font/nexonbold"-->
-<!--                    android:visibility="gone"></Button>-->
-
-<!--                <Button-->
-<!--                    android:id="@+id/followBtn"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:text="팔로우"-->
-<!--                    android:fontFamily="@font/nexonbold"></Button>-->
-<!--                <Button-->
-<!--                    android:id="@+id/unfollowBtn"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:text="언팔로우"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:fontFamily="@font/nexonbold"></Button>-->
-<!--            </LinearLayout>-->
-            <!--        -->
             <LinearLayout
                 android:id="@+id/MyButton"
                 android:layout_width="350dp"
@@ -193,10 +160,11 @@
                     android:layout_height="45dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/black"
+                    android:backgroundTint="@color/design_default_color_primary"
                     android:fontFamily="@font/nexonmed"
                     android:text="프로필편집"
-                    android:visibility="visible"></Button>
+                    android:visibility="visible"
+                    android:layout_marginRight="5dp"></Button>
                 <Button
                     android:id="@+id/writeBoardBtn"
                     android:layout_width="wrap_content"
