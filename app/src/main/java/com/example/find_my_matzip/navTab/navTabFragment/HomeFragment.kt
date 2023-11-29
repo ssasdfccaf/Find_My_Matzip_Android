@@ -180,6 +180,7 @@ class     HomeFragment : Fragment() {
         val changeFragment = newInstance(text)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragmentContainer, changeFragment)
+        .addToBackStack(null)
         transaction.commit()
     }
 
