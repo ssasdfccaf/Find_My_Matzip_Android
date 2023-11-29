@@ -74,8 +74,6 @@ class NearRestaurantRecyclerAdapter(
 
                         val fragmentManager = fragment.requireActivity().supportFragmentManager
 
-
-
                         // MapFragment 위에 RestaurantDtlFragment를 추가하고 백 스택에 추가하지 않음
                         fragmentManager.beginTransaction()
                                 .remove(fragment)

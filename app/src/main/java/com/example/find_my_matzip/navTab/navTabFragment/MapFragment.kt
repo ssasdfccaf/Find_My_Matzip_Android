@@ -29,6 +29,7 @@ import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -125,21 +126,17 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                                 putString("resInfoIntro", currentRestaurant.res_intro)
                                 putString("resInfoThumbnail", currentRestaurant.res_thumbnail)
                             }
+                            // 기존의 ResInfoFragment 인스턴스를 제거
 
                             var resInfoFragment = ResInfoFragment()
                             resInfoFragment.arguments = bundle
 
-
                             val transaction = parentFragmentManager.beginTransaction()
-                            transaction.remove(resInfoFragment)
                             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             transaction.add(R.id.fragmentContainer, resInfoFragment)
                             transaction.addToBackStack(null)
                             transaction.show(resInfoFragment)
                             transaction.commit()
-
-
-
 
                             false
                         })
@@ -209,21 +206,29 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 
         // searchBtn에 OnClickListener 설정
         searchBtn.setOnClickListener {
+            var radiusInMeters = 1000.0
 
             // 현재 지도 중심 좌표 가져오기
             val center = naverMap.cameraPosition.target
 
+            // 현재 지도의 줌 레벨 가져오기
+            val zoomLevel = naverMap.cameraPosition.zoom
+
+            // 원의 크기 동적으로 조절
+            radiusInMeters = calculateRadiusForZoomLevel(zoomLevel)/17
+
+
             // 반경 10km에 해당하는 둘레 좌표 계산
             val perimeterPoints = mutableListOf<LatLng>()
             val numberOfPoints = 100 // 둘레를 부드럽게 만들려면 값을 증가시킵니다.
-            val radius = 1000.0 // 1km를 미터로 변환
 
             for (i in 0 until numberOfPoints) {
                 val theta = (i.toDouble() / numberOfPoints) * (2.0 * Math.PI)
-                val x = center.longitude + radius / 111000.0 * Math.cos(theta)
-                val y = center.latitude + radius / 111000.0 * Math.sin(theta)
+                val x = center.longitude + radiusInMeters / 111000.0 * Math.cos(theta)
+                val y = center.latitude + radiusInMeters / 111000.0 * Math.sin(theta)
                 perimeterPoints.add(LatLng(y, x))
             }
+
 
             // 새로운 PolylineOverlay 설정
             val newPerimeterOverlay = com.naver.maps.map.overlay.PolylineOverlay()
@@ -240,6 +245,13 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 
             // 이전 PolylineOverlay를 새로 생성된 것으로 업데이트
             perimeterOverlay = newPerimeterOverlay
+
+            // 1초 후에 원을 지우는 Coroutine 시작
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(1000) // 1초 딜레이
+                perimeterOverlay?.map = null // 원 지우기
+            }
+
 
             val restaurantService = (context?.applicationContext as MyApplication).restaurantService
             val nearRestaurantList = restaurantService.getAllRestaurantsByAvgScore()
@@ -259,7 +271,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                             Log.d("LatLnttest","${center}")
 
                             // 식당 좌표가 원 안에 속하는지 확인
-                            if (isLatLngInsideCircle(restaurantLatLng, center, radius)) {
+                            if (isLatLngInsideCircle(restaurantLatLng, center, radiusInMeters)) {
                                 restaurantsInsideCircle.add(currentRestaurant)
                             }
                         }
@@ -282,6 +294,13 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         }
     }
 
+    // 지도 줌 레벨에 따른 반경 계산 함수
+    private fun calculateRadiusForZoomLevel(zoomLevel: Double): Double {
+        // 여기에서 적절한 방법으로 지도의 줌 레벨에 따른 반경을 계산합니다.
+        // 이 예제에서는 간단하게 1000미터를 기준으로 줌 레벨에 비례하여 계산합니다.
+        return 1000 * Math.pow(2.0, 18 - zoomLevel)
+    }
+
     private fun showNearbyRestaurants(restaurants: List<ResWithScoreDto>) {
         val nearRestaurantFragment = NearRestaurantFragment()
         nearRestaurantFragment.restaurantsInsideCircle = restaurants
@@ -292,7 +311,8 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 //        transaction.add(R.id.fragmentContainer, nearRestaurantFragment)
 //        transaction.addToBackStack(null)
 //        transaction.commit()
-        // 아래는 변경된 부분입니다
+        val transaction = fragmentManager?.beginTransaction()
+        transaction?.commitNow()
         nearRestaurantFragment.show(parentFragmentManager, nearRestaurantFragment.tag)
 
     }
