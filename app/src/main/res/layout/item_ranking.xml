@@ -6,6 +6,12 @@
     android:orientation="vertical"
     android:padding="10dp">
     <!--이미지 뷰 하나 텍스트뷰 3개-->
+    <LinearLayout
+        android:id="@+id/toResDtl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
     <ImageView
         android:id="@+id/resThumbnail"
         android:layout_width="300dp"
@@ -44,5 +50,6 @@
             android:text="평점"
             android:layout_marginTop="10dp"/>
 
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>

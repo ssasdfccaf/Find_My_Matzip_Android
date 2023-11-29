@@ -401,6 +401,7 @@ class ProfileFragment : Fragment() {
 
         // 현재의 HomeFragment를 백 스택에서 제거
         parentFragmentManager.popBackStack("Profile", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
 
 //        // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
 //        val profileFragment = ProfileFragment.newInstance(userId)
@@ -416,5 +417,4 @@ class ProfileFragment : Fragment() {
 //            Log.w("ProfileFragment", "Transaction not committed: Fragment state already saved")
 //        }
 
-    }
 }
