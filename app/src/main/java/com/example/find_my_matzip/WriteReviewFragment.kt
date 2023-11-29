@@ -28,6 +28,7 @@ import com.example.find_my_matzip.model.BoardImgDto
 import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.model.UsersFormDto
 import com.example.find_my_matzip.navTab.navTabFragment.HomeFragment
+import com.example.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
 import com.example.find_my_matzip.retrofit.BoardService
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
@@ -68,12 +69,25 @@ class WriteReviewFragment : Fragment() {
     lateinit var imgUploadLayout3: LinearLayout
     lateinit var imgUploadLayout4: LinearLayout
     lateinit var boardImgDtoList: MutableList<BoardImgDto>
+
+    companion object {
+        fun newInstance(resId: String): WriteReviewFragment {
+            val fragment = WriteReviewFragment()
+            val args = Bundle()
+            args.putString("resId", resId)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentWriteReviewBinding.inflate(layoutInflater,container,false)
+        // 이전 프래그먼트에서 전달된 resId 가져오기
+        val resId = arguments?.getString("resId")
 
         // 로그인한 사용자의 아이디를 가져와서 해당 사용자의 프로필 정보를 서버에서 조회
         val userId = SharedPreferencesManager.getString("id","")
@@ -84,7 +98,7 @@ class WriteReviewFragment : Fragment() {
 
         profileList.enqueue(object : Callback<ProfileDto> {
             override fun onResponse(call: Call<ProfileDto>, response: Response<ProfileDto>) {
-                Log.d("MyPageFragment", "도착 확인: ")
+                Log.d("WriteReviewFragment", "도착 확인=================================================== ")
                 val profileDto = response.body()
                 Log.d("WriteReviewFragment", "로그인 된 유저 확인 userId : $userId")
                 if (profileDto != null) {
@@ -350,12 +364,12 @@ class WriteReviewFragment : Fragment() {
                     boardImgDtoList
                 )
 
-                val resId = "123"
+//                val resId = "123"
 
                 val boardService = (context?.applicationContext as MyApplication).boardService
 
-                val call = boardService.createBoard2(resId, boardFormDto)
-                call.enqueue(object : Callback<Unit> {
+                val call = resId?.let { it1 -> boardService.createBoard2(it1, boardFormDto) }
+                call?.enqueue(object : Callback<Unit> {
                     override fun onResponse(
                         call: Call<Unit>,
                         response: Response<Unit>

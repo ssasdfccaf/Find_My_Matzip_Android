@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
+import com.example.find_my_matzip.WriteReviewFragment
 import com.example.find_my_matzip.databinding.FragmentRestaurantDtlBinding
 import com.example.find_my_matzip.model.RestaurantDto
 import com.google.gson.annotations.SerializedName
@@ -80,6 +81,21 @@ class RestaurantDtlFragment : Fragment() {
                     .into(binding.resThumbnail)
 
                 Log.d("MyPageFragment", "도착 확인2: res_thumbnail ${restaurantDto?.res_thumbnail}")
+
+                binding.toWriteReview.setOnClickListener {
+                    Log.d("kkt", "게시글작성가기 클릭됨")
+                    Log.d("kkt", "resId: ${restaurantDto?.res_id}")
+                    val resId = restaurantDto?.res_id
+                    if (resId.isNullOrEmpty()) {
+                        Log.d("RestaurantDtlFragment", "resId is 비엇다~")
+                    }else{
+                        val fragment = WriteReviewFragment.newInstance(resId)
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                }
 
                 binding.mapBtn.setOnClickListener {
                    // Toast.makeText(context,"지도뿅",Toast.LENGTH_SHORT).show()
