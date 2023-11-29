@@ -40,9 +40,12 @@ class JoinActivity : AppCompatActivity() {
     private lateinit var imm: InputMethodManager
 
     // 갤러리에서 선택된 , 파일의 위치(로컬)
-    lateinit var filePath : String
+    private var filePath : String? = null
+
     // 카메라 이미지 파일 위치
     lateinit var profileImageUri : String
+    //파이어베이스 사진 저장 경로
+    lateinit var imgStorageUrl:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -191,6 +194,31 @@ class JoinActivity : AppCompatActivity() {
         //회원가입 버튼
         binding.buttonInsert.setOnClickListener {
 
+            //먼저, 필수 입력요소들 검증
+            val inputUserId = binding.userId.text.toString()
+            val inputUserPw = binding.userPwd.text.toString()
+            val inputUserName = binding.userName.text.toString()
+
+            Log.d(TAG, "회원가입 inputUserId: ${inputUserId}")
+            Log.d(TAG, "회원가입 inputUserPw: ${inputUserPw}")
+            Log.d(TAG, "회원가입 inputUserName: ${inputUserName}")
+
+            if(inputUserId == ""){
+                Toast.makeText(this@JoinActivity,"아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "회원가입 inputUserId: null")
+                return@setOnClickListener
+            }
+            if(inputUserPw == ""){
+                Toast.makeText(this@JoinActivity,"비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "회원가입 inputUserPw: null")
+                return@setOnClickListener
+            }
+            if(inputUserName == ""){
+                Toast.makeText(this@JoinActivity,"이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "회원가입 inputUserName: null")
+                return@setOnClickListener
+            }
+
             //로딩창 띄우기
             loadingDialog.show()
 
@@ -202,17 +230,25 @@ class JoinActivity : AppCompatActivity() {
             // 파일명 생성 : userid+현재시간
            // val uuid = binding.userId.text.toString()+Date()+System.currentTimeMillis();
 
+
             // 이미지 저장될 위치 및 파일명(파이어베이스)
             val imgRef = storageRef.child("users_img/${binding.userId.text}.jpg")
 
-            //이미지 url
-            val imgStorageUrl = "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/users_img%2F${binding.userId.text}.jpg?alt=media"
+            
+            //입력된 이미지 있을때만 db에 이미지 경로 저장
+            if(filePath != null){
+                //이미지 url
+                imgStorageUrl = "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/users_img%2F${binding.userId.text}.jpg?alt=media"
+            }else{
+                imgStorageUrl = ""
+            }
+            
 
             //회원가입 요청할 user객체 구성
             var usersFormDto = UsersFormDto(
-                userid = binding.userId.text.toString(),
-                user_pwd = binding.userPwd.text.toString(),
-                username = binding.userName.text.toString(),
+                userid = inputUserId,
+                user_pwd = inputUserPw,
+                username = inputUserName,
                 user_address = binding.searchAddress.text.toString() + binding.userAddressDetail.text,
                 user_role = "ADMIN",
                 userphone = binding.userPhone.text.toString(),
@@ -236,30 +272,35 @@ class JoinActivity : AppCompatActivity() {
                         Log.d(TAG, "성공(newUsers_body) :  ${response.body().toString()}")
 
 
-                        //저장할 파일 불러오기
-                        val file = Uri.fromFile(File(filePath))
+                        //입력된 사진 있을때만 파이어베이스에 사진 저장
+                        if(filePath != null){
+                            //저장할 파일 불러오기
+                            val file = Uri.fromFile(File(filePath))
 
-                        // 파이어베이스 스토리지에 업로드하는 함수.
-                        imgRef.putFile(file)
-                            // 업로드 후, 수행할 콜백 함수 정의. 실패했을 경우 콜백함수 정의
-                            .addOnCompleteListener{
-                                //로딩창 지우기
-                                loadingDialog.dismiss()
-                                Toast.makeText(this@JoinActivity,"스토리지 업로드 완료",Toast.LENGTH_SHORT).show()
-                            }
-                            .addOnFailureListener {
-                                //로딩창 지우기
-                                loadingDialog.dismiss()
-                                
-                                //db의 유저정보 지우기
+                            // 파이어베이스 스토리지에 업로드하는 함수.
+                            imgRef.putFile(file)
+                                // 업로드 후, 수행할 콜백 함수 정의. 실패했을 경우 콜백함수 정의
+                                .addOnCompleteListener{
+                                    //로딩창 지우기
+                                    loadingDialog.dismiss()
+                                    Log.d(TAG, "스토리지 업로드 완료")
+                                   
+                                }
+                                .addOnFailureListener {
+                                    //로딩창 지우기
+                                    loadingDialog.dismiss()
 
+                                    //db의 유저정보 지우기
 
-                                Toast.makeText(this@JoinActivity,"스토리지 업로드 실패",Toast.LENGTH_SHORT).show()
-                            }
+                                    Log.d(TAG, "스토리지 업로드 실패")
+                                }
+                        }
 
+                        Toast.makeText(this@JoinActivity,"회원가입 되었습니다.",Toast.LENGTH_SHORT).show()
+                        
                         val intent = Intent(this@JoinActivity, LoginActivity::class.java)
-
                         startActivity(intent)
+
                     }else {
                         Log.d(TAG, "서버 응답 실패: ${response.code()}")
                         //로딩창 지우기
