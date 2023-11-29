@@ -65,8 +65,15 @@ class boardDtlFragment : Fragment() {
                 binding.boardDtlTitle.text = boardDto?.board?.boardTitle.toString()
                 binding.boardDtlContent.text = boardDto?.board?.content.toString()
                 binding.boardScore.text = boardDto?.board?.score.toString()
-                binding.userName.text = boardDto?.users?.username.toString()
-//                binding.userProfileImg 파이어베이스 설정 필요
+                binding.userId.text = boardDto?.users?.userid.toString()
+                val userImg = boardDto?.users?.user_image
+                if(userImg != null){
+                    Glide.with(requireContext())
+                        .load(userImg)
+                        .override(900, 900)
+                        .into(binding.userProfileImg)
+                }
+
                 binding.resName.text = boardDto?.restaurant?.res_name.toString()
                 binding.resAddress.text = boardDto?.restaurant?.res_address.toString()
 
@@ -88,6 +95,8 @@ class boardDtlFragment : Fragment() {
 //                binding.boardRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 //                BoardRecyclerAdapter(this@MyPageFragment, profileDto.boards.content)
 //                binding.boardRecyclerView.adapter = boardAdapter
+
+
 
 
                 // toResDtl 클릭 이벤트 핸들러
