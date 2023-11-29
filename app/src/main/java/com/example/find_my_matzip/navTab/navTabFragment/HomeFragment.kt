@@ -27,12 +27,26 @@ import retrofit2.Response
 class     HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     lateinit var adapter : HomeRecyclerAdapter
+    lateinit var boardList: Call<List<MainBoardDto>>
     private val TAG: String = "HomeFragment"
+    private var text:String? = null
+
+    companion object {
+        // HomeFragment 인스턴스 생성
+        fun newInstance(text: String): HomeFragment {
+            val fragment = HomeFragment()
+            val args = Bundle()
+            args.putString("text", text)
+            Log.d("sjw", "내가 newInstance에서 넣은 text : $text")
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
 
 
     //페이징처리 1
-    var currentPage = 1
+    var currentPage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("SdoLifeCycle","HomeFragment onCreate")
@@ -49,6 +63,15 @@ class     HomeFragment : Fragment() {
         Log.d("SdoLifeCycle","HomeFragment onCreateView")
 
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+
+        
+        //검색창에서 넘어왔다면 text넣어줌
+        val newText = arguments?.getString("text")
+        Log.d("sjw", "newText : $newText")
+        if(newText != null){
+            text = newText
+        }
+
 
         binding.toFollowHome.setOnClickListener {
             // 클릭 시 HomeFollowFragment로 이동하는 코드
@@ -102,7 +125,7 @@ class     HomeFragment : Fragment() {
                     Log.d(TAG, "검색 버튼 클릭: $query")
 
                     //검색 수행
-                    loadSearchResultPageData(currentPage,query)
+                    navigateSearchResult(query)
                 }
                 return true
             }
@@ -145,7 +168,16 @@ class     HomeFragment : Fragment() {
 
     private fun loadNextPageData(page: Int) {
         val boardService = (context?.applicationContext as MyApplication).boardService
-        val boardList = boardService.getAllBoardsPager(page)
+
+        if(text != null){
+            // 검색 단어가 있을때
+            Log.d(TAG, "검색중 $text")
+            boardList = boardService.getSearchMainBoards("$text",page)
+        }else{
+            //전체 조회
+            Log.d(TAG, "전체 조회")
+            boardList = boardService.getAllBoardsPager(page)
+        }
 
         boardList.enqueue(object : Callback<List<MainBoardDto>> {
             override fun onResponse(
@@ -169,31 +201,15 @@ class     HomeFragment : Fragment() {
         })
     }
 
-    private fun loadSearchResultPageData(page: Int,text:String) {
-        val boardService = (context?.applicationContext as MyApplication).boardService
-        val boardList = boardService.getSearchMainBoards(page,text)
-
-        boardList.enqueue(object : Callback<List<MainBoardDto>> {
-            override fun onResponse(
-                call: Call<List<MainBoardDto>>,
-                response: Response<List<MainBoardDto>>
-            ) {
-                if (response.isSuccessful) {
-                    val newBoardList = response.body()
-                    newBoardList?.let {
-                        adapter.addData(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<List<MainBoardDto>>, t: Throwable) {
-                t.printStackTrace()
-                call.cancel()
-                Log.d(TAG, " 통신 실패")
-            }
-
-        })
+    //fragment전환
+    private fun navigateSearchResult(text:String) {
+        val changeFragment = newInstance(text)
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragmentContainer, changeFragment)
+        .addToBackStack(null)
+        transaction.commit()
     }
+
 
 }
 
