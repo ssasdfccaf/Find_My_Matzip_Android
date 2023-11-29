@@ -1,121 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    android:id="@+id/fragmentWriteReview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WriteReviewFragment">
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".WriteReviewFragment">
+        android:layout_height="match_parent">
 
-        <FrameLayout
+
+        <LinearLayout
+            android:id="@+id/lay1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="40dp"
+            android:paddingBottom="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-
-            <LinearLayout
-                android:id="@+id/lay1"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/nexonbold"
+                android:paddingBottom="20dp"
+                android:text="Review"
+                android:textColor="@color/design_default_color_primary"
+                android:textSize="35sp"
+                android:textStyle="bold" />
+            <RadioGroup
+                android:id="@+id/testRadioGroup"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="40dp"
-                android:paddingBottom="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal"
+                android:layout_gravity="center">
 
-                <TextView
-                    android:layout_width="300dp"
+                <RadioButton
+                    android:id="@+id/radio1"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/nexonbold"
-                    android:paddingBottom="20dp"
-                    android:text="Review"
-                    android:textColor="@color/design_default_color_primary"
-                    android:textSize="35sp"
-                    android:textStyle="bold" />
-                <RadioGroup
-                    android:id="@+id/testRadioGroup"
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center">
+                    android:text="일반글"></RadioButton>
 
-                    <RadioButton
-                        android:id="@+id/radio1"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:text="일반글"></RadioButton>
+                <RadioButton
+                    android:id="@+id/radio2"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="비밀글">
 
-                    <RadioButton
-                        android:id="@+id/radio2"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:text="비밀글">
-
-                    </RadioButton>
-                </RadioGroup>
+                </RadioButton>
+            </RadioGroup>
 
 
 
 
 
+            <TextView
+                android:id="@+id/userId"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/radius"
+                android:fontFamily="@font/nexonlight"
+                android:paddingLeft="30dp"
+                android:text=""
+                android:textColor="#B3B3B3"
+                android:textSize="35sp"
+                android:visibility="gone"
+                ></TextView>
+            <EditText
+                android:id="@+id/boardTitle"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/radius"
+                android:fontFamily="@font/nexonlight"
+                android:hint="리뷰제목"
+                android:paddingLeft="30dp"
+                android:text=""
+                android:textColor="#B3B3B3"
+                android:textSize="15sp"></EditText>
 
-                <EditText
-                    android:id="@+id/resultNameSP"
-                    android:layout_width="300dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/radius"
-                    android:fontFamily="@font/nexonlight"
-                    android:hint="리뷰제목"
-                    android:paddingLeft="30dp"
-                    android:text=""
-                    android:textColor="#B3B3B3"
-                    android:textSize="15sp"></EditText>
+            <EditText
+                android:inputType="number"
+                android:id="@+id/boardScore"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/radius"
+                android:fontFamily="@font/nexonlight"
+                android:hint="평점(1~5 숫자만 입력해주세요.)"
+                android:paddingLeft="30dp"
+                android:text=""
+                android:textColor="#B3B3B3"
+                android:textSize="15sp"></EditText>
 
-                <EditText
-                    android:layout_width="300dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/radius"
-                    android:fontFamily="@font/nexonlight"
-                    android:hint="평점"
-                    android:paddingLeft="30dp"
-                    android:text=""
-                    android:textColor="#B3B3B3"
-                    android:textSize="15sp"></EditText>
-
-                <EditText
-                    android:layout_width="300dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/radius"
-                    android:fontFamily="@font/nexonlight"
-                    android:hint="리뷰상세내용"
-                    android:paddingLeft="30dp"
-                    android:text=""
-                    android:textColor="#B3B3B3"
-                    android:textSize="15sp"></EditText>
-
+            <EditText
+                android:id="@+id/boardContent"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/radius"
+                android:fontFamily="@font/nexonlight"
+                android:hint="리뷰상세내용"
+                android:paddingLeft="30dp"
+                android:text=""
+                android:textColor="#B3B3B3"
+                android:textSize="15sp"></EditText>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
                 <LinearLayout
+                    android:id="@+id/imgUploadLayout1"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center">
 
-                <Button
-                    android:layout_width="250dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:backgroundTint="@color/design_default_color_primary"
-                    android:fontFamily="@font/nexonmed"
-                    android:text="리뷰이미지등록1"></Button>
                     <Button
+                        android:id="@+id/selectImgBtn1"
+                        android:layout_width="250dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:backgroundTint="@color/design_default_color_primary"
+                        android:fontFamily="@font/nexonmed"
+                        android:text="리뷰이미지등록1"></Button>
+                    <Button
+                        android:id="@+id/addImg"
                         android:layout_width="80dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
@@ -123,15 +147,29 @@
                         android:fontFamily="@font/nexonmed"
                         android:text="추가"></Button>
                 </LinearLayout>
+                <ImageView
+                    android:id="@+id/reviewImg1"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:visibility="gone"
+                    ></ImageView>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/imgUploadLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:visibility="visible"
                     >
 
                     <Button
+                        android:id="@+id/selectImgBtn2"
                         android:layout_width="250dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
@@ -141,6 +179,7 @@
                         android:text="리뷰이미지등록2"
                         ></Button>
                     <Button
+                        android:id="@+id/deleteImg2"
                         android:layout_width="80dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
@@ -148,74 +187,113 @@
                         android:fontFamily="@font/nexonmed"
                         android:text="삭제"></Button>
                 </LinearLayout>
-
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/reviewImg2"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
+                    android:layout_height="250dp"
                     android:visibility="gone"
-                    >
-                    <Button
-                        android:layout_width="250dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:backgroundTint="@color/design_default_color_primary"
-                        android:fontFamily="@font/nexonmed"
-                        android:text="리뷰이미지등록3"></Button>
-                    <Button
-                        android:layout_width="80dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:backgroundTint="#000000"
-                        android:fontFamily="@font/nexonmed"
-                        android:text="삭제"></Button>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    >
-
-                    <Button
-                        android:layout_width="250dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:backgroundTint="@color/design_default_color_primary"
-                        android:fontFamily="@font/nexonmed"
-                        android:text="리뷰이미지등록4"></Button>
-                    <Button
-                        android:layout_width="80dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:backgroundTint="#000000"
-                        android:fontFamily="@font/nexonmed"
-                        android:text="삭제"></Button>
-                </LinearLayout>
-
-
-                <!--        -->
-                <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="100dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/updateBtn"
-                        android:layout_width="300dp"
-                        android:layout_height="60dp"
-                        android:layout_gravity="center"
-                        android:backgroundTint="@color/black"
-                        android:fontFamily="@font/nexonmed"
-                        android:text="등록"></Button>
-                </LinearLayout>
+                    ></ImageView>
             </LinearLayout>
-        </FrameLayout>
-    </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/imgUploadLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    >
+
+                    <Button
+                        android:id="@+id/selectImgBtn3"
+                        android:layout_width="250dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:backgroundTint="@color/design_default_color_primary"
+                        android:fontFamily="@font/nexonmed"
+                        android:text="리뷰이미지등록3"
+                        ></Button>
+                    <Button
+                        android:id="@+id/deleteImg3"
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:backgroundTint="#000000"
+                        android:fontFamily="@font/nexonmed"
+                        android:text="삭제"></Button>
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/reviewImg3"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:visibility="gone"
+                    ></ImageView>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/imgUploadLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    >
+
+                    <Button
+                        android:id="@+id/selectImgBtn4"
+                        android:layout_width="250dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:backgroundTint="@color/design_default_color_primary"
+                        android:fontFamily="@font/nexonmed"
+                        android:text="리뷰이미지등록4"
+                        ></Button>
+                    <Button
+                        android:id="@+id/deleteImg4"
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:backgroundTint="#000000"
+                        android:fontFamily="@font/nexonmed"
+                        android:text="삭제"></Button>
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/reviewImg4"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:visibility="gone"
+                    ></ImageView>
+            </LinearLayout>
+
+
+            <!--        -->
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="100dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/submitBtn"
+                    android:layout_width="300dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/black"
+                    android:fontFamily="@font/nexonmed"
+                    android:text="등록"></Button>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</ScrollView>
