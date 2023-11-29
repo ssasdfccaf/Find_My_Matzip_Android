@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -113,8 +114,11 @@ class MyPageFragment : Fragment() {
                     Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
 
                     boardAdapter = BoardRecyclerAdapter(this@MyPageFragment, profileDto.boards.content)
-                    binding.boardRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                    val spanCount = 3 // 원하는 열의 수 ㅋㅋ 생각보다 간단하네..
+                    val gridLayoutManager = GridLayoutManager(requireContext(), spanCount)
+                    binding.boardRecyclerView.layoutManager = gridLayoutManager
                     binding.boardRecyclerView.adapter = boardAdapter
+
 
                     // 팔로잉 목록 클릭 시 다이얼로그 표시
                     binding.following.setOnClickListener {
