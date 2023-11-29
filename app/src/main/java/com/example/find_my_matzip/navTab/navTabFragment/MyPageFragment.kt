@@ -58,8 +58,7 @@ class MyPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
+        Log.d("SdoLifeCycle","MyPageFragment onCreateView")
 
         binding = FragmentMyPageBinding.inflate(layoutInflater, container, false)
         // 보드 어댑터 초기화
@@ -282,6 +281,23 @@ class MyPageFragment : Fragment() {
         // 현재의 HomeFragment를 백 스택에서 제거
         parentFragmentManager.popBackStack("MyPageFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
+
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","MyPageFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","MyPageFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","MyPageFragment onDestroy")
+        super.onDestroy()
+    }
+
 //
 //        // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
 //        val profileFragment = ProfileFragment.newInstance(userId)

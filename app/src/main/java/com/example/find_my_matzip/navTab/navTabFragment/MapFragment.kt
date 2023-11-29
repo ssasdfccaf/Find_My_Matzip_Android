@@ -54,6 +54,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("SdoLifeCycle","MapFragment onCreate")
         super.onCreate(savedInstanceState)
         binding = FragmentMapBinding.inflate(layoutInflater)
         if (!hasPermission()) {
@@ -66,7 +67,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        Log.d("SdoLifeCycle","MapFragment onCreateView")
         return binding.root
     }
     private fun initMapView() {
@@ -354,6 +355,22 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 
         // 거리 반환 (미터)
         return earthRadius * c
+    }
+
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","MapFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","MapFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","MapFragment onDestroy")
+        super.onDestroy()
     }
 
 

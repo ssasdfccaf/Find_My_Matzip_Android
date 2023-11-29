@@ -59,6 +59,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("SdoLifeCycle","ProfileFragmnet onCreateView")
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
         // 보드 어댑터
         boardAdapter = BoardRecyclerAdapter2(this@ProfileFragment, emptyList())
@@ -401,6 +402,22 @@ class ProfileFragment : Fragment() {
 
         // 현재의 HomeFragment를 백 스택에서 제거
         parentFragmentManager.popBackStack("Profile", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","HomeFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","HomeFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","HomeFragment onDestroy")
+        super.onDestroy()
     }
 
 //        // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
