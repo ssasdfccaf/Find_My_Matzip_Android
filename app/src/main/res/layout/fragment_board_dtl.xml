@@ -80,22 +80,32 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:padding="10dp">
-                <TextView
+
+                <RatingBar
                     android:id="@+id/boardScore"
-                    android:textSize="20dp"
+                    style="@style/Widget.AppCompat.RatingBar.Indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/nexonbold"
-                    android:gravity="right"
-                    android:text="Default" />
+                    android:numStars="5"
+                    android:rating="0"
+                    android:stepSize="1" />
 
-                <TextView
-                    android:textSize="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center|right"
-                    android:fontFamily="@font/nexonbold"
-                    android:text="점" />
+<!--                <TextView-->
+<!--                    android:id="@+id/boardScore"-->
+<!--                    android:textSize="20dp"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/nexonbold"-->
+<!--                    android:gravity="right"-->
+<!--                    android:text="Default" />-->
+
+<!--                <TextView-->
+<!--                    android:textSize="20dp"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:gravity="center|right"-->
+<!--                    android:fontFamily="@font/nexonbold"-->
+<!--                    android:text="점" />-->
             </LinearLayout>
 
 
@@ -139,8 +149,7 @@
                 android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
+                android:orientation="horizontal">
 
                 <!-- 식당 이미지 -->
                 <androidx.cardview.widget.CardView
