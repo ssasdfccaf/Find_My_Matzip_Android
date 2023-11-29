@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
@@ -80,6 +81,38 @@ class RestaurantDtlFragment : Fragment() {
 
                 Log.d("MyPageFragment", "도착 확인2: res_thumbnail ${restaurantDto?.res_thumbnail}")
 
+                binding.mapBtn.setOnClickListener {
+                   // Toast.makeText(context,"지도뿅",Toast.LENGTH_SHORT).show()
+
+                    val res_lat = restaurantDto?.res_lat.toString()
+                    val res_lng = restaurantDto?.res_lng.toString()
+
+                    val mapCardViewFragment = MapCardViewFragment()
+
+                    // 데이터를 전달하기 위한 Bundle 생성
+                    val bundle = Bundle().apply {
+                        putString("res_lat", res_lat)
+                        putString("res_lng", res_lng)
+                    }
+
+                    // MapCardViewFragment에 Bundle 설정
+                    mapCardViewFragment.arguments = bundle
+
+                    // MapCardViewFragment의 크기를 지정하여 추가
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.add(
+                        R.id.fragmentContainer, // 프래그먼트를 표시할 레이아웃 ID
+                        mapCardViewFragment,
+                        "MapCardViewFragment"
+                    )
+
+                    // MapCardViewFragment 크기 지정
+                    val cardViewLayoutParams = ViewGroup.LayoutParams(300, 300) // 원하는 크기로 조절
+                    mapCardViewFragment.view?.layoutParams = cardViewLayoutParams
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                }
+
             }
 
             override fun onFailure(call: Call<RestaurantDto>, t: Throwable) {
@@ -87,6 +120,7 @@ class RestaurantDtlFragment : Fragment() {
             }
 
         })
+
 
 
 
