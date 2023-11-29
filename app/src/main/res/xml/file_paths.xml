@@ -4,5 +4,7 @@
     <external-path
         name="myfiles"
         path="Android/data/com.example.find_my_matzip/files/Pictures"/>
-
+    <cache-path
+        name="uploadImg"
+        path="uploadImg/"/>
 </paths>
