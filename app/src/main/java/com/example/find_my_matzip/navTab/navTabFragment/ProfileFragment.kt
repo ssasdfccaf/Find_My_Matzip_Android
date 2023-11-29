@@ -1,5 +1,6 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -123,6 +125,7 @@ class ProfileFragment : Fragment() {
                 val profileList = userService.getProfile(pageUserId,page)
 
                 profileList.enqueue(object : Callback<ProfileDto> {
+                    @SuppressLint("SuspiciousIndentation")
                     override fun onResponse(
                         call: Call<ProfileDto>,
                         response: Response<ProfileDto>,
@@ -362,12 +365,14 @@ class ProfileFragment : Fragment() {
 
     // MyPageFragment로 이동하는 메서드
     private fun navigateToMyPageFragment() {
+
         // MyPageFragment로 이동하는 코드를 추가
         val myPageFragment = MyPageFragment()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragmentContainer, myPageFragment)
         transaction.addToBackStack(null)
         transaction.commit()
+        requireActivity().supportFragmentManager.popBackStack("MyPageTransaction", FragmentManager.POP_BACK_STACK_INCLUSIVE)
 //        if (currentUserId == pageUserId) {
 //            // MyPageFragment로 이동하는 코드를 추가
 //            val myPageFragment = MyPageFragment()
@@ -384,21 +389,32 @@ class ProfileFragment : Fragment() {
 
 
     // 팔로워의 프로필로 이동하는 메서드
+    // 팔로워의 프로필로 이동하는 메서드
     private fun navigateToUserProfile(userId: String) {
-        // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
-        val profileFragment = ProfileFragment.newInstance(userId)
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        // 클릭 시 HomeFollowFragment로 이동하는 코드
+        val fragment = ProfileFragment.newInstance(userId)
+        // 트랜잭션에 이름 부여
+        val transaction = parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
+            .commit()
 
-        // 추가된 부분
-        if (!isStateSaved) {
-            transaction.replace(R.id.fragmentContainer, profileFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        } else {
-            // 상태가 저장된 경우에는 커밋을 허용하지 않고 로그를 출력
-            Log.w("ProfileFragment", "Transaction not committed: Fragment state already saved")
-        }
+        // 현재의 HomeFragment를 백 스택에서 제거
+        parentFragmentManager.popBackStack("Profile", FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
+//        // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
+//        val profileFragment = ProfileFragment.newInstance(userId)
+//        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//
+//        // 추가된 부분
+//        if (!isStateSaved) {
+//            transaction.replace(R.id.fragmentContainer, profileFragment)
+//            transaction.addToBackStack(null)
+//            transaction.commit()
+//        } else {
+//            // 상태가 저장된 경우에는 커밋을 허용하지 않고 로그를 출력
+//            Log.w("ProfileFragment", "Transaction not committed: Fragment state already saved")
+//        }
 
     }
 }
