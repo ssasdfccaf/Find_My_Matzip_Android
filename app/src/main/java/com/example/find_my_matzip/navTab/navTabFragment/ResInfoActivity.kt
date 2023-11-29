@@ -1,5 +1,6 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -8,21 +9,37 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Gravity
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.FragmentTransaction
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.R
+import com.example.find_my_matzip.databinding.ActivityResInfoBinding
 import kotlin.math.roundToInt
 
 
 class ResInfoActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_res_info)
+
+        var resInfoId = intent.getStringExtra("resInfoId")
+        Log.d("acttest", "${resInfoId}")
+        val bundle = Bundle()
+        bundle.putString("resId", resInfoId)
+
+        findViewById<LinearLayout>(R.id.toResDtl).setOnClickListener {
+            Toast.makeText(this,"resId:${resInfoId}",Toast.LENGTH_SHORT).show()
+        }
+
 
         val resInfoName = intent.getStringExtra("resInfoName")
         val textViewresInfoName = findViewById<TextView>(R.id.resInfoName)
@@ -61,7 +78,9 @@ class ResInfoActivity : AppCompatActivity() {
             )
             .into(imageView)
 
+
     }
+
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onResume() {

@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
+import com.example.find_my_matzip.WriteReviewFragment
 import com.example.find_my_matzip.databinding.FragmentRestaurantDtlBinding
 import com.example.find_my_matzip.model.RestaurantDto
 import com.google.gson.annotations.SerializedName
@@ -17,6 +19,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RestaurantDtlFragment : Fragment() {
+    private var resId: String? = null
     lateinit var binding : FragmentRestaurantDtlBinding
 
     //resId 값으로 식당상세페이지 이동
@@ -39,6 +42,7 @@ class RestaurantDtlFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        resId = arguments?.getString("resId")
         binding = FragmentRestaurantDtlBinding.inflate(layoutInflater,container,false)
 
         val restaurantService = (context?.applicationContext as MyApplication).restaurantService
@@ -78,6 +82,53 @@ class RestaurantDtlFragment : Fragment() {
 
                 Log.d("MyPageFragment", "도착 확인2: res_thumbnail ${restaurantDto?.res_thumbnail}")
 
+                binding.toWriteReview.setOnClickListener {
+                    Log.d("kkt", "게시글작성가기 클릭됨")
+                    Log.d("kkt", "resId: ${restaurantDto?.res_id}")
+                    val resId = restaurantDto?.res_id
+                    if (resId.isNullOrEmpty()) {
+                        Log.d("RestaurantDtlFragment", "resId is 비엇다~")
+                    }else{
+                        val fragment = WriteReviewFragment.newInstance(resId)
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                }
+
+                binding.mapBtn.setOnClickListener {
+                   // Toast.makeText(context,"지도뿅",Toast.LENGTH_SHORT).show()
+
+                    val res_lat = restaurantDto?.res_lat.toString()
+                    val res_lng = restaurantDto?.res_lng.toString()
+
+                    val mapCardViewFragment = MapCardViewFragment()
+
+                    // 데이터를 전달하기 위한 Bundle 생성
+                    val bundle = Bundle().apply {
+                        putString("res_lat", res_lat)
+                        putString("res_lng", res_lng)
+                    }
+
+                    // MapCardViewFragment에 Bundle 설정
+                    mapCardViewFragment.arguments = bundle
+
+                    // MapCardViewFragment의 크기를 지정하여 추가
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.add(
+                        R.id.fragmentContainer, // 프래그먼트를 표시할 레이아웃 ID
+                        mapCardViewFragment,
+                        "MapCardViewFragment"
+                    )
+
+                    // MapCardViewFragment 크기 지정
+                    val cardViewLayoutParams = ViewGroup.LayoutParams(300, 300) // 원하는 크기로 조절
+                    mapCardViewFragment.view?.layoutParams = cardViewLayoutParams
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                }
+
             }
 
             override fun onFailure(call: Call<RestaurantDto>, t: Throwable) {
@@ -85,6 +136,7 @@ class RestaurantDtlFragment : Fragment() {
             }
 
         })
+
 
 
 

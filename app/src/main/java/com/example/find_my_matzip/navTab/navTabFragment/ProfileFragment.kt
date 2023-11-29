@@ -1,20 +1,26 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentProfileBinding
-import com.example.find_my_matzip.model.FollowerDto
+import com.example.find_my_matzip.model.FollowDto
 import com.example.find_my_matzip.model.FollowingDto
 import com.example.find_my_matzip.model.ProfileDto
+import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
 import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter2
 import com.example.find_my_matzip.navTab.adapter.ProfileAdapter2
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
@@ -45,6 +51,9 @@ class ProfileFragment : Fragment() {
     lateinit var binding: FragmentProfileBinding
     lateinit var adapter: ProfileAdapter2
     lateinit var boardAdapter: BoardRecyclerAdapter2
+    var isLoading = false
+    var isLastPage = false
+    var currentPage = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +64,47 @@ class ProfileFragment : Fragment() {
         boardAdapter = BoardRecyclerAdapter2(this@ProfileFragment, emptyList())
         binding.boardRecyclerView.adapter = boardAdapter
 
-// 전달된 userId 값 확인 userId : matzuo
+// 스크롤 리스너 설정
+        binding.boardRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                handleScroll(recyclerView)
+            }
+        })
+
+        // 데이터 로드
+        loadNextPageData(currentPage)
+
+        return binding.root
+    }
+    private fun handleScroll(recyclerView: RecyclerView) {
+        Log.d("MyPageFragment", "스크롤 리스닝 확인 1")
+        val layoutManager = LinearLayoutManager::class.java.cast(recyclerView.layoutManager)
+        val visibleItemCount = layoutManager?.childCount ?: 0
+        val totalItemCount = layoutManager?.itemCount ?: 0
+        val firstVisibleItemPosition = layoutManager?.findFirstVisibleItemPosition() ?: 0
+        Log.d("MyPageFragment", "스크롤 리스닝 확인 2")
+        Log.d("MyPageFragment", "isLoading : $isLoading, isLastPage : $isLastPage ")
+        Log.d("MyPageFragment", "visibleItemCount : $visibleItemCount, firstVisibleItemPosition : $firstVisibleItemPosition")
+        Log.d("MyPageFragment", "totalItemCount : $totalItemCount ")
+        if (!isLoading && !isLastPage) {
+            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                && firstVisibleItemPosition >= 0
+            ) {
+                Log.d("MyPageFragment", "33 currentPage 전 :$currentPage ")
+                Log.d("MyPageFragment", "스크롤 리스닝 확인 3")
+                loadNextPageData(currentPage)
+                Log.d("MyPageFragment", "스크롤 리스닝 확인 4")
+                Log.d("MyPageFragment", "44 currentPage 전 :$currentPage ")
+            }
+        }
+    }
+
+
+    private fun loadNextPageData(page: Int): FrameLayout {
+        isLoading = true
+
+        // 전달된 userId 값 확인 userId : matzuo
         val pageUserId = arguments?.getString("userId")
         if (pageUserId != null) {
             val loginUserId = SharedPreferencesManager.getString("id", "")
@@ -73,14 +122,16 @@ class ProfileFragment : Fragment() {
                 // userId를 사용하여 프로필을 조회 -- 팔로워 팔로우 목록에서 해당아이디의 프로필을 조회 하는것임
                 val userService = (context?.applicationContext as MyApplication).userService
 //            profileList에 해당 유저의 프로필 정보가 담기는것, matzip
-                val profileList = userService.getProfile(pageUserId)
+                val profileList = userService.getProfile(pageUserId,page)
 
                 profileList.enqueue(object : Callback<ProfileDto> {
+                    @SuppressLint("SuspiciousIndentation")
                     override fun onResponse(
                         call: Call<ProfileDto>,
                         response: Response<ProfileDto>,
 
                     ) {
+                        isLoading = false
                         val profileDto = response.body()
                         if (profileDto != null) {
                             // matzip 의 정보를 갖고 있네. matzip 의 정보네.
@@ -220,28 +271,35 @@ class ProfileFragment : Fragment() {
 
                             Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
                             // 프로필 어댑터 및 보드 어댑터 업데이트
+
+                            val newBoardList = profileDto.boards.content
+                            if (newBoardList.isNotEmpty() && currentPage == 0) {
                             ProfileAdapter2(this@ProfileFragment, listOf(profileDto.pageUserDto))
-                            boardAdapter =
-                                BoardRecyclerAdapter2(
-                                    this@ProfileFragment,
-                                    profileDto.boards.content
-                                )
+                            boardAdapter = BoardRecyclerAdapter2(this@ProfileFragment, profileDto.boards.content)
+                                currentPage++
 
-                            binding.boardRecyclerView.layoutManager =
-                                LinearLayoutManager(requireContext())
+                            val spanCount = 3 // 원하는 열의 수 ㅋㅋ 생각보다 간단하네..
+                            val gridLayoutManager = GridLayoutManager(requireContext(), spanCount)
+                            binding.boardRecyclerView.layoutManager = gridLayoutManager
                             binding.boardRecyclerView.adapter = boardAdapter
-
+                            } else if (newBoardList.isNotEmpty() && currentPage !== 0) {
+                                boardAdapter.addData(newBoardList)
+                                currentPage++
+                            }
+                            else {
+                                isLastPage = true
+                            }
 
                             // 팔로잉 목록 클릭 시 다이얼로그 표시
                             binding.following.setOnClickListener {
-                                val followingList: List<FollowingDto> =
+                                val followingList: List<FollowDto> =
                                     profileDto?.followingDtoList ?: emptyList()
                                 Log.d("MyPageFragment", "도착 확인6: followingDtoList $followingList")
 
 
                                 CustomDialog(
                                     requireContext(),
-                                    followingList.map { it.id },
+                                    followingList,
                                     CustomDialog.DialogType.FOLLOWING
                                 ).apply {
                                     setOnClickListener(object : CustomDialog.OnDialogClickListener {
@@ -260,14 +318,14 @@ class ProfileFragment : Fragment() {
                             }
                             // 팔로워 목록 클릭 시 다이얼로그로 팔로워 리스트 (리사이클러)
                             binding.follower.setOnClickListener {
-                                val followerList: List<FollowerDto> =
+                                val followerList: List<FollowDto> =
                                     profileDto?.followerDtoList ?: emptyList()
                                 Log.d("MyPageFragment", "도착 확인6: followerDtoList $followerList")
 
                                 // 다이얼로그 생성
                                 val dialog = CustomDialog(
                                     requireContext(),
-                                    followerList.map { it.id },
+                                    followerList,
                                     CustomDialog.DialogType.FOLLOWER
                                 )
 
@@ -294,6 +352,7 @@ class ProfileFragment : Fragment() {
                     }
 
                     override fun onFailure(call: Call<ProfileDto>, t: Throwable) {
+                        isLoading = false
                         t.printStackTrace()
                         call.cancel()
                         Log.e("MyPageFragment", " 통신 실패")
@@ -306,12 +365,14 @@ class ProfileFragment : Fragment() {
 
     // MyPageFragment로 이동하는 메서드
     private fun navigateToMyPageFragment() {
+
         // MyPageFragment로 이동하는 코드를 추가
         val myPageFragment = MyPageFragment()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragmentContainer, myPageFragment)
         transaction.addToBackStack(null)
         transaction.commit()
+        requireActivity().supportFragmentManager.popBackStack("MyPageTransaction", FragmentManager.POP_BACK_STACK_INCLUSIVE)
 //        if (currentUserId == pageUserId) {
 //            // MyPageFragment로 이동하는 코드를 추가
 //            val myPageFragment = MyPageFragment()
@@ -328,21 +389,32 @@ class ProfileFragment : Fragment() {
 
 
     // 팔로워의 프로필로 이동하는 메서드
+    // 팔로워의 프로필로 이동하는 메서드
     private fun navigateToUserProfile(userId: String) {
-        // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
-        val profileFragment = ProfileFragment.newInstance(userId)
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        // 클릭 시 HomeFollowFragment로 이동하는 코드
+        val fragment = ProfileFragment.newInstance(userId)
+        // 트랜잭션에 이름 부여
+        val transaction = parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
+            .commit()
 
-        // 추가된 부분
-        if (!isStateSaved) {
-            transaction.replace(R.id.fragmentContainer, profileFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        } else {
-            // 상태가 저장된 경우에는 커밋을 허용하지 않고 로그를 출력
-            Log.w("ProfileFragment", "Transaction not committed: Fragment state already saved")
-        }
+        // 현재의 HomeFragment를 백 스택에서 제거
+        parentFragmentManager.popBackStack("Profile", FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
+//        // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
+//        val profileFragment = ProfileFragment.newInstance(userId)
+//        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//
+//        // 추가된 부분
+//        if (!isStateSaved) {
+//            transaction.replace(R.id.fragmentContainer, profileFragment)
+//            transaction.addToBackStack(null)
+//            transaction.commit()
+//        } else {
+//            // 상태가 저장된 경우에는 커밋을 허용하지 않고 로그를 출력
+//            Log.w("ProfileFragment", "Transaction not committed: Fragment state already saved")
+//        }
 
     }
 }

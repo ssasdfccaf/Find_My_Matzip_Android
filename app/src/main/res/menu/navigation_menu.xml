@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/endBtn"
-        android:icon="@drawable/baseline_login_20"
-        android:title="종료">
-    </item>
-    <item
         android:id="@+id/logoutBtn"
         android:icon="@drawable/baseline_logout_24"
         android:title="로그아웃">
     </item>
     <item
-        android:icon="@drawable/baseline_home_24"
+        android:icon="@drawable/baseline_mood_bad_24"
         android:title="회원 탈퇴">
-
+    </item>
+    <item
+        android:id="@+id/endBtn"
+        android:icon="@drawable/baseline_close_24"
+        android:title="앱 종료">
     </item>
 </menu>

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <ScrollView
+    android:id="@+id/resDtlScrollView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,7 +16,8 @@
     tools:context=".navTab.navTabFragment.boardDtlFragment"
     >
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -167,7 +174,12 @@
                             android:text="식당주소 불러오는중"></TextView>
 
                     </LinearLayout>
-
+                    <Button
+                        android:id="@+id/mapBtn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/map"
+                        />
                     <TextView
                         android:id="@+id/resScore"
                         android:textSize="25dp"
@@ -334,77 +346,104 @@
                     android:id="@+id/resIntro"
                     android:textSize="25dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:fontFamily="@font/nexonbold"
                     android:text="설명 불러오는중" />
             </LinearLayout>
+            <!-- 플로팅 버튼 -->
+
+
+
+            <!-- 지도 -->
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="1">-->
+
+<!--                &lt;!&ndash; MapView &ndash;&gt;-->
+<!--                <com.naver.maps.map.MapView-->
+<!--                    android:id="@+id/map"-->
+<!--                    android:name="com.naver.maps.map.MapFragment"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="300dp" />-->
+<!--            </LinearLayout>-->
+
             <!--제목-->
             <!--========================================================================================-->
             <!--제목-->
             <!-- 게시물, 팔로워 팔로잉을 묶어주는 리니어 -->
-            <LinearLayout
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:orientation="horizontal">-->
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    >-->
 
-                    <TextView
-                        android:textSize="25dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center|right"
-                        android:fontFamily="@font/nexonbold"
-                        android:text="리뷰 목록" />
+<!--                    <TextView-->
+<!--                        android:textSize="25dp"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:gravity="center|right"-->
+<!--                        android:fontFamily="@font/nexonbold"-->
+<!--                        android:text="리뷰 목록" />-->
 
-                </LinearLayout>
-            </LinearLayout>
-            <!--제목-->
-            <!--========================================================================================-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </androidx.recyclerview.widget.RecyclerView>
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
+<!--            &lt;!&ndash;제목&ndash;&gt;-->
+<!--            &lt;!&ndash;========================================================================================&ndash;&gt;-->
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+<!--            </androidx.recyclerview.widget.RecyclerView>-->
 
 
 
-            <!--========================================================================================-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                >
-                <Button
-                    android:layout_margin="20dp"
-                    android:backgroundTint="#0090FF"
-                    android:text="좋아요"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></Button>
-                <Button
-                    android:layout_margin="20dp"
-                    android:backgroundTint="#FF3636"
-                    android:text="싫어요"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></Button>
-                <Button
-                    android:layout_margin="20dp"
-                    android:backgroundTint="#FF8686"
-                    android:text="팔로우"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></Button>
+<!--            &lt;!&ndash;========================================================================================&ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layout_gravity="center"-->
+<!--                >-->
+<!--                <Button-->
+<!--                    android:layout_margin="20dp"-->
+<!--                    android:backgroundTint="#0090FF"-->
+<!--                    android:text="좋아요"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"></Button>-->
+<!--                <Button-->
+<!--                    android:layout_margin="20dp"-->
+<!--                    android:backgroundTint="#FF3636"-->
+<!--                    android:text="싫어요"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"></Button>-->
+<!--                <Button-->
+<!--                    android:layout_margin="20dp"-->
+<!--                    android:backgroundTint="#FF8686"-->
+<!--                    android:text="팔로우"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"></Button>-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
 
         </LinearLayout>
     </FrameLayout>
 </ScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/toWriteReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/baseline_edit_note_24" />
+</RelativeLayout>

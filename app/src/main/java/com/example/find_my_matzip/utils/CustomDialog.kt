@@ -4,25 +4,21 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.view.LayoutInflater
 import android.view.Window
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.DialogCustomBinding
+import com.example.find_my_matzip.model.FollowDto
 import com.example.find_my_matzip.navTab.adapter.FollowerAdapter
-import com.example.find_my_matzip.navTab.adapter.FollowingAdapter
-import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
 
-class CustomDialog(context: Context, private val datas: List<String>, private val dialogType: DialogType
+class CustomDialog(
+    context: Context, private val datas: List<FollowDto>, private val dialogType: DialogType
 ) {
     private val dialog = Dialog(context)
     private lateinit var onClickListener: OnDialogClickListener
-    lateinit var adapter: RecyclerView.Adapter<*>
+    lateinit var adapter: FollowerAdapter
 
     init {
         // 다이얼로그 초기화 및 설정
@@ -40,6 +36,7 @@ class CustomDialog(context: Context, private val datas: List<String>, private va
         val layoutParams = window?.attributes
         layoutParams?.dimAmount = 0.8f // 0.0f (투명) ~ 1.0f (완전 불투명) 배경의 투명도
         window?.attributes = layoutParams
+
     }
 
     // 다이얼로그 버튼 클릭 리스너 설정
@@ -49,7 +46,7 @@ class CustomDialog(context: Context, private val datas: List<String>, private va
 
     // 다이얼로그 표시
     fun showDialog() {
-        dialog.findViewById<Button>(R.id.dialogButton)?.setOnClickListener {
+        dialog.findViewById<ImageButton>(R.id.dialogButton)?.setOnClickListener {
             dialog.dismiss()
         }
 
@@ -80,11 +77,11 @@ class CustomDialog(context: Context, private val datas: List<String>, private va
                 }
             )
 
-            DialogType.FOLLOWING -> FollowingAdapter(
+            DialogType.FOLLOWING -> FollowerAdapter(
                 dialog.context,
                 datas,
-                object : FollowingAdapter.OnFollowingClickListener {
-                    override fun onFollowingClick(item: String) {
+                object : FollowerAdapter.OnFollowerClickListener {
+                    override fun onFollowClick(item: String) {
                         onClickListener.onClicked(item)
                         dialog.dismiss()
                     }
