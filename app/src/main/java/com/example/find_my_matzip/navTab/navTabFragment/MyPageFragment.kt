@@ -31,6 +31,18 @@ class MyPageFragment : Fragment() {
     lateinit var adapter: ProfileAdapter
     lateinit var boardAdapter: BoardRecyclerAdapter
 
+    companion object {
+        // MyPageFragment 인스턴스 생성
+        fun newInstance(userId: String): MyPageFragment {
+            val fragment = MyPageFragment()
+            val args = Bundle()
+            args.putString("userId", userId)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -99,12 +111,6 @@ class MyPageFragment : Fragment() {
                     }
 
                     Log.d("MyPageFragment", "도착 확인2: profileList ${profileDto?.boards}")
-
-
-                    //여기서 만들필요가있나..?
-                    // 프로필 어댑터 및 보드 어댑터 업데이트
-                    //adapter = ProfileAdapter(this@MyPageFragment, listOf(profileDto.pageUserDto))
-
 
                     boardAdapter = BoardRecyclerAdapter(this@MyPageFragment, profileDto.boards.content)
                     binding.boardRecyclerView.layoutManager = LinearLayoutManager(requireContext())

@@ -15,11 +15,13 @@ import com.example.find_my_matzip.model.BoardDtlDto
 import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
 import com.example.find_my_matzip.navTab.adapter.ProfileAdapter
 import com.example.find_my_matzip.retrofit.BoardService
+import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 class boardDtlFragment : Fragment() {
     lateinit var binding: FragmentBoardDtlBinding
+    private val TAG: String = "boardDtlFragment"
 
     companion object {
         fun newInstance(boardId: String): boardDtlFragment {
@@ -63,8 +65,15 @@ class boardDtlFragment : Fragment() {
                 binding.boardDtlTitle.text = boardDto?.board?.boardTitle.toString()
                 binding.boardDtlContent.text = boardDto?.board?.content.toString()
                 binding.boardScore.text = boardDto?.board?.score.toString()
-                binding.userName.text = boardDto?.users?.username.toString()
-//                binding.userProfileImg 파이어베이스 설정 필요
+                binding.userId.text = boardDto?.users?.userid.toString()
+                val userImg = boardDto?.users?.user_image
+                if(userImg != null){
+                    Glide.with(requireContext())
+                        .load(userImg)
+                        .override(900, 900)
+                        .into(binding.userProfileImg)
+                }
+
                 binding.resName.text = boardDto?.restaurant?.res_name.toString()
                 binding.resAddress.text = boardDto?.restaurant?.res_address.toString()
 
@@ -88,6 +97,8 @@ class boardDtlFragment : Fragment() {
 //                binding.boardRecyclerView.adapter = boardAdapter
 
 
+
+
                 // toResDtl 클릭 이벤트 핸들러
                 fun navigateToResDetail(resId: String?) {
                     if (resId.isNullOrEmpty()) {
@@ -109,6 +120,41 @@ class boardDtlFragment : Fragment() {
                     navigateToResDetail(resId)
                 }
                 // toResDtl 클릭 이벤트 핸들러
+
+
+                // 유저 프로필로 이동 로직
+                fun navigateToUserProfile(userId: String?) {
+                    //만약 유저정보 없다면
+                    if (userId.isNullOrEmpty()) {
+                        Log.d(TAG, "userId is null or empty")
+                        return
+                    }
+
+                    val userFrag: Fragment
+
+                    if(SharedPreferencesManager.getString("id","") == userId){
+                        //내 프로필
+                        userFrag = MyPageFragment.newInstance(userId)
+
+                    }else{
+                        //다른사람 프로필
+                        userFrag = ProfileFragment.newInstance(userId)
+                    }
+                    val transaction =  parentFragmentManager.beginTransaction()
+
+                    transaction.replace(R.id.fragmentContainer, userFrag)
+                    transaction.addToBackStack(null) //백스택에 지금 재배치한 fragment추가
+                    transaction.commit()
+
+                }
+
+                //유저 정보 클릭
+                binding.userLinearLayout.setOnClickListener {
+                    Log.d(TAG, "유저프로필 클릭")
+                    Log.d(TAG, "userId: ${boardDto?.users?.userid}")
+                    val userId = boardDto?.users?.userid
+                    navigateToUserProfile(userId)
+                }
 
 
             }
