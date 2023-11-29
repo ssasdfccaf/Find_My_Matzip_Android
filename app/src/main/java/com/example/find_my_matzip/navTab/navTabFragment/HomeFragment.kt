@@ -60,6 +60,7 @@ class     HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         Log.d("SdoLifeCycle","HomeFragment onCreateView")
 
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
@@ -133,6 +134,8 @@ class     HomeFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 // 검색창에서 글자가 변경이 일어날 때마다 호출
                 //Log.d(TAG, "글자 변경 : $newText")
+
+
                 return true
             }
         })
@@ -192,14 +195,17 @@ class     HomeFragment : Fragment() {
                 }
             }
 
+
             override fun onFailure(call: Call<List<MainBoardDto>>, t: Throwable) {
                 t.printStackTrace()
                 call.cancel()
                 Log.d(TAG, " 통신 실패")
             }
 
+
         })
     }
+
 
     //fragment전환
     private fun navigateSearchResult(text:String) {
