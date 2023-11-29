@@ -35,6 +35,12 @@ class BoardRecyclerAdapter(val context: MyPageFragment, var datas: List<ContentD
     }
 
 
+    fun addData(newData: List<ContentDto>) {
+        val oldSize = datas?.size ?: 0
+        datas = datas.orEmpty() + newData
+        notifyItemRangeInserted(oldSize, newData.size)
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as BoardsViewHoder).binding
         val Item = datas?.get(position)
