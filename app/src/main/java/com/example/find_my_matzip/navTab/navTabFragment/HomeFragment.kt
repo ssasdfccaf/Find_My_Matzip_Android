@@ -31,7 +31,7 @@ class     HomeFragment : Fragment() {
 
 
     //페이징처리 1
-    var currentPage = 1
+    var currentPage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
