@@ -180,8 +180,8 @@ class ProfileFragment : Fragment() {
                                                     // 새로운 인스턴스를 생성하여 추가
                                                     val newFragment = ProfileFragment.newInstance(pageUserId)
                                                     val newTransaction = requireActivity().supportFragmentManager.beginTransaction()
-                                                    newTransaction.replace(R.id.fragmentContainer, newFragment)
-                                                    newTransaction.addToBackStack(null)
+                                                    newTransaction.add(R.id.fragmentContainer, newFragment)
+                                                    //newTransaction.addToBackStack(null)
                                                     newTransaction.commit()
                                                 } else {
                                                     Log.d("ProfileFragment", "팔로우 요청 실패 - Code: ${response.code()}, Message: ${response.message()}")
@@ -220,8 +220,8 @@ class ProfileFragment : Fragment() {
                                                     // 새로운 인스턴스를 생성하여 추가
                                                     val newFragment = ProfileFragment.newInstance(pageUserId)
                                                     val newTransaction = requireActivity().supportFragmentManager.beginTransaction()
-                                                    newTransaction.replace(R.id.fragmentContainer, newFragment)
-                                                    newTransaction.addToBackStack(null)
+                                                    newTransaction.add(R.id.fragmentContainer, newFragment)
+                                                    //newTransaction.addToBackStack(null)
                                                     newTransaction.commit()
                                                 } else {
                                                     Log.d("ProfileFragment", "팔로우 요청실패")

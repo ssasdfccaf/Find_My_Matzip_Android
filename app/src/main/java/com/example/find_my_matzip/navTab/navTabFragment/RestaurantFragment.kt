@@ -143,4 +143,6 @@ class RestaurantFragment : Fragment() {
         Log.d("SdoLifeCycle","RestaurantFragment onDestroy")
         super.onDestroy()
     }
+
+
 }
