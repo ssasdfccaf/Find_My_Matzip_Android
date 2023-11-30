@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
+import com.example.find_my_matzip.R
 import com.example.find_my_matzip.WriteReviewFragment
 import com.example.find_my_matzip.databinding.FragmentRestaurantDtlBinding
 import com.example.find_my_matzip.model.RestaurantDto
@@ -136,6 +137,15 @@ class RestaurantDtlFragment : Fragment() {
                     val callNum = restaurantDto?.res_phone
                     val tel = "tel:$callNum"
                     startActivity(Intent("android.intent.action.DIAL", Uri.parse(tel)))
+                }
+                
+                binding.searchBoard.setOnClickListener { 
+                    //해당 식당 게시글 목록으로 이동
+                    val fragment = HomeFragment.newInstance("",restaurantDto.res_id)
+                    parentFragmentManager.beginTransaction()
+                        .add(R.id.fragmentContainer, fragment)
+                        .addToBackStack("HomeFragment")
+                        .commit()
                 }
 
             }
