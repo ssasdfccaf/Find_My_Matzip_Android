@@ -70,10 +70,11 @@ class RestaurantDtlFragment : Fragment() {
                 binding.resPhone.text = restaurantDto?.res_phone.toString()
                 binding.resIntro.text = restaurantDto?.res_intro.toString()
 
-                val formattedScore = String.format("%.1f", restaurantDto?.avgScore ?: 0.0)
-                binding.resScoreText.text = formattedScore
-
-                Log.d("kkt","레스토랑dtl 바인딩완료")
+                //소수 둘째자리에서 반올림
+                val ratingUpScore = restaurantDto?.avgScore?.toFloat()?.let {
+                    kotlin.math.round(it * 10) / 10.toFloat()}!!
+                binding.resScoreText.text = ratingUpScore.toString()
+                binding.resScoreRating.rating = ratingUpScore
 
                 Glide.with(requireContext())
                     .load(restaurantDto?.res_thumbnail)
