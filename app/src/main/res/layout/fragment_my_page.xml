@@ -176,15 +176,6 @@
                     android:text="게시글작성"
                     android:visibility="visible"></Button>
 
-                <!--            <Button-->
-                <!--                android:id="@+id/deleteBtn"-->
-                <!--                android:layout_width="wrap_content"-->
-                <!--                android:layout_height="45dp"-->
-                <!--                android:layout_gravity="center"-->
-                <!--                android:layout_weight="1"-->
-                <!--                android:backgroundTint="@color/black"-->
-                <!--                android:fontFamily="@font/nexonmed"-->
-                <!--                android:text="게시글 작성"></Button>-->
             </LinearLayout>
 
 
@@ -206,90 +197,6 @@
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
             </LinearLayout>
         </LinearLayout>
-
-
-            <!--        <GridLayout-->
-            <!--            android:id="@+id/lay5"-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="450dp"-->
-            <!--            android:columnCount="3"-->
-            <!--            android:orientation="horizontal"-->
-            <!--            android:rowCount="9">-->
-
-            <!--            &lt;!&ndash; 첫 번째 행 &ndash;&gt;-->
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image1" />-->
-
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image2" />-->
-
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image3" />-->
-            <!--            &lt;!&ndash; 첫 번째 행 &ndash;&gt;-->
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image3" />-->
-
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image1" />-->
-
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image2" />-->
-            <!--            &lt;!&ndash; 세 번째 행 &ndash;&gt;-->
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image3" />-->
-
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image1" />-->
-
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image2" />-->
-
-            <!--        </GridLayout>-->
 
         </LinearLayout>
     </FrameLayout>
