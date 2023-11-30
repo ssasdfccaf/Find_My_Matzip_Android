@@ -31,15 +31,21 @@ class     HomeFragment : Fragment() {
     lateinit var adapter : HomeRecyclerAdapter
     lateinit var boardList: Call<List<MainBoardDto>>
     private val TAG: String = "HomeFragment"
+    //검색
     private var text:String? = null
+
+    //식당의 게시글 띄우는 로직
+    private var resId:String? = null
 
     companion object {
         // HomeFragment 인스턴스 생성
-        fun newInstance(text: String): HomeFragment {
+        fun newInstance(text: String, resId:String): HomeFragment {
             val fragment = HomeFragment()
             val args = Bundle()
             args.putString("text", text)
+            args.putString("resId", resId)
             Log.d("HomeFragment", "내가 newInstance에서 넣은 text : $text")
+            Log.d("HomeFragment", "내가 newInstance에서 넣은 resId : $resId")
             fragment.arguments = args
             return fragment
         }
@@ -75,6 +81,14 @@ class     HomeFragment : Fragment() {
             text = newText
         }
 
+        //식당상세페이지에서 넘어왔다면
+        val check = arguments?.getString("resId")
+        if(check != null){
+            resId = check
+        }
+
+        Log.d("HomeFragment","text : ${text}")
+        Log.d("HomeFragment","resId : ${resId}")
 
         binding.toFollowHome.setOnClickListener {
             // 클릭 시 HomeFollowFragment로 이동하는 코드
@@ -174,11 +188,15 @@ class     HomeFragment : Fragment() {
     private fun loadNextPageData(page: Int) {
         val boardService = (context?.applicationContext as MyApplication).boardService
 
-        if(text != null){
+        if(text != null && resId.isNullOrEmpty()){
             // 검색 단어가 있을때
             Log.d(TAG, "검색중 $text")
             boardList = boardService.getSearchMainBoards("$text",page)
-        }else{
+        }else if(text.isNullOrEmpty() && resId != null){
+            //식당에서 넘어왔다면
+            Log.d(TAG, "식당 리뷰보기 resId : $resId")
+            boardList = boardService.getSearchResBoards(resId!!,page)
+        } else{
             //전체 조회
             Log.d(TAG, "전체 조회")
             boardList = boardService.getAllBoardsPager(page)
@@ -211,7 +229,7 @@ class     HomeFragment : Fragment() {
 
     //fragment전환
     private fun navigateSearchResult(text:String) {
-        val changeFragment = newInstance(text)
+        val changeFragment = newInstance(text,"")
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragmentContainer, changeFragment)
         //.addToBackStack(null)
