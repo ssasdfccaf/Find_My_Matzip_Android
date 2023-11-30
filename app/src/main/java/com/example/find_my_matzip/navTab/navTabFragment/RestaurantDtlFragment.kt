@@ -1,22 +1,22 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
 import com.example.find_my_matzip.WriteReviewFragment
 import com.example.find_my_matzip.databinding.FragmentRestaurantDtlBinding
 import com.example.find_my_matzip.model.RestaurantDto
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class RestaurantDtlFragment : Fragment() {
     private var resId: String? = null
@@ -70,10 +70,11 @@ class RestaurantDtlFragment : Fragment() {
                 binding.resPhone.text = restaurantDto?.res_phone.toString()
                 binding.resIntro.text = restaurantDto?.res_intro.toString()
 
-                val formattedScore = String.format("%.1f", restaurantDto?.avgScore ?: 0.0)
-                binding.resScore.text = formattedScore
-
-                Log.d("kkt","레스토랑dtl 바인딩완료")
+                //소수 둘째자리에서 반올림
+                val ratingUpScore = restaurantDto?.avgScore?.toFloat()?.let {
+                    kotlin.math.round(it * 10) / 10.toFloat()}!!
+                binding.resScoreText.text = ratingUpScore.toString()
+                binding.resScoreRating.rating = ratingUpScore
 
                 Glide.with(requireContext())
                     .load(restaurantDto?.res_thumbnail)
@@ -91,7 +92,7 @@ class RestaurantDtlFragment : Fragment() {
                     }else{
                         val fragment = WriteReviewFragment.newInstance(resId)
                         parentFragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainer, fragment)
+                            .replace(com.example.find_my_matzip.R.id.fragmentContainer, fragment)
                             .addToBackStack(null)
                             .commit()
                     }
@@ -117,7 +118,7 @@ class RestaurantDtlFragment : Fragment() {
                     // MapCardViewFragment의 크기를 지정하여 추가
                     val transaction = parentFragmentManager.beginTransaction()
                     transaction.add(
-                        R.id.fragmentContainer, // 프래그먼트를 표시할 레이아웃 ID
+                        com.example.find_my_matzip.R.id.fragmentContainer, // 프래그먼트를 표시할 레이아웃 ID
                         mapCardViewFragment,
                         "MapCardViewFragment"
                     )
@@ -127,6 +128,14 @@ class RestaurantDtlFragment : Fragment() {
                     mapCardViewFragment.view?.layoutParams = cardViewLayoutParams
                     transaction.addToBackStack(null)
                     transaction.commit()
+                }
+
+                //식당 전화걸기
+                binding.callResBtn.setOnClickListener {
+                    //restaurantDto?.res_phone 의 현재 형태 : 051-711-0415
+                    val callNum = restaurantDto?.res_phone
+                    val tel = "tel:$callNum"
+                    startActivity(Intent("android.intent.action.DIAL", Uri.parse(tel)))
                 }
 
             }
