@@ -1,79 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="20dp">
     <!--이미지 뷰 하나 텍스트뷰 3개-->
+
     <LinearLayout
         android:id="@+id/toResDtl"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_gravity="center">
 
-    <ImageView
-        android:id="@+id/resThumbnail"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center"
-        android:src="@drawable/image2"
-        >
-    </ImageView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="10dp"
+            android:layout_marginRight="20dp">
+        <ImageView
+            android:id="@+id/resThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:src="@drawable/image2"/>
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/resId"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:visibility="invisible"
             />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center">
-        
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/resName"
+                    android:fontFamily="@font/nexonbold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="맛집이름"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/avgScore"
+                    android:fontFamily="@font/nexonbold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="평점"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/resName"
+                android:id="@+id/resMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nexonmed"
                 android:textSize="15sp"
-                android:text="맛집이름"
+                android:text="맛집메뉴"
                 android:layout_marginTop="10dp"/>
 
             <TextView
-                android:id="@+id/avgScore"
+                android:id="@+id/resIntro"
                 android:layout_width="wrap_content"
+                android:fontFamily="@font/nexonlight"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:text="평점"
-                android:layout_marginTop="10dp"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
+                android:text="맛집설명"
+                android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:id="@+id/resMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="맛집메뉴"
-            android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:id="@+id/resIntro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="맛집설명"
-            android:layout_marginTop="10dp"/>
-
+        </LinearLayout>
 
     </LinearLayout>
-    </LinearLayout>
+    <TextView
+        android:layout_width="400dp"
+        android:layout_height="0.2dp"
+        android:background="#666468"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        />
 </LinearLayout>

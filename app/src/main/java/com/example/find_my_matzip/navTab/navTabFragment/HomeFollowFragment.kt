@@ -1,5 +1,6 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentHomeFollowBinding
@@ -54,7 +56,7 @@ class HomeFollowFragment : Fragment() {
             // 트랜잭션에 이름 부여
             val transaction = parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
-            //    .addToBackStack("HomeFollowFragment")
+                //    .addToBackStack("HomeFollowFragment")
                 .commit()
 
             // 현재의 HomeFollowFragment를 백 스택에서 제거
@@ -112,7 +114,7 @@ class HomeFollowFragment : Fragment() {
     private fun navigateToBoardDetail(boardId: String) {
         val fragment = boardDtlFragment.newInstance(boardId)
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
+            .add(R.id.fragmentContainer, fragment)
             .addToBackStack(null)
             .commit()
     }
@@ -143,7 +145,19 @@ class HomeFollowFragment : Fragment() {
         })
     }
 
-
+    fun showExitDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Exit?")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        builder.setNegativeButton("아니오") { dialog, which ->
+            // 아무 작업도 수행하지 않음
+        }
+        builder.setPositiveButton("예") { dialog, which ->
+            // 프래그먼트가 호스트하는 액티비티의 onBackPressed() 호출
+            (requireActivity() as? HomeTabActivity)?.onBackPressed2()
+        }
+        builder.show()
+    }
 
 
 }

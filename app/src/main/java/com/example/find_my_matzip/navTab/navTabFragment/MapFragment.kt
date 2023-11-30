@@ -1,6 +1,7 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -14,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentMapBinding
@@ -54,6 +56,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("SdoLifeCycle","MapFragment onCreate")
         super.onCreate(savedInstanceState)
         binding = FragmentMapBinding.inflate(layoutInflater)
         if (!hasPermission()) {
@@ -66,7 +69,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        Log.d("SdoLifeCycle","MapFragment onCreateView")
         return binding.root
     }
     private fun initMapView() {
@@ -354,6 +357,35 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 
         // 거리 반환 (미터)
         return earthRadius * c
+    }
+
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","MapFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","MapFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","MapFragment onDestroy")
+        super.onDestroy()
+    }
+
+    fun showExitDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Exit?")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        builder.setNegativeButton("아니오") { dialog, which ->
+            // 아무 작업도 수행하지 않음
+        }
+        builder.setPositiveButton("예") { dialog, which ->
+            (requireActivity() as? HomeTabActivity)?.onBackPressed2()
+        }
+        builder.show()
     }
 
 

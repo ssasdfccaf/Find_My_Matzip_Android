@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
+    <!--전체 리니어 -->
+    <LinearLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".navTab.navTabFragment.ProfileFragment">
 
-        <!--전체 리니어 -->
         <LinearLayout
+            android:id="@+id/lay1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingTop="30dp"
-            android:paddingBottom="50dp">
-
+            android:paddingTop="30dp">
             <!--     사용자 아이디   -->
             <TextView
                 android:id="@+id/pageUserId"
@@ -29,9 +29,7 @@
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/nexonbold"
                 android:text="findbyMatZip"
-                android:textSize="25sp">
-
-            </TextView>
+                android:textSize="25sp" />
             <!--      프로필 이미지 +게시물+ 팔로워 + 팔로잉 -->
             <LinearLayout
                 android:layout_width="350dp"
@@ -51,7 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:src="@drawable/profile"></ImageView>
+                        android:src="@drawable/profile" />
                 </androidx.cardview.widget.CardView>
 
                 <!-- 게시물, 팔로워 팔로잉을 묶어주는 리니어 -->
@@ -82,7 +80,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:fontFamily="@font/nexonbold"
-                            android:text="게시물"></TextView>
+                            android:text="게시물" />
                     </LinearLayout>
                     <!--팔로워 -->
                     <LinearLayout
@@ -142,38 +140,33 @@
             <!--        이미지뷰+ 텍스트 리니어 닫기 -->
             <LinearLayout
                 android:layout_width="350dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp">
 
                 <Button
                     android:id="@+id/followBtn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:backgroundTint="@color/design_default_color_primary"
                     android:fontFamily="@font/nexonbold"
                     android:text="팔로우"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
 
                 <Button
                     android:id="@+id/unfollowBtn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:backgroundTint="#E91E63"
                     android:fontFamily="@font/nexonbold"
                     android:text="언팔로우"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
-                <Button
-                    android:id="@+id/writeBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/nexonbold"
-                    android:text="게시물작성"
-                   />
             </LinearLayout>
             <!--        -->
 
@@ -188,95 +181,25 @@
             <!--                android:fontFamily="@font/nexonmed"-->
             <!--                android:text="게시글 작성"></Button>-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/boardRecyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_boards" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <!--        <GridLayout-->
-            <!--            android:id="@+id/lay5"-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="450dp"-->
-            <!--            android:columnCount="3"-->
-            <!--            android:orientation="horizontal"-->
-            <!--            android:rowCount="9">-->
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeRefreshLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <!--            &lt;!&ndash; 첫 번째 행 &ndash;&gt;-->
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image1" />-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/boardRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:listitem="@layout/item_boards" />
 
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image2" />-->
-
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image3" />-->
-            <!--            &lt;!&ndash; 첫 번째 행 &ndash;&gt;-->
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image3" />-->
-
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image1" />-->
-
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image2" />-->
-            <!--            &lt;!&ndash; 세 번째 행 &ndash;&gt;-->
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image3" />-->
-
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image1" />-->
-
-            <!--            <ImageView-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_rowWeight="1"-->
-            <!--                android:layout_columnWeight="1"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                android:src="@drawable/image2" />-->
-
-            <!--        </GridLayout>-->
-
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
-</ScrollView>
+    </LinearLayout>
+
+</FrameLayout>

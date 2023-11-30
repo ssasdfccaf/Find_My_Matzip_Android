@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.WriteReviewFragment
@@ -58,8 +59,7 @@ class MyPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
+        Log.d("SdoLifeCycle","MyPageFragment onCreateView")
 
         binding = FragmentMyPageBinding.inflate(layoutInflater, container, false)
         // 보드 어댑터 초기화
@@ -70,17 +70,17 @@ class MyPageFragment : Fragment() {
 //            profileUpdateFragment 회원수정창(타 프레그먼트로) 이동하는 코드
             val profileUpdateFragment = ProfileUpdateFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainer, profileUpdateFragment)
-            transaction.addToBackStack(null)
+            transaction.add(R.id.fragmentContainer, profileUpdateFragment)
+            transaction.addToBackStack(null)  // 백 스택에 현재 프래그먼트 추가
             transaction.commit()
         }
 
         binding.writeBoardBtn.setOnClickListener {
 //            게시글작성창으로 이동
-            val WriteReviewFragment = WriteReviewFragment()
+            val writeReviewFragment = WriteReviewFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainer, WriteReviewFragment)
-            transaction.addToBackStack(null)
+            transaction.add(R.id.fragmentContainer, writeReviewFragment)
+            transaction.addToBackStack(null)  // 백 스택에 현재 프래그먼트 추가
             transaction.commit()
         }
 
@@ -257,31 +257,49 @@ class MyPageFragment : Fragment() {
             }
         })
 
-        //프로필 편집
-        binding.updateBtn.setOnClickListener {
-            //profileUpdateFragment 회원수정창(타 프레그먼트로) 이동하는 코드
-            val profileUpdateFragment = ProfileUpdateFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainer, profileUpdateFragment)
-            transaction.addToBackStack(null) //백스택에 지금 재배치한 fragment추가
-            transaction.commit()
-        }
-
         return binding.root
     }
     private fun navigateToUserProfile(userId: String) {
-        // 클릭 시 HomeFollowFragment로 이동하는 코드
+        // 클릭 시 ProfileFragment 이동하는 코드
         val fragment = ProfileFragment.newInstance(userId)
 
         // 트랜잭션에 이름 부여
         val transaction = parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
+            .add(R.id.fragmentContainer, fragment)
             .addToBackStack(null)
             .commit()
-
-        // 현재의 HomeFragment를 백 스택에서 제거
-        parentFragmentManager.popBackStack("MyPageFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
+
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","MyPageFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","MyPageFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","MyPageFragment onDestroy")
+        super.onDestroy()
+    }
+
+    fun showExitDialog() {
+        val builder = android.app.AlertDialog.Builder(requireContext())
+        builder.setTitle("Exit?")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        builder.setNegativeButton("아니오") { dialog, which ->
+            // 아무 작업도 수행하지 않음
+        }
+        builder.setPositiveButton("예") { dialog, which ->
+            // 프래그먼트가 호스트하는 액티비티의 onBackPressed() 호출
+            (requireActivity() as? HomeTabActivity)?.onBackPressed2()
+        }
+        builder.show()
+    }
+
 //
 //        // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
 //        val profileFragment = ProfileFragment.newInstance(userId)

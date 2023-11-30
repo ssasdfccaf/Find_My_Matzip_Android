@@ -1,19 +1,17 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
-import android.content.Context
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentHomeBinding
@@ -27,12 +25,32 @@ import retrofit2.Response
 class     HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     lateinit var adapter : HomeRecyclerAdapter
+    lateinit var boardList: Call<List<MainBoardDto>>
     private val TAG: String = "HomeFragment"
+    //검색
+    private var text:String? = null
+
+    //식당의 게시글 띄우는 로직
+    private var resId:String? = null
+
+    companion object {
+        // HomeFragment 인스턴스 생성
+        fun newInstance(text: String, resId:String): HomeFragment {
+            val fragment = HomeFragment()
+            val args = Bundle()
+            args.putString("text", text)
+            args.putString("resId", resId)
+            Log.d("HomeFragment", "내가 newInstance에서 넣은 text : $text")
+            Log.d("HomeFragment", "내가 newInstance에서 넣은 resId : $resId")
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
 
 
     //페이징처리 1
-    var currentPage = 1
+    var currentPage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("SdoLifeCycle","HomeFragment onCreate")
@@ -46,9 +64,27 @@ class     HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         Log.d("SdoLifeCycle","HomeFragment onCreateView")
 
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+
+
+        //검색창에서 넘어왔다면 text넣어줌
+        val newText = arguments?.getString("text")
+        Log.d(TAG, "newText : $newText")
+        if(newText != null){
+            text = newText
+        }
+
+        //식당상세페이지에서 넘어왔다면
+        val check = arguments?.getString("resId")
+        if(check != null){
+            resId = check
+        }
+
+        Log.d("HomeFragment","text : ${text}")
+        Log.d("HomeFragment","resId : ${resId}")
 
         binding.toFollowHome.setOnClickListener {
             // 클릭 시 HomeFollowFragment로 이동하는 코드
@@ -102,7 +138,7 @@ class     HomeFragment : Fragment() {
                     Log.d(TAG, "검색 버튼 클릭: $query")
 
                     //검색 수행
-                    loadSearchResultPageData(currentPage,query)
+                    navigateSearchResult(query)
                 }
                 return true
             }
@@ -110,6 +146,8 @@ class     HomeFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 // 검색창에서 글자가 변경이 일어날 때마다 호출
                 //Log.d(TAG, "글자 변경 : $newText")
+
+
                 return true
             }
         })
@@ -138,14 +176,27 @@ class     HomeFragment : Fragment() {
     private fun navigateToBoardDetail(boardId: String) {
         val fragment = boardDtlFragment.newInstance(boardId)
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
+            .add(R.id.fragmentContainer, fragment)
+            .addToBackStack("HomeFragment")
             .commit()
     }
 
     private fun loadNextPageData(page: Int) {
         val boardService = (context?.applicationContext as MyApplication).boardService
-        val boardList = boardService.getAllBoardsPager(page)
+
+        if(text != null && resId.isNullOrEmpty()){
+            // 검색 단어가 있을때
+            Log.d(TAG, "검색중 $text")
+            boardList = boardService.getSearchMainBoards("$text",page)
+        }else if(text.isNullOrEmpty() && resId != null){
+            //식당에서 넘어왔다면
+            Log.d(TAG, "식당 리뷰보기 resId : $resId")
+            boardList = boardService.getSearchResBoards(resId!!,page)
+        } else{
+            //전체 조회
+            Log.d(TAG, "전체 조회")
+            boardList = boardService.getAllBoardsPager(page)
+        }
 
         boardList.enqueue(object : Callback<List<MainBoardDto>> {
             override fun onResponse(
@@ -160,39 +211,39 @@ class     HomeFragment : Fragment() {
                 }
             }
 
+
             override fun onFailure(call: Call<List<MainBoardDto>>, t: Throwable) {
                 t.printStackTrace()
                 call.cancel()
                 Log.d(TAG, " 통신 실패")
             }
+
 
         })
     }
 
-    private fun loadSearchResultPageData(page: Int,text:String) {
-        val boardService = (context?.applicationContext as MyApplication).boardService
-        val boardList = boardService.getSearchMainBoards(page,text)
 
-        boardList.enqueue(object : Callback<List<MainBoardDto>> {
-            override fun onResponse(
-                call: Call<List<MainBoardDto>>,
-                response: Response<List<MainBoardDto>>
-            ) {
-                if (response.isSuccessful) {
-                    val newBoardList = response.body()
-                    newBoardList?.let {
-                        adapter.addData(it)
-                    }
-                }
-            }
+    //fragment전환
+    private fun navigateSearchResult(text:String) {
+        val changeFragment = newInstance(text,"")
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragmentContainer, changeFragment)
+        //.addToBackStack(null)
+        transaction.commit()
+    }
 
-            override fun onFailure(call: Call<List<MainBoardDto>>, t: Throwable) {
-                t.printStackTrace()
-                call.cancel()
-                Log.d(TAG, " 통신 실패")
-            }
-
-        })
+    fun showExitDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Exit?")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        builder.setNegativeButton("아니오") { dialog, which ->
+            // 아무 작업도 수행하지 않음
+        }
+        builder.setPositiveButton("예") { dialog, which ->
+            // 프래그먼트가 호스트하는 액티비티의 onBackPressed() 호출
+            (requireActivity() as? HomeTabActivity)?.onBackPressed2()
+        }
+        builder.show()
     }
 
 }

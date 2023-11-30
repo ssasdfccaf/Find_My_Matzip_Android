@@ -1,5 +1,6 @@
 package com.example.find_my_matzip
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,9 +17,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.example.find_my_matzip.databinding.ActivityHomeTabBinding
+import com.example.find_my_matzip.navTab.navTabFragment.HomeFollowFragment
 import com.example.find_my_matzip.navTab.navTabFragment.HomeFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MapFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
+import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RankingFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
@@ -38,6 +41,9 @@ class HomeTabActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeTabBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+
 
         // 툴바 , 업버튼
         setSupportActionBar(binding.toolbar)
@@ -129,6 +135,7 @@ class HomeTabActivity : AppCompatActivity() {
 
 
 
+
     //비밀번호 확인
     private fun isCorrectPassword(enteredPassword: String): Boolean {
         val correctPw = SharedPreferencesManager.getString("pw", "")
@@ -136,9 +143,35 @@ class HomeTabActivity : AppCompatActivity() {
     }
 
     private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .commit()
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        // 프래그먼트가 이미 백 스택에 있는지 확인
+        val fragmentTag = fragment.javaClass.simpleName
+        val currentFragment = fragmentManager.findFragmentById(R.id.fragmentContainer)
+
+        if (currentFragment != null && currentFragment.javaClass.simpleName == fragmentTag) {
+            // 프래그먼트가 이미 백 스택에 있다면 아무것도 하지 않음
+            return
+        }
+
+        // 백 스택에서 프래그먼트를 제거
+        val fragmentInBackStack = fragmentManager.findFragmentByTag(fragmentTag)
+        if (fragmentInBackStack != null) {
+            fragmentTransaction.remove(fragmentInBackStack)
+        }
+
+        // 현재 프래그먼트를 새로운 것으로 교체
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment, fragmentTag)
+        //    fragmentTransaction.addToBackStack(null) // 백 스택에 추가
+
+        // 트랜잭션을 적용
+        fragmentTransaction.commit()
+
+        //        supportFragmentManager.beginTransaction()
+//            .replace(R.id.fragmentContainer, fragment)
+//            .commit()
+
     }
 
 
@@ -207,69 +240,69 @@ class HomeTabActivity : AppCompatActivity() {
                 //비밀번호 확인
                 if (isCorrectPassword(enteredPassword)) {
 
-                            //회원정보 삭제 로직 추가
-                            //1.DB에서 DATA 삭제
-                            val userService = (applicationContext as MyApplication).userService
-                            val call = userService.deleteById(loginUserId)
+                    //회원정보 삭제 로직 추가
+                    //1.DB에서 DATA 삭제
+                    val userService = (applicationContext as MyApplication).userService
+                    val call = userService.deleteById(loginUserId)
 
-                            call.enqueue(object: Callback<Unit> {
-                                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                    call.enqueue(object: Callback<Unit> {
+                        override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
 
-                                    Log.d(TAG, "Request URL: ${call.request().url()}")
-                                    Log.d(TAG, "Request Body: ${call.request().body()}")
-                                    Log.d(TAG, "Response Code: ${response.code()}")
-                                    if(response.isSuccessful) {
-                                        Log.d(TAG, "삭제 성공")
+                            Log.d(TAG, "Request URL: ${call.request().url()}")
+                            Log.d(TAG, "Request Body: ${call.request().body()}")
+                            Log.d(TAG, "Response Code: ${response.code()}")
+                            if(response.isSuccessful) {
+                                Log.d(TAG, "삭제 성공")
 
-                                        //2.firebase에서 이미지삭제
-                                        // 스토리지 접근 도구 ,인스턴스
-                                        val storage = MyApplication.storage
-                                        // 스토리지에 저장할 인스턴스
-                                        val storageRef = storage.reference
+                                //2.firebase에서 이미지삭제
+                                // 스토리지 접근 도구 ,인스턴스
+                                val storage = MyApplication.storage
+                                // 스토리지에 저장할 인스턴스
+                                val storageRef = storage.reference
 
-                                        // 이미지 저장될 위치 및 파일명(파이어베이스)
-                                        val imgRef = storageRef.child("users_img/${loginUserId}.jpg")
-
-
-                                        imgRef.delete().addOnCompleteListener {
-                                            // 파일 삭제 성공
-                                            Log.d(TAG, " firestore 파일 삭제 성공")
-
-                                            logOut()
-
-                                            //로딩창 지우기
-                                            loadingDialog.dismiss()
-
-                                            val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
-                                            startActivity(intent)
-
-                                        }.addOnFailureListener {
-                                            //로딩창 지우기
-                                            loadingDialog.dismiss()
-
-                                            // 파일 삭제 실패
-                                            Log.d(TAG, "firestore 파일 삭제 실패")
-                                        }
+                                // 이미지 저장될 위치 및 파일명(파이어베이스)
+                                val imgRef = storageRef.child("users_img/${loginUserId}.jpg")
 
 
-                                    }else {
-                                        Log.d(TAG, "서버 응답 실패: ${response.code()}")
+                                imgRef.delete().addOnCompleteListener {
+                                    // 파일 삭제 성공
+                                    Log.d(TAG, " firestore 파일 삭제 성공")
 
-                                        //로딩창 지우기
-                                        loadingDialog.dismiss()
-                                    }
-                                }
+                                    logOut()
 
-                                override fun onFailure(call: Call<Unit>, t: Throwable) {
-                                    Log.d(TAG, "실패 ${t.message}")
+                                    //로딩창 지우기
+                                    loadingDialog.dismiss()
 
-                    //로딩창 지우기
-                    loadingDialog.dismiss()
-                                    call.cancel()
+                                    val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
+                                    startActivity(intent)
+
+                                }.addOnFailureListener {
+                                    //로딩창 지우기
+                                    loadingDialog.dismiss()
+
+                                    // 파일 삭제 실패
+                                    Log.d(TAG, "firestore 파일 삭제 실패")
                                 }
 
 
-                            })
+                            }else {
+                                Log.d(TAG, "서버 응답 실패: ${response.code()}")
+
+                                //로딩창 지우기
+                                loadingDialog.dismiss()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Unit>, t: Throwable) {
+                            Log.d(TAG, "실패 ${t.message}")
+
+                            //로딩창 지우기
+                            loadingDialog.dismiss()
+                            call.cancel()
+                        }
+
+
+                    })
 
                     Toast.makeText(
                         this@HomeTabActivity,
@@ -298,6 +331,27 @@ class HomeTabActivity : AppCompatActivity() {
         }
 
         passwordBuilder.show()
+    }
+
+
+    override fun onBackPressed() {
+        // 현재 화면에 표시된 프래그먼트의 종료 다이얼로그를 호출
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+
+        when (currentFragment) {
+            is HomeFragment -> currentFragment.showExitDialog()
+            is HomeFollowFragment -> currentFragment.showExitDialog()
+            is RestaurantFragment -> currentFragment.showExitDialog()
+            is MapFragment -> currentFragment.showExitDialog()
+            is RankingFragment -> currentFragment.showExitDialog()
+            is MyPageFragment -> currentFragment.showExitDialog()
+            //    is ProfileFragment -> currentFragment.showExitDialog()
+
+            else -> super.onBackPressed()
+        }
+    }
+    fun onBackPressed2(){
+        super.onBackPressed()
     }
 
 }

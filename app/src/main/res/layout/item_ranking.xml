@@ -1,27 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout android:id="@+id/rank"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <!--이미지 뷰 하나 텍스트뷰 3개-->
+
+    <LinearLayout
+        android:id="@+id/toResDtl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:layout_weight="1"
+        >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="20dp"
+            android:layout_marginRight="20dp">
     <ImageView
         android:id="@+id/resThumbnail"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:scaleType="centerCrop"
         android:layout_gravity="center"
         android:src="@drawable/image2"
-        >
-    </ImageView>
+        /></androidx.cardview.widget.CardView>
+
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="5dp"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="1">
         <TextView
+            android:visibility="gone"
             android:id="@+id/resId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +52,8 @@
             android:id="@+id/resName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:fontFamily="@font/nexonmed"
+            android:textSize="20sp"
             android:text="맛집이름"
             android:layout_marginTop="10dp"/>
 
@@ -40,9 +61,11 @@
             android:id="@+id/avgScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:fontFamily="@font/nexonlight"
+            android:textSize="20sp"
             android:text="평점"
             android:layout_marginTop="10dp"/>
 
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>

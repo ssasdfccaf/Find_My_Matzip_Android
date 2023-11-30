@@ -174,6 +174,7 @@ class LoginActivity : AppCompatActivity() {
                         // 로그인 성공 시 처리할 작업 수행
                         val intent = Intent(this@LoginActivity, HomeTabActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }
                 }
             }

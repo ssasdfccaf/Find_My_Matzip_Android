@@ -19,9 +19,14 @@ interface BoardService {
     fun getAllBoardsPager(@Query("page") page: Int): Call<List<MainBoardDto>>
 
     //검색 결과 게시글 불러오기
-    @GET("searchMainBoard")
-    fun getSearchMainBoards(@Query("page") page: Int,
-                            @Query("text") text : String): Call<List<MainBoardDto>>
+    @GET("pagerbleMain/{text}")
+    fun getSearchMainBoards(@Path("text") text : String,
+                            @Query("page") page: Int): Call<List<MainBoardDto>>
+
+    //식당상세페이지에서 게시글목록 불러오기
+    @GET("pagerbleResBoard/{redId}")
+    fun getSearchResBoards(@Path("redId") redId : String,
+                            @Query("page") page: Int): Call<List<MainBoardDto>>
 
     
     @GET("board/{id}") // 게시글 상세페이지;
