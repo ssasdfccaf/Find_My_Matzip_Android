@@ -9,13 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentRestaurantBinding
-import com.example.find_my_matzip.model.MainBoardDto
 import com.example.find_my_matzip.model.ResWithScoreDto
-import com.example.find_my_matzip.navTab.adapter.RankingRecyclerAdapter
 import com.example.find_my_matzip.navTab.adapter.RestaurantRecyclerAdapter
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,6 +27,9 @@ class RestaurantFragment : Fragment() {
     lateinit var restaurantList: Call<List<ResWithScoreDto>>
     lateinit var avgScoreList: Call<List<ResWithScoreDto>>
     private var text:String? = null
+    var isLoading = false
+    var isLastPage = false
+    var currentPage = 0
 
     companion object {
         fun newInstance(text: String): RestaurantFragment {
@@ -59,45 +61,19 @@ class RestaurantFragment : Fragment() {
             text = newText
         }
 
-        val restaurantService = (context?.applicationContext as MyApplication).restaurantService
-
-        if(text != null){
-            //검색 단어가 있을 때
-            Log.d("RestaurantFragment", "검색중 $text")
-            restaurantList = restaurantService.getSearchRestaurantsByAvgScore(text!!)
-            avgScoreList = restaurantService.getSearchRestaurantsByAvgScore(text!!)
-
-        }else{
-            //전체 조회
-            Log.d("RestaurantFragment", "전체 조회")
-            restaurantList = restaurantService.getAllRestaurantsByAvgScore()
-            avgScoreList = restaurantService.getAllRestaurantsByAvgScore()
-        }
-
-
-        restaurantList.enqueue(object : Callback<List<ResWithScoreDto>> {
-            override fun onResponse(
-                call: Call<List<ResWithScoreDto>>,
-                response: Response<List<ResWithScoreDto>>
-            ) {
-                val restaurantList = response.body()
-                if (restaurantList != null && restaurantList.isNotEmpty()) {
-                    val firstRestaurant = restaurantList[0]
-                    val layoutManager = LinearLayoutManager(requireContext())
-                    binding.resListRecyclerView.layoutManager = layoutManager
-                    adapter = RestaurantRecyclerAdapter(this@RestaurantFragment,restaurantList)
-                    Log.d("sdotest", "${firstRestaurant.res_thumbnail}")
-//                    binding.rankingRecyclerView.adapter = RankingRecyclerAdapter(requireContext(), restaurantList)
-                    binding.resListRecyclerView.adapter = adapter
-                } else {
-
-                }
-            }
-            override fun onFailure(call: Call<List<ResWithScoreDto>>, t: Throwable) {
-                t.printStackTrace()
-                call.cancel()
+        // 스크롤 리스너 설정
+        binding.resListRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                handleScroll(recyclerView)
             }
         })
+
+        // 데이터 로드
+        loadNextPageData(currentPage)
+
+
+
 
         //검색창
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -118,6 +94,86 @@ class RestaurantFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    private fun handleScroll(recyclerView: RecyclerView) {
+        Log.d("RestaurnatFragment", "스크롤 리스닝 확인 1")
+        val layoutManager = LinearLayoutManager::class.java.cast(recyclerView.layoutManager)
+        val visibleItemCount = layoutManager?.childCount ?: 0
+        val totalItemCount = layoutManager?.itemCount ?: 0
+        val firstVisibleItemPosition = layoutManager?.findFirstVisibleItemPosition() ?: 0
+        Log.d("MyPageFragment", "스크롤 리스닝 확인 2")
+        Log.d("MyPageFragment", "isLoading : $isLoading, isLastPage : $isLastPage ")
+        Log.d("MyPageFragment", "visibleItemCount : $visibleItemCount, firstVisibleItemPosition : $firstVisibleItemPosition")
+        Log.d("MyPageFragment", "totalItemCount : $totalItemCount ")
+        if (!isLoading && !isLastPage) {
+            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                && firstVisibleItemPosition >= 0
+            ) {
+                currentPage++
+                Log.d("MyPageFragment", "33 currentPage 전 :$currentPage ")
+                Log.d("MyPageFragment", "스크롤 리스닝 확인 3")
+                loadNextPageData(currentPage)
+                Log.d("MyPageFragment", "스크롤 리스닝 확인 4")
+                Log.d("MyPageFragment", "44 currentPage 전 :$currentPage ")
+            }
+        }
+    }
+
+    private fun loadNextPageData(page: Int) {
+        isLoading = true
+
+        val restaurantService = (context?.applicationContext as MyApplication).restaurantService
+
+        if (text != null) {
+            //검색 단어가 있을 때
+            Log.d("RestaurantFragment", "검색중 $text")
+            restaurantList = restaurantService.getSearchRestaurantsByAvgScore(text!!,page)
+            avgScoreList = restaurantService.getSearchRestaurantsByAvgScore(text!!,page)
+
+        } else {
+            //전체 조회
+            Log.d("RestaurantFragment", "전체 조회")
+            restaurantList = restaurantService.getAllPageRestaurantsByAvgScore(page)
+            avgScoreList = restaurantService.getAllPageRestaurantsByAvgScore(page)
+        }
+
+
+        restaurantList.enqueue(object : Callback<List<ResWithScoreDto>> {
+            override fun onResponse(
+                call: Call<List<ResWithScoreDto>>,
+                response: Response<List<ResWithScoreDto>>
+            ) {
+                isLoading = false
+                val restaurantList = response.body()
+                if (restaurantList != null && restaurantList.isNotEmpty() && currentPage == 0) {
+                    val firstRestaurant = restaurantList[0]
+                    val layoutManager = LinearLayoutManager(requireContext())
+
+                    adapter = RestaurantRecyclerAdapter(this@RestaurantFragment, restaurantList)
+                    currentPage++
+
+                    binding.resListRecyclerView.layoutManager = layoutManager
+
+                    Log.d("sdotest", "${firstRestaurant.res_thumbnail}")
+//                    binding.rankingRecyclerView.adapter = RankingRecyclerAdapter(requireContext(), restaurantList)
+                    binding.resListRecyclerView.adapter = adapter
+
+                } else if((restaurantList != null && restaurantList.isNotEmpty() && currentPage != 0)) {
+                    adapter.addData(restaurantList)
+                    currentPage++
+                }
+            }
+
+            override fun onFailure(call: Call<List<ResWithScoreDto>>, t: Throwable) {
+                isLoading = false
+                t.printStackTrace()
+                call.cancel()
+                Log.e("RestaurantFragment", " 통신 실패")
+            }
+        })
+
+
     }
 
     //fragment전환
@@ -154,10 +210,11 @@ class RestaurantFragment : Fragment() {
         }
         builder.setPositiveButton("예") { dialog, which ->
             // 프래그먼트가 호스트하는 액티비티의 onBackPressed() 호출
-            (requireActivity() as? HomeTabActivity)?.onBackPressed()
+            (requireActivity() as? HomeTabActivity)?.onBackPressed2()
         }
         builder.show()
     }
+
 
 
 }

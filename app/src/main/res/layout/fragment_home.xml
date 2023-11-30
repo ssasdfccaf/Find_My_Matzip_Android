@@ -33,7 +33,10 @@
             android:id="@+id/homeRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@drawable/custom_scrollbar"
+            android:fadeScrollbars="false"
+        />
 
     </LinearLayout>
 

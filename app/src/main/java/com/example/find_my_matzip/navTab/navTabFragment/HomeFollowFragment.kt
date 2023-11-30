@@ -56,7 +56,7 @@ class HomeFollowFragment : Fragment() {
             // 트랜잭션에 이름 부여
             val transaction = parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
-            //    .addToBackStack("HomeFollowFragment")
+                //    .addToBackStack("HomeFollowFragment")
                 .commit()
 
             // 현재의 HomeFollowFragment를 백 스택에서 제거
@@ -114,7 +114,7 @@ class HomeFollowFragment : Fragment() {
     private fun navigateToBoardDetail(boardId: String) {
         val fragment = boardDtlFragment.newInstance(boardId)
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
+            .add(R.id.fragmentContainer, fragment)
             .addToBackStack(null)
             .commit()
     }
@@ -154,7 +154,7 @@ class HomeFollowFragment : Fragment() {
         }
         builder.setPositiveButton("예") { dialog, which ->
             // 프래그먼트가 호스트하는 액티비티의 onBackPressed() 호출
-            (requireActivity() as? HomeTabActivity)?.onBackPressed()
+            (requireActivity() as? HomeTabActivity)?.onBackPressed2()
         }
         builder.show()
     }

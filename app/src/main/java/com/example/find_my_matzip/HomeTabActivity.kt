@@ -168,6 +168,10 @@ class HomeTabActivity : AppCompatActivity() {
         // 트랜잭션을 적용
         fragmentTransaction.commit()
 
+        //        supportFragmentManager.beginTransaction()
+//            .replace(R.id.fragmentContainer, fragment)
+//            .commit()
+
     }
 
 
@@ -236,69 +240,69 @@ class HomeTabActivity : AppCompatActivity() {
                 //비밀번호 확인
                 if (isCorrectPassword(enteredPassword)) {
 
-                            //회원정보 삭제 로직 추가
-                            //1.DB에서 DATA 삭제
-                            val userService = (applicationContext as MyApplication).userService
-                            val call = userService.deleteById(loginUserId)
+                    //회원정보 삭제 로직 추가
+                    //1.DB에서 DATA 삭제
+                    val userService = (applicationContext as MyApplication).userService
+                    val call = userService.deleteById(loginUserId)
 
-                            call.enqueue(object: Callback<Unit> {
-                                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                    call.enqueue(object: Callback<Unit> {
+                        override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
 
-                                    Log.d(TAG, "Request URL: ${call.request().url()}")
-                                    Log.d(TAG, "Request Body: ${call.request().body()}")
-                                    Log.d(TAG, "Response Code: ${response.code()}")
-                                    if(response.isSuccessful) {
-                                        Log.d(TAG, "삭제 성공")
+                            Log.d(TAG, "Request URL: ${call.request().url()}")
+                            Log.d(TAG, "Request Body: ${call.request().body()}")
+                            Log.d(TAG, "Response Code: ${response.code()}")
+                            if(response.isSuccessful) {
+                                Log.d(TAG, "삭제 성공")
 
-                                        //2.firebase에서 이미지삭제
-                                        // 스토리지 접근 도구 ,인스턴스
-                                        val storage = MyApplication.storage
-                                        // 스토리지에 저장할 인스턴스
-                                        val storageRef = storage.reference
+                                //2.firebase에서 이미지삭제
+                                // 스토리지 접근 도구 ,인스턴스
+                                val storage = MyApplication.storage
+                                // 스토리지에 저장할 인스턴스
+                                val storageRef = storage.reference
 
-                                        // 이미지 저장될 위치 및 파일명(파이어베이스)
-                                        val imgRef = storageRef.child("users_img/${loginUserId}.jpg")
-
-
-                                        imgRef.delete().addOnCompleteListener {
-                                            // 파일 삭제 성공
-                                            Log.d(TAG, " firestore 파일 삭제 성공")
-
-                                            logOut()
-
-                                            //로딩창 지우기
-                                            loadingDialog.dismiss()
-
-                                            val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
-                                            startActivity(intent)
-
-                                        }.addOnFailureListener {
-                                            //로딩창 지우기
-                                            loadingDialog.dismiss()
-
-                                            // 파일 삭제 실패
-                                            Log.d(TAG, "firestore 파일 삭제 실패")
-                                        }
+                                // 이미지 저장될 위치 및 파일명(파이어베이스)
+                                val imgRef = storageRef.child("users_img/${loginUserId}.jpg")
 
 
-                                    }else {
-                                        Log.d(TAG, "서버 응답 실패: ${response.code()}")
+                                imgRef.delete().addOnCompleteListener {
+                                    // 파일 삭제 성공
+                                    Log.d(TAG, " firestore 파일 삭제 성공")
 
-                                        //로딩창 지우기
-                                        loadingDialog.dismiss()
-                                    }
-                                }
+                                    logOut()
 
-                                override fun onFailure(call: Call<Unit>, t: Throwable) {
-                                    Log.d(TAG, "실패 ${t.message}")
+                                    //로딩창 지우기
+                                    loadingDialog.dismiss()
 
-                    //로딩창 지우기
-                    loadingDialog.dismiss()
-                                    call.cancel()
+                                    val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
+                                    startActivity(intent)
+
+                                }.addOnFailureListener {
+                                    //로딩창 지우기
+                                    loadingDialog.dismiss()
+
+                                    // 파일 삭제 실패
+                                    Log.d(TAG, "firestore 파일 삭제 실패")
                                 }
 
 
-                            })
+                            }else {
+                                Log.d(TAG, "서버 응답 실패: ${response.code()}")
+
+                                //로딩창 지우기
+                                loadingDialog.dismiss()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Unit>, t: Throwable) {
+                            Log.d(TAG, "실패 ${t.message}")
+
+                            //로딩창 지우기
+                            loadingDialog.dismiss()
+                            call.cancel()
+                        }
+
+
+                    })
 
                     Toast.makeText(
                         this@HomeTabActivity,
@@ -341,10 +345,13 @@ class HomeTabActivity : AppCompatActivity() {
             is MapFragment -> currentFragment.showExitDialog()
             is RankingFragment -> currentFragment.showExitDialog()
             is MyPageFragment -> currentFragment.showExitDialog()
-        //    is ProfileFragment -> currentFragment.showExitDialog()
+            //    is ProfileFragment -> currentFragment.showExitDialog()
 
             else -> super.onBackPressed()
         }
     }
-    
+    fun onBackPressed2(){
+        super.onBackPressed()
+    }
+
 }

@@ -183,7 +183,7 @@ class ProfileFragment : Fragment() {
                                                     val newFragment = ProfileFragment.newInstance(pageUserId)
                                                     val newTransaction = requireActivity().supportFragmentManager.beginTransaction()
                                                     newTransaction.add(R.id.fragmentContainer, newFragment)
-                                                    //newTransaction.addToBackStack(null)
+                                                    newTransaction.addToBackStack(null)
                                                     newTransaction.commit()
                                                 } else {
                                                     Log.d("ProfileFragment", "팔로우 요청 실패 - Code: ${response.code()}, Message: ${response.message()}")
@@ -223,7 +223,7 @@ class ProfileFragment : Fragment() {
                                                     val newFragment = ProfileFragment.newInstance(pageUserId)
                                                     val newTransaction = requireActivity().supportFragmentManager.beginTransaction()
                                                     newTransaction.add(R.id.fragmentContainer, newFragment)
-                                                    //newTransaction.addToBackStack(null)
+                                                    newTransaction.addToBackStack(null)
                                                     newTransaction.commit()
                                                 } else {
                                                     Log.d("ProfileFragment", "팔로우 요청실패")
