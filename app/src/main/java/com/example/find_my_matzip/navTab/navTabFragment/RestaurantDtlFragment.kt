@@ -71,7 +71,7 @@ class RestaurantDtlFragment : Fragment() {
                 binding.resIntro.text = restaurantDto?.res_intro.toString()
 
                 val formattedScore = String.format("%.1f", restaurantDto?.avgScore ?: 0.0)
-                binding.resScore.text = formattedScore
+                binding.resScoreText.text = formattedScore
 
                 Log.d("kkt","레스토랑dtl 바인딩완료")
 
