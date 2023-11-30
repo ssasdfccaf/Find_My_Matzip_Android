@@ -16,8 +16,10 @@
             android:id="@+id/textViewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/nexonmed"
             android:text="식당 목록"
             android:textSize="20dp"
+            android:layout_marginTop="40dp"
             android:gravity="center"
             />
         <androidx.appcompat.widget.SearchView
@@ -29,8 +31,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/resListRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
         </androidx.recyclerview.widget.RecyclerView>
 
