@@ -262,7 +262,6 @@ class MyPageFragment : Fragment() {
             val profileUpdateFragment = ProfileUpdateFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragmentContainer, profileUpdateFragment)
-            transaction.addToBackStack(null) //백스택에 지금 재배치한 fragment추가
             transaction.commit()
         }
 

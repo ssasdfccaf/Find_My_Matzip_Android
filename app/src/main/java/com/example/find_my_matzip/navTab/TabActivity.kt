@@ -41,8 +41,29 @@ class TabActivity : AppCompatActivity() {
     }//onCreate 끝
 
     private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .commit()
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        // 프래그먼트가 이미 백 스택에 있는지 확인
+        val fragmentTag = fragment.javaClass.simpleName
+        val currentFragment = fragmentManager.findFragmentById(R.id.fragmentContainer)
+
+        if (currentFragment != null && currentFragment.javaClass.simpleName == fragmentTag) {
+            // 프래그먼트가 이미 백 스택에 있다면 아무것도 하지 않음
+            return
+        }
+
+        // 백 스택에서 프래그먼트를 제거
+        val fragmentInBackStack = fragmentManager.findFragmentByTag(fragmentTag)
+        if (fragmentInBackStack != null) {
+            fragmentTransaction.remove(fragmentInBackStack)
+        }
+
+        // 현재 프래그먼트를 새로운 것으로 교체
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment, fragmentTag)
+    //    fragmentTransaction.addToBackStack(null) // 백 스택에 추가
+
+        // 트랜잭션을 적용
+        fragmentTransaction.commit()
     }
 }

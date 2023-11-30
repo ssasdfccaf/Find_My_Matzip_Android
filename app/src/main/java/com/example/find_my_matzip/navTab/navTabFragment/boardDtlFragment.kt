@@ -34,6 +34,7 @@ class boardDtlFragment : Fragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("SdoLifeCycle","boardDtlFragment onCreate")
         super.onCreate(savedInstanceState)
         binding = FragmentBoardDtlBinding.inflate(layoutInflater)
     }
@@ -42,6 +43,7 @@ class boardDtlFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("SdoLifeCycle","boardDtlFragment onCreateView")
         binding = FragmentBoardDtlBinding.inflate(layoutInflater, container, false)
 
         val boardService = (context?.applicationContext as MyApplication).boardService
@@ -168,5 +170,20 @@ class boardDtlFragment : Fragment() {
     }
 
     private fun displayBoardDetails(boardDto: BoardDtlDto) {
+    }
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","boardDtlFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","boardDtlFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","boardDtlFragment onDestroy")
+        super.onDestroy()
     }
 }
