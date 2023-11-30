@@ -1,5 +1,6 @@
 package com.example.find_my_matzip.retrofit
 
+import com.example.find_my_matzip.model.MainBoardDto
 import com.example.find_my_matzip.model.RankingDto
 import com.example.find_my_matzip.model.ResListModel
 import com.example.find_my_matzip.model.ResWithScoreDto
@@ -19,6 +20,9 @@ interface RestaurantService {
 //    fun getAllRestaurantsByAvgScore(): Call<MutableList<RestaurantDto2>>
     fun getAllRestaurantsByAvgScore(): Call<List<ResWithScoreDto>>
 
+    @GET("reswithscore/{text}")
+    fun getSearchRestaurantsByAvgScore(@Path("text") text : String): Call<List<ResWithScoreDto>>
+
     //우선은 게시글 상세정보만 끌어오고 끝나면 밑에 리뷰목록도 추가하기
     @GET("restaurant/{resId}")
     fun getRestaurantDtl(@Path("resId") resId : String): Call<RestaurantDto>
@@ -28,5 +32,6 @@ interface RestaurantService {
 
     @GET("restaurant/main")
     fun getResList() : Call<List<RestaurantDto>>
+
 
 }
