@@ -22,7 +22,8 @@ class MainBoardViewHolder(private val binding: ItemMainboardBinding, private val
     fun bind(item: MainBoardDto) {
         binding.boardId.text = item.id
         binding.boardTitle.text = item.boardTitle
-        binding.Score.text = item.score.toString()
+        //val formattedScore = String.format("%.1f", item.score ?: 0.0)
+        binding.boardScore.rating = item.score.toFloat()
 
         Glide.with(binding.root)
             .load(item.imgUrl)
