@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.WriteReviewFragment
@@ -295,6 +296,20 @@ class MyPageFragment : Fragment() {
     override fun onDestroy() {
         Log.d("SdoLifeCycle","MyPageFragment onDestroy")
         super.onDestroy()
+    }
+
+    fun showExitDialog() {
+        val builder = android.app.AlertDialog.Builder(requireContext())
+        builder.setTitle("Exit?")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        builder.setNegativeButton("아니오") { dialog, which ->
+            // 아무 작업도 수행하지 않음
+        }
+        builder.setPositiveButton("예") { dialog, which ->
+            // 프래그먼트가 호스트하는 액티비티의 onBackPressed() 호출
+            (requireActivity() as? HomeTabActivity)?.onBackPressed()
+        }
+        builder.show()
     }
 
 //

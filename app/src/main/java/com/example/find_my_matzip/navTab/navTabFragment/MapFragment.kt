@@ -1,6 +1,7 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -14,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentMapBinding
@@ -371,6 +373,19 @@ class MapFragment : Fragment() , OnMapReadyCallback {
     override fun onDestroy() {
         Log.d("SdoLifeCycle","MapFragment onDestroy")
         super.onDestroy()
+    }
+
+    fun showExitDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Exit?")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        builder.setNegativeButton("아니오") { dialog, which ->
+            // 아무 작업도 수행하지 않음
+        }
+        builder.setPositiveButton("예") { dialog, which ->
+            // 프래그먼트가 호스트하는 액티비티의 onBackPressed() 호출
+        }
+        builder.show()
     }
 
 
