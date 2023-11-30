@@ -67,7 +67,7 @@ class     HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
-        
+
         //검색창에서 넘어왔다면 text넣어줌
         val newText = arguments?.getString("text")
         Log.d(TAG, "newText : $newText")
@@ -227,7 +227,7 @@ class     HomeFragment : Fragment() {
         }
         builder.setPositiveButton("예") { dialog, which ->
             // 프래그먼트가 호스트하는 액티비티의 onBackPressed() 호출
-            (requireActivity() as? HomeTabActivity)?.onBackPressed()
+            (requireActivity() as? HomeTabActivity)?.onBackPressed2()
         }
         builder.show()
     }
