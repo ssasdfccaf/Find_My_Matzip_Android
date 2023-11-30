@@ -289,7 +289,7 @@
                 <Button
                     android:id="@+id/submitBtn"
                     android:layout_width="300dp"
-                    android:layout_height="60dp"
+                    android:layout_height="75               dp"
                     android:layout_gravity="center"
                     android:backgroundTint="@color/black"
                     android:fontFamily="@font/nexonmed"
