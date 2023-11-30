@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.RestaurantListBinding
+import com.example.find_my_matzip.model.ContentDto
 import com.example.find_my_matzip.model.ResWithScoreDto
 import com.example.find_my_matzip.navTab.navTabFragment.NearRestaurantFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
@@ -17,7 +18,7 @@ import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
 
 class RestaurantViewHolder(val binding: RestaurantListBinding) : RecyclerView.ViewHolder(binding.root)
 
-class RestaurantRecyclerAdapter(val context: RestaurantFragment, val datas: List<ResWithScoreDto>?) :
+class RestaurantRecyclerAdapter(val context: RestaurantFragment, var datas: List<ResWithScoreDto>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return RestaurantViewHolder(
@@ -30,6 +31,12 @@ class RestaurantRecyclerAdapter(val context: RestaurantFragment, val datas: List
 
     override fun getItemCount(): Int {
         return datas?.size ?: 0
+    }
+
+    fun addData(newData: List<ResWithScoreDto>) {
+        val oldSize = datas?.size ?: 0
+        datas = datas.orEmpty() + newData
+        notifyItemRangeInserted(oldSize, newData.size)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -73,6 +80,8 @@ class RestaurantRecyclerAdapter(val context: RestaurantFragment, val datas: List
             transaction.commit()
         }
     }
+
+
 
 
 
