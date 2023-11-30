@@ -59,6 +59,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("SdoLifeCycle","ProfileFragmnet onCreateView")
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
         // 보드 어댑터
         boardAdapter = BoardRecyclerAdapter2(this@ProfileFragment, emptyList())
@@ -396,11 +397,27 @@ class ProfileFragment : Fragment() {
         // 트랜잭션에 이름 부여
         val transaction = parentFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
             .commit()
 
         // 현재의 HomeFragment를 백 스택에서 제거
         parentFragmentManager.popBackStack("Profile", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","ProfileFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","ProfileFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","ProfileFragment onDestroy")
+        super.onDestroy()
+    }
 
 //        // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
 //        val profileFragment = ProfileFragment.newInstance(userId)
@@ -416,5 +433,4 @@ class ProfileFragment : Fragment() {
 //            Log.w("ProfileFragment", "Transaction not committed: Fragment state already saved")
 //        }
 
-    }
 }

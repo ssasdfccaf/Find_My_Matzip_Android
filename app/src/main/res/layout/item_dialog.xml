@@ -1,60 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dialogLinearLayout"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:layout_marginBottom="10dp"
     android:gravity="center"
-    android:orientation="horizontal">
+    >
 
-    <ImageView
-        android:id="@+id/dialogUserImg"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/profile"/>
+    <androidx.cardview.widget.CardView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="75dp"
+            android:layout_marginRight="10dp">
+            <ImageView
+                android:id="@+id/dialogUserImg"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile"/>
+        </androidx.cardview.widget.CardView>
 
+    <LinearLayout
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
     <TextView
         android:id="@+id/dialogUserid"
         android:layout_gravity="left"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nexonmed"
-        android:layout_weight="1"
-        android:textSize="25sp"
+        android:fontFamily="@font/nexonbold"
+        android:textSize="18sp"
         tools:text="아이디" />
 
     <TextView
         android:id="@+id/dialogUserName"
         android:layout_gravity="left"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nexonmed"
-        android:layout_weight="1"
-        android:textSize="25sp"
+        android:fontFamily="@font/nexonbold"
+        android:textSize="20sp"
         tools:text="이름" />
+    </LinearLayout>
 
-
+   <LinearLayout
+       android:layout_width="110dp"
+       android:layout_height="wrap_content">
     <Button
         android:id="@+id/followBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:text="팔로우"
-        android:layout_marginBottom="20dp"
         android:textSize="14sp"
         android:backgroundTint="@color/design_default_color_on_secondary"
         android:visibility="visible"/>
 
     <Button
         android:id="@+id/unfollowBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:text="언팔로우"
-        android:layout_marginBottom="20dp"
         android:textSize="14sp"
         android:backgroundTint="#E91E63"
         android:visibility="gone"/>
-
-</LinearLayout>
+   </LinearLayout>
+    </LinearLayout>
 
 

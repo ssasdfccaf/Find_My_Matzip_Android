@@ -21,6 +21,7 @@ class RestaurantFragment : Fragment() {
     lateinit var binding: FragmentRestaurantBinding
     lateinit var adapter: RestaurantRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("SdoLifeCycle","RestaurantFragment onCreate")
         super.onCreate(savedInstanceState)
         binding = FragmentRestaurantBinding.inflate(layoutInflater)
     }
@@ -28,6 +29,7 @@ class RestaurantFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("SdoLifeCycle","RestaurantFragment onCreateView")
         binding = FragmentRestaurantBinding.inflate(layoutInflater, container, false)
 
         val restaurantService = (context?.applicationContext as MyApplication).restaurantService
@@ -59,4 +61,20 @@ class RestaurantFragment : Fragment() {
         })
 
         return binding.root
-    }}
+    }
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","RestaurantFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","RestaurantFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","RestaurantFragment onDestroy")
+        super.onDestroy()
+    }
+}
