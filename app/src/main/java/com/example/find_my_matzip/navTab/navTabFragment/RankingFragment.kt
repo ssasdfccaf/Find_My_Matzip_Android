@@ -31,6 +31,7 @@ class RankingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("SdoLifeCycle","onCreateView onDestroy")
         binding = FragmentRankingBinding.inflate(layoutInflater, container, false)
 
 //        val restaurantService =
@@ -74,4 +75,20 @@ class RankingFragment : Fragment() {
         })
 
         return binding.root
-    }}
+    }
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","RankingFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","RankingFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","RankingFragment onDestroy")
+        super.onDestroy()
+    }
+}
