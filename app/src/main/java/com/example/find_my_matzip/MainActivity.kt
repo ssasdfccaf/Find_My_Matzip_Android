@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this@MainActivity,"자동 로그인", Toast.LENGTH_SHORT).show()
             val intent = Intent(this@MainActivity, HomeTabActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
 
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         binding.loginBtn.setOnClickListener {
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
         binding.moveHome.setOnClickListener {
             val intent = Intent(this@MainActivity, TabActivity::class.java)

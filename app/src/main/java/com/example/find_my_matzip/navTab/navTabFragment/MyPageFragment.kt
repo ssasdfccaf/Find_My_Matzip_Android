@@ -70,7 +70,6 @@ class MyPageFragment : Fragment() {
             val profileUpdateFragment = ProfileUpdateFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragmentContainer, profileUpdateFragment)
-            transaction.addToBackStack(null)
             transaction.commit()
         }
 
@@ -78,7 +77,7 @@ class MyPageFragment : Fragment() {
 //            게시글작성창으로 이동
             val WriteReviewFragment = WriteReviewFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainer, WriteReviewFragment)
+            transaction.add(R.id.fragmentContainer, WriteReviewFragment)
             transaction.addToBackStack(null)
             transaction.commit()
         }
@@ -261,7 +260,8 @@ class MyPageFragment : Fragment() {
             //profileUpdateFragment 회원수정창(타 프레그먼트로) 이동하는 코드
             val profileUpdateFragment = ProfileUpdateFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainer, profileUpdateFragment)
+            transaction.add(R.id.fragmentContainer, profileUpdateFragment)
+            transaction.addToBackStack(null)
             transaction.commit()
         }
 
@@ -273,7 +273,8 @@ class MyPageFragment : Fragment() {
 
         // 트랜잭션에 이름 부여
         val transaction = parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
+            .add(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
             .commit()
 
         // 현재의 HomeFragment를 백 스택에서 제거

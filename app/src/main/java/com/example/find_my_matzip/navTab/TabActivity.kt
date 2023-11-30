@@ -65,5 +65,5 @@ class TabActivity : AppCompatActivity() {
 
         // 트랜잭션을 적용
         fragmentTransaction.commit()
-    }
+    } // replaceFragment 끝
 }
