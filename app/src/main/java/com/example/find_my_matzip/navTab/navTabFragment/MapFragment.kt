@@ -383,7 +383,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
             // 아무 작업도 수행하지 않음
         }
         builder.setPositiveButton("예") { dialog, which ->
-            // 프래그먼트가 호스트하는 액티비티의 onBackPressed() 호출
+            (requireActivity() as? HomeTabActivity)?.onBackPressed2()
         }
         builder.show()
     }
