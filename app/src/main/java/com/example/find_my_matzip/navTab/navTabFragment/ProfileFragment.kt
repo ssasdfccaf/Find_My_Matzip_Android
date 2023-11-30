@@ -371,7 +371,6 @@ class ProfileFragment : Fragment() {
         val myPageFragment = MyPageFragment()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragmentContainer, myPageFragment)
-        transaction.addToBackStack(null)
         transaction.commit()
         requireActivity().supportFragmentManager.popBackStack("MyPageTransaction", FragmentManager.POP_BACK_STACK_INCLUSIVE)
 //        if (currentUserId == pageUserId) {
