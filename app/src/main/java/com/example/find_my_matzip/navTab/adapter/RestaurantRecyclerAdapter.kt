@@ -79,9 +79,8 @@ class RestaurantRecyclerAdapter(val context: RestaurantFragment, var datas: List
             val transaction = fragmentManager.beginTransaction()
 
             // Fragment를 표시하는 코드
-            transaction.replace(R.id.fragmentContainer, restaurantDtlFragment)
+            transaction.add(R.id.fragmentContainer, restaurantDtlFragment)
             transaction.addToBackStack(null) // 필요에 따라 back stack에 추가
-
             // 트랜잭션 완료
             transaction.commit()
         }
