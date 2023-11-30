@@ -1,6 +1,7 @@
 package com.example.find_my_matzip
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -11,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -22,6 +24,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.find_my_matzip.databinding.FragmentProfileUpdateBinding
 import com.example.find_my_matzip.databinding.FragmentWriteReviewBinding
 import com.example.find_my_matzip.model.BoardFormDto
 import com.example.find_my_matzip.model.BoardImgDto
@@ -72,6 +75,7 @@ class WriteReviewFragment : Fragment() {
 
     companion object {
         fun newInstance(resId: String): WriteReviewFragment {
+            Log.d("SdoLifeCycle","WriteReviewFragment newInstance")
             val fragment = WriteReviewFragment()
             val args = Bundle()
             args.putString("resId", resId)
@@ -85,6 +89,7 @@ class WriteReviewFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("SdoLifeCycle","WriteReviewFragment onCreateView")
         binding = FragmentWriteReviewBinding.inflate(layoutInflater,container,false)
         // 이전 프래그먼트에서 전달된 resId 가져오기
         val resId = arguments?.getString("resId")
@@ -518,7 +523,21 @@ class WriteReviewFragment : Fragment() {
     }
 
 
-
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","WriteReviewFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","WriteReviewFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","WriteReviewFragment onDestroy")
+        super.onDestroy()
+    }
 
 }//프래그먼트의 끝
 

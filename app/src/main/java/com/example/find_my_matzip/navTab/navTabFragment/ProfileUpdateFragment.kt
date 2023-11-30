@@ -56,6 +56,7 @@ class ProfileUpdateFragment : Fragment() {
     private val TAG: String = "ProfileUpdateFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("SdoLifeCycle","ProfileUpdateFragment onCreate")
         super.onCreate(savedInstanceState)
         binding = FragmentProfileUpdateBinding.inflate(layoutInflater)
         //설정 2)
@@ -67,6 +68,7 @@ class ProfileUpdateFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("SdoLifeCycle","ProfileUpdateFragment onCreateView")
         binding = FragmentProfileUpdateBinding.inflate(layoutInflater, container, false)
 
         //로딩 다이얼로그
@@ -444,6 +446,22 @@ class ProfileUpdateFragment : Fragment() {
             pickValue = female.text.toString()
         }
         return pickValue
+    }
+
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","ProfileUpdateFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","ProfileUpdateFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","ProfileUpdateFragment onDestroy")
+        super.onDestroy()
     }
 
 

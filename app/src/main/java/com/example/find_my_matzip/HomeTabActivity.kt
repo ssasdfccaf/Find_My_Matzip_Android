@@ -17,9 +17,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.example.find_my_matzip.databinding.ActivityHomeTabBinding
+import com.example.find_my_matzip.navTab.navTabFragment.HomeFollowFragment
 import com.example.find_my_matzip.navTab.navTabFragment.HomeFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MapFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
+import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RankingFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
@@ -328,4 +330,21 @@ class HomeTabActivity : AppCompatActivity() {
     }
 
 
+    override fun onBackPressed() {
+        // 현재 화면에 표시된 프래그먼트의 종료 다이얼로그를 호출
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+
+        when (currentFragment) {
+            is HomeFragment -> currentFragment.showExitDialog()
+            is HomeFollowFragment -> currentFragment.showExitDialog()
+            is RestaurantFragment -> currentFragment.showExitDialog()
+            is MapFragment -> currentFragment.showExitDialog()
+            is RankingFragment -> currentFragment.showExitDialog()
+            is MyPageFragment -> currentFragment.showExitDialog()
+            is ProfileFragment -> currentFragment.showExitDialog()
+
+            else -> super.onBackPressed()
+        }
+    }
+    
 }
