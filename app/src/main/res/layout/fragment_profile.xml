@@ -8,6 +8,7 @@
 
     <!--전체 리니어 -->
     <LinearLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
