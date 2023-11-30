@@ -1,6 +1,7 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentProfileBinding
@@ -395,11 +397,12 @@ class ProfileFragment : Fragment() {
         val fragment = ProfileFragment.newInstance(userId)
         // 트랜잭션에 이름 부여
         val transaction = parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
+            .add(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
             .commit()
 
         // 현재의 HomeFragment를 백 스택에서 제거
-        parentFragmentManager.popBackStack("Profile", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        // parentFragmentManager.popBackStack("Profile", FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     @Override
@@ -417,6 +420,20 @@ class ProfileFragment : Fragment() {
         Log.d("SdoLifeCycle","ProfileFragment onDestroy")
         super.onDestroy()
     }
+
+//    fun showExitDialog() {
+//        val builder = AlertDialog.Builder(requireContext())
+//        builder.setTitle("Exit?")
+//        builder.setMessage("앱을 종료하시겠습니까?")
+//        builder.setNegativeButton("아니오") { dialog, which ->
+//            // 아무 작업도 수행하지 않음
+//        }
+//        builder.setPositiveButton("예") { dialog, which ->
+//            // 프래그먼트가 호스트하는 액티비티의 onBackPressed() 호출
+//            (requireActivity() as? HomeTabActivity)?.onBackPressed()
+//        }
+//        builder.show()
+//    }
 
 //        // 팔로워 해당 유저의 프로필로 이동하는 코드를 추가
 //        val profileFragment = ProfileFragment.newInstance(userId)
