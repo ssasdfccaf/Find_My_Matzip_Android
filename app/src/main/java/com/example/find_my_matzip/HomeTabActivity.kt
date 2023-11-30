@@ -341,7 +341,7 @@ class HomeTabActivity : AppCompatActivity() {
             is MapFragment -> currentFragment.showExitDialog()
             is RankingFragment -> currentFragment.showExitDialog()
             is MyPageFragment -> currentFragment.showExitDialog()
-            is ProfileFragment -> currentFragment.showExitDialog()
+        //    is ProfileFragment -> currentFragment.showExitDialog()
 
             else -> super.onBackPressed()
         }
