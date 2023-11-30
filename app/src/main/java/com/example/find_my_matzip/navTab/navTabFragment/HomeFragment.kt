@@ -37,7 +37,7 @@ class     HomeFragment : Fragment() {
             val fragment = HomeFragment()
             val args = Bundle()
             args.putString("text", text)
-            Log.d("sjw", "내가 newInstance에서 넣은 text : $text")
+            Log.d("HomeFragment", "내가 newInstance에서 넣은 text : $text")
             fragment.arguments = args
             return fragment
         }
@@ -68,7 +68,7 @@ class     HomeFragment : Fragment() {
         
         //검색창에서 넘어왔다면 text넣어줌
         val newText = arguments?.getString("text")
-        Log.d("sjw", "newText : $newText")
+        Log.d(TAG, "newText : $newText")
         if(newText != null){
             text = newText
         }
@@ -212,7 +212,7 @@ class     HomeFragment : Fragment() {
         val changeFragment = newInstance(text)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragmentContainer, changeFragment)
-        .addToBackStack(null)
+        //.addToBackStack(null)
         transaction.commit()
     }
 
