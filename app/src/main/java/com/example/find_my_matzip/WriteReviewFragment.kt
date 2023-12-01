@@ -223,6 +223,7 @@ class WriteReviewFragment : Fragment() {
                 Log.d("WriteReviewFragment","imgCounter의 값 : $imgCounter")
             } else {
                 Log.d("WriteReviewFragment","이미지는 총4개 까지만 가능")
+                Toast.makeText(requireContext(),"이미지는 총4개 까지만 가능합니다", Toast.LENGTH_SHORT).show()
             }
         }
 
