@@ -70,7 +70,7 @@
             <TextView
                 android:id="@+id/userId"
                 android:layout_width="300dp"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/radius"
@@ -132,7 +132,7 @@
                 <LinearLayout
                     android:id="@+id/imgUploadLayout1"
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:layout_gravity="center">
@@ -140,7 +140,7 @@
                     <Button
                         android:id="@+id/selectImgBtn1"
                         android:layout_width="185dp"
-                        android:layout_height="60dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:layout_weight="1"
@@ -152,7 +152,7 @@
                         android:id="@+id/addImg"
                         android:layout_weight="1"
                         android:layout_width="110dp"
-                        android:layout_height="60dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:backgroundTint="#EE0043"
                         android:fontFamily="@font/nexonmed"
@@ -184,7 +184,7 @@
                     <Button
                         android:id="@+id/selectImgBtn2"
                         android:layout_width="185dp"
-                        android:layout_height="60dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:layout_weight="1"
@@ -197,7 +197,7 @@
                         android:id="@+id/deleteImg2"
                         android:layout_weight="1"
                         android:layout_width="110dp"
-                        android:layout_height="60dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:backgroundTint="#000000"
                         android:fontFamily="@font/nexonmed"
@@ -230,7 +230,7 @@
                     <Button
                         android:id="@+id/selectImgBtn3"
                         android:layout_width="185dp"
-                        android:layout_height="60dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:layout_weight="1"
@@ -243,7 +243,7 @@
                         android:id="@+id/deleteImg3"
                         android:layout_weight="1"
                         android:layout_width="110dp"
-                        android:layout_height="60dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:backgroundTint="#000000"
                         android:fontFamily="@font/nexonmed"
@@ -275,7 +275,7 @@
                     <Button
                         android:id="@+id/selectImgBtn4"
                         android:layout_width="185dp"
-                        android:layout_height="60dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:layout_weight="1"
@@ -288,7 +288,7 @@
                         android:id="@+id/deleteImg4"
                         android:layout_weight="1"
                         android:layout_width="110dp"
-                        android:layout_height="60dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:backgroundTint="#000000"
                         android:fontFamily="@font/nexonmed"
@@ -315,7 +315,7 @@
                 <Button
                     android:id="@+id/submitBtn"
                     android:layout_width="300dp"
-                    android:layout_height="60dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:backgroundTint="@color/black"
                     android:fontFamily="@font/nexonmed"
