@@ -84,7 +84,7 @@
             <EditText
                 android:id="@+id/boardTitle"
                 android:layout_width="300dp"
-                android:layout_height="40dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/radius"
@@ -99,7 +99,7 @@
                 android:inputType="number"
                 android:id="@+id/boardScore"
                 android:layout_width="300dp"
-                android:layout_height="40dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/radius"
@@ -113,7 +113,7 @@
             <EditText
                 android:id="@+id/boardContent"
                 android:layout_width="300dp"
-                android:layout_height="40dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/radius"
