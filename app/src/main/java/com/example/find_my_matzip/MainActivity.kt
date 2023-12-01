@@ -46,10 +46,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        binding.moveHome.setOnClickListener {
-            val intent = Intent(this@MainActivity, TabActivity::class.java)
-            startActivity(intent)
-        }
+//        binding.moveHome.setOnClickListener {
+//            val intent = Intent(this@MainActivity, TabActivity::class.java)
+//            startActivity(intent)
+//        }
     } //oncreate
 
     private fun checkLocationPermission(): Boolean {
