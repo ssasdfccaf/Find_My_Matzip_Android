@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -14,10 +13,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.databinding.ActivityJoinBinding
 import com.example.find_my_matzip.model.UsersFormDto
@@ -209,8 +207,21 @@ class JoinActivity : AppCompatActivity() {
             if(inputUserPw == ""){
                 Toast.makeText(this@JoinActivity,"비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "회원가입 inputUserPw: null")
+
+            }
+
+            // Validation Check - UserPw
+            else if ( inputUserPw.length < 6 ) {
+                Toast.makeText(this@JoinActivity, "비밀번호를 6자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
+            }
+
+            else {
                 return@setOnClickListener
             }
+
+
+
+
             if(inputUserName == ""){
                 Toast.makeText(this@JoinActivity,"이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "회원가입 inputUserName: null")
