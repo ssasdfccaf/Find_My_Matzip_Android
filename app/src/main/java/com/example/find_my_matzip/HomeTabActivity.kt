@@ -21,6 +21,7 @@ import com.example.find_my_matzip.navTab.navTabFragment.HomeFollowFragment
 import com.example.find_my_matzip.navTab.navTabFragment.HomeFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MapFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
+import com.example.find_my_matzip.navTab.navTabFragment.NewHomeFragment
 import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RankingFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
@@ -62,7 +63,8 @@ class HomeTabActivity : AppCompatActivity() {
         tabLayout.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.tab1 -> {
-                    replaceFragment(HomeFragment())
+//                    replaceFragment(HomeFragment())
+                    replaceFragment(NewHomeFragment())
                 }
 
                 R.id.tab2 -> {
