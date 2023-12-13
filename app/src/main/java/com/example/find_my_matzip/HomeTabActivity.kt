@@ -87,7 +87,7 @@ class HomeTabActivity : AppCompatActivity() {
             }
             return@setOnNavigationItemSelectedListener true
         }
-        replaceFragment(HomeFragment())
+        replaceFragment(NewHomeFragment())
 
         //Drawer 네비게이션
         binding.mainDrawerView.setNavigationItemSelectedListener {
@@ -341,7 +341,7 @@ class HomeTabActivity : AppCompatActivity() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
 
         when (currentFragment) {
-            is HomeFragment -> currentFragment.showExitDialog()
+            is NewHomeFragment -> currentFragment.showExitDialog()
             is HomeFollowFragment -> currentFragment.showExitDialog()
             is RestaurantFragment -> currentFragment.showExitDialog()
             is MapFragment -> currentFragment.showExitDialog()
