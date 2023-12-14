@@ -1,16 +1,19 @@
 package com.example.find_my_matzip.navTab.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.model.NewImgDto
+import com.example.find_my_matzip.navTab.navTabFragment.boardDtlFragment
 
 class NewHomeViewPagerAdapter(private val context: Context, private val boardImgDtoList: List<NewImgDto>) :
     RecyclerView.Adapter<NewHomeViewPagerAdapter.ImageViewHolder>() {
@@ -51,6 +54,18 @@ class NewHomeViewPagerAdapter(private val context: Context, private val boardImg
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.viewPagerImageView)
 
+        init {
+            imageView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val clickedImage = boardImgDtoList[position]
+                    val boardId = clickedImage.boardId.toString()
+
+                    navigateToBoardDetail(boardId)
+                }
+            }
+        }
+
         fun loadImage(imageUrl: String) {
             Glide.with(context)
                 .load(imageUrl)
@@ -58,5 +73,13 @@ class NewHomeViewPagerAdapter(private val context: Context, private val boardImg
                 .error(R.drawable.noimg)
                 .into(imageView)
         }
-    }
+        private fun navigateToBoardDetail(boardId: String) {
+            val fragment = boardDtlFragment.newInstance(boardId)
+            val fragmentManager = (context as FragmentActivity).supportFragmentManager
+            fragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
+    }//뷰 홀더의 마지막
 }
