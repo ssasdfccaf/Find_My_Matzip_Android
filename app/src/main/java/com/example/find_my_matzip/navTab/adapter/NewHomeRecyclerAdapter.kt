@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.databinding.ItemNewmainboardBinding
-import com.example.find_my_matzip.model.MainBoardDto
 import com.example.find_my_matzip.model.NewMainBoardDto
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+
 
 class NewMainBoardViewHolder(private val binding :ItemNewmainboardBinding,private val onItemClick: (String) -> Unit) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: NewMainBoardDto) {
@@ -29,6 +30,10 @@ class NewMainBoardViewHolder(private val binding :ItemNewmainboardBinding,privat
         // 이미지 리사이클러뷰 어댑터 초기화
         val viewPagerAdapter = NewHomeViewPagerAdapter(binding.root.context, item.boardImgDtoList)
         viewPager.adapter = viewPagerAdapter
+
+        // 인디케이터 추가
+        val dotsIndicator: DotsIndicator = binding.dotsIndicator // 인디케이터 뷰의 ID를 넣어주세요
+        dotsIndicator.setViewPager2(viewPager)
 
         binding.allItem.setOnClickListener {
             onItemClick(binding.boardId.text.toString())

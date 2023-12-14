@@ -65,45 +65,59 @@
         android:orientation="vertical"
         android:padding="15dp"
         android:layout_gravity="center">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
+        <!-- 인디케이터 -->
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/dots_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_gravity="center">
-            <ImageView
-                android:id="@+id/indicator0_iv_main"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/shape_circle_purple" />
+            app:dotsColor="@color/md_blue_200"
+            app:dotsCornerRadius="8dp"
+            app:dotsSize="16dp"
+            app:dotsSpacing="4dp"
+            app:dotsWidthFactor="2.5"
+            app:selectedDotColor="@color/md_indigo_A400"
+            app:progressMode="true"
+            android:layout_gravity="center"
+            />
 
-            <ImageView
-                android:id="@+id/indicator1_iv_main"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_marginStart="5dp"
-                app:layout_constraintBottom_toBottomOf="@+id/indicator0_iv_main"
-                app:layout_constraintStart_toEndOf="@+id/indicator0_iv_main"
-                app:layout_constraintTop_toTopOf="@+id/indicator0_iv_main"
-                app:srcCompat="@drawable/shape_circle_gray" />
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/indicator"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="30dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            android:layout_gravity="center">-->
+<!--            <ImageView-->
+<!--                android:id="@+id/indicator0_iv_main"-->
+<!--                android:layout_width="10dp"-->
+<!--                android:layout_height="10dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:srcCompat="@drawable/shape_circle_purple" />-->
 
-            <ImageView
-                android:id="@+id/indicator2_iv_main"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_marginStart="5dp"
-                app:layout_constraintBottom_toBottomOf="@+id/indicator1_iv_main"
-                app:layout_constraintStart_toEndOf="@+id/indicator1_iv_main"
-                app:layout_constraintTop_toTopOf="@+id/indicator1_iv_main"
-                app:srcCompat="@drawable/shape_circle_gray" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            <ImageView-->
+<!--                android:id="@+id/indicator1_iv_main"-->
+<!--                android:layout_width="10dp"-->
+<!--                android:layout_height="10dp"-->
+<!--                android:layout_marginStart="5dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/indicator0_iv_main"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/indicator0_iv_main"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/indicator0_iv_main"-->
+<!--                app:srcCompat="@drawable/shape_circle_gray" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/indicator2_iv_main"-->
+<!--                android:layout_width="10dp"-->
+<!--                android:layout_height="10dp"-->
+<!--                android:layout_marginStart="5dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/indicator1_iv_main"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/indicator1_iv_main"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/indicator1_iv_main"-->
+<!--                app:srcCompat="@drawable/shape_circle_gray" />-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         <LinearLayout
             android:id="@+id/titleContainer"
