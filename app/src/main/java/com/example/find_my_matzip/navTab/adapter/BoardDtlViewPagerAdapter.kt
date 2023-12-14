@@ -10,10 +10,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.R
+import com.example.find_my_matzip.model.BoardDto
+import com.example.find_my_matzip.model.BoardImgDto
 import com.example.find_my_matzip.model.NewImgDto
 
-class NewHomeViewPagerAdapter(private val context: Context, private val boardImgDtoList: List<NewImgDto>) :
-    RecyclerView.Adapter<NewHomeViewPagerAdapter.ImageViewHolder>() {
+class BoardDtlViewPagerAdapter(private val context: Context, private val boardImgDtoList: List<BoardImgDto>) :
+    RecyclerView.Adapter<BoardDtlViewPagerAdapter.ImageViewHolder>() {
 
     private val imageUrls = boardImgDtoList.filter { it.imgUrl.isNotEmpty() }
     private var currentPosition = 0
