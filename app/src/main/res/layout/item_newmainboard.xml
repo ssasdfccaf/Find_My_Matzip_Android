@@ -51,20 +51,17 @@
 
 
     </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/ImgViewPager"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:scaleType="centerCrop"
         android:layout_gravity="center"
-        android:background="@color/black"/>
-    <LinearLayout
-        android:id="@+id/recyclerViewDtl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="15dp"
-        android:layout_gravity="center">
+        android:background="@drawable/readyimg"/>
         <!-- 인디케이터 -->
         <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
             android:id="@+id/dots_indicator"
@@ -77,8 +74,17 @@
             app:dotsWidthFactor="2.5"
             app:selectedDotColor="@color/md_indigo_A400"
             app:progressMode="true"
-            android:layout_gravity="center"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="10dp"
             />
+    </FrameLayout>
+    <LinearLayout
+        android:id="@+id/recyclerViewDtl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:layout_gravity="center">
 
 <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
 <!--            android:id="@+id/indicator"-->
