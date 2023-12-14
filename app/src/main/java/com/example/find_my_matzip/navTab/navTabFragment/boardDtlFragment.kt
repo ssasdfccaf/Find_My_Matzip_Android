@@ -70,7 +70,7 @@ class boardDtlFragment : Fragment() {
                 binding.boardDtlTitle.text = boardDto?.board?.boardTitle.toString()
                 binding.boardDtlContent.text = boardDto?.board?.content.toString()
                 binding.boardScore.rating = boardDto?.board?.score?.toFloat() ?: 0.0f
-                binding.userId.text = boardDto?.users?.userid.toString()
+                binding.userId.text = boardDto?.users?.username.toString()
                 val userImg = boardDto?.users?.user_image
                 if(userImg != null){
                     Glide.with(requireContext())

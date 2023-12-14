@@ -65,6 +65,10 @@ class NewHomeFragment : Fragment() {
             }
         }
 
+        adapter.setOnItemClickListener {boardId ->
+            navigateToBoardDetail(boardId)
+        }
+
         val layoutManager = LinearLayoutManager(requireContext())
         binding.newHomeRecyclerView.layoutManager = layoutManager
 
