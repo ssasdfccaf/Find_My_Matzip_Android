@@ -15,6 +15,7 @@ import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentNewHomeBinding
 import com.example.find_my_matzip.model.NewMainBoardDto
 import com.example.find_my_matzip.navTab.adapter.NewHomeRecyclerAdapter
+import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -63,6 +64,9 @@ class NewHomeFragment : Fragment() {
             setOnItemClickListener { boardId ->
                 navigateToBoardDetail(boardId)
             }
+            setOnUserClickListener { userId ->
+                navigateToUserProfile(userId)
+            }
         }
 
         adapter.setOnItemClickListener {boardId ->
@@ -100,6 +104,24 @@ class NewHomeFragment : Fragment() {
             .addToBackStack("HomeFragment")
             .commit()
     }//navigateToBoardDetail 끝
+
+    private fun navigateToUserProfile(userId: String?) {
+        if (userId.isNullOrEmpty()) {
+            Log.d("메인프로필->페이지이동", "userId is null or empty")
+            return
+        }
+
+        val transaction = parentFragmentManager.beginTransaction()
+        val userFrag: Fragment = if (SharedPreferencesManager.getString("id", "") == userId) {
+            MyPageFragment.newInstance(userId)
+        } else {
+            ProfileFragment.newInstance(userId)
+        }
+
+        transaction.replace(R.id.fragmentContainer, userFrag)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
     private fun loadNextPageData(page: Int) {
         val boardService = (context?.applicationContext as MyApplication).boardService
         boardList = boardService.getNewAllBoardsPager(page)

@@ -10,7 +10,7 @@ import com.example.find_my_matzip.model.NewMainBoardDto
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 
 
-class NewMainBoardViewHolder(private val binding :ItemNewmainboardBinding,private val onItemClick: (String) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+class NewMainBoardViewHolder(private val binding :ItemNewmainboardBinding,private val onItemClick: (String) -> Unit,private val onUserClick: (String) -> Unit ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: NewMainBoardDto) {
         //유저프로필이미지
         Glide.with(binding.root)
@@ -35,8 +35,12 @@ class NewMainBoardViewHolder(private val binding :ItemNewmainboardBinding,privat
         val dotsIndicator: DotsIndicator = binding.dotsIndicator // 인디케이터 뷰의 ID를 넣어주세요
         dotsIndicator.setViewPager2(viewPager)
 
-        binding.allItem.setOnClickListener {
+        binding.gotoboardDtl.setOnClickListener {
             onItemClick(binding.boardId.text.toString())
+        }
+
+        binding.userLinearLayout.setOnClickListener {
+            onUserClick(item.user.userId) // 유저 아이디 클릭 이벤트 핸들링
         }
     }
 }
@@ -55,12 +59,23 @@ class NewHomeRecyclerAdapter(context : Context) : RecyclerView.Adapter<NewMainBo
         onItemClickListener = listener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewMainBoardViewHolder {
-        val itemBinding = ItemNewmainboardBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return NewMainBoardViewHolder(itemBinding){boardId ->
-            onItemClickListener?.invoke(boardId)
-        }
+    private var onUserClickListener: ((String?) -> Unit)? = null // 유저 클릭 리스너 선언
+
+    fun setOnUserClickListener(listener: (String?) -> Unit) {
+        onUserClickListener = listener
     }
+
+override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewMainBoardViewHolder {
+    val itemBinding = ItemNewmainboardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    return NewMainBoardViewHolder(itemBinding,
+        { boardId ->
+            onItemClickListener?.invoke(boardId)
+        },
+        { userId ->
+            onUserClickListener?.invoke(userId) // 유저 클릭 리스너 호출
+        }
+    )
+}
 
     override fun getItemCount(): Int {
         return datas.size
