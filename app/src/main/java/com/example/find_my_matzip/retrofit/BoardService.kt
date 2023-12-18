@@ -41,6 +41,9 @@ interface BoardService {
     fun getMatjalalBoards(@Query("page") page: Int): Call<List<MainBoardDto>>
 
 
+    @GET("users/newmatjalal")
+    fun getNewMatjalalBoards(@Query("page") page: Int): Call<List<NewMainBoardDto>>
+
     @POST("board/new3/{resId}")// 게시글작성페이지
     fun createBoard3(
         @Path("resId") id: String, @Body boardDtoMap: MutableMap<String,Any>
