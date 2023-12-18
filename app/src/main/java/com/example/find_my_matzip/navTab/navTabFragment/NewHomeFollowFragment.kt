@@ -14,6 +14,7 @@ import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentNewHomeBinding
+import com.example.find_my_matzip.databinding.FragmentNewHomeFollowBinding
 import com.example.find_my_matzip.model.NewMainBoardDto
 import com.example.find_my_matzip.navTab.adapter.NewHomeRecyclerAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
@@ -21,45 +22,40 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class NewHomeFragment : Fragment() {
-    lateinit var binding : FragmentNewHomeBinding
+class NewHomeFollowFragment : Fragment() {
+    lateinit var binding : FragmentNewHomeFollowBinding
     lateinit var adapter: NewHomeRecyclerAdapter
     lateinit var boardList: Call<List<NewMainBoardDto>>
-    private val TAG : String = "NewHomeFragment"
+    private val TAG : String = "NewHomeFollowFragment"
     //페이징처리 1
     var currentPage = 0
 
-    //식당의 게시글 띄우는 로직
-    private var resId:String? = null
     companion object {
         // HomeFragment 인스턴스 생성
-        fun newInstance(text: String, resId:String): NewHomeFragment {
-            val fragment = NewHomeFragment()
+        fun newInstance(text: String, resId:String): NewHomeFollowFragment {
+            val fragment = NewHomeFollowFragment()
             val args = Bundle()
             args.putString("text", text)
             args.putString("resId", resId)
-            Log.d("HomeFragment", "내가 newInstance에서 넣은 text : $text")
-            Log.d("HomeFragment", "내가 newInstance에서 넣은 resId : $resId")
+            Log.d("HomeFollowFragment", "내가 newInstance에서 넣은 text : $text")
+            Log.d("HomeFollowFragment", "내가 newInstance에서 넣은 resId : $resId")
             fragment.arguments = args
             return fragment
         }
     }
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            Log.d(TAG,"NewHomeFragment onCreate")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG,"NewHomeFragment onCreate")
         super.onCreate(savedInstanceState)
-            binding = FragmentNewHomeBinding.inflate(layoutInflater)
+        binding = FragmentNewHomeFollowBinding.inflate(layoutInflater)
     }// 온크리트의 끝
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG,"NewHomeFragment onCreateView")
-
-        binding = FragmentNewHomeBinding.inflate(layoutInflater,container,false)
-//        val view = binding.root
-
+        Log.d(TAG,"NewHomeFollowFragment onCreateView")
+        binding = FragmentNewHomeFollowBinding.inflate(layoutInflater,container,false)
 
         adapter = NewHomeRecyclerAdapter(requireContext()).apply {
             setOnItemClickListener { boardId ->
@@ -69,23 +65,22 @@ class NewHomeFragment : Fragment() {
                 navigateToUserProfile(userId)
             }
         }
-
         adapter.setOnItemClickListener {boardId ->
             navigateToBoardDetail(boardId)
         }
 
-        binding.toFollowHome.setOnClickListener {
-            // 클릭 시 HomeFollowFragment로 이동하는 코드
-            val fragment = NewHomeFollowFragment()
+        binding.toHome.setOnClickListener {
+            // 클릭 시 HomeFragment로 이동하는 코드
+            val fragment = NewHomeFragment()
 
             // 트랜잭션에 이름 부여
             val transaction = parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
-                //    .addToBackStack("HomeFragment")
+                //  .addToBackStack("HomeFollowFragment")
                 .commit()
 
-            // 현재의 HomeFragment를 백 스택에서 제거
-            parentFragmentManager.popBackStack("NewHomeFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            // 현재의 HomeFollowFragment를 백 스택에서 제거
+            parentFragmentManager.popBackStack("NewHomeFollowFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
 
@@ -112,18 +107,17 @@ class NewHomeFragment : Fragment() {
 
         return binding.root
     }//온크리트뷰의 끝
-
     private fun navigateToBoardDetail(boardId: String) {
         val fragment = boardDtlFragment.newInstance(boardId)
         parentFragmentManager.beginTransaction()
             .add(R.id.fragmentContainer, fragment)
-            .addToBackStack("HomeFragment")
+            .addToBackStack("HomeFollowFragment")
             .commit()
     }//navigateToBoardDetail 끝
 
     private fun navigateToUserProfile(userId: String?) {
         if (userId.isNullOrEmpty()) {
-            Log.d("메인프로필->페이지이동", "userId is null or empty")
+            Log.d("메인팔로우프로필->페이지이동", "userId is null or empty")
             return
         }
 
@@ -140,7 +134,7 @@ class NewHomeFragment : Fragment() {
     }
     private fun loadNextPageData(page: Int) {
         val boardService = (context?.applicationContext as MyApplication).boardService
-        boardList = boardService.getNewAllBoardsPager(page)
+        boardList = boardService.getNewMatjalalBoards(page)
         boardList.enqueue(object : Callback<List<NewMainBoardDto>> {
             override fun onResponse(call: Call<List<NewMainBoardDto>>, response: Response<List<NewMainBoardDto>>) {
                 if (response.isSuccessful) {
@@ -171,5 +165,4 @@ class NewHomeFragment : Fragment() {
         }
         builder.show()
     }
-
-}//프래그먼트의 끝
+}
