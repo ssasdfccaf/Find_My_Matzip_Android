@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -239,7 +240,7 @@ class ProfileFragment : Fragment() {
 
 
                             // MessageFragment로 이동
-                            val messageBtn: Button = binding.messageBtn
+                            val messageBtn: ImageView = binding.messageBtn
                             messageBtn.setOnClickListener {
                                 Log.d("MessageFragment", "메시지 버튼 클릭")
 

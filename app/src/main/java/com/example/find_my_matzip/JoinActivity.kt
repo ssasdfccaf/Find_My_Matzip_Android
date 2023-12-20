@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.databinding.ActivityJoinBinding
+import com.example.find_my_matzip.model.Friend
 import com.example.find_my_matzip.utils.LoadingDialog
 import com.example.find_my_matzip.utils.PermissionManager
 import com.google.firebase.auth.FirebaseAuth
@@ -44,6 +45,7 @@ class JoinActivity : AppCompatActivity() {
     //파이어베이스 사진 저장 경로
     lateinit var imgStorageUrl:String
     */
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -272,13 +274,13 @@ class JoinActivity : AppCompatActivity() {
 //            if(inputUserId.isEmpty() && inputUserPw.isEmpty() && inputUserName.isEmpty() && profileCheck)  {
             if(inputUserId.isEmpty() && inputUserPw.isEmpty() && inputUserName.isEmpty())  {
 
-                Toast.makeText(this, "아이디와 비밀번호, 프로필 사진을 제대로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "아이디와 비밀번호, 프로필 사진을 다시 입력해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d("Email", "$inputUserId, $inputUserPw")
             }
 
             else{
                 if(!profileCheck){
-                    Toast.makeText(this, "프로필사진을 등록해주세요.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "프로필 사진을 등록해주세요.", Toast.LENGTH_SHORT).show()
                 } else{
                     auth.createUserWithEmailAndPassword(inputUserId.toString(), inputUserPw.toString())
                         .addOnCompleteListener(this) { task ->
@@ -286,6 +288,10 @@ class JoinActivity : AppCompatActivity() {
                                 val user = Firebase.auth.currentUser
                                 val userId = user?.uid
                                 val userIdSt = userId.toString()
+
+                                val friend = Friend(inputUserId, inputUserPw, userIdSt)
+                                database.child("users").child(userId.toString()).setValue(friend)
+
 
                                 /*
                                 FirebaseStorage.getInstance()

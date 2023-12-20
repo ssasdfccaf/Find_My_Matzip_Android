@@ -3,20 +3,18 @@ package com.example.find_my_matzip.navTab.navTabFragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.example.find_my_matzip.MessageActivity
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.model.Friend
 import com.example.find_my_matzip.model.MessageModel
-import com.example.find_my_matzip.MessageActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import com.google.firebase.ktx.Firebase
-import java.util.ArrayList
 
 class MessageFragment : Fragment() {
     companion object{
@@ -109,12 +106,15 @@ class MessageFragment : Fragment() {
                 override fun onCancelled(error: DatabaseError) {
                 }
 
+
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val friend = snapshot.getValue<Friend>()
+                    /*
                     Glide.with(holder.itemView.context).load(friend?.profileImageUrl)
                         .apply(RequestOptions().circleCrop())
-                        .into(holder.imageView)
+                        .into(holder.imageView) */
                     holder.textView_title.text = friend?.name
+
                 }
             })
 
