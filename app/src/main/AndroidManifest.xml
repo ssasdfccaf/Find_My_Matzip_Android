@@ -33,7 +33,22 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".navTab.navTabFragment.MessageActivity"
+            android:name=".MessageMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MessageSignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MessageSignInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".navTab.navTabFragment.SignUpMessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".navTab.navTabFragment.SignInMessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MessageActivity"
             android:exported="false" />
         <activity
             android:name=".MessageActivity"

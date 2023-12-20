@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.example.find_my_matzip
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.ActivityHomeTabBinding
 import com.example.find_my_matzip.databinding.ActivityMesssageBinding
 import com.example.find_my_matzip.model.Friend
 import com.example.find_my_matzip.model.MessageModel

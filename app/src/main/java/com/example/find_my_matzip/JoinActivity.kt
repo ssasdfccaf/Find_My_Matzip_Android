@@ -1,11 +1,9 @@
 package com.example.find_my_matzip
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.MotionEvent
@@ -14,21 +12,21 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.databinding.ActivityJoinBinding
-import com.example.find_my_matzip.model.UsersFormDto
 import com.example.find_my_matzip.utils.LoadingDialog
 import com.example.find_my_matzip.utils.PermissionManager
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
+// sy FB
+private lateinit var auth: FirebaseAuth
+lateinit var database: DatabaseReference
+@Suppress("DEPRECATION")
 class JoinActivity : AppCompatActivity() {
     lateinit var binding: ActivityJoinBinding
     private val TAG: String = "JoinActivity"
@@ -40,15 +38,20 @@ class JoinActivity : AppCompatActivity() {
     // 갤러리에서 선택된 , 파일의 위치(로컬)
     private var filePath : String? = null
 
+    /*
     // 카메라 이미지 파일 위치
     lateinit var profileImageUri : String
     //파이어베이스 사진 저장 경로
     lateinit var imgStorageUrl:String
+    */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityJoinBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        auth = Firebase.auth
+        database = Firebase.database.reference
 
         //로딩 다이얼로그
         val loadingDialog = LoadingDialog(this)
@@ -105,7 +108,7 @@ class JoinActivity : AppCompatActivity() {
             )
             requestLauncher.launch(intent)
         }
-
+/*
         //카메라 호출해서, 사진 촬영된 사진 가져오기.
         // 2) 후처리하는 함수를 이용해서, 촬영된 사진을 결과 뷰에 출력하는 로직.
         val requestCameraFileLauncher = registerForActivityResult(
@@ -185,7 +188,9 @@ class JoinActivity : AppCompatActivity() {
 
         }
 
-
+*/
+        /* sy FB */
+        val intent = Intent(this, LoginActivity::class.java)
 
         //회원가입 버튼
         binding.buttonInsert.setOnClickListener {
@@ -194,11 +199,13 @@ class JoinActivity : AppCompatActivity() {
             val inputUserId = binding.userId.text.toString()
             val inputUserPw = binding.userPwd.text.toString()
             val inputUserName = binding.userName.text.toString()
+            val profileCheck = true
 
             Log.d(TAG, "회원가입 inputUserId: ${inputUserId}")
             Log.d(TAG, "회원가입 inputUserPw: ${inputUserPw}")
             Log.d(TAG, "회원가입 inputUserName: ${inputUserName}")
 
+            /*
             if(inputUserId == ""){
                 Toast.makeText(this@JoinActivity,"아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "회원가입 inputUserId: null")
@@ -219,6 +226,7 @@ class JoinActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+             */
 
 
 
@@ -228,22 +236,28 @@ class JoinActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            /*
             //로딩창 띄우기
             loadingDialog.show()
+            */
 
+            /*
             // 스토리지 접근 도구 ,인스턴스
             val storage = MyApplication.storage
             // 스토리지에 저장할 인스턴스
             val storageRef = storage.reference
+            */
+
 
             // 파일명 생성 : userid+현재시간
            // val uuid = binding.userId.text.toString()+Date()+System.currentTimeMillis();
 
 
+            /*
             // 이미지 저장될 위치 및 파일명(파이어베이스)
             val imgRef = storageRef.child("users_img/${binding.userId.text}.jpg")
 
-            
+
             //입력된 이미지 있을때만 db에 이미지 경로 저장
             if(filePath != null){
                 //이미지 url
@@ -251,8 +265,55 @@ class JoinActivity : AppCompatActivity() {
             }else{
                 imgStorageUrl = ""
             }
-            
 
+*/
+
+            /* sy FB */
+//            if(inputUserId.isEmpty() && inputUserPw.isEmpty() && inputUserName.isEmpty() && profileCheck)  {
+            if(inputUserId.isEmpty() && inputUserPw.isEmpty() && inputUserName.isEmpty())  {
+
+                Toast.makeText(this, "아이디와 비밀번호, 프로필 사진을 제대로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Log.d("Email", "$inputUserId, $inputUserPw")
+            }
+
+            else{
+                if(!profileCheck){
+                    Toast.makeText(this, "프로필사진을 등록해주세요.", Toast.LENGTH_SHORT).show()
+                } else{
+                    auth.createUserWithEmailAndPassword(inputUserId.toString(), inputUserPw.toString())
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                val user = Firebase.auth.currentUser
+                                val userId = user?.uid
+                                val userIdSt = userId.toString()
+
+                                /*
+                                FirebaseStorage.getInstance()
+                                    .reference.child("userImages").child("$userIdSt/photo").putFile(imageUri!!).addOnSuccessListener {
+                                        var userProfile: Uri? = null
+                                        FirebaseStorage.getInstance().reference.child("userImages").child("$userIdSt/photo").downloadUrl
+                                            .addOnSuccessListener {
+                                                userProfile = it
+                                                Log.d("이미지 URL", "$userProfile")
+                                                val friend = Friend(inputUserId.toString(), inputUserPw.toString(), userProfile.toString(), userIdSt)
+                                                database.child("users").child(userId.toString()).setValue(friend)
+                                            }
+                                    }
+                                */
+                                Toast.makeText(this, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                                Log.e(TAG, "$userId")
+                                startActivity(intent)
+                            } else {
+                                Log.e(TAG, "Registration failed", task.exception)
+                                Toast.makeText(this, "등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                }
+            }
+
+
+
+            /*
             //회원가입 요청할 user객체 구성
             var usersFormDto = UsersFormDto(
                 userid = inputUserId,
@@ -264,8 +325,10 @@ class JoinActivity : AppCompatActivity() {
                 user_image = imgStorageUrl,
                 gender = getValue(binding.testRadioGroup),
             )
+            */
 
 
+            /*
             val userService = (applicationContext as MyApplication).userService
             val newUsers = userService.newUsers(usersFormDto)
 
@@ -293,7 +356,7 @@ class JoinActivity : AppCompatActivity() {
                                     //로딩창 지우기
                                     loadingDialog.dismiss()
                                     Log.d(TAG, "스토리지 업로드 완료")
-                                   
+
                                 }
                                 .addOnFailureListener {
                                     //로딩창 지우기
@@ -305,12 +368,15 @@ class JoinActivity : AppCompatActivity() {
                                 }
                         }
 
+
+
                         Toast.makeText(this@JoinActivity,"회원가입 되었습니다.",Toast.LENGTH_SHORT).show()
-                        
+
                         val intent = Intent(this@JoinActivity, LoginActivity::class.java)
                         startActivity(intent)
 
                     }else {
+
                         Log.d(TAG, "서버 응답 실패: ${response.code()}")
                         //로딩창 지우기
                         loadingDialog.dismiss()
@@ -341,6 +407,7 @@ class JoinActivity : AppCompatActivity() {
 
 
             })
+            */
         }//회원가입
 
         //주소 검색후 결과값 받아오는 후처리 함수
@@ -394,3 +461,4 @@ class JoinActivity : AppCompatActivity() {
 
 
 }
+
