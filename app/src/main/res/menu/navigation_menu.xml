@@ -14,4 +14,19 @@
         android:icon="@drawable/baseline_close_24"
         android:title="앱 종료">
     </item>
+    <item
+        android:id="@+id/menu_home"
+        android:title="홈"
+        android:icon="@drawable/ic_baseline_home_24"
+        />
+    <item
+        android:id="@+id/menu_message"
+        android:title="채팅"
+        android:icon="@drawable/ic_baseline_message_24"
+        />
+    <item
+        android:id="@+id/menu_profile"
+        android:title="프로필"
+        android:icon="@drawable/ic_baseline_account_box_24"
+        />
 </menu>
