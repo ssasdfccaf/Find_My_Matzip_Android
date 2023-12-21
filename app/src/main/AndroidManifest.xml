@@ -57,6 +57,9 @@
             android:name=".navTab.navTabFragment.ResInfoActivity"
             android:theme="@style/Apptheme.Custom" />
         <activity
+            android:name=".AddRestaurantActivity"
+            android:exported="true" />
+        <activity
             android:name=".NaverMapActivity"
             android:exported="true" />
         <activity
@@ -64,9 +67,6 @@
             android:exported="true" />
         <activity
             android:name=".navTab.TabActivity"
-            android:exported="true" />
-        <activity
-            android:name=".HomeActivity"
             android:exported="true" />
         <activity
             android:name=".LoginActivity"

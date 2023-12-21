@@ -43,7 +43,7 @@ class RestaurantRecyclerAdapter(val context: RestaurantFragment, var datas: List
         val binding = (holder as RestaurantViewHolder).binding
         val Item = datas?.get(position)
 
-        binding.resId.text = Item?.res_id
+        binding.resId.text = Item?.res_id.toString()
         binding.resName.text = Item?.res_name
         binding.resDistrict.text= Item?.res_district
         binding.resMenu.text = Item?.res_menu
@@ -66,7 +66,9 @@ class RestaurantRecyclerAdapter(val context: RestaurantFragment, var datas: List
 
             // 데이터를 전달하기 위한 Bundle 생성
             val bundle = Bundle().apply {
-                putString("resId", resId)
+                if (resId != null) {
+                    putLong("resId", resId)
+                }
             }
 
             // RestaurantDtlFragment의 인스턴스 생성

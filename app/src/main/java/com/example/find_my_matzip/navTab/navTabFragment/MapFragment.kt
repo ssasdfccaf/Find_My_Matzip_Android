@@ -132,7 +132,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 //                            path.map = naverMap
 //
                             val bundle = Bundle().apply {
-                                putString("resInfoId", currentRestaurant.res_id)
+                                putLong("resInfoId", currentRestaurant.res_id)
                                 putString("resInfoName", currentRestaurant.res_name)
                                 putDouble("resInfoAvgScore", currentRestaurant.avgScore)
                                 putString("resInfoMenu", currentRestaurant.res_menu)
