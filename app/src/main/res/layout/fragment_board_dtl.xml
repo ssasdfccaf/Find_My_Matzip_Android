@@ -201,24 +201,26 @@
                     android:progressTint="#E91E63"
                     android:numStars="5"
                     android:rating="0"
-                    android:stepSize="1" />
+                    android:stepSize="1"/>
 
-<!--                <TextView-->
-<!--                    android:id="@+id/boardScore"-->
-<!--                    android:textSize="20dp"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:fontFamily="@font/nexonbold"-->
-<!--                    android:gravity="right"-->
-<!--                    android:text="Default" />-->
+                <!--빈 공간 -->
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
 
-<!--                <TextView-->
-<!--                    android:textSize="20dp"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:gravity="center|right"-->
-<!--                    android:fontFamily="@font/nexonbold"-->
-<!--                    android:text="점" />-->
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/md_red_400"
+                    android:orientation="horizontal"
+                    android:gravity="right"
+                    android:layout_weight="0">
+
+                </LinearLayout>
+
+                <!--좋아요 싫어요-->
+
             </LinearLayout>
 
 
