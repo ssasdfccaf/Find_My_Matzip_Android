@@ -44,7 +44,7 @@ class NearRestaurantRecyclerAdapter(
                 val binding = holder.binding
                 val item = nearRestaurantList[position]
 
-                binding.resId.text = item.res_id
+                binding.resId.text = item.res_id.toString()
                 binding.resName.text = item.res_name
                 binding.resMenu.text = item.res_menu
                 binding.resPhone.text = item.res_phone
@@ -65,7 +65,7 @@ class NearRestaurantRecyclerAdapter(
 
                         // 데이터를 전달하기 위한 Bundle 생성
                         val bundle = Bundle().apply {
-                                putString("resId", resId)
+                                putLong("resId", resId)
                         }
                         // RestaurantDtlFragment의 인스턴스 생성
                         val restaurantDtlFragment = RestaurantDtlFragment()

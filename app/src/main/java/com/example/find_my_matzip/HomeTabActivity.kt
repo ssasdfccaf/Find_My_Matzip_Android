@@ -106,6 +106,9 @@ class HomeTabActivity : AppCompatActivity() {
                 val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
                 startActivity(intent)
 
+            } else if (it.title == "식당 추가") {
+                val intent = Intent(this@HomeTabActivity, AddRestaurantActivity::class.java)
+                startActivity(intent)
             } else if (it.title == "회원 탈퇴") {
 
                 val builder = AlertDialog.Builder(this@HomeTabActivity)
