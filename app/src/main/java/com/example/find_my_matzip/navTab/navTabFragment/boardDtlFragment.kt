@@ -79,6 +79,15 @@ class boardDtlFragment : Fragment() {
                         .into(binding.userProfileImg)
                 }
 
+                //좋아요&싫어요
+                binding.countLike.text = boardDto?.feelingBoardDtlDto?.likeCount.toString()
+                binding.countDislike.text = boardDto?.feelingBoardDtlDto?.dislikeCount.toString()
+                if(boardDto?.feelingBoardDtlDto?.myFeeling?.feelNum!! == 1){
+                    binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)//좋아요
+                }else if(boardDto?.feelingBoardDtlDto?.myFeeling?.feelNum!! == -1){
+                    binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_alt_24)//싫어요
+                }
+
                 binding.resName.text = boardDto?.restaurant?.res_name.toString()
                 binding.resAddress.text = boardDto?.restaurant?.res_address.toString()
 

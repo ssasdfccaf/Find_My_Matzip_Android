@@ -212,15 +212,43 @@
                 <LinearLayout
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    android:background="@color/md_red_400"
                     android:orientation="horizontal"
                     android:gravity="right"
                     android:layout_weight="0">
+                    <ImageView
+                        android:id="@+id/likeBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/baseline_thumb_up_off_alt_24"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:id="@+id/countLike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:textSize="20sp"
+                        android:text="0">
+                    </TextView>
+
+                    <ImageView
+                        android:id="@+id/dislikeBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/baseline_thumb_down_off_alt_24"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/countDislike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="20dp"
+                        android:textSize="20sp"
+                        android:text="0">
+                    </TextView>
 
                 </LinearLayout>
-
-                <!--좋아요 싫어요-->
-
             </LinearLayout>
 
 
