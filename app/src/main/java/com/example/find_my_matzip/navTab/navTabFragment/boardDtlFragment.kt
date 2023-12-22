@@ -1,11 +1,14 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
@@ -25,6 +28,7 @@ import retrofit2.Response
 class boardDtlFragment : Fragment() {
     lateinit var binding: FragmentBoardDtlBinding
     private val TAG: String = "boardDtlFragment"
+    private var myFeeling = 0
 
     companion object {
         fun newInstance(boardId: String): boardDtlFragment {
@@ -84,8 +88,10 @@ class boardDtlFragment : Fragment() {
                 binding.countDislike.text = boardDto?.feelingBoardDtlDto?.dislikeCount.toString()
                 if(boardDto?.feelingBoardDtlDto?.myFeeling?.feelNum!! == 1){
                     binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)//좋아요
+                    myFeeling = 1
                 }else if(boardDto?.feelingBoardDtlDto?.myFeeling?.feelNum!! == -1){
                     binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_alt_24)//싫어요
+                    myFeeling = -1
                 }
 
                 binding.resName.text = boardDto?.restaurant?.res_name.toString()
@@ -182,6 +188,42 @@ class boardDtlFragment : Fragment() {
                 // Handle failure
             }
         })
+
+        // 좋아요 버튼 클릭 이벤트 핸들러
+        binding.likeBtn.setOnClickListener {
+            if (myFeeling == 1) {
+                // 이미 눌려있다면 ->좋아요 취소
+                binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
+                myFeeling = 0
+            } else if(myFeeling == -1) {
+                // 싫어요 눌려있다면 -> 좋아요
+                binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_off_alt_24)
+                binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)
+                myFeeling = 1
+            }else{
+                //처음이라면
+                binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)
+                myFeeling = 1
+            }
+        }
+
+        // 싫어요 버튼 클릭 이벤트 핸들러
+        binding.dislikeBtn.setOnClickListener {
+            if (myFeeling == -1) {
+                // 이미 눌러져있다면 -> 취소
+                binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_off_alt_24)
+                myFeeling = 0
+            } else if(myFeeling == -1) {
+                // 좋아요 눌려있다면 -> 싫어요
+                binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
+                binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_alt_24)
+                myFeeling = -1
+            }else{
+                //처음이라면
+                binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_alt_24)
+                myFeeling = -1
+            }
+        }
 
         return binding.root
     }
