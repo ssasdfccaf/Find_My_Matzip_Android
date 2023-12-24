@@ -51,7 +51,7 @@ class MessageActivity : AppCompatActivity() {
 
         // 메시지를 보낸 시간
         val time = System.currentTimeMillis()
-        val dateFormat = SimpleDateFormat("MM월dd일 hh:mm")
+        val dateFormat = SimpleDateFormat("MM월 dd일 hh:mm")
         val curTime = dateFormat.format(Date(time)).toString()
 
         destinationUid = intent.getStringExtra("destinationUid")
@@ -147,7 +147,7 @@ class MessageActivity : AppCompatActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-            val view : View = LayoutInflater.from(parent.context).inflate(R.layout.item_message, parent, false)
+            val view : View = LayoutInflater.from(parent.context).inflate(R.layout.item_message_time, parent, false)
 
             return MessageViewHolder(view)
         }
@@ -156,7 +156,8 @@ class MessageActivity : AppCompatActivity() {
             holder.textView_message.textSize = 20F
             holder.textView_message.text = comments[position].message
             holder.textView_time.text = comments[position].time
-            if(comments[position].uid.equals(uid)){ // 본인 채팅
+            if(comments[position].uid.equals(uid)){
+                // 본인 채팅
                 holder.textView_message.setBackgroundResource(R.drawable.rightbubble)
                 holder.textView_name.visibility = View.INVISIBLE
                 holder.layout_destination.visibility = View.INVISIBLE

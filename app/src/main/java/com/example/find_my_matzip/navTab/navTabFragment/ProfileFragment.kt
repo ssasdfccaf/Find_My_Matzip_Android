@@ -261,7 +261,7 @@ class ProfileFragment : Fragment() {
                                                     transaction.remove(this@ProfileFragment).commit()
 
                                                     // 새로운 인스턴스 생성 및 추가
-                                                    val newFragment = MessageFragment.newInstance(pageUserId)
+                                                    val newFragment = MessageFragment.newInstance()
                                                     val newTransaction = requireActivity().supportFragmentManager.beginTransaction()
                                                     newTransaction.add(R.id.fragmentContainer, newFragment)
                                                     newTransaction.addToBackStack(null)

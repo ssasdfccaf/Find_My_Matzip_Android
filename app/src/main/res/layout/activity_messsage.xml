@@ -16,6 +16,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/intro"></ImageView>
         <TextView
             android:id="@+id/messageActivity_textView_topName"
             android:layout_width="wrap_content"
@@ -23,12 +29,13 @@
             android:layout_gravity="bottom"
             android:layout_marginLeft="15dp"
             android:layout_marginBottom="5dp"
-            android:text="Chatting Room"
+            android:text="Chatting R oo m"
             android:fontFamily="cursive"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
+
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

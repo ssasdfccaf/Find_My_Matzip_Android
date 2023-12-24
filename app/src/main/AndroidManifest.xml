@@ -33,28 +33,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".MessageMainActivity"
-            android:exported="false" />
-        <activity
             android:name=".MessageSignUpActivity"
             android:exported="false" />
         <activity
             android:name=".MessageSignInActivity"
             android:exported="false" />
         <activity
-            android:name=".navTab.navTabFragment.SignUpMessageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".navTab.navTabFragment.SignInMessageActivity"
-            android:exported="false" />
-        <activity
             android:name=".MessageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MessageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MesssageActivity"
             android:exported="false" />
 
         <provider
@@ -88,9 +73,6 @@
             android:name=".navTab.TabActivity"
             android:exported="true" />
         <activity
-            android:name=".HomeActivity"
-            android:exported="true" />
-        <activity
             android:name=".LoginActivity"
             android:exported="true" />
         <activity
@@ -107,6 +89,9 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ChatActivity"
             android:exported="true" />
 
         <meta-data

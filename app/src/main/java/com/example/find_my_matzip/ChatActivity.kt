@@ -16,7 +16,10 @@ private lateinit var auth: FirebaseAuth
 private lateinit var friendsFragment: FriendsFragment
 private lateinit var messageFragment: MessageFragment
 private lateinit var profileFragment: ProfileFragment
+
+
 class ChatActivity : AppCompatActivity() {
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,17 +40,17 @@ class ChatActivity : AppCompatActivity() {
                 friendsFragment = FriendsFragment.newInstance()
                 supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, friendsFragment).commit()
             }
-            /*
+
             R.id.menu_chat -> {
                 messageFragment = MessageFragment.newInstance()
                 supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, messageFragment).commit()
             }
-
+/*
             R.id.menu_profile -> {
                 profileFragment = ProfileFragment.newInstance()
                 supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, profileFragment).commit()
             }
-            */
+*/
 
         }
         true

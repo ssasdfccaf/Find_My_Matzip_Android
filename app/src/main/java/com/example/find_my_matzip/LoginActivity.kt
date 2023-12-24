@@ -13,16 +13,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.find_my_matzip.databinding.ActivityLoginBinding
+import com.example.find_my_matzip.model.LoginDto
+import com.example.find_my_matzip.model.ResultDto
 import com.example.find_my_matzip.retrofit.UserService
+import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // sy FB
 private lateinit var auth: FirebaseAuth
-
 
 class LoginActivity : AppCompatActivity() {
     private val TAG: String = "LoginActivity"
@@ -74,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-/*
+
         //로그인 버튼 클릭시
         binding.loginBtn.setOnClickListener {
             //로딩창 띄우기
@@ -156,7 +161,7 @@ class LoginActivity : AppCompatActivity() {
 
             })
         }
-        */
+
 
 
 
