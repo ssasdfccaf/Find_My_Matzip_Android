@@ -32,15 +32,10 @@
         android:theme="@style/Theme.Find_My_Matzip"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".MessageSignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MessageSignInActivity"
-            android:exported="false" />
+
         <activity
             android:name=".MessageActivity"
-            android:exported="false" />
+            android:exported="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
