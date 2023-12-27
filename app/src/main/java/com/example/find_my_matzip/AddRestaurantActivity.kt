@@ -39,7 +39,7 @@ class AddRestaurantActivity : AppCompatActivity() {
     private var filePath : String? = null
 
     // 카메라 이미지 파일 위치
-    lateinit var profileImageUri : String
+    lateinit var resImageUri : String
     //파이어베이스 사진 저장 경로
     lateinit var imgStorageUrl:String
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,14 +69,14 @@ class AddRestaurantActivity : AppCompatActivity() {
                 // 1) applicationContext
                 // 2) getApplicationContext()
                 Glide
-                    .with(getApplicationContext())
+                    .with(this)
                     // 사진을 읽기.
                     .load(it.data?.data)
                     .apply(RequestOptions().override(900, 900))
                     // 선택된 사진 크기 자동 조정
                     .centerCrop()
                     // 결과 뷰에 사진 넣기.
-                    .into(binding.resultUserImage)
+                    .into(binding.resultResImage)
 
                 // filePath, 갤러리에서 불러온 이미지 파일 정보 가져오기.
                 // 커서에 이미지 파일이름이 등록이 되어 있음.
@@ -84,12 +84,12 @@ class AddRestaurantActivity : AppCompatActivity() {
                     arrayOf<String>(MediaStore.Images.Media.DATA),null,
                     null,null);
 
-                cursor?.moveToFirst().let {
-                    filePath = cursor?.getString(0) as String
+                cursor?.use {
+                    if (it.moveToFirst()) {
+                        filePath = it.getString(0)
+                        Log.d("sdoaddres", "갤러리 filePath: $filePath")
+                    }
                 }
-                Log.d("sdoaddres","갤러리 filePath : ${filePath}")
-
-
 
             } // 조건문 닫는 블록
         }
@@ -111,16 +111,16 @@ class AddRestaurantActivity : AppCompatActivity() {
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
 
-                profileImageUri = Uri.fromFile(File(filePath)).toString()
+                resImageUri = Uri.fromFile(File(filePath)).toString()
 
-                Log.d("sdoaddres","profileImageUri : $profileImageUri")
+                Log.d("sdoaddres","profileImageUri : $resImageUri")
 
                 Glide
                     .with(applicationContext)
-                    .load(profileImageUri)
+                    .load(resImageUri)
                     .apply(RequestOptions().override(250,200))
                     .centerCrop()
-                    .into(binding.resultUserImage)
+                    .into(binding.resultResImage)
 
             } else if (it.resultCode == Activity.RESULT_CANCELED) {
                 // The user canceled the camera capture
@@ -242,6 +242,8 @@ class AddRestaurantActivity : AppCompatActivity() {
 
             newRestaurant.enqueue(object: Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+
+                    Log.d("sdoaddres", "restaurantFormDto.res_name : ${restaurantFormDto.res_name}")
 
                     Log.d("sdoaddres", "Request URL: ${call.request().url()}")
                     Log.d("sdoaddres", "Request Body: ${call.request().body()}")
