@@ -69,7 +69,7 @@ class AddRestaurantActivity : AppCompatActivity() {
                 // 1) applicationContext
                 // 2) getApplicationContext()
                 Glide
-                    .with(this)
+                    .with(getApplicationContext())
                     // 사진을 읽기.
                     .load(it.data?.data)
                     .apply(RequestOptions().override(900, 900))
@@ -84,12 +84,12 @@ class AddRestaurantActivity : AppCompatActivity() {
                     arrayOf<String>(MediaStore.Images.Media.DATA),null,
                     null,null);
 
-                cursor?.use {
-                    if (it.moveToFirst()) {
-                        filePath = it.getString(0)
-                        Log.d("sdoaddres", "갤러리 filePath: $filePath")
-                    }
+                cursor?.moveToFirst().let {
+                    filePath = cursor?.getString(0) as String
                 }
+                Log.d("sdoaddres","갤러리 filePath : ${filePath}")
+
+
 
             } // 조건문 닫는 블록
         }
@@ -242,8 +242,6 @@ class AddRestaurantActivity : AppCompatActivity() {
 
             newRestaurant.enqueue(object: Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-
-                    Log.d("sdoaddres", "restaurantFormDto.res_name : ${restaurantFormDto.res_name}")
 
                     Log.d("sdoaddres", "Request URL: ${call.request().url()}")
                     Log.d("sdoaddres", "Request Body: ${call.request().body()}")

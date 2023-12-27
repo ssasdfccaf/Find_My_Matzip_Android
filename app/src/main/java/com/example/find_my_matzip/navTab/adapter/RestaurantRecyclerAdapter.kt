@@ -5,20 +5,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.RestaurantListBinding
-import com.example.find_my_matzip.model.ContentDto
-import com.example.find_my_matzip.model.ResWithScoreDto
-import com.example.find_my_matzip.navTab.navTabFragment.NearRestaurantFragment
+import com.example.find_my_matzip.model.RestaurantDto
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
 
 class RestaurantViewHolder(val binding: RestaurantListBinding) : RecyclerView.ViewHolder(binding.root)
 
-class RestaurantRecyclerAdapter(val context: RestaurantFragment, var datas: List<ResWithScoreDto>?) :
+class RestaurantRecyclerAdapter(val context: RestaurantFragment, var datas: List<RestaurantDto>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return RestaurantViewHolder(
@@ -33,7 +30,7 @@ class RestaurantRecyclerAdapter(val context: RestaurantFragment, var datas: List
         return datas?.size ?: 0
     }
 
-    fun addData(newData: List<ResWithScoreDto>) {
+    fun addData(newData: List<RestaurantDto>) {
         val oldSize = datas?.size ?: 0
         datas = datas.orEmpty() + newData
         notifyItemRangeInserted(oldSize, newData.size)

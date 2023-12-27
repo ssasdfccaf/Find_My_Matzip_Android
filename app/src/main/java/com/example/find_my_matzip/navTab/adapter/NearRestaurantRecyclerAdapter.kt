@@ -1,16 +1,12 @@
 package com.example.find_my_matzip.navTab.adapter
 
-import android.R
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.databinding.NearRestaurantListBinding
-import com.example.find_my_matzip.model.ResWithScoreDto
-import com.example.find_my_matzip.navTab.navTabFragment.MapFragment
+import com.example.find_my_matzip.model.RestaurantDto
 import com.example.find_my_matzip.navTab.navTabFragment.NearRestaurantFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
 
@@ -19,7 +15,7 @@ class NearRestaurantViewHolder(val binding: NearRestaurantListBinding) : Recycle
 
 class NearRestaurantRecyclerAdapter(
         val fragment: NearRestaurantFragment,
-        private var nearRestaurantList: List<ResWithScoreDto>
+        private var nearRestaurantList: List<RestaurantDto>
 ) : RecyclerView.Adapter<NearRestaurantViewHolder>() {
         init {
                 // avgScore 내림차순으로 정렬
