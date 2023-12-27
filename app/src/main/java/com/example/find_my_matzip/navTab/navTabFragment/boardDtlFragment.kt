@@ -86,13 +86,19 @@ class boardDtlFragment : Fragment() {
                 //좋아요&싫어요
                 binding.countLike.text = boardDto?.feelingBoardDtlDto?.likeCount.toString()
                 binding.countDislike.text = boardDto?.feelingBoardDtlDto?.dislikeCount.toString()
-                if(boardDto?.feelingBoardDtlDto?.myFeeling?.feelNum!! == 1){
-                    binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)//좋아요
-                    myFeeling = 1
-                }else if(boardDto?.feelingBoardDtlDto?.myFeeling?.feelNum!! == -1){
-                    binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_alt_24)//싫어요
-                    myFeeling = -1
+
+                if(boardDto?.feelingBoardDtlDto?.myFeeling == null){
+                    Log.d("sjw","데이터 도착 확인(feelingBoardDtlDto). : myFeeling $boardDto?.feelingBoardDtlDto?.myFeeling")
+                }else{
+                    if(boardDto?.feelingBoardDtlDto?.myFeeling?.feelNum!! == 1){
+                        binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)//좋아요
+                        myFeeling = 1
+                    }else if(boardDto?.feelingBoardDtlDto?.myFeeling?.feelNum!! == -1) {
+                        binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_alt_24)//싫어요
+                        myFeeling = -1
+                    }
                 }
+
 
                 binding.resName.text = boardDto?.restaurant?.res_name.toString()
                 binding.resAddress.text = boardDto?.restaurant?.res_address.toString()
@@ -201,7 +207,7 @@ class boardDtlFragment : Fragment() {
                 binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)
                 myFeeling = 1
             }else{
-                //처음이라면
+                //안눌려있다면
                 binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)
                 myFeeling = 1
             }
@@ -213,13 +219,13 @@ class boardDtlFragment : Fragment() {
                 // 이미 눌러져있다면 -> 취소
                 binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_off_alt_24)
                 myFeeling = 0
-            } else if(myFeeling == -1) {
+            } else if(myFeeling == 1) {
                 // 좋아요 눌려있다면 -> 싫어요
                 binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
                 binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_alt_24)
                 myFeeling = -1
             }else{
-                //처음이라면
+                //안눌려있다면
                 binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_alt_24)
                 myFeeling = -1
             }
