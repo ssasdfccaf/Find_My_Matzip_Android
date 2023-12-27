@@ -1,31 +1,24 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentBoardDtlBinding
 import com.example.find_my_matzip.model.BoardDtlDto
-import com.example.find_my_matzip.model.ResultDto
 import com.example.find_my_matzip.navTab.adapter.BoardDtlViewPagerAdapter
-import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
-import com.example.find_my_matzip.navTab.adapter.NewHomeViewPagerAdapter
-import com.example.find_my_matzip.navTab.adapter.ProfileAdapter
-import com.example.find_my_matzip.retrofit.BoardService
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+
 class boardDtlFragment : Fragment() {
     lateinit var binding: FragmentBoardDtlBinding
     private val TAG: String = "boardDtlFragment"
@@ -207,6 +200,7 @@ class boardDtlFragment : Fragment() {
                         binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)
                         myFeeling = 1
                         binding.countLike.text = (binding.countLike.text.toString().toInt() + 1).toString()
+
                     }
 
                     setFeeling(boardDto?.board!!.id,1)
@@ -235,6 +229,7 @@ class boardDtlFragment : Fragment() {
 
                     setFeeling(boardDto?.board!!.id,-1)
                 }
+
 
             }
 
@@ -269,6 +264,8 @@ class boardDtlFragment : Fragment() {
         })
 
     }
+
+
 
     @Override
     override fun onResume() {
