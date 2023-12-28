@@ -20,6 +20,7 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 class boardDtlFragment : Fragment() {
     lateinit var binding: FragmentBoardDtlBinding
     private val TAG: String = "boardDtlFragment"
