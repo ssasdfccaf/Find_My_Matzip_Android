@@ -88,7 +88,7 @@ class MessageFragment : Fragment() {
 
         inner class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val imageView: ImageView = itemView.findViewById(R.id.message_item_imageview)
-            val textView_title : TextView = itemView.findViewById(R.id.messsage_textview_title)
+            val textView_title : TextView = itemView.findViewById(R.id.message_textview_title)
             val textView_lastMessage : TextView = itemView.findViewById(R.id.message_item_textview_lastmessage)
         }
 
