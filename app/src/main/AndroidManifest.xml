@@ -32,7 +32,9 @@
         android:theme="@style/Theme.Find_My_Matzip"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
         <activity
             android:name=".MessageActivity"
             android:exported="true" />
