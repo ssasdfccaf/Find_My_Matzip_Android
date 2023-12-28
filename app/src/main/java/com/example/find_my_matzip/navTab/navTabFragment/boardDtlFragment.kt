@@ -6,17 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentBoardDtlBinding
 import com.example.find_my_matzip.model.BoardDtlDto
 import com.example.find_my_matzip.navTab.adapter.BoardDtlViewPagerAdapter
-import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
-import com.example.find_my_matzip.navTab.adapter.NewHomeViewPagerAdapter
-import com.example.find_my_matzip.navTab.adapter.ProfileAdapter
-import com.example.find_my_matzip.retrofit.BoardService
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
@@ -128,24 +123,24 @@ class boardDtlFragment : Fragment() {
 
 
                 // toResDtl 클릭 이벤트 핸들러
-                fun navigateToResDetail(resId: String?) {
-                    if (resId.isNullOrEmpty()) {
-                        Log.d("kkt", "resId is null or empty")
-                        return
-                    }
+                fun navigateToResDetail(resId: Long) {
 
-                    val fragment = RestaurantDtlFragment.newInstance(resId)
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, fragment)
-                        .addToBackStack(null)
-                        .commit()
+                    val fragment = resId?.let { RestaurantDtlFragment.newInstance(it) }
+                    if (fragment != null) {
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .addToBackStack(null)
+                            .commit()
+                    }
                 }
 
                 binding.toResDtl.setOnClickListener {
                     Log.d("kkt", "식당가기 클릭됨")
                     Log.d("kkt", "resId: ${boardDto?.restaurant?.res_id}")
                     val resId = boardDto?.restaurant?.res_id
-                    navigateToResDetail(resId)
+                    if (resId != null) {
+                        navigateToResDetail(resId)
+                    }
                 }
                 // toResDtl 클릭 이벤트 핸들러
 
