@@ -6,7 +6,6 @@ import com.example.find_my_matzip.retrofit.AuthInterceptor
 import com.example.find_my_matzip.retrofit.BoardService
 import com.example.find_my_matzip.retrofit.CommentService
 import com.example.find_my_matzip.retrofit.FeelingService
-import com.example.find_my_matzip.retrofit.FeelingService
 import com.example.find_my_matzip.retrofit.RestaurantService
 import com.example.find_my_matzip.retrofit.UserService
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
@@ -40,7 +39,7 @@ class MyApplication : MultiDexApplication() {
     //통신할 서버의 URL주소 등록
     val retrofit = Retrofit.Builder()
         // 학원 ip?
-        .baseUrl("http://10.100.103.27:80/")
+        .baseUrl("http://10.100.104.54:80/")
         //인터셉터 적용
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
