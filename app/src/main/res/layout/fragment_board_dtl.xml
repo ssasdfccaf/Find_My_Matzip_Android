@@ -281,7 +281,14 @@
                     android:lineSpacingExtra="5dp"
                     android:text="Content"
                     android:layout_marginTop="15dp"/>
-
+                <TextView
+                    android:id="@+id/AllComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/nexonbold"
+                    android:lineSpacingExtra="5dp"
+                    android:text="댓글갯수" />
 
             </LinearLayout>
 

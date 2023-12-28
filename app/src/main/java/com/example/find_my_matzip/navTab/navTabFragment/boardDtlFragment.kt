@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
@@ -21,6 +22,7 @@ class boardDtlFragment : Fragment() {
     lateinit var binding: FragmentBoardDtlBinding
     private val TAG: String = "boardDtlFragment"
     private var myFeeling = 0
+    private lateinit var AllComment: TextView
 
     companion object {
         fun newInstance(boardId: String): boardDtlFragment {
@@ -73,6 +75,8 @@ class boardDtlFragment : Fragment() {
                         .load(userImg)
                         .override(900, 900)
                         .into(binding.userProfileImg)
+
+
                 }
 
                 //좋아요&싫어요
@@ -170,8 +174,43 @@ class boardDtlFragment : Fragment() {
                     transaction.commit()
 
                 }
+                Log.d("syy", "총댓글수 (${boardDto?.commentsPage?.content?.size}개)")
+                binding.AllComment.text = "댓글 (${boardDto?.commentsPage?.content?.size}개) 모두보기"
 
-                //유저 정보 클릭
+//                CoroutineScope(Dispatchers.Main).launch {
+//                    try {
+//                        showNearbyRestaurants(restaurantsInsideCircle)
+//                    }
+                AllComment = binding.AllComment
+                binding.AllComment.setOnClickListener {
+                    val boardId = boardDto?.board?.id.toString() // 게시판 아이디 가져오기
+                    Log.d("syy", "AllComment 클릭! . boardId: $boardId")
+
+                    // 추가하기 전에 프래그먼트가 이미 추가되어 있는지 확인
+                    val existingFragment = parentFragmentManager.findFragmentByTag(CommentFragment::class.java.simpleName)
+
+                    if (existingFragment == null) {
+                        if (boardId != null) {
+                            // 프래그먼트가 추가되지 않은 경우, 추가합니다.
+                            val commentFragment = CommentFragment.newInstance(boardId)
+
+                            // FragmentTransaction을 사용하여 CommentListFragment를 표시하는 코드를 작성
+                            val transaction = fragmentManager?.beginTransaction()
+
+                            // 현재 Fragment를 숨기고 CommentListFragment를 추가
+                            transaction?.hide(this@boardDtlFragment)
+                            transaction?.add(R.id.fragmentContainer, commentFragment)
+
+                            // addToBackStack을 사용하여 뒤로 가기 스택에 추가 (선택 사항)
+                            transaction?.addToBackStack(null)
+
+                            // 변경사항을 즉시 적용
+                            transaction?.commit()
+                        }
+                    }
+                }
+
+            //유저 정보 클릭
                 binding.userLinearLayout.setOnClickListener {
                     Log.d(TAG, "유저프로필 클릭")
                     Log.d(TAG, "userId: ${boardDto?.users?.userid}")
