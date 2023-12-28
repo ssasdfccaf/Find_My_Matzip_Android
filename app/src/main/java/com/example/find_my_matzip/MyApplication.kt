@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.multidex.MultiDexApplication
 import com.example.find_my_matzip.retrofit.AuthInterceptor
 import com.example.find_my_matzip.retrofit.BoardService
+import com.example.find_my_matzip.retrofit.CommentService
+import com.example.find_my_matzip.retrofit.FeelingService
 import com.example.find_my_matzip.retrofit.FeelingService
 import com.example.find_my_matzip.retrofit.RestaurantService
 import com.example.find_my_matzip.retrofit.UserService
@@ -26,6 +28,7 @@ class MyApplication : MultiDexApplication() {
     val restaurantService: RestaurantService
     val boardService : BoardService
     val feelingService: FeelingService
+    var commentService : CommentService
 
     //인터셉터 생성
     //패킷 보낼때마다 header에 token 붙이는 코드 작성시 중복코드 너무 많이 생김
@@ -48,6 +51,7 @@ class MyApplication : MultiDexApplication() {
         restaurantService = retrofit.create(RestaurantService::class.java)
         boardService = retrofit.create(BoardService::class.java)
         feelingService = retrofit.create(FeelingService::class.java)
+        commentService = retrofit.create(CommentService::class.java)
     }
 
     // 생명주기, 최초 1회 동작을 합니다.
