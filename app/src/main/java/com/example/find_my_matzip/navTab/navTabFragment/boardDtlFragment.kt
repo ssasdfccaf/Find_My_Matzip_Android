@@ -12,18 +12,15 @@ import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentBoardDtlBinding
 import com.example.find_my_matzip.model.BoardDtlDto
 import com.example.find_my_matzip.navTab.adapter.BoardDtlViewPagerAdapter
-import com.example.find_my_matzip.navTab.adapter.NewHomeViewPagerAdapter
-import com.example.find_my_matzip.navTab.adapter.ProfileAdapter
-import com.example.find_my_matzip.retrofit.BoardService
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 class boardDtlFragment : Fragment() {
     lateinit var binding: FragmentBoardDtlBinding
     private val TAG: String = "boardDtlFragment"
+    private var myFeeling = 0
 
     companion object {
         fun newInstance(boardId: String): boardDtlFragment {
@@ -77,6 +74,23 @@ class boardDtlFragment : Fragment() {
                         .override(900, 900)
                         .into(binding.userProfileImg)
                 }
+
+                //좋아요&싫어요
+                binding.countLike.text = boardDto?.feelingBoardDtlDto?.likeCount.toString()
+                binding.countDislike.text = boardDto?.feelingBoardDtlDto?.dislikeCount.toString()
+
+                if(boardDto?.feelingBoardDtlDto?.myFeeling == null){
+                    Log.d("sjw","데이터 도착 확인(feelingBoardDtlDto). : myFeeling $boardDto?.feelingBoardDtlDto?.myFeeling")
+                }else{
+                    if(boardDto?.feelingBoardDtlDto?.myFeeling?.feelNum!! == 1){
+                        binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)//좋아요
+                        myFeeling = 1
+                    }else if(boardDto?.feelingBoardDtlDto?.myFeeling?.feelNum!! == -1) {
+                        binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_alt_24)//싫어요
+                        myFeeling = -1
+                    }
+                }
+
 
                 binding.resName.text = boardDto?.restaurant?.res_name.toString()
                 binding.resAddress.text = boardDto?.restaurant?.res_address.toString()
@@ -165,6 +179,55 @@ class boardDtlFragment : Fragment() {
                     navigateToUserProfile(userId)
                 }
 
+                // 좋아요 버튼 클릭 이벤트 핸들러
+                binding.likeBtn.setOnClickListener {
+                    if (myFeeling == 1) {
+                        // 이미 눌려있다면 ->좋아요 취소
+                        binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
+                        myFeeling = 0
+                        binding.countLike.text = (binding.countLike.text.toString().toInt() - 1).toString()
+                    } else if(myFeeling == -1) {
+                        // 싫어요 눌려있다면 -> 좋아요
+                        binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_off_alt_24)
+                        binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)
+                        myFeeling = 1
+                        binding.countLike.text = (binding.countLike.text.toString().toInt() + 1).toString()
+                        binding.countDislike.text = (binding.countDislike.text.toString().toInt() - 1).toString()
+                    }else{
+                        //안눌려있다면
+                        binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_alt_24)
+                        myFeeling = 1
+                        binding.countLike.text = (binding.countLike.text.toString().toInt() + 1).toString()
+
+                    }
+
+                    setFeeling(boardDto?.board!!.id,1)
+                }
+
+                // 싫어요 버튼 클릭 이벤트 핸들러
+                binding.dislikeBtn.setOnClickListener {
+                    if (myFeeling == -1) {
+                        // 이미 눌러져있다면 -> 취소
+                        binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_off_alt_24)
+                        myFeeling = 0
+                        binding.countDislike.text = (binding.countDislike.text.toString().toInt() - 1).toString()
+                    } else if(myFeeling == 1) {
+                        // 좋아요 눌려있다면 -> 싫어요
+                        binding.likeBtn.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
+                        binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_alt_24)
+                        myFeeling = -1
+                        binding.countDislike.text = (binding.countDislike.text.toString().toInt() + 1).toString()
+                        binding.countLike.text = (binding.countLike.text.toString().toInt() - 1).toString()
+                    }else{
+                        //안눌려있다면
+                        binding.dislikeBtn.setImageResource(R.drawable.baseline_thumb_down_alt_24)
+                        myFeeling = -1
+                        binding.countDislike.text = (binding.countDislike.text.toString().toInt() + 1).toString()
+                    }
+
+                    setFeeling(boardDto?.board!!.id,-1)
+                }
+
 
             }
 
@@ -178,6 +241,30 @@ class boardDtlFragment : Fragment() {
 
     private fun displayBoardDetails(boardDto: BoardDtlDto) {
     }
+
+    //좋아요&싫어요
+    private fun setFeeling(boardId:Long, newFeel:Int) {
+        val feelingService = (context?.applicationContext as MyApplication).feelingService
+        val call = feelingService.setFeeling(boardId,newFeel)
+
+        call.enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful) {
+                    Log.d(TAG, "감정표현 성공")
+                }else{
+                    Log.d(TAG, "\"감정표현 실패: ${response.code()}")
+                }
+            }
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Log.d(TAG, "서버 응답 실패 ${t.message}")
+                call.cancel()
+            }
+        })
+
+    }
+
+
+
     @Override
     override fun onResume() {
         Log.d("SdoLifeCycle","boardDtlFragment onResume")
