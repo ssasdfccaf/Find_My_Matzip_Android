@@ -146,6 +146,9 @@ class CommentFragment : BottomSheetDialogFragment() {
 
                     val adapter = CommentAdapter2(this@CommentFragment, commentList)
 
+                    adapter.onReplyClick = { commentDto ->
+                        Toast.makeText(requireContext(), "댓글을 클릭했습니다: ${commentDto}", Toast.LENGTH_SHORT).show()
+                    }
 
                     // 리사이클러뷰에 어댑터 설정
                     binding.commentRecyclerView.adapter = adapter

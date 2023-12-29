@@ -22,20 +22,14 @@ class CommentViewHoleder2(val binding: ItemCommentBinding) : RecyclerView.ViewHo
 
 class CommentAdapter2(val context: CommentFragment, var datas: List<CommentDto>) :
     RecyclerView.Adapter<CommentViewHoleder2>() {
-
+    var onReplyClick: ((CommentDto) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHoleder2 {
         val binding = ItemCommentBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return CommentViewHoleder2(binding)
     }
-    interface OnReplyClickListener {
 
-            fun onReplyClick(commentId: Long) {
-
-
-        }
-    }
     override fun getItemCount(): Int {
         return datas?.size ?: 0
     }
@@ -78,8 +72,13 @@ class CommentAdapter2(val context: CommentFragment, var datas: List<CommentDto>)
         }
 
 
+        binding.saveReply.setOnClickListener {
+            // 댓글 답글 버튼이 클릭되었을 때, 콜백 함수 호출
+            onReplyClick?.invoke(item)
+        }
     }
 
+    }
 
 
 
@@ -97,4 +96,4 @@ class CommentAdapter2(val context: CommentFragment, var datas: List<CommentDto>)
             else -> "${duration.toDays()} days ago"
         }
     }
-}
+
