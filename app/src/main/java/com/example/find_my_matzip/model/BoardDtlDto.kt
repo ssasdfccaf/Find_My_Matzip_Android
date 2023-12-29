@@ -5,5 +5,5 @@ data class BoardDtlDto(
     val restaurant : RestaurantDto,
     val users : UsersFormDto,
     val board : BoardDto,
-    val commentsPage: CommentDto,
+    val commentsPage: CommentsPageDto,
 )

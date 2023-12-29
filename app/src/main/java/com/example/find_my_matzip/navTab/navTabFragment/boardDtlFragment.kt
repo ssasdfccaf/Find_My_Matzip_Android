@@ -174,7 +174,7 @@ class boardDtlFragment : Fragment() {
                     transaction.commit()
 
                 }
-                Log.d("syy", "총댓글수 (${boardDto?.commentsPage?.content?.size}개)")
+
                 binding.AllComment.text = "댓글 (${boardDto?.commentsPage?.content?.size}개) 모두보기"
 
 //                CoroutineScope(Dispatchers.Main).launch {

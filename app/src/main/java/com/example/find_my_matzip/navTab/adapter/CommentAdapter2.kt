@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.ItemCommentBinding
-import com.example.find_my_matzip.model.Content
+import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.navTab.navTabFragment.CommentFragment
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -20,9 +20,9 @@ import java.time.Duration
 
 class CommentViewHoleder2(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root)
 
-class CommentAdapter2(val context: CommentFragment, var datas: List<Content>?) :
+class CommentAdapter2(val context: CommentFragment, var datas: List<CommentDto>) :
     RecyclerView.Adapter<CommentViewHoleder2>() {
-
+    var onReplyClick: ((CommentDto) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHoleder2 {
         val binding = ItemCommentBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
@@ -69,7 +69,19 @@ class CommentAdapter2(val context: CommentFragment, var datas: List<Content>?) :
         } else {
             // 대댓글이 없으면 내부 RecyclerView를 숨김
             binding.recyclerViewChildren.visibility = View.GONE
-        }}
+        }
+
+
+        binding.saveReply.setOnClickListener {
+            // 댓글 답글 버튼이 클릭되었을 때, 콜백 함수 호출
+            onReplyClick?.invoke(item)
+        }
+    }
+
+    }
+
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getTimeAgoText(commentTime: String?): String {
@@ -84,4 +96,4 @@ class CommentAdapter2(val context: CommentFragment, var datas: List<Content>?) :
             else -> "${duration.toDays()} days ago"
         }
     }
-}
+
