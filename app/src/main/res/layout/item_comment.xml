@@ -72,7 +72,11 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nexonmed"
                         android:text="댓글단시간"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        android:layout_marginRight="10dp"/>
+
+
+
                 </LinearLayout>
 
                 <TextView
@@ -82,6 +86,15 @@
                     android:fontFamily="@font/nexonmed"
                     android:text="댓글내용"
                     android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/saveReply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexonbold"
+                    android:text="답글달기"
+                    android:textSize="12sp"
+                    android:layout_marginTop="10dp"/>
             </LinearLayout>
 
         </LinearLayout>

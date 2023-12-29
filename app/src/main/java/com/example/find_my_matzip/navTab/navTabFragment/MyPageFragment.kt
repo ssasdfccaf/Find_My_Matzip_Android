@@ -162,7 +162,6 @@ class MyPageFragment : Fragment() {
 
 
                     // 다른 필요한 데이터들도 똑같이 설정
-
                     if(profileDto.pageUserDto.user_image != ""){
                         Glide.with(requireContext())
                             .load(profileDto.pageUserDto.user_image)

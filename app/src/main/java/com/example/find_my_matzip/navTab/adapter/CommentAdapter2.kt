@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.ItemCommentBinding
-import com.example.find_my_matzip.model.Content
+import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.navTab.navTabFragment.CommentFragment
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -20,7 +20,7 @@ import java.time.Duration
 
 class CommentViewHoleder2(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root)
 
-class CommentAdapter2(val context: CommentFragment, var datas: List<Content>?) :
+class CommentAdapter2(val context: CommentFragment, var datas: List<CommentDto>) :
     RecyclerView.Adapter<CommentViewHoleder2>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHoleder2 {
@@ -29,7 +29,13 @@ class CommentAdapter2(val context: CommentFragment, var datas: List<Content>?) :
         )
         return CommentViewHoleder2(binding)
     }
+    interface OnReplyClickListener {
 
+            fun onReplyClick(commentId: Long) {
+
+
+        }
+    }
     override fun getItemCount(): Int {
         return datas?.size ?: 0
     }
@@ -69,7 +75,14 @@ class CommentAdapter2(val context: CommentFragment, var datas: List<Content>?) :
         } else {
             // 대댓글이 없으면 내부 RecyclerView를 숨김
             binding.recyclerViewChildren.visibility = View.GONE
-        }}
+        }
+
+
+    }
+
+
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getTimeAgoText(commentTime: String?): String {
