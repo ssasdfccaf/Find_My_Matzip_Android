@@ -1,10 +1,10 @@
 package com.example.find_my_matzip
 
 import android.os.Bundle
+import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.find_my_matzip.databinding.ActivitySearchBinding
-import com.google.android.material.search.SearchView
-
 
 class SearchActivity : AppCompatActivity() {
     lateinit var binding : ActivitySearchBinding
@@ -12,27 +12,18 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_search)
+        setContentView(binding.root)
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (!query.isNullOrBlank()) {
-                    navigateSearchResult(query)
-                }
-                return true
+        //검색기록 저장 스위치 이벤트
+        binding.switchBtn.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                Toast.makeText(applicationContext, "On", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(applicationContext, "Off", Toast.LENGTH_SHORT).show()
             }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                // Handle text change here
-                return true
-            }
-        })
+        }
 
 
     }
 
-    private fun navigateSearchResult(query: String) {
-        // Implement the navigation to the search result using the query
-        // Add your code here
-    }
 }
