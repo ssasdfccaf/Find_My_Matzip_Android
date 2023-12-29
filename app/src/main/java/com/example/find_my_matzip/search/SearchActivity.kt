@@ -40,12 +40,13 @@ class SearchActivity : AppCompatActivity() {
             }
 
         binding.boardBtn.setOnClickListener {
-
             searchType = "board"
+            showResult()
         }
 
         binding.userBtn.setOnClickListener {
             searchType = "user"
+            showResult()
         }
 
 
@@ -53,7 +54,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showResult(){
         if(binding.searchView.text.isNullOrEmpty()){
-            //최근 검색어 Frag.(default)
+            //최근 검색어 (default)
             searchType = "default"
             binding.currentView.visibility = View.VISIBLE
             binding.fragChange.visibility = View.GONE
@@ -62,10 +63,12 @@ class SearchActivity : AppCompatActivity() {
                 "board" ->{
                     binding.currentView.visibility = View.GONE
                     binding.fragChange.visibility = View.VISIBLE
+                    replaceFragment(BoardSearchFragment.newInstance(binding.searchBar.text.toString()))
                 }
                 "user" -> {
                     binding.currentView.visibility = View.GONE
                     binding.fragChange.visibility = View.VISIBLE
+                    replaceFragment(UserSearchFragment.newInstance(binding.searchBar.text.toString()))
                 }
                 else -> searchType = "board"
             }

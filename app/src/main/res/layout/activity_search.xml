@@ -97,18 +97,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
-
-                <Button
-                    android:id="@+id/boardBtn"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="게시글"/>
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/userBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="계정"/>
+                    <Button
+                        android:id="@+id/boardBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="게시글"/>
+
+                    <Button
+                        android:id="@+id/userBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="계정"/>
+                </LinearLayout>
 
                 <FrameLayout
                     android:id="@+id/fragmentContainer"
