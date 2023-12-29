@@ -20,6 +20,7 @@ import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
 import com.example.find_my_matzip.navTab.navTabFragment.NewHomeFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RankingFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
+import com.example.find_my_matzip.search.SearchActivity
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
 import retrofit2.Call

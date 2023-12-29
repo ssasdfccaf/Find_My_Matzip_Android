@@ -5,82 +5,169 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    tools:context=".search.SearchActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). -->
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/searchbar_scrolling_view_behavior">
-
-        </androidx.core.widget.NestedScrollView>
-
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <com.google.android.material.search.SearchBar
-                android:id="@+id/search_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
 
-            <!--검색 기록 저장 버튼-->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="right"
-                android:layout_marginRight="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:textSize="12sp"
-                    android:text="검색 기록 저장"/>
+                android:orientation="horizontal">
 
-                <Switch
-                    android:id="@+id/switchBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:track="@drawable/switch_track_selector"
-                    android:thumb="@drawable/switch_thumb"
-                    android:switchMinWidth="0dp"
-                    android:textOff=""
-                    android:textOn=""
-                    android:thumbTextPadding="15dp"/>
+                <ImageView
+                    android:id="@+id/homeBtn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/logo_b"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"/>
+
+                <com.google.android.material.search.SearchBar
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
             </LinearLayout>
 
-            <ScrollView
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#9b9b9b"
+                android:layout_marginBottom="10dp"/>
+
+            <LinearLayout
+                android:id="@+id/currentView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp">
-                <TextView
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <!--검색 기록 저장 버튼-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:textSize="12sp"
+                        android:text="검색 기록 저장"/>
+
+                    <Switch
+                        android:id="@+id/switchBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:track="@drawable/switch_track_selector"
+                        android:thumb="@drawable/switch_thumb"
+                        android:switchMinWidth="0dp"
+                        android:textOff=""
+                        android:textOn=""
+                        android:thumbTextPadding="15dp" />
+                </LinearLayout>
+
+                <ScrollView
+                    android:id="@+id/resultView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="최근 검색 기록"/>
+                    android:padding="20dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="최근 검색어"/>
 
-                <!--리사이클러뷰 자리-->
+                    <!--리사이클러뷰 자리-->
 
-            </ScrollView>
+                </ScrollView>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/fragChange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/boardBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="게시글"/>
+
+                <Button
+                    android:id="@+id/userBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="계정"/>
+
+                <FrameLayout
+                    android:id="@+id/fragmentContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </FrameLayout>
+
+            </LinearLayout>
+
+
+
         </com.google.android.material.appbar.AppBarLayout>
 
+        <!--검색중 화면-->
         <com.google.android.material.search.SearchView
+            android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="게시글 또는 계정 검색"
             app:layout_anchor="@id/search_bar">
 
-            <!--검색중 화면(최근검색)-->
+            <!--            &lt;!&ndash;검색 기록 저장 버튼&ndash;&gt;-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:orientation="horizontal"-->
+            <!--                android:layout_gravity="right"-->
+            <!--                android:layout_marginRight="20dp"-->
+            <!--                android:padding="10dp">-->
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginRight="10dp"-->
+            <!--                    android:textSize="12sp"-->
+            <!--                    android:text="검색 기록 저장"/>-->
+
+            <!--                <Switch-->
+            <!--                    android:id="@+id/switchBtn"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="20dp"-->
+            <!--                    android:track="@drawable/switch_track_selector"-->
+            <!--                    android:thumb="@drawable/switch_thumb"-->
+            <!--                    android:switchMinWidth="0dp"-->
+            <!--                    android:textOff=""-->
+            <!--                    android:textOn=""-->
+            <!--                    android:thumbTextPadding="15dp" />-->
+            <!--            </LinearLayout>-->
+
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="20dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="resultView"/>
+                    android:text="최근 검색어" />
+
+                <!--리사이클러뷰 자리-->
 
             </ScrollView>
         </com.google.android.material.search.SearchView>
