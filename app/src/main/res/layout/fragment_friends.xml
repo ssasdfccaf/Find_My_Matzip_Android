@@ -39,13 +39,8 @@
             android:layout_gravity="bottom"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="5dp"
-<<<<<<< Updated upstream
-            android:fontFamily="sans-serif"
-            android:text="친구 목록"
-=======
             android:text="My Friends"
             android:fontFamily="cursive"
->>>>>>> Stashed changes
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/white"
             android:textSize="28sp"

@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.multidex.MultiDexApplication
 import com.example.find_my_matzip.retrofit.AuthInterceptor
 import com.example.find_my_matzip.retrofit.BoardService
+import com.example.find_my_matzip.retrofit.CommentService
+import com.example.find_my_matzip.retrofit.FeelingService
 import com.example.find_my_matzip.retrofit.RestaurantService
 import com.example.find_my_matzip.retrofit.UserService
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
@@ -23,7 +25,9 @@ class MyApplication : MultiDexApplication() {
     //통신에 필요한 인스턴스 선언 & 초기화
     var userService: UserService
     val restaurantService: RestaurantService
-    var boardService : BoardService
+    val boardService : BoardService
+    val feelingService: FeelingService
+    var commentService : CommentService
 
     //인터셉터 생성
     //패킷 보낼때마다 header에 token 붙이는 코드 작성시 중복코드 너무 많이 생김
@@ -35,7 +39,7 @@ class MyApplication : MultiDexApplication() {
     //통신할 서버의 URL주소 등록
     val retrofit = Retrofit.Builder()
         // 학원 ip?
-        .baseUrl("http://10.100.104.54:80/")
+        .baseUrl("http://10.100.103.27:80/")
         //인터셉터 적용
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
@@ -45,6 +49,8 @@ class MyApplication : MultiDexApplication() {
         userService = retrofit.create(UserService::class.java)
         restaurantService = retrofit.create(RestaurantService::class.java)
         boardService = retrofit.create(BoardService::class.java)
+        feelingService = retrofit.create(FeelingService::class.java)
+        commentService = retrofit.create(CommentService::class.java)
     }
 
     // 생명주기, 최초 1회 동작을 합니다.
