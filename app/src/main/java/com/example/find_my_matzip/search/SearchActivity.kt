@@ -64,16 +64,6 @@ class SearchActivity : AppCompatActivity() {
         })
 
 
-//        binding.tabBoardBtn.setOnClickListener {
-//            searchType = "board"
-//            showResult()
-//        }
-//
-//        binding.tabUserBtn.setOnClickListener {
-//            searchType = "user"
-//            showResult()
-//        }
-
 
     }//onCreateView
 
