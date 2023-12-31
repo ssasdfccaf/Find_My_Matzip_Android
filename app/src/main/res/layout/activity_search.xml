@@ -74,19 +74,40 @@
                         android:thumbTextPadding="15dp" />
                 </LinearLayout>
 
-                <ScrollView
+                <LinearLayout
                     android:id="@+id/resultView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:padding="20dp">
-                    <TextView
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="최근 검색어"/>
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="15dp">
 
-                    <!--리사이클러뷰 자리-->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="최근 검색어"/>
 
-                </ScrollView>
+                        <TextView
+                            android:id="@+id/deleteAllBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:drawableRight="@drawable/baseline_delete_outline_24"
+                            android:text="전체 삭제"/>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/search_history_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 

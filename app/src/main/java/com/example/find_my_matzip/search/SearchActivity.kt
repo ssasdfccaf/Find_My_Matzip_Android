@@ -2,30 +2,49 @@ package com.example.find_my_matzip.search
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.ActivitySearchBinding
+import com.example.find_my_matzip.model.SearchDto
+import com.example.find_my_matzip.navTab.adapter.RestaurantRecyclerAdapter
+import com.example.find_my_matzip.search.adapter.SearchHistoryRecyclerViewAdapter
 import com.google.android.material.tabs.TabLayout
+import java.util.Date
 
 class SearchActivity : AppCompatActivity() {
     lateinit var binding : ActivitySearchBinding
+    lateinit var adapter: SearchHistoryRecyclerViewAdapter
+
     private var searchType = "default"
     private val TAG:String = "SearchActivity"
+
+    //test data
+    val testList: List<SearchDto> = listOf(
+        SearchDto("Pizza", Date()),
+        SearchDto("Sushi", Date()),
+        SearchDto("Burger", Date()),
+    )
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        showResult()
 
         //home으로 이동
         binding.homeBtn.setOnClickListener(){
             val intent = Intent(this@SearchActivity, HomeTabActivity::class.java)
             startActivity(intent)
         }
-
-
 
         //searchView에서 검색클릭 -> text가지고 searchView exit
         binding.searchView
@@ -73,6 +92,10 @@ class SearchActivity : AppCompatActivity() {
             searchType = "default"
             binding.currentView.visibility = View.VISIBLE
             binding.fragChange.visibility = View.GONE
+
+
+            showSearchHistory(testList)
+
         }else{
             when(searchType){
                 "board" ->{
@@ -94,6 +117,14 @@ class SearchActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()
+    }
+
+    private fun showSearchHistory(testList:List<SearchDto>){
+        val layoutManager = LinearLayoutManager(this)
+        adapter = SearchHistoryRecyclerViewAdapter(this@SearchActivity, testList)
+
+        binding.searchHistoryRecyclerView.layoutManager = layoutManager
+        binding.searchHistoryRecyclerView.adapter = adapter
     }
 
 
