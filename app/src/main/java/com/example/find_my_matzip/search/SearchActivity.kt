@@ -15,8 +15,12 @@ import com.example.find_my_matzip.databinding.ActivitySearchBinding
 import com.example.find_my_matzip.model.SearchDto
 import com.example.find_my_matzip.navTab.adapter.RestaurantRecyclerAdapter
 import com.example.find_my_matzip.search.adapter.SearchHistoryRecyclerViewAdapter
+import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utiles.SharedPreferencesManager.saveSearchHistory
 import com.google.android.material.tabs.TabLayout
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 class SearchActivity : AppCompatActivity() {
     lateinit var binding : ActivitySearchBinding
@@ -52,6 +56,9 @@ class SearchActivity : AppCompatActivity() {
             .setOnEditorActionListener {v,actionId,event ->
                 binding.searchBar.setText(binding.searchView.text)
                 binding.searchView.hide()
+
+                //최근 검색어에 저장
+                SharedPreferencesManager.saveSearchHistory(binding.searchBar.text.toString())
 
                 showResult()
                 false
@@ -94,7 +101,7 @@ class SearchActivity : AppCompatActivity() {
             binding.fragChange.visibility = View.GONE
 
 
-            showSearchHistory(testList)
+            showSearchHistory()
 
         }else{
             when(searchType){
@@ -119,9 +126,17 @@ class SearchActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun showSearchHistory(testList:List<SearchDto>){
+    private fun showSearchHistory(){
+        val existingSet = SharedPreferencesManager.getSearchHistory()
+
+        //형변환(Hash -> ArrayList)
+        val searchDtoList = existingSet?.map {
+            val (text, dateString) = it.split(",")
+            SearchDto(text, SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).parse(dateString))
+        }
+
         val layoutManager = LinearLayoutManager(this)
-        adapter = SearchHistoryRecyclerViewAdapter(this@SearchActivity, testList)
+        adapter = SearchHistoryRecyclerViewAdapter(this@SearchActivity, searchDtoList)
 
         binding.searchHistoryRecyclerView.layoutManager = layoutManager
         binding.searchHistoryRecyclerView.adapter = adapter

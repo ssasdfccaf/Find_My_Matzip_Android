@@ -211,7 +211,7 @@ class HomeTabActivity : AppCompatActivity() {
 
     private fun logOut(){
         //로그인 정보 지우기
-        SharedPreferencesManager.clearPreferences()
+        SharedPreferencesManager.clearLoginPreferences()
 
         // BackStack의 fragment전부 삭제
         clearBackStack()
