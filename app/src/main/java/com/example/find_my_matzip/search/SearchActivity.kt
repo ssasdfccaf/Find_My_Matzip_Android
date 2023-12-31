@@ -18,8 +18,6 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager
-
         //home으로 이동
         binding.homeBtn.setOnClickListener(){
             val intent = Intent(this@SearchActivity, HomeTabActivity::class.java)
@@ -39,12 +37,13 @@ class SearchActivity : AppCompatActivity() {
                 false
             }
 
-        binding.boardBtn.setOnClickListener {
+
+        binding.tabBoardBtn.setOnClickListener {
             searchType = "board"
             showResult()
         }
 
-        binding.userBtn.setOnClickListener {
+        binding.tabUserBtn.setOnClickListener {
             searchType = "user"
             showResult()
         }

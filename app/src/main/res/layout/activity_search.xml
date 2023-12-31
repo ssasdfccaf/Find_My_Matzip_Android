@@ -96,26 +96,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
-                <LinearLayout
+                android:visibility="visible">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:background="@android:color/background_light"
+                    android:elevation="1dp"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed"
+                    app:tabSelectedTextColor="@color/black"
+                    app:tabTextColor="@color/black">
 
-                    <Button
-                        android:id="@+id/boardBtn"
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tabBoardBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="게시글"/>
 
-                    <Button
-                        android:id="@+id/userBtn"
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tabUserBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="계정"/>
-                </LinearLayout>
+
+                </com.google.android.material.tabs.TabLayout>
 
                 <FrameLayout
                     android:id="@+id/fragmentContainer"
@@ -124,7 +130,6 @@
                 </FrameLayout>
 
             </LinearLayout>
-
 
 
         </com.google.android.material.appbar.AppBarLayout>
