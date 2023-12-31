@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.ActivitySearchBinding
+import com.google.android.material.tabs.TabLayout
 
 class SearchActivity : AppCompatActivity() {
     lateinit var binding : ActivitySearchBinding
@@ -38,15 +39,40 @@ class SearchActivity : AppCompatActivity() {
             }
 
 
-        binding.tabBoardBtn.setOnClickListener {
-            searchType = "board"
-            showResult()
-        }
+        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                // Tab이 선택되었을 때
+                when (tab!!.position) {
+                    0 -> {
+                        searchType = "board"
+                        showResult()
+                    }
+                    1 -> {
+                        searchType = "user"
+                        showResult()
+                    }
+                }
+            }
 
-        binding.tabUserBtn.setOnClickListener {
-            searchType = "user"
-            showResult()
-        }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // Tab이 선택되지 않았을 때
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // Tab이 다시 선택되었을 때
+            }
+        })
+
+
+//        binding.tabBoardBtn.setOnClickListener {
+//            searchType = "board"
+//            showResult()
+//        }
+//
+//        binding.tabUserBtn.setOnClickListener {
+//            searchType = "user"
+//            showResult()
+//        }
 
 
     }//onCreateView
