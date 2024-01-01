@@ -285,7 +285,10 @@ class HomeTabActivity : AppCompatActivity() {
                                     // 파일 삭제 성공
                                     Log.d(TAG, " firestore 파일 삭제 성공")
 
-                                    logOut()
+                                    //모든 SharedPreference 삭제
+                                    SharedPreferencesManager.clearAllPreferences()
+                                    // BackStack의 fragment전부 삭제
+                                    clearBackStack()
 
                                     //로딩창 지우기
                                     loadingDialog.dismiss()

@@ -89,6 +89,11 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
+        binding.deleteAllBtn.setOnClickListener{
+            //모든 검색 기록 삭제
+            deleteAllSearchHistory()
+        }
+
 
 
     }//onCreateView
@@ -140,6 +145,12 @@ class SearchActivity : AppCompatActivity() {
 
         binding.searchHistoryRecyclerView.layoutManager = layoutManager
         binding.searchHistoryRecyclerView.adapter = adapter
+    }
+
+    private fun deleteAllSearchHistory(){
+        SharedPreferencesManager.clearSearchPreferences()
+        adapter.clearData()
+        adapter.notifyDataSetChanged()
     }
 
 

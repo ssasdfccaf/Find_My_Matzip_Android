@@ -11,6 +11,7 @@ import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.LayoutSearchItemBinding
 import com.example.find_my_matzip.model.SearchDto
 import com.example.find_my_matzip.search.BoardSearchFragment
+import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -42,10 +43,10 @@ class SearchHistoryRecyclerViewAdapter(val context: Context, var datas: List<Sea
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as SearchItemViewHolder).binding
-        val Item = datas?.get(position)
+        val item = datas?.get(position)
 
-        binding.searchText.text = Item?.text
-        binding.searchDate.text = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(Item?.date)
+        binding.searchText.text = item?.text
+        binding.searchDate.text = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(item?.date)
 
 
         binding.constraintSearchItem.setOnClickListener{
@@ -75,10 +76,23 @@ class SearchHistoryRecyclerViewAdapter(val context: Context, var datas: List<Sea
 
         }
 
-        binding.deleteSearchBtn.setOnClickListener{
-            Log.d(TAG,"deleteBtn 클릭")
+        binding.deleteSearchBtn.setOnClickListener {
+            Log.d(TAG, "deleteBtn 클릭")
+
+            val copyList = datas?.toMutableList()
+            copyList?.remove(item)
+            datas = copyList
+            //Adapter에 변경사항 적용(특정한 아이템 1개를 삭제할 때 사용)
+            notifyItemRemoved(position)
+
+            SharedPreferencesManager.deleteSearchHistory(item?.text.toString())
         }
 
+    }
+
+    fun clearData() {
+        datas = emptyList()
+        notifyDataSetChanged()
     }
 
 }
