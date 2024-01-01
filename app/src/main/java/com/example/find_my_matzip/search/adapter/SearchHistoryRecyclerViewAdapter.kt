@@ -88,6 +88,7 @@ class SearchHistoryRecyclerViewAdapter(val context: Context, var datas: List<Sea
             SharedPreferencesManager.deleteSearchHistory(item?.text.toString())
         }
 
+
     }
 
     fun clearData() {

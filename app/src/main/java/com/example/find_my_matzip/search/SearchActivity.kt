@@ -17,6 +17,7 @@ import com.example.find_my_matzip.navTab.adapter.RestaurantRecyclerAdapter
 import com.example.find_my_matzip.search.adapter.SearchHistoryRecyclerViewAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utiles.SharedPreferencesManager.saveSearchHistory
+import com.example.find_my_matzip.utiles.SharedPreferencesManager.setAutoSearch
 import com.google.android.material.tabs.TabLayout
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -42,6 +43,9 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //검색 기록 저장(초기값은 true로 설정)
+        binding.switchBtn.isChecked = true
+
         showResult()
 
         //home으로 이동
@@ -50,6 +54,7 @@ class SearchActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
         //searchView에서 검색클릭 -> text가지고 searchView exit
         binding.searchView
             .editText
@@ -57,8 +62,10 @@ class SearchActivity : AppCompatActivity() {
                 binding.searchBar.setText(binding.searchView.text)
                 binding.searchView.hide()
 
-                //최근 검색어에 저장
-                SharedPreferencesManager.saveSearchHistory(binding.searchBar.text.toString())
+                if(SharedPreferencesManager.getBoolean("autoSearch",false)){
+                    //최근 검색어에 저장
+                    SharedPreferencesManager.saveSearchHistory(binding.searchView.text.toString())
+                }
 
                 showResult()
                 false
@@ -92,6 +99,12 @@ class SearchActivity : AppCompatActivity() {
         binding.deleteAllBtn.setOnClickListener{
             //모든 검색 기록 삭제
             deleteAllSearchHistory()
+        }
+
+
+        //검색 기록 자동저장 기능
+        binding.switchBtn.setOnCheckedChangeListener { _, isChecked ->
+            SharedPreferencesManager.setAutoSearch(isChecked)
         }
 
 
@@ -152,6 +165,8 @@ class SearchActivity : AppCompatActivity() {
         adapter.clearData()
         adapter.notifyDataSetChanged()
     }
+
+
 
 
 }

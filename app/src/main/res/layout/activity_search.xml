@@ -107,6 +107,54 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
+                    <com.google.android.material.search.SearchView
+                        android:id="@+id/searchView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="게시글 또는 계정 검색">
+
+                        <!--            &lt;!&ndash;검색 기록 저장 버튼&ndash;&gt;-->
+                        <!--            <LinearLayout-->
+                        <!--                android:layout_width="wrap_content"-->
+                        <!--                android:layout_height="wrap_content"-->
+                        <!--                android:orientation="horizontal"-->
+                        <!--                android:layout_gravity="right"-->
+                        <!--                android:layout_marginRight="20dp"-->
+                        <!--                android:padding="10dp">-->
+                        <!--                <TextView-->
+                        <!--                    android:layout_width="wrap_content"-->
+                        <!--                    android:layout_height="wrap_content"-->
+                        <!--                    android:layout_marginRight="10dp"-->
+                        <!--                    android:textSize="12sp"-->
+                        <!--                    android:text="검색 기록 저장"/>-->
+
+                        <!--                <Switch-->
+                        <!--                    android:id="@+id/switchBtn"-->
+                        <!--                    android:layout_width="wrap_content"-->
+                        <!--                    android:layout_height="20dp"-->
+                        <!--                    android:track="@drawable/switch_track_selector"-->
+                        <!--                    android:thumb="@drawable/switch_thumb"-->
+                        <!--                    android:switchMinWidth="0dp"-->
+                        <!--                    android:textOff=""-->
+                        <!--                    android:textOn=""-->
+                        <!--                    android:thumbTextPadding="15dp" />-->
+                        <!--            </LinearLayout>-->
+
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="최근 검색어" />
+
+                            <!--리사이클러뷰 자리-->
+
+                        </ScrollView>
+                    </com.google.android.material.search.SearchView>
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -151,54 +199,6 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <!--검색중 화면-->
-        <com.google.android.material.search.SearchView
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="게시글 또는 계정 검색"
-            app:layout_anchor="@id/search_bar">
-
-            <!--            &lt;!&ndash;검색 기록 저장 버튼&ndash;&gt;-->
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:orientation="horizontal"-->
-            <!--                android:layout_gravity="right"-->
-            <!--                android:layout_marginRight="20dp"-->
-            <!--                android:padding="10dp">-->
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_marginRight="10dp"-->
-            <!--                    android:textSize="12sp"-->
-            <!--                    android:text="검색 기록 저장"/>-->
-
-            <!--                <Switch-->
-            <!--                    android:id="@+id/switchBtn"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="20dp"-->
-            <!--                    android:track="@drawable/switch_track_selector"-->
-            <!--                    android:thumb="@drawable/switch_thumb"-->
-            <!--                    android:switchMinWidth="0dp"-->
-            <!--                    android:textOff=""-->
-            <!--                    android:textOn=""-->
-            <!--                    android:thumbTextPadding="15dp" />-->
-            <!--            </LinearLayout>-->
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="최근 검색어" />
-
-                <!--리사이클러뷰 자리-->
-
-            </ScrollView>
-        </com.google.android.material.search.SearchView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

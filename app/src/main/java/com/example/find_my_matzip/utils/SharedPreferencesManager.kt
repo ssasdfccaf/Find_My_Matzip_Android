@@ -52,6 +52,18 @@ object SharedPreferencesManager{
         editor?.apply()
     }
 
+    //검색어 자동 저장(On)
+    fun setAutoSearch(autoSearch:Boolean){
+        editor?.putBoolean("autoSearch", autoSearch)
+        editor?.apply()
+    }
+
+    //검색어 자동 자동 저장(OFF)
+    fun deleteAutoSearch(){
+        editor?.remove("autoSearch")
+        editor?.apply()
+    }
+
 
     // 검색 기록 저장
     fun saveSearchHistory(text: String){
