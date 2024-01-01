@@ -23,20 +23,13 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(),
+    SearchHistoryRecyclerViewAdapter.OnSearchItemClickListener {
     lateinit var binding : ActivitySearchBinding
     lateinit var adapter: SearchHistoryRecyclerViewAdapter
 
     private var searchType = "default"
     private val TAG:String = "SearchActivity"
-
-    //test data
-    val testList: List<SearchDto> = listOf(
-        SearchDto("Pizza", Date()),
-        SearchDto("Sushi", Date()),
-        SearchDto("Burger", Date()),
-    )
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,14 +52,18 @@ class SearchActivity : AppCompatActivity() {
         binding.searchView
             .editText
             .setOnEditorActionListener {v,actionId,event ->
-                binding.searchBar.setText(binding.searchView.text)
+                val searchText = binding.searchView.text.toString()
+
+                binding.searchBar.setText(searchText)
                 binding.searchView.hide()
+
 
                 if(SharedPreferencesManager.getBoolean("autoSearch",false)){
                     //최근 검색어에 저장
-                    SharedPreferencesManager.saveSearchHistory(binding.searchView.text.toString())
+                    SharedPreferencesManager.saveSearchHistory(searchText)
                 }
 
+                searchType = "board"
                 showResult()
                 false
             }
@@ -111,13 +108,14 @@ class SearchActivity : AppCompatActivity() {
 
     }//onCreateView
 
+    //어떤 화면 띄울건지(3가지) 결정해주는 메서드
+    // searchType -> "board", "user","default"
     private fun showResult(){
-        if(binding.searchView.text.isNullOrEmpty()){
+        if(binding.searchBar.text.isNullOrEmpty()){
             //최근 검색어 (default)
             searchType = "default"
             binding.currentView.visibility = View.VISIBLE
             binding.fragChange.visibility = View.GONE
-
 
             showSearchHistory()
 
@@ -127,11 +125,13 @@ class SearchActivity : AppCompatActivity() {
                     binding.currentView.visibility = View.GONE
                     binding.fragChange.visibility = View.VISIBLE
                     replaceFragment(BoardSearchFragment.newInstance(binding.searchBar.text.toString()))
+                    binding.tabs.getTabAt(0)?.select()
                 }
                 "user" -> {
                     binding.currentView.visibility = View.GONE
                     binding.fragChange.visibility = View.VISIBLE
                     replaceFragment(UserSearchFragment.newInstance(binding.searchBar.text.toString()))
+                    binding.tabs.getTabAt(1)?.select()
                 }
                 else -> searchType = "board"
             }
@@ -144,6 +144,7 @@ class SearchActivity : AppCompatActivity() {
             .commit()
     }
 
+    //최근 검색어 보기
     private fun showSearchHistory(){
         val existingSet = SharedPreferencesManager.getSearchHistory()
 
@@ -155,18 +156,32 @@ class SearchActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         adapter = SearchHistoryRecyclerViewAdapter(this@SearchActivity, searchDtoList)
+        adapter.setOnSearchItemClickListener(this)
 
         binding.searchHistoryRecyclerView.layoutManager = layoutManager
         binding.searchHistoryRecyclerView.adapter = adapter
     }
 
+    //최근 검색어 전체 삭제
     private fun deleteAllSearchHistory(){
         SharedPreferencesManager.clearSearchPreferences()
         adapter.clearData()
         adapter.notifyDataSetChanged()
     }
 
+    //검색어 클릭시 로직
+    override fun onSearchItemClick(item: String) {
+        binding.currentView.visibility = View.GONE
+        binding.fragChange.visibility = View.VISIBLE
 
+        searchType = "board"
+        binding.searchBar.setText(item)
+
+        showResult()
+
+//        replaceFragment(BoardSearchFragment.newInstance(item))
+//        binding.tabs.getTabAt(0)?.select()
+    }
 
 
 }

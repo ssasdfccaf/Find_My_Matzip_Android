@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,8 @@ class SearchItemViewHolder(val binding:LayoutSearchItemBinding):RecyclerView.Vie
 
 class SearchHistoryRecyclerViewAdapter(val context: Context, var datas: List<SearchDto>?)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var onSearchItemClickListener: OnSearchItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return SearchItemViewHolder(
@@ -54,25 +57,29 @@ class SearchHistoryRecyclerViewAdapter(val context: Context, var datas: List<Sea
 
             val newText = binding.searchText.text.toString()
 
+            //SearchActivity에 item click이벤트 알려줌.
+            onSearchItemClickListener?.onSearchItemClick(newText)
+
+
             // 데이터를 전달하기 위한 Bundle 생성
-            val bundle = Bundle().apply {
-                putString("text", newText)
-            }
-
-            //인스턴스 생성
-            val boardSearchFragment = BoardSearchFragment()
-            // 인자로 데이터 전달
-            boardSearchFragment.arguments = bundle
-
-            // FragmentManager를 통해 Fragment 트랜잭션 시작
-            val fragmentManager = (binding.root.context as AppCompatActivity).supportFragmentManager
-            val transaction = fragmentManager.beginTransaction()
-
-            // Fragment를 표시하는 코드
-            transaction.add(R.id.fragmentContainer, boardSearchFragment)
-            transaction.addToBackStack(null)
-            // 트랜잭션 완료
-            transaction.commit()
+//            val bundle = Bundle().apply {
+//                putString("text", newText)
+//            }
+//
+//            //인스턴스 생성
+//            val boardSearchFragment = BoardSearchFragment()
+//            // 인자로 데이터 전달
+//            boardSearchFragment.arguments = bundle
+//
+//            // FragmentManager를 통해 Fragment 트랜잭션 시작
+//            val fragmentManager = (binding.root.context as AppCompatActivity).supportFragmentManager
+//            val transaction = fragmentManager.beginTransaction()
+//
+//            // Fragment를 표시하는 코드
+//            transaction.add(R.id.fragmentContainer, boardSearchFragment)
+//            //transaction.addToBackStack(null)
+//            // 트랜잭션 완료
+//            transaction.commit()
 
         }
 
@@ -91,9 +98,19 @@ class SearchHistoryRecyclerViewAdapter(val context: Context, var datas: List<Sea
 
     }
 
+    //최근 검색어 한개 삭제시 목록 리로드
     fun clearData() {
         datas = emptyList()
         notifyDataSetChanged()
+    }
+
+    fun setOnSearchItemClickListener(listener: OnSearchItemClickListener) {
+        onSearchItemClickListener = listener
+    }
+
+    //최근 검색어 클릭시 이벤트
+    interface OnSearchItemClickListener {
+        fun onSearchItemClick(item: String)
     }
 
 }
