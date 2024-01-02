@@ -1,24 +1,19 @@
 package com.example.find_my_matzip.search.adapter
 
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.LayoutSearchItemBinding
+import com.example.find_my_matzip.databinding.ItemSearchHistoryBinding
 import com.example.find_my_matzip.model.SearchDto
-import com.example.find_my_matzip.search.BoardSearchFragment
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 private val TAG: String = "SearchHistoryRecyclerViewAdapter"
 
-class SearchItemViewHolder(val binding:LayoutSearchItemBinding):RecyclerView.ViewHolder(binding.root)
+class SearchItemViewHolder(val binding:ItemSearchHistoryBinding):RecyclerView.ViewHolder(binding.root)
 
 class SearchHistoryRecyclerViewAdapter(val context: Context, var datas: List<SearchDto>?)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -27,7 +22,7 @@ class SearchHistoryRecyclerViewAdapter(val context: Context, var datas: List<Sea
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return SearchItemViewHolder(
-            LayoutSearchItemBinding.inflate(
+            ItemSearchHistoryBinding.inflate(
                 LayoutInflater.from(parent.context),parent,
                 false
             )
