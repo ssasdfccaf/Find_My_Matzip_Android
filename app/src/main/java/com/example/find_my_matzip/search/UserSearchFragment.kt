@@ -84,7 +84,6 @@ class UserSearchFragment : Fragment() {
 
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
                         currentPage++
-                        currentPage++
                         Log.d(TAG, "currentPage : $currentPage")
                         loadNextPageData(currentPage,newText)
                     }

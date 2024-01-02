@@ -15,8 +15,13 @@ class UserSearchItemViewHolder(val binding: ItemSearchUserBinding): RecyclerView
 class UserSearchResultRecyclerViewAdapter(val context: Context)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private lateinit var onUserSearchItemClickListener: OnUserSearchItemClickListener
+    // 클릭 리스너 선언
+    private var onUserClickListener: ((String?) -> Unit)? = null
     private val datas : MutableList<UsersFormDto> = mutableListOf()
+
+    fun setOnUserClickListener(listener: (String?) -> Unit) {
+        onUserClickListener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return UserSearchItemViewHolder(
@@ -45,8 +50,8 @@ class UserSearchResultRecyclerViewAdapter(val context: Context)
                 .into(binding.userImg)
         }
 
-        binding.root.setOnClickListener {
-            onUserSearchItemClickListener.onClicked(item?.userid.toString())
+        binding.userItemLinearLayout.setOnClickListener {
+            onUserClickListener?.invoke(item?.userid)
         }
 
     }
@@ -55,17 +60,5 @@ class UserSearchResultRecyclerViewAdapter(val context: Context)
         datas.addAll(newUserList)
         notifyDataSetChanged()
     }
-
-    // 클릭 리스너 선언
-    private var onUserClickListener: ((String?) -> Unit)? = null
-
-    fun setOnUserClickListener(listener: (String?) -> Unit) {
-        onUserClickListener = listener
-    }
-
-    interface OnUserSearchItemClickListener {
-        fun onClicked(item: String)
-    }
-
 
 }
