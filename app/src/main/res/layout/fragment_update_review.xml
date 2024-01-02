@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,8 +6,6 @@
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-
     >
 
     <ScrollView
@@ -28,7 +23,6 @@
             android:orientation="vertical"
             android:paddingTop="50dp"
             android:paddingBottom="50dp"
-
             >
 
             <TextView
@@ -37,7 +31,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/nexonbold"
                 android:paddingBottom="20dp"
-                android:text="Review"
+                android:text="Review 수정"
                 android:textColor="@color/design_default_color_primary"
                 android:textSize="35sp"
                 android:textStyle="bold" />
@@ -63,10 +57,6 @@
                 </RadioButton>
             </RadioGroup>
 
-
-
-
-
             <TextView
                 android:id="@+id/userId"
                 android:layout_width="300dp"
@@ -79,7 +69,7 @@
                 android:text=""
                 android:textColor="#B3B3B3"
                 android:textSize="35sp"
-                android:visibility="gone"
+                android:visibility="visible"
                 ></TextView>
             <EditText
                 android:id="@+id/boardTitle"
