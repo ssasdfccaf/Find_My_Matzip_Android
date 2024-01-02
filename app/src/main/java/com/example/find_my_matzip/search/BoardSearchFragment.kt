@@ -19,6 +19,7 @@ import com.example.find_my_matzip.navTab.adapter.NewHomeRecyclerAdapter
 import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
 import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
 import com.example.find_my_matzip.navTab.navTabFragment.boardDtlFragment
+import com.example.find_my_matzip.search.adapter.BoardSearchResultRecyclerAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,7 +27,7 @@ import retrofit2.Response
 
 class BoardSearchFragment : Fragment() {
     lateinit var binding: FragmentBoardSearchBinding
-    lateinit var adapter: NewHomeRecyclerAdapter
+    lateinit var adapter: BoardSearchResultRecyclerAdapter
     lateinit var boardList: Call<List<NewMainBoardDto>>
 
     private val TAG: String = "BoardSearchFragment"
@@ -60,7 +61,7 @@ class BoardSearchFragment : Fragment() {
         val newText = arguments?.getString("text")
         Log.d(TAG, "newText : $newText")
 
-        adapter = NewHomeRecyclerAdapter(requireContext()).apply {
+        adapter = BoardSearchResultRecyclerAdapter(requireContext()).apply {
             setOnItemClickListener { boardId ->
                 navigateToBoardDetail(boardId)
             }
@@ -80,27 +81,28 @@ class BoardSearchFragment : Fragment() {
         binding.boardSearchRecyclerView.adapter = adapter
 
 
-        binding.boardSearchRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
+        if(newText!!.isNotEmpty()){
+            binding.boardSearchRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
 
-                val visibleItemCount = layoutManager.childCount
-                val totalItemCount = layoutManager.itemCount
-                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+                    val visibleItemCount = layoutManager.childCount
+                    val totalItemCount = layoutManager.itemCount
+                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
-                Log.d(TAG, "visibleItemCount : $visibleItemCount")
-                Log.d(TAG, "totalItemCount : $totalItemCount")
-                Log.d(TAG, "firstVisibleItemPosition : $firstVisibleItemPosition")
+                    Log.d(TAG, "visibleItemCount : $visibleItemCount")
+                    Log.d(TAG, "totalItemCount : $totalItemCount")
+                    Log.d(TAG, "firstVisibleItemPosition : $firstVisibleItemPosition")
 
-                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-                    currentPage++
-                    Log.d(TAG, "currentPage : $currentPage")
-                    loadNextPageData(currentPage)
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
+                        currentPage++
+                        Log.d(TAG, "currentPage : $currentPage")
+                        loadNextPageData(currentPage,newText)
+                    }
                 }
-            }
-        })
-        loadNextPageData(currentPage)
-
+            })
+            loadNextPageData(currentPage,newText)
+        }
 
         return binding.root
     }
@@ -131,9 +133,9 @@ class BoardSearchFragment : Fragment() {
         transaction.commit()
     }
 
-    private fun loadNextPageData(page: Int) {
+    private fun loadNextPageData(page: Int,newText:String) {
         val boardService = (context?.applicationContext as MyApplication).boardService
-        boardList = boardService.getNewAllBoardsPager(page)
+        boardList = boardService.getSearchResultBoardsPager(newText,page)
         boardList.enqueue(object : Callback<List<NewMainBoardDto>> {
             override fun onResponse(call: Call<List<NewMainBoardDto>>, response: Response<List<NewMainBoardDto>>) {
                 if (response.isSuccessful) {
