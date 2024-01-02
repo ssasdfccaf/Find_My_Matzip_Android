@@ -9,6 +9,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -48,8 +49,11 @@ interface BoardService {
     fun createBoard3(
         @Path("resId") id: Long, @Body boardDtoMap: MutableMap<String,Any>
     ): Call<Unit>
-//    @GET("board/829") // 게시글 상세페이지;
-//    fun getBoardDtl(): Call<BoardDtlDto>
+
+    @PUT("board/{boardId}/edit")
+    fun editBoard(
+        @Path("boardId") id: String, @Body boardDtoMap: MutableMap<String, Any>
+    ): Call<Unit>
 
 
 
