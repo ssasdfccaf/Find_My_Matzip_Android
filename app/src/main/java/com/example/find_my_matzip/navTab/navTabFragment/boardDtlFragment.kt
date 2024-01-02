@@ -12,6 +12,7 @@ import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentBoardDtlBinding
 import com.example.find_my_matzip.model.BoardDtlDto
+import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.navTab.adapter.BoardDtlViewPagerAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
@@ -174,8 +175,17 @@ class boardDtlFragment : Fragment() {
                     transaction.commit()
 
                 }
+                fun getTotalCommentCount(comments: List<CommentDto>): Int {
+                    var totalCount = comments.size
+                    for (comment in comments) {
+                        if (comment.children != null) {
+                            totalCount += getTotalCommentCount(comment.children)
+                        }
+                    }
+                    return totalCount
+                }
+                binding.AllComment.text = "댓글 (${getTotalCommentCount(boardDto?.commentsPage?.content ?: emptyList())}개) 모두보기"
 
-                binding.AllComment.text = "댓글 (${boardDto?.commentsPage?.content?.size}개) 모두보기"
 
 //                CoroutineScope(Dispatchers.Main).launch {
 //                    try {

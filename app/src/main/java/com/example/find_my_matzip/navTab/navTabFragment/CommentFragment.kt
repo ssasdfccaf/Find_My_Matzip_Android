@@ -1,5 +1,6 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
@@ -145,10 +145,10 @@ class CommentFragment : BottomSheetDialogFragment() {
                     // 어댑터를 생성할 때 OnReplyClickListener를 전달
 
                     val adapter = CommentAdapter2(this@CommentFragment, commentList)
-
-                    adapter.onReplyClick = { commentDto ->
-                        Toast.makeText(requireContext(), "댓글을 클릭했습니다: ${commentDto}", Toast.LENGTH_SHORT).show()
+                    adapter.onReplyClick = { clickedComment, depth, parentId ->
+                        handleReplyClick(clickedComment, depth, parentId)
                     }
+
 
                     // 리사이클러뷰에 어댑터 설정
                     binding.commentRecyclerView.adapter = adapter
@@ -256,4 +256,33 @@ class CommentFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
+
+    private fun handleReplyClick(clickedComment: CommentDto, depth: Int, parentId: Long) {
+        val boardId = arguments?.getString("boardId") ?: ""
+
+        // 클릭한 댓글이 부모 댓글인지, 아니면 자식 댓글인지 확인합니다.
+        if (depth == 0) {
+            // 부모 댓글에 답글을 다는 경우
+            // 부모 댓글에 대한 답글을 작성하기 위한 로직을 처리합니다.
+            // 여기서는 새로운 CommentFragment를 열어 부모 댓글에 대한 답글을 작성할 수 있도록 합니다.
+            Log.d("CommentFragment", "Clicked parent comment: $clickedComment")
+            openNewCommentFragment(boardId, parentId)
+        } else {
+            // 자식 댓글에 답글을 다는 경우
+            // 자식 댓글에 대한 답글을 작성하기 위한 로직을 처리합니다.
+            // 여기서는 새로운 CommentFragment를 열어 자식 댓글에 대한 답글을 작성할 수 있도록 합니다.
+            Log.d("CommentFragment", "Clicked child comment: $clickedComment")
+            openNewCommentFragment(boardId, parentId)
+        }
+    }
+
+    private fun openNewCommentFragment(boardId: String, parentId: Long) {
+        // 부모 Fragment에 새로운 CommentFragment 인스턴스를 추가합니다.
+        // 이때 부모 댓글의 ID를 전달하여 해당 댓글에 대한 답글을 작성할 수 있도록 합니다.
+        Log.d("CommentFragment", "Opening new CommentFragment for parent ID: $parentId")
+        val newFragment = CommentFragment.newInstance(boardId)
+        newFragment.parentId = parentId
+        // 새로운 CommentFragment를 Fragment Manager에 추가합니다.
+        // (기존 코드와 유사한 방법으로 진행하시면 됩니다.)
+    }
 }

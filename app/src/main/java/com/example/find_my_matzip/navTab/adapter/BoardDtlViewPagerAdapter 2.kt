@@ -14,8 +14,8 @@ import com.example.find_my_matzip.model.BoardDto
 import com.example.find_my_matzip.model.BoardImgDto
 import com.example.find_my_matzip.model.NewImgDto
 
-class BoardDtlViewPagerAdapter(private val context: Context, private val boardImgDtoList: List<BoardImgDto>) :
-    RecyclerView.Adapter<BoardDtlViewPagerAdapter.ImageViewHolder>() {
+class BoardDtlViewPagerAdapter2(private val context: Context, private val boardImgDtoList: List<BoardImgDto>) :
+    RecyclerView.Adapter<BoardDtlViewPagerAdapter2.ImageViewHolder>() {
 
     private val imageUrls = boardImgDtoList.filter { it.imgUrl.isNotEmpty() }
     private var currentPosition = 0
