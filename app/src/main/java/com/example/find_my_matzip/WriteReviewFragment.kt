@@ -251,7 +251,7 @@ class WriteReviewFragment : Fragment() {
                 AppCompatActivity.RESULT_OK -> {
 
                     val clipData = result.data?.clipData
-                    val resId = arguments?.getString("resId")
+                    val resId = arguments?.getLong("resId")
 
                     if (clipData != null) { // 이미지를 여러 개 선택할 경우
                         val clipDataSize = clipData.itemCount
@@ -316,7 +316,7 @@ class WriteReviewFragment : Fragment() {
         // 파일명 생성 : uuid+현재시간
 //         val currentTime = System.currentTimeMillis().toString()
 //         val uuid = UUID.randomUUID().toString()
-        val resId = arguments?.getString("resId")
+        val resId = arguments?.getLong("resId")
         val fileName = "$userId-$resId-$uuid-$count"
 //        Log.d("WriteReviewFragment", "로그인 된 유저 확인 resId : $resId")
 
