@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.HomeTabActivity
@@ -39,13 +40,13 @@ class SearchActivity : AppCompatActivity(),
         //검색 기록 저장(초기값은 true로 설정)
         binding.switchBtn.isChecked = true
 
-        showResult()
-
         //home으로 이동
         binding.homeBtn.setOnClickListener(){
             val intent = Intent(this@SearchActivity, HomeTabActivity::class.java)
             startActivity(intent)
         }
+
+        checkSearchType()
 
 
         //searchView에서 검색클릭 -> text가지고 searchView exit
@@ -57,14 +58,19 @@ class SearchActivity : AppCompatActivity(),
                 binding.searchBar.setText(searchText)
                 binding.searchView.hide()
 
-
-                if(SharedPreferencesManager.getBoolean("autoSearch",false)){
-                    //최근 검색어에 저장
-                    SharedPreferencesManager.saveSearchHistory(searchText)
+                if(binding.searchBar.text.isNullOrEmpty()){
+                    searchType = "default"
+                }else{
+                    searchType = "board"
                 }
 
-                searchType = "board"
-                showResult()
+                if(SharedPreferencesManager.getBoolean("autoSearch",true)){
+                    //최근 검색어에 저장
+                    SharedPreferencesManager.saveSearchHistory(searchText)
+                    Log.d(TAG,"autoSearch 들어옴")
+                }
+
+                checkSearchType()
                 false
             }
 
@@ -75,11 +81,11 @@ class SearchActivity : AppCompatActivity(),
                 when (tab!!.position) {
                     0 -> {
                         searchType = "board"
-                        showResult()
+                        checkSearchType()
                     }
                     1 -> {
                         searchType = "user"
-                        showResult()
+                        checkSearchType()
                     }
                 }
             }
@@ -108,37 +114,65 @@ class SearchActivity : AppCompatActivity(),
 
     }//onCreateView
 
-    //어떤 화면 띄울건지(3가지) 결정해주는 메서드
+    //창 전환(3가지) 메서드
     // searchType -> "board", "user","default"
-    private fun showResult(){
-        if(binding.searchBar.text.isNullOrEmpty()){
-            //최근 검색어 (default)
-            searchType = "default"
-            binding.currentView.visibility = View.VISIBLE
-            binding.fragChange.visibility = View.GONE
+    private fun checkSearchType(){
 
-            showSearchHistory()
+        when(searchType){
+            "default" ->{
+                Log.d(TAG,"default")
+                binding.currentView.visibility = View.VISIBLE
+                binding.fragChange.visibility = View.GONE
 
-        }else{
-            when(searchType){
-                "board" ->{
-                    binding.currentView.visibility = View.GONE
-                    binding.fragChange.visibility = View.VISIBLE
-                    replaceFragment(BoardSearchFragment.newInstance(binding.searchBar.text.toString()))
-                    binding.tabs.getTabAt(0)?.select()
-                }
-                "user" -> {
-                    binding.currentView.visibility = View.GONE
-                    binding.fragChange.visibility = View.VISIBLE
-                    replaceFragment(UserSearchFragment.newInstance(binding.searchBar.text.toString()))
-                    binding.tabs.getTabAt(1)?.select()
-                }
-                else -> searchType = "board"
+                showSearchHistory()
             }
+            "board" ->{
+                Log.d(TAG,"board")
+                binding.currentView.visibility = View.GONE
+                binding.fragChange.visibility = View.VISIBLE
+                replaceFragment(BoardSearchFragment.newInstance(binding.searchBar.text.toString()))
+                binding.tabs.getTabAt(0)?.select()
+            }
+            "user" -> {
+                Log.d(TAG,"user")
+                binding.currentView.visibility = View.GONE
+                binding.fragChange.visibility = View.VISIBLE
+                replaceFragment(UserSearchFragment.newInstance(binding.searchBar.text.toString()))
+                binding.tabs.getTabAt(1)?.select()
+            }
+            else -> searchType = "default"
         }
     }
+//    private fun showResult(){
+//        if(binding.searchBar.text.isNullOrEmpty()){
+//            //최근 검색어 (default)
+//            searchType = "default"
+//            binding.currentView.visibility = View.VISIBLE
+//            binding.fragChange.visibility = View.GONE
+//
+//            showSearchHistory()
+//
+//        }else{
+//            when(searchType){
+//                "board" ->{
+//                    binding.currentView.visibility = View.GONE
+//                    binding.fragChange.visibility = View.VISIBLE
+//                    replaceFragment(BoardSearchFragment.newInstance(binding.searchBar.text.toString()))
+//                    binding.tabs.getTabAt(0)?.select()
+//                }
+//                "user" -> {
+//                    binding.currentView.visibility = View.GONE
+//                    binding.fragChange.visibility = View.VISIBLE
+//                    replaceFragment(UserSearchFragment.newInstance(binding.searchBar.text.toString()))
+//                    binding.tabs.getTabAt(1)?.select()
+//                }
+//                else -> searchType = "board"
+//            }
+//        }
+//    }
 
     private fun replaceFragment(fragment: Fragment) {
+        Log.d(TAG,"replaceFragment 실행")
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()
@@ -146,6 +180,8 @@ class SearchActivity : AppCompatActivity(),
 
     //최근 검색어 보기
     private fun showSearchHistory(){
+        Log.d(TAG,"showSearchHistory 실행")
+
         val existingSet = SharedPreferencesManager.getSearchHistory()
 
         //형변환(Hash -> ArrayList)
@@ -177,10 +213,7 @@ class SearchActivity : AppCompatActivity(),
         searchType = "board"
         binding.searchBar.setText(item)
 
-        showResult()
-
-//        replaceFragment(BoardSearchFragment.newInstance(item))
-//        binding.tabs.getTabAt(0)?.select()
+        checkSearchType()
     }
 
 

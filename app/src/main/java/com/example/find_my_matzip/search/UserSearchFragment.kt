@@ -31,7 +31,6 @@ class UserSearchFragment : Fragment() {
         //전달 받은 검색어
         val newText = arguments?.getString("text")
         Log.d(TAG, "newText : $newText")
-        binding.userText.text = newText
 
         return binding.root
     }

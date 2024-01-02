@@ -11,16 +11,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userSearchRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="userSearch" />
-
-        <TextView
-            android:id="@+id/userText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="userText" />
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@drawable/custom_scrollbar"
+            android:fadeScrollbars="false"
+            />
 
     </LinearLayout>
 
