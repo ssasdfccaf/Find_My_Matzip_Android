@@ -3,6 +3,7 @@ package com.example.find_my_matzip
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.databinding.ActivityMesssageBinding
 import com.example.find_my_matzip.model.Friend
 import com.example.find_my_matzip.model.MessageModel
@@ -36,6 +39,10 @@ class MessageActivity : AppCompatActivity() {
     private var uid : String? = null
     private var recyclerView : RecyclerView? = null
 
+
+
+
+
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -48,6 +55,7 @@ class MessageActivity : AppCompatActivity() {
 
         val imageView = findViewById<ImageView>(R.id.messageActivity_ImageView)
         val editText = findViewById<TextView>(R.id.messageActivity_editText)
+
 
         // 메시지를 보낸 시간
         val time = System.currentTimeMillis()
@@ -71,7 +79,7 @@ class MessageActivity : AppCompatActivity() {
                     // 채팅방 생성
                     checkChatRoom()
                     // 메시지 보내기
-                    Handler().postDelayed({
+                    Handler(Looper.getMainLooper()).postDelayed({
                         println(chatRoomUid)
                         fireDatabase.child("chatrooms").child(chatRoomUid.toString()).child("comments").push().setValue(comment)
                         val messageActivity_editText = findViewById<EditText>(R.id.messageActivity_editText)
@@ -80,7 +88,8 @@ class MessageActivity : AppCompatActivity() {
                     Log.d("chatUidNull dest", "$destinationUid")
                 }
             }else{
-                fireDatabase.child("chatrooms").child(chatRoomUid.toString()).child("comments").push().setValue(comment)
+                fireDatabase.child("chatrooms").child(chatRoomUid.toString()).
+                child("comments").push().setValue(comment)
                 val messageActivity_editText = findViewById<EditText>(R.id.messageActivity_editText)
                 messageActivity_editText.text = null
                 Log.d("chatUidNotNull dest", "$destinationUid")
@@ -89,7 +98,8 @@ class MessageActivity : AppCompatActivity() {
         checkChatRoom()
     }
 
-    private fun checkChatRoom(){
+
+        private fun checkChatRoom(){
         fireDatabase.child("chatrooms").orderByChild("users/$uid").equalTo(true)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -116,7 +126,8 @@ class MessageActivity : AppCompatActivity() {
         private val comments = ArrayList<MessageModel.Comment>()
         private var friend : Friend? = null
         init{
-            fireDatabase.child("users").child(destinationUid.toString()).addListenerForSingleValueEvent(object : ValueEventListener{
+            fireDatabase.child("users").child(destinationUid.toString()).
+            addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onCancelled(error: DatabaseError) {
                 }
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -129,7 +140,8 @@ class MessageActivity : AppCompatActivity() {
         }
 
         fun getMessageList(){
-            fireDatabase.child("chatrooms").child(chatRoomUid.toString()).child("comments").addValueEventListener(object : ValueEventListener{
+            fireDatabase.child("chatrooms").child(chatRoomUid.toString()).
+            child("comments").addValueEventListener(object : ValueEventListener{
                 override fun onCancelled(error: DatabaseError) {
                 }
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -140,6 +152,7 @@ class MessageActivity : AppCompatActivity() {
                         println(comments)
                     }
                     notifyDataSetChanged()
+
                     // 메시지를 보낼 때, 화면을 맨 밑으로 내리기
                     recyclerView?.scrollToPosition(comments.size - 1)
                 }
@@ -147,7 +160,8 @@ class MessageActivity : AppCompatActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-            val view : View = LayoutInflater.from(parent.context).inflate(R.layout.item_message_time, parent, false)
+            val view : View = LayoutInflater.from(parent.context).
+            inflate(R.layout.item_message_time, parent, false)
 
             return MessageViewHolder(view)
         }
@@ -157,19 +171,21 @@ class MessageActivity : AppCompatActivity() {
             holder.textView_message.text = comments[position].message
             holder.textView_time.text = comments[position].time
             if(comments[position].uid.equals(uid)){
+
                 // 본인 채팅
                 holder.textView_message.setBackgroundResource(R.drawable.rightbubble)
                 holder.textView_name.visibility = View.INVISIBLE
                 holder.layout_destination.visibility = View.INVISIBLE
                 holder.layout_main.gravity = Gravity.RIGHT
             }else{
-                /*
+
+
                 // 상대방 채팅
                 Glide.with(holder.itemView.context)
                     .load(friend?.profileImageUrl)
                     .apply(RequestOptions().circleCrop())
                     .into(holder.imageView_profile)
-                */
+
                 holder.textView_name.text = friend?.name
                 holder.layout_destination.visibility = View.VISIBLE
                 holder.textView_name.visibility = View.VISIBLE
@@ -182,7 +198,7 @@ class MessageActivity : AppCompatActivity() {
 
             val textView_message: TextView = view.findViewById(R.id.messageItem_textView_message)
             val textView_name: TextView = view.findViewById(R.id.messageItem_textview_name)
-        //    val imageView_profile: ImageView = view.findViewById(R.id.messageItem_imageview_profile)
+            val imageView_profile: ImageView = view.findViewById(R.id.messageItem_imageview_profile)
             val layout_destination: LinearLayout = view.findViewById(R.id.messageItem_layout_destination)
             val layout_main: LinearLayout = view.findViewById(R.id.messageItem_linearlayout_main)
             val textView_time : TextView = view.findViewById(R.id.messageItem_textView_time)

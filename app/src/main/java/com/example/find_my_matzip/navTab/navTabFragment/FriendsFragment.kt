@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -69,11 +70,26 @@ class FriendsFragment : Fragment() {
     }
 
     inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.CustomViewHolder>() {
-
+        var mylist: MutableList<String> = mutableListOf()
         init {
             val myUid = Firebase.auth.currentUser?.uid.toString()
-            println(myUid)
+            val myid = Firebase.auth.currentUser?.email.toString().split('@')[0]
+            //var mylist: MutableList<String> = mutableListOf()
+            //Toast.makeText(requireContext(), myid, Toast.LENGTH_SHORT).show()
 
+            FirebaseDatabase.getInstance().reference.child("following").child(myid).addValueEventListener(object :
+                ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                }
+                override fun onDataChange(snapshot: DataSnapshot){
+                    val item = snapshot.getValue()
+                    //Toast.makeText(requireContext(), item.toString(), Toast.LENGTH_SHORT).show()
+                    mylist.add(item.toString())
+                    //notifyDataSetChanged()
+                }
+            })
+
+            //Toast.makeText(requireContext(), mylist[0], Toast.LENGTH_SHORT).show()
             FirebaseDatabase.getInstance().reference.child("users").addValueEventListener(object :
                 ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -102,9 +118,9 @@ class FriendsFragment : Fragment() {
 
         override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
             // 유저 정보 + 확장자 불러오기
-            /* Glide.with(holder.itemView.context).load(friend[position].email + ".jpg")
+             Glide.with(holder.itemView.context).load(friend[position].email + ".jpg")
                 .apply(RequestOptions().circleCrop())
-                .into(holder.imageView) */
+                .into(holder.imageView)
             holder.textView.text = friend[position].name
             holder.textViewEmail.text = friend[position].email
 
