@@ -44,6 +44,7 @@ class BoardSearchResultViewHolder(private val binding :ItemNewmainboardBinding,p
         binding.userLinearLayout.setOnClickListener {
             onUserClick(item.user.userId) // 유저 아이디 클릭 이벤트 핸들링
         }
+
     }
 }
 class BoardSearchResultRecyclerAdapter(context : Context) : RecyclerView.Adapter<BoardSearchResultViewHolder>() {

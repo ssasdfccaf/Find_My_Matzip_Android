@@ -5,27 +5,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.ActivitySearchBinding
 import com.example.find_my_matzip.model.SearchDto
-import com.example.find_my_matzip.navTab.adapter.RestaurantRecyclerAdapter
 import com.example.find_my_matzip.search.adapter.SearchHistoryRecyclerViewAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
-import com.example.find_my_matzip.utiles.SharedPreferencesManager.saveSearchHistory
-import com.example.find_my_matzip.utiles.SharedPreferencesManager.setAutoSearch
 import com.google.android.material.tabs.TabLayout
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class SearchActivity : AppCompatActivity(),
-    SearchHistoryRecyclerViewAdapter.OnSearchItemClickListener {
+    SearchHistoryRecyclerViewAdapter.OnSearchItemClickListener{
     lateinit var binding : ActivitySearchBinding
     lateinit var adapter: SearchHistoryRecyclerViewAdapter
 
@@ -39,6 +32,9 @@ class SearchActivity : AppCompatActivity(),
 
         //검색 기록 저장(초기값은 true로 설정)
         binding.switchBtn.isChecked = true
+        if (SharedPreferencesManager.getAutoSearch() == null) {
+            SharedPreferencesManager.setAutoSearch(true)
+        }
 
         //home으로 이동
         binding.homeBtn.setOnClickListener(){
@@ -64,9 +60,12 @@ class SearchActivity : AppCompatActivity(),
                     searchType = "board"
                 }
 
-                if(SharedPreferencesManager.getBoolean("autoSearch",true)){
+                if(SharedPreferencesManager.getAutoSearch() == true){
                     //최근 검색어에 저장
                     SharedPreferencesManager.saveSearchHistory(searchText)
+                    Log.d(TAG,"searchText 저장완료 : saveSearchHistory($searchText)")
+                    //변경된 SharedPreference 로딩
+                    showSearchHistory()
                     Log.d(TAG,"autoSearch 들어옴")
                 }
 
@@ -104,11 +103,17 @@ class SearchActivity : AppCompatActivity(),
             deleteAllSearchHistory()
         }
 
+        //searchView의 모든 검색 기록 삭제
+        binding.deleteAllBtnSearchView.setOnClickListener{
+            //모든 검색 기록 삭제
+            deleteAllSearchHistory()
+        }
 
         //검색 기록 자동저장 기능
         binding.switchBtn.setOnCheckedChangeListener { _, isChecked ->
             SharedPreferencesManager.setAutoSearch(isChecked)
         }
+
 
 
 
@@ -167,12 +172,24 @@ class SearchActivity : AppCompatActivity(),
             it.date
         }
 
+        //searchActivity
         val layoutManager = LinearLayoutManager(this)
+
         adapter = SearchHistoryRecyclerViewAdapter(this@SearchActivity, searchDtoList)
         adapter.setOnSearchItemClickListener(this)
 
         binding.searchHistoryRecyclerView.layoutManager = layoutManager
         binding.searchHistoryRecyclerView.adapter = adapter
+
+        //searchView
+        val layoutManagerSearchView = LinearLayoutManager(this)
+
+        //adapter2 = SearchHistoryRecyclerViewAdapter(this@SearchActivity, searchDtoList)
+        //adapter2.setOnSearchItemClickListener(this)
+
+        binding.searchHistoryRecyclerSearchView.layoutManager = layoutManagerSearchView
+        binding.searchHistoryRecyclerSearchView.adapter = adapter
+
     }
 
     //최근 검색어 전체 삭제
@@ -189,9 +206,11 @@ class SearchActivity : AppCompatActivity(),
 
         searchType = "board"
         binding.searchBar.setText(item)
+        binding.searchView.hide()
 
         checkSearchType()
     }
+
 
 
 }

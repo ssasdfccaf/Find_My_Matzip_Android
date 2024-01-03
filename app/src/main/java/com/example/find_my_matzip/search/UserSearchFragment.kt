@@ -58,6 +58,7 @@ class UserSearchFragment : Fragment() {
         val newText = arguments?.getString("text")
         Log.d(TAG, "newText : $newText")
 
+
         //user item클릭 이벤트
         adapter = UserSearchResultRecyclerViewAdapter(requireContext()).apply {
             setOnUserClickListener { userId ->
@@ -95,6 +96,8 @@ class UserSearchFragment : Fragment() {
     }
 
     private fun loadNextPageData(page: Int,newText:String){
+
+
         val userService = (context?.applicationContext as MyApplication).userService
         userList = userService.getAllUsers(newText,page)
         userList.enqueue(object : Callback<List<UsersFormDto>>{
@@ -104,9 +107,16 @@ class UserSearchFragment : Fragment() {
                     val newUserList = response.body()
                     newUserList?.let {
                         adapter.addData(it)
-
                     }
-                    Log.d(TAG, "newUserList : ${newUserList}")
+                    if (newUserList?.isEmpty()!!&& currentPage==0) {
+                        //결과값이 비었다면
+                        binding.noSearch.visibility = View.VISIBLE
+                        binding.noSearch.text = " \" $newText \" 검색 결과 없음"
+                    }else{
+                        //초기화
+                        binding.noSearch.visibility = View.GONE
+                        binding.noSearch.text = ""
+                    }
                 }
             }
 

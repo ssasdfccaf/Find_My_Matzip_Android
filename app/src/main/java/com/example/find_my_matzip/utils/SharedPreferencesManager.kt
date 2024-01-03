@@ -2,6 +2,8 @@ package com.example.find_my_matzip.utiles
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import android.widget.Toast
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -67,19 +69,43 @@ object SharedPreferencesManager{
 
     // 검색 기록 저장
     fun saveSearchHistory(text: String){
-        if(text.isNotEmpty()){
-            //val currentDate = SimpleDateFormat("yyyy.MM.dd").format(Date())
+        if(!text.isNullOrEmpty()){
             val currentDate = Date()
             val historyItem = "$text,$currentDate"
 
             //기존의 list조회
             val existingSet = prefs?.getStringSet("search_history", LinkedHashSet()) ?: LinkedHashSet()
 
-            existingSet.add(historyItem)
+            if (!existingSet.any { it.startsWith("$text,") }) {
+                existingSet.add(historyItem)
+            }
 
-            //새로운 text추가된 list저장
-            editor?.putStringSet("search_history", existingSet)
-            editor?.apply()
+            
+            //20개 이상이면 오래된 순서로 삭제
+            if(existingSet.size > 20){
+                val sortedList = existingSet
+                    .map { it.split(",") }
+                    .sortedBy { it[1] }
+                    .takeLast(20)
+                    .map { it.joinToString(",") }
+                    .toSet()
+
+                editor?.remove("search_history")
+                editor?.apply()
+
+                editor?.putStringSet("search_history", sortedList)
+                editor?.apply()
+            }else{
+                editor?.remove("search_history")
+                editor?.apply()
+
+                //새로운 text추가된 list저장
+                editor?.putStringSet("search_history", existingSet)
+                editor?.apply()
+
+            }
+
+
         }
     }
 
@@ -129,6 +155,10 @@ object SharedPreferencesManager{
     //boolean형태의 값(autoLogin)가져올때 사용
     fun getBoolean(key: String, defValue: Boolean): Boolean {
         return prefs?.getBoolean(key, defValue) ?: defValue
+    }
+
+    fun getAutoSearch(): Boolean? {
+        return prefs?.getBoolean("autoSearch", false)
     }
 
 

@@ -39,15 +39,15 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#9b9b9b"
-                android:layout_marginBottom="10dp"/>
+                android:background="#9b9b9b"/>
 
             <LinearLayout
                 android:id="@+id/currentView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
 
                 <!--검색 기록 저장 버튼-->
                 <LinearLayout
@@ -78,7 +78,7 @@
                 <LinearLayout
                     android:id="@+id/resultView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:padding="20dp">
 
@@ -106,7 +106,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/search_history_recycler_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="match_parent"/>
 
                 </LinearLayout>
 
@@ -118,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"
@@ -140,16 +140,17 @@
 
                 </com.google.android.material.tabs.TabLayout>
 
+
                 <FrameLayout
                     android:id="@+id/fragmentContainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 </FrameLayout>
 
+
             </LinearLayout>
-
-
         </com.google.android.material.appbar.AppBarLayout>
+
 
         <!--검색중 화면-->
 
@@ -160,21 +161,41 @@
             android:hint="게시글 또는 계정 검색"
             app:layout_anchor="@id/search_bar">
 
-
-
-            <ScrollView
+            <LinearLayout
+                android:id="@+id/result_searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:padding="20dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="최근 검색어" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="15dp">
 
-                <!--리사이클러뷰 자리-->
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="최근 검색어"/>
 
-            </ScrollView>
+                    <TextView
+                        android:id="@+id/deleteAllBtn_searchView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:drawableRight="@drawable/baseline_delete_outline_24"
+                        android:text="전체 삭제"/>
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/search_history_recycler_searchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
         </com.google.android.material.search.SearchView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

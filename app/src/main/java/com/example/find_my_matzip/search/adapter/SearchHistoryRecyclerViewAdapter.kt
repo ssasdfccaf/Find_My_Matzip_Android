@@ -55,27 +55,6 @@ class SearchHistoryRecyclerViewAdapter(val context: Context, var datas: List<Sea
             //SearchActivity에 item click이벤트 알려줌.
             onSearchItemClickListener?.onSearchItemClick(newText)
 
-
-            // 데이터를 전달하기 위한 Bundle 생성
-//            val bundle = Bundle().apply {
-//                putString("text", newText)
-//            }
-//
-//            //인스턴스 생성
-//            val boardSearchFragment = BoardSearchFragment()
-//            // 인자로 데이터 전달
-//            boardSearchFragment.arguments = bundle
-//
-//            // FragmentManager를 통해 Fragment 트랜잭션 시작
-//            val fragmentManager = (binding.root.context as AppCompatActivity).supportFragmentManager
-//            val transaction = fragmentManager.beginTransaction()
-//
-//            // Fragment를 표시하는 코드
-//            transaction.add(R.id.fragmentContainer, boardSearchFragment)
-//            //transaction.addToBackStack(null)
-//            // 트랜잭션 완료
-//            transaction.commit()
-
         }
 
         binding.deleteSearchBtn.setOnClickListener {
@@ -90,7 +69,6 @@ class SearchHistoryRecyclerViewAdapter(val context: Context, var datas: List<Sea
             //Adapter에 변경사항 적용(특정한 아이템 1개를 삭제할 때 사용)
             notifyDataSetChanged()
         }
-
 
     }
 

@@ -61,6 +61,7 @@ class BoardSearchFragment : Fragment() {
         val newText = arguments?.getString("text")
         Log.d(TAG, "newText : $newText")
 
+
         adapter = BoardSearchResultRecyclerAdapter(requireContext()).apply {
             setOnItemClickListener { boardId ->
                 navigateToBoardDetail(boardId)
@@ -134,15 +135,28 @@ class BoardSearchFragment : Fragment() {
     }
 
     private fun loadNextPageData(page: Int,newText:String) {
+
         val boardService = (context?.applicationContext as MyApplication).boardService
         boardList = boardService.getSearchResultBoardsPager(newText,page)
         boardList.enqueue(object : Callback<List<NewMainBoardDto>> {
             override fun onResponse(call: Call<List<NewMainBoardDto>>, response: Response<List<NewMainBoardDto>>) {
                 if (response.isSuccessful) {
                     val newBoardList = response.body()
+
                     newBoardList?.let {
                         adapter.addData(it)
                     }
+
+                    if (newBoardList?.isEmpty()!! && currentPage==0) {
+                        //결과값이 비었다면
+                        binding.noSearch.visibility = View.VISIBLE
+                        binding.noSearch.text = " \" $newText \" 검색 결과 없음"
+                    }else{
+                        //초기화
+                        binding.noSearch.visibility = View.GONE
+                        binding.noSearch.text = ""
+                    }
+
                 }
             }
 
@@ -152,6 +166,9 @@ class BoardSearchFragment : Fragment() {
                 Log.d(TAG, " 통신 실패")
             }
         })
+        
+
+
     }//loadNextPageData
 
 }
