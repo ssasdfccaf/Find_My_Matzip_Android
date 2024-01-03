@@ -12,8 +12,9 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/white">
 
             <LinearLayout
@@ -40,116 +41,123 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#9b9b9b"/>
+        </com.google.android.material.appbar.AppBarLayout>
 
+
+
+
+        <RelativeLayout
+            android:id="@+id/currentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/appBar"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:visibility="gone">
+
+            <!--검색 기록 저장 버튼-->
             <LinearLayout
-                android:id="@+id/currentView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:visibility="gone">
-
-                <!--검색 기록 저장 버튼-->
-                <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp">
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="20dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:textSize="12sp"
-                        android:text="검색 기록 저장"/>
+                    android:layout_marginRight="10dp"
+                    android:textSize="12sp"
+                    android:text="검색 기록 저장"/>
 
-                    <Switch
-                        android:id="@+id/switchBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:track="@drawable/switch_track_selector"
-                        android:thumb="@drawable/switch_thumb"
-                        android:switchMinWidth="0dp"
-                        android:textOff=""
-                        android:textOn=""
-                        android:thumbTextPadding="15dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/resultView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="15dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="최근 검색어"/>
-
-                        <TextView
-                            android:id="@+id/deleteAllBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:drawableRight="@drawable/baseline_delete_outline_24"
-                            android:text="전체 삭제"/>
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/search_history_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
-                </LinearLayout>
-
+                <Switch
+                    android:id="@+id/switchBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:track="@drawable/switch_track_selector"
+                    android:thumb="@drawable/switch_thumb"
+                    android:switchMinWidth="0dp"
+                    android:textOff=""
+                    android:textOn=""
+                    android:thumbTextPadding="15dp" />
             </LinearLayout>
 
-
             <LinearLayout
-                android:id="@+id/fragChange"
+                android:id="@+id/resultView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:padding="20dp">
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabs"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="1dp"
-                    app:tabGravity="fill"
-                    app:tabMode="fixed">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="15dp">
 
-                    <com.google.android.material.tabs.TabItem
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="최근 검색어"/>
+
+                    <TextView
+                        android:id="@+id/deleteAllBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="게시글"/>
+                        android:layout_gravity="end"
+                        android:drawableRight="@drawable/baseline_delete_outline_24"
+                        android:text="전체 삭제"/>
+                </LinearLayout>
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="계정"/>
-
-                </com.google.android.material.tabs.TabLayout>
-
-
-                <FrameLayout
-                    android:id="@+id/fragmentContainer"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/search_history_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </FrameLayout>
-
+                    android:layout_height="match_parent"/>
 
             </LinearLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/currentView"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:visibility="visible">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="1dp"
+                app:tabGravity="fill"
+                app:tabMode="fixed">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="게시글"/>
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="계정"/>
+
+            </com.google.android.material.tabs.TabLayout>
+
+
+            <FrameLayout
+                android:id="@+id/fragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tabs">
+            </FrameLayout>
+
+
+        </RelativeLayout>
+
 
 
         <!--검색중 화면-->
