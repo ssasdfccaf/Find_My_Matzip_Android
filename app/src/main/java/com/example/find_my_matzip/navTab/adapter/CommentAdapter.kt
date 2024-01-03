@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,7 +16,9 @@ import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.ItemCommentBinding
 import com.example.find_my_matzip.model.CommentDto
+import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.navTabFragment.CommentFragment
+import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.google.firebase.storage.FirebaseStorage
 import retrofit2.Call
 import retrofit2.Callback
@@ -147,24 +150,7 @@ class CommentAdapter(
         } else {
             binding.arrowIcon.visibility = View.GONE
         }
-//
-//        val commentWriter = item?.commentWriter // CommentDto에 userId가 있다고 가정
-//
-//        if (!commentWriter.isNullOrEmpty()) {
-//            val storageReference = FirebaseStorage.getInstance().getReference("users_img/${commentWriter}")
-//            Log.d("FirebaseStorage", "User Image URL: $commentWriter")
-//            storageReference.downloadUrl.addOnSuccessListener { uri ->
-//                Glide.with(context)
-//                    .load(uri)
-//                    .placeholder(R.drawable.profile)
-//                    .error(R.drawable.profile)
-//                    .into(holder.userImageUrl)
-//            }.addOnFailureListener { exception ->
-//                Log.e("FirebaseStorage", "Failed to download image. Error: ${exception.message}")
-//            }
-//        } else {
-//            Log.d("FirebaseStorage", "User Image URL is empty.")
-//        }
+
 
         // 댓글 깊이에 따라 들여쓰기 설정
         val indentSize = context.resources.getDimensionPixelSize(R.dimen.comment_indent)
@@ -198,6 +184,17 @@ class CommentAdapter(
                 deleteComment(commentId)
             }
         }
+
+        val userImage = item?.userImage
+
+        // 사용자 이미지 URL이 있다면 Glide로 이미지 로드
+        if (!userImage.isNullOrBlank()) {
+            Glide.with(context.requireContext().applicationContext)
+                .load(userImage)
+                .override(900, 900) // 이미지 크기 설정 (원하는 크기로 수정)
+                .into(binding.userImage)
+        }
+
         //현재 아이템의 위치를 확인하고,
         //해당 위치의 댓글에 대한 정보를 가져와 onReplyClick 메서드를 호출
         //그리고 showReplyDialog 메서드를 호출하여 답글 작성 다이얼로그를 표시

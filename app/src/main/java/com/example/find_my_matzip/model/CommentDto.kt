@@ -8,6 +8,7 @@ data class CommentDto(
     val boardId: Long,
     val depth: Int,
     val parentId: Long? = null, // 부모 댓글의 ID, 상위 댓글인 경우는 null로 초기화
+    val userImage: String?,
     val commentCreatedTime: String,
     val children: List<CommentDto>? = null
 )

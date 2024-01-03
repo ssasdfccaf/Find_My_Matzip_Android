@@ -39,7 +39,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
     var commentContents: EditText? = null
     var saveBtn: Button? = null
     private val TAG: String = "CommentFragment"
-
+    private var userImage: String = ""
     companion object {
 
         fun newInstance(boardId: String?): CommentFragment {
@@ -141,6 +141,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                             parentId = parentComment.commentId ?: 0,
                             depth = parentComment.depth + 1,
                             commentCreatedTime = "",
+                            userImage = ""
                         )
                         val commentList =
                             commentService.saveReply(commentDto, parentComment.commentId)
@@ -234,24 +235,44 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                 val profileDto = response.body()
                 Log.d("CommentFragment", "로그인 된 유저 확인 userId : $userId")
 
+                val commentWriter =
+                    SharedPreferencesManager.getString("id", "")
+                val commentContents =
+                    binding.commentContents.text.toString()
+                val userImage = binding.userImage
+                val commentService =
+                    (context?.applicationContext as MyApplication).commentService
+
                 if (profileDto != null) {
                     // 사용자 이미지 URL이 있다면 Glide로 이미지 로드
 
-                    // 사용자 이미지 URL이 있다면 Glide로 이미지 로드
-                    val user_image = profileDto.loginUserDto?.user_image
-                    if (!user_image.isNullOrBlank()) {
+                    val userImage = profileDto.loginUserDto?.user_image ?: ""
+
+                    if (!userImage.isNullOrBlank()) {
                         Glide.with(requireContext())
-                            .load(user_image)
+                            .load(userImage)
                             .override(900, 900)
                             .into(binding.userImage)
+
+                        // 수정: userImage 변수에 이미지 URL 할당
+                        this@CommentFragment.userImage = userImage
                     }
+
+                    val commentDto = CommentDto(
+                        commentWriter = commentWriter,
+                        commentContents = commentContents,
+                        boardId = boardId,
+                        parentId = null,
+                        depth = 0,
+                        commentCreatedTime = "",
+                        userImage = this@CommentFragment.userImage // 사용자 이미지 URL 설정
+                    )
 
 
                 } else {
                     Log.e("CommentFragment", "유저 정보를 받아오지 못했습니다.")
                 }
             }
-
             // 통신 실패 시 로그 출력
             override fun onFailure(call: Call<ProfileDto>, t: Throwable) {
                 t.printStackTrace()
@@ -315,7 +336,8 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                                 boardId = boardId, // 게시글 ID
                                 // parentId = parentId, // parentId는 대댓글을 작성할 때 사용
                                 depth = 0, // 댓글 깊이, 일반 댓글은 0
-                                commentCreatedTime = "", // 댓글 생성 시간 또는 다른 정보
+                                commentCreatedTime = "",
+                                userImage = ""
                             )
 
                             // userImage = userImage, // CommentDto 전체에 대한 사용자 이미지 (선택적)
