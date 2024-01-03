@@ -232,7 +232,7 @@ class boardDtlFragment : Fragment() {
                 AllComment = binding.AllComment
                 binding.AllComment.setOnClickListener {
                     val boardId = boardDto?.board?.id.toString() // 게시판 아이디 가져오기
-                    Log.d("syy", "AllComment 클릭! . boardId: $boardId")
+                    Log.d(TAG, "AllComment 클릭! . boardId: $boardId")
 
                     // 추가하기 전에 프래그먼트가 이미 추가되어 있는지 확인
                     val existingFragment = parentFragmentManager.findFragmentByTag(CommentFragment::class.java.simpleName)
