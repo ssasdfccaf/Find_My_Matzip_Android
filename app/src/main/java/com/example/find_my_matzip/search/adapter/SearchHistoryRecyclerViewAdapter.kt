@@ -84,10 +84,11 @@ class SearchHistoryRecyclerViewAdapter(val context: Context, var datas: List<Sea
             val copyList = datas?.toMutableList()
             copyList?.remove(item)
             datas = copyList
-            //Adapter에 변경사항 적용(특정한 아이템 1개를 삭제할 때 사용)
-            notifyItemRemoved(position)
 
             SharedPreferencesManager.deleteSearchHistory(item?.text.toString())
+
+            //Adapter에 변경사항 적용(특정한 아이템 1개를 삭제할 때 사용)
+            notifyDataSetChanged()
         }
 
 

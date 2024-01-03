@@ -143,33 +143,6 @@ class SearchActivity : AppCompatActivity(),
             else -> searchType = "default"
         }
     }
-//    private fun showResult(){
-//        if(binding.searchBar.text.isNullOrEmpty()){
-//            //최근 검색어 (default)
-//            searchType = "default"
-//            binding.currentView.visibility = View.VISIBLE
-//            binding.fragChange.visibility = View.GONE
-//
-//            showSearchHistory()
-//
-//        }else{
-//            when(searchType){
-//                "board" ->{
-//                    binding.currentView.visibility = View.GONE
-//                    binding.fragChange.visibility = View.VISIBLE
-//                    replaceFragment(BoardSearchFragment.newInstance(binding.searchBar.text.toString()))
-//                    binding.tabs.getTabAt(0)?.select()
-//                }
-//                "user" -> {
-//                    binding.currentView.visibility = View.GONE
-//                    binding.fragChange.visibility = View.VISIBLE
-//                    replaceFragment(UserSearchFragment.newInstance(binding.searchBar.text.toString()))
-//                    binding.tabs.getTabAt(1)?.select()
-//                }
-//                else -> searchType = "board"
-//            }
-//        }
-//    }
 
     private fun replaceFragment(fragment: Fragment) {
         Log.d(TAG,"replaceFragment 실행")
@@ -187,7 +160,11 @@ class SearchActivity : AppCompatActivity(),
         //형변환(Hash -> ArrayList)
         val searchDtoList = existingSet?.map {
             val (text, dateString) = it.split(",")
-            SearchDto(text, SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).parse(dateString))
+
+            val parseFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US)
+            SearchDto(text, parseFormat.parse(dateString))
+        }?.sortedByDescending {
+            it.date
         }
 
         val layoutManager = LinearLayoutManager(this)

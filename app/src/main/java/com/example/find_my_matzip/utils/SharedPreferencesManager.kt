@@ -68,11 +68,13 @@ object SharedPreferencesManager{
     // 검색 기록 저장
     fun saveSearchHistory(text: String){
         if(text.isNotEmpty()){
-            val currentDate = SimpleDateFormat("yyyy.MM.dd").format(Date())
+            //val currentDate = SimpleDateFormat("yyyy.MM.dd").format(Date())
+            val currentDate = Date()
             val historyItem = "$text,$currentDate"
 
             //기존의 list조회
-            val existingSet = prefs?.getStringSet("search_history", HashSet()) ?: HashSet()
+            val existingSet = prefs?.getStringSet("search_history", LinkedHashSet()) ?: LinkedHashSet()
+
             existingSet.add(historyItem)
 
             //새로운 text추가된 list저장
@@ -84,7 +86,8 @@ object SharedPreferencesManager{
     //특정 검색어 삭제
     fun deleteSearchHistory(text: String){
         //기존 list
-        val existingSet = prefs?.getStringSet("search_history", HashSet() ) ?: HashSet()
+        val existingSet = prefs?.getStringSet("search_history", LinkedHashSet()) ?: LinkedHashSet()
+
 
         // 삭제할 단어 찾기
         val itemsToDelete = existingSet.filter { it.startsWith("$text,") }
@@ -100,7 +103,7 @@ object SharedPreferencesManager{
 
     // 검색 기록 조회
     fun getSearchHistory(): Set<String>? {
-        return prefs?.getStringSet("search_history", HashSet())
+        return prefs?.getStringSet("search_history", LinkedHashSet())
     }
 
     // 검색 기록 삭제
