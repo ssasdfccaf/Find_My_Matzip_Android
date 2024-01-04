@@ -8,6 +8,10 @@
         android:orientation="vertical"
         android:background="@drawable/top_radius_white_background" >
         >
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <TextView
             android:id="@+id/bottomSheetTitleTextView"
             android:layout_width="match_parent"
