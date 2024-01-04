@@ -110,7 +110,6 @@ class RestaurantFragment : Fragment() {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                 && firstVisibleItemPosition >= 0
             ) {
-                currentPage++
                 Log.d("MyPageFragment", "33 currentPage 전 :$currentPage ")
                 Log.d("MyPageFragment", "스크롤 리스닝 확인 3")
                 loadNextPageData(currentPage)

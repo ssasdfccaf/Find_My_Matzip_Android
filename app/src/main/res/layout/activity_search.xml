@@ -33,7 +33,8 @@
                 <com.google.android.material.search.SearchBar
                     android:id="@+id/search_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:hint="게시글,계정 또는 식당 검색"/>
 
             </LinearLayout>
 
@@ -174,7 +175,7 @@
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="게시글 또는 계정 검색"
+            android:hint="게시글,계정 또는 식당 검색"
             app:layout_anchor="@id/search_bar">
 
             <LinearLayout
