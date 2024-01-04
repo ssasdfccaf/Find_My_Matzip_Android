@@ -13,8 +13,11 @@ dependencyResolutionManagement {
         maven {
             url 'https://naver.jfrog.io/artifactory/maven/'
         }
+        maven { url "https://jitpack.io" } // JitPack 저장소 추가(로딩 이미지)
     }
 }
 
 rootProject.name = "Find_My_Matzip"
 include ':app'
+
+

@@ -1,14 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".NavTab.NavTabFragment.MyPageFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="5" />
+       >
+        <!--전체 리니어 -->
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".MyPageFragment">
+
+        <LinearLayout
+            android:id="@+id/lay1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="30dp"
+
+            >
+
+            <!--     사용자 아이디   -->
+            <TextView
+                android:id="@+id/userId"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/nexonbold"
+                android:text="findbyMatZip"
+                android:textSize="25sp">
+
+            </TextView>
+            <!--      프로필 이미지 +게시물+ 팔로워 + 팔로잉 -->
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+
+                    app:cardCornerRadius="75dp">
+
+                    <ImageView
+                        android:id="@+id/userImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:src="@drawable/profile"></ImageView>
+                </androidx.cardview.widget.CardView>
+
+                <!-- 게시물, 팔로워 팔로잉을 묶어주는 리니어 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="horizontal">
+
+                    <!--게시물 묶기 -->
+                    <LinearLayout
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/countBoard"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/nexonmed"
+                            android:text="0"></TextView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/nexonbold"
+                            android:text="게시물"></TextView>
+                    </LinearLayout>
+                    <!--팔로워 -->
+                    <LinearLayout
+                        android:id="@+id/follower"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/countToUser"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/nexonmed"
+                            android:text="0"></TextView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="팔로워"
+                            android:fontFamily="@font/nexonbold"></TextView>
+                    </LinearLayout>
+                    <!--팔로잉 -->
+                    <LinearLayout
+                        android:id="@+id/following"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/countFromUser"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="0"
+                            android:fontFamily="@font/nexonmed"></TextView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="팔로잉"
+                            android:fontFamily="@font/nexonbold"></TextView>
+
+
+
+                    </LinearLayout>
+                    <!--             팔로잉 닫기   -->
+
+                </LinearLayout>
+                <!--            텍스트 전체 리니어 닫기 -->
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/MyButton"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/updateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/design_default_color_primary"
+                    android:fontFamily="@font/nexonmed"
+                    android:text="프로필 편집"
+                    android:visibility="visible"
+                    android:layout_marginRight="5dp"></Button>
+                <Button
+                    android:id="@+id/writeBoardBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/black"
+                    android:fontFamily="@font/nexonmed"
+                    android:text="메시지 보내기"
+                    android:visibility="visible"></Button>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/boardRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/item_boards"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
