@@ -86,6 +86,10 @@ class SearchActivity : AppCompatActivity(),
                         searchType = "user"
                         checkSearchType()
                     }
+                    2 ->{
+                        searchType = "restaurant"
+                        checkSearchType()
+                    }
                 }
             }
 
@@ -144,6 +148,13 @@ class SearchActivity : AppCompatActivity(),
                 binding.fragChange.visibility = View.VISIBLE
                 replaceFragment(UserSearchFragment.newInstance(binding.searchBar.text.toString()))
                 binding.tabs.getTabAt(1)?.select()
+            }
+            "restaurant" -> {
+                Log.d(TAG,"restaurant")
+                binding.currentView.visibility = View.GONE
+                binding.fragChange.visibility = View.VISIBLE
+                replaceFragment(ResSearchFragment.newInstance(binding.searchBar.text.toString()))
+                binding.tabs.getTabAt(2)?.select()
             }
             else -> searchType = "default"
         }
