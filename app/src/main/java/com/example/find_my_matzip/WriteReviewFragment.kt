@@ -141,6 +141,7 @@ class WriteReviewFragment : Fragment() {
                         e.printStackTrace()
                     }
 
+                    //db에 전달하는 이미지데이터 repImgYn값 조정
                     // 첫 번째 이미지인 경우 repImgYn을 "Y"로 설정
                     if (i == 0) {
                         boardImgDtoList[0].repImgYn = "Y"
@@ -150,8 +151,24 @@ class WriteReviewFragment : Fragment() {
                     }
                     Log.d(TAG,"")
 
-                }//파이어베이스에 이미지 업로드 + repImgYn 값 설정
-                //파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
+                }//파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
+
+                //이미지의 갯수가 5개가 안될 때 그 자리에 빈 데이터 넣기
+                if (boardImgDtoList.count() <5) {
+                    //들어가있는 갯수 ~ 5개 까지 반복한다
+                    for (i in boardImgDtoList.count() until 5) {
+                        uploadedImg = BoardImgDto(
+                            id = i.toLong(), // 이미지 ID는 서버에서 생성되므로 0으로 설정하거나 다른 값으로 임시 설정해주세요.
+                            imgName = "", // 이미지 파일명
+                            oriImgName = "", // 원본 이미지명
+                            imgUrl = "", // 이미지 URL
+                            repImgYn = "N"
+                        )
+                        boardImgDtoList.add(uploadedImg) // 이미지 정보를 리스트에 추가
+                        Log.d(TAG,"${boardImgDtoList.count()}번째 자리에, 빈 데이터 추가완료.")
+                    }
+
+                }//이미지의 갯수가 5개가 안될 때 그 자리에 빈 데이터 넣기
 
                 //DB로 보낼 게시글 정보를 boardDtoMap에 담기
                 boardDtoMap["userId"] = userId

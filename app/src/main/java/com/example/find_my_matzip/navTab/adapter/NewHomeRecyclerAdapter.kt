@@ -15,7 +15,7 @@ class NewMainBoardViewHolder(private val binding :ItemNewmainboardBinding,privat
         //유저프로필이미지
         Glide.with(binding.root)
             .load(item.user.userImage)
-            .override(40, 40)
+            .override(900, 900)
             .into(binding.userProfileImg)
         //유저이름
         binding.userId.text = item.user.username
