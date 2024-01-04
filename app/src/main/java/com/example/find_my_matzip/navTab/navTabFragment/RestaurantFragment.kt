@@ -25,7 +25,7 @@ class RestaurantFragment : Fragment() {
     lateinit var binding: FragmentRestaurantBinding
     lateinit var adapter: RestaurantRecyclerAdapter
     lateinit var restaurantList: Call<List<RestaurantDto>>
-    lateinit var avgScoreList: Call<List<RestaurantDto>>
+   //  lateinit var avgScoreList: Call<List<RestaurantDto>>
     private var text:String? = null
     var isLoading = false
     var isLastPage = false
@@ -129,13 +129,13 @@ class RestaurantFragment : Fragment() {
             //검색 단어가 있을 때
             Log.d("RestaurantFragment", "검색중 $text")
             restaurantList = restaurantService.getSearchRestaurantsByAvgScore(text!!,page)
-            avgScoreList = restaurantService.getSearchRestaurantsByAvgScore(text!!,page)
+         //    avgScoreList = restaurantService.getSearchRestaurantsByAvgScore(text!!,page)
 
         } else {
             //전체 조회
             Log.d("RestaurantFragment", "전체 조회")
             restaurantList = restaurantService.getAllPageRestaurantsByAvgScore(page)
-            avgScoreList = restaurantService.getAllPageRestaurantsByAvgScore(page)
+        //     avgScoreList = restaurantService.getAllPageRestaurantsByAvgScore(page)
         }
 
 

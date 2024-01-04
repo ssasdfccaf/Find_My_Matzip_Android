@@ -3,11 +3,13 @@ package com.example.find_my_matzip
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.location.Geocoder
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
@@ -25,10 +27,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 class AddRestaurantActivity : AppCompatActivity() {
+
     lateinit var binding : ActivityAddRestaurantBinding
 
     //editview 밖의 공간 클릭시 키보드 내리기 기능 구현
@@ -212,7 +217,7 @@ class AddRestaurantActivity : AppCompatActivity() {
 
 
             // 이미지 저장될 위치 및 파일명(파이어베이스)
-            val imgRef = storageRef.child("restaurant_img/${binding.searchAddress.text}${binding.resAddressDetail.text}.jpg")
+            val imgRef = storageRef.child("restaurant_img/${binding.resName.text}${binding.searchAddress.text}.jpg")
 
 
             //입력된 이미지 있을때만 db에 이미지 경로 저장
@@ -282,6 +287,7 @@ class AddRestaurantActivity : AppCompatActivity() {
                         startActivity(intent)
 
                     }else {
+                        Toast.makeText(this@AddRestaurantActivity,"식당추가 실패 실패.",Toast.LENGTH_SHORT).show()
                         Log.d("sdoaddres", "서버 응답 실패: ${response.code()}")
                         //로딩창 지우기
                         loadingDialog.dismiss()
@@ -309,18 +315,44 @@ class AddRestaurantActivity : AppCompatActivity() {
                     loadingDialog.dismiss()
                     call.cancel()
                 }
-
             })
         }// 회원가입
 
+        // 지오코더 생성
+        fun getLatLngFromAddress(address: String): Pair<Double, Double>? {
+            val geocoder = Geocoder(this, Locale.getDefault())
+            try {
+                val addresses = geocoder.getFromLocationName(address, 1)
+                if (addresses != null) {
+                    if (addresses.isNotEmpty()) {
+                        val latitude = addresses[0].latitude
+                        val longitude = addresses[0].longitude
+                        return Pair(latitude, longitude)
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            return null
+        }
+
         //주소 검색후 결과값 받아오는 후처리 함수
+        //받아온 주소 이용해서 위경도 자동 할당
         val getSearchResult = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             if (result.resultCode == RESULT_OK) {
-                if (result.data != null) {
-                    val data = result.data!!.getStringExtra("data")
-                    binding.searchAddress.setText(data)
+                result.data?.getStringExtra("data")?.let { address ->
+                    binding.searchAddress.setText(address)
+
+                    // 주소를 좌표로 변환하여 res_lat와 res_lng에 설정
+                    getLatLngFromAddress(address)?.let { latLng ->
+                        binding.resLat.text = Editable.Factory.getInstance().newEditable(latLng.first.toString())
+                        binding.resLng.text = Editable.Factory.getInstance().newEditable(latLng.second.toString())
+                    } ?: run {
+                        // 변환 실패 시 메시지를 사용자에게 알릴 수 있습니다.
+                        Toast.makeText(this, "주소를 좌표로 변환하는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
