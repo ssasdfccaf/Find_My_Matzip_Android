@@ -40,7 +40,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".MessageActivity"
+            android:name=".search.SearchActivity"
             android:exported="true" />
 
         <provider

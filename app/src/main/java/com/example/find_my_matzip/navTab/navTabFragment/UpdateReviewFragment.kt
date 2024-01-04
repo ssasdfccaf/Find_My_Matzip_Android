@@ -2,8 +2,12 @@ package com.example.find_my_matzip
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.system.Os.remove
+import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +15,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.example.find_my_matzip.databinding.FragmentUpdateReviewBinding
 import com.example.find_my_matzip.databinding.FragmentWriteReviewBinding
+import com.example.find_my_matzip.model.BoardDtlDto
 import com.example.find_my_matzip.model.BoardImgDto
 import com.example.find_my_matzip.model.ProfileDto
-import com.example.find_my_matzip.navTab.adapter.WriteReviewAdapter
+import com.example.find_my_matzip.navTab.adapter.UpdateReviewAdapter
 import com.example.find_my_matzip.navTab.navTabFragment.NewHomeFragment
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
@@ -27,40 +40,77 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.UUID
 
-class WriteReviewFragment : Fragment() {
-    lateinit var binding : FragmentWriteReviewBinding
+class UpdateReviewFragment : Fragment() {
+    lateinit var binding : FragmentUpdateReviewBinding
     private var uuid = UUID.randomUUID().toString()
+    private lateinit var imgNameList : List<String>
 
     // 로그인한 사용자의 아이디를 가져와서 해당 사용자의 프로필 정보를 서버에서 조회
-    val userId = SharedPreferencesManager.getString("id","")
+    val loginuserId = SharedPreferencesManager.getString("id","")
+    private var resId: String? = null
 
     private var uriList = ArrayList<Uri>()
     //    일반 이미지 업로드 최대 갯수
     private val maxNumber = 5
-    lateinit var adapter: WriteReviewAdapter
+    lateinit var adapter: UpdateReviewAdapter
     lateinit var homeTabActivity: HomeTabActivity
 
     private val TAG: String = "WriteReviewFragment"
 
-    lateinit var boardImgDtoList: MutableList<BoardImgDto>
+    private var boardImgDtoList: MutableList<BoardImgDto> = mutableListOf()
     lateinit var boardDtoMap : MutableMap<String,Any>
     lateinit var uploadedImg : BoardImgDto
 
-    //resId가져오기
+//    가져온이미지url 변환하기위한코드
+    private fun convertImageUrlToUri(imageUrl: String): Uri {
+        return Uri.parse(imageUrl)
+    }//    가져온이미지url 변환하기위한코드
+
+    private fun getImageUriFromBitmap(context: Context, bitmap: Bitmap): Uri? {
+        // 비트맵을 파일로 저장
+        val imagesDir = File(context.cacheDir, "images")
+        if (!imagesDir.exists()) {
+            imagesDir.mkdirs()
+        }
+        val file = File(imagesDir, "${System.currentTimeMillis()}.png")
+        try {
+            val stream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            stream.flush()
+            stream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return null
+        }
+        // 파일로부터 Uri 생성
+        return FileProvider.getUriForFile(context, "${context.packageName}", file)
+    }
+
+    // Uri를 uriList에 추가하는 함수
+    private fun addUriToList(uri: Uri) {
+        uriList.add(uri)
+        adapter.notifyDataSetChanged()
+        Log.d(TAG, "addUriToList의 결과 uriList: $uriList")
+        printCount()
+    }
+
     companion object {
-        fun newInstance(resId: Long?): WriteReviewFragment {
-            Log.d("SdoLifeCycle","WriteReviewFragment newInstance")
-            val fragment = WriteReviewFragment()
+        fun newInstance(boardId: String): UpdateReviewFragment {
+            Log.d("SdoLifeCycle","UpdateReviewFragment newInstance")
+            val fragment = UpdateReviewFragment()
             val args = Bundle()
-            args.putLong("resId", resId!!)
+            args.putString("boardId", boardId)
             fragment.arguments = args
             return fragment
         }
-    }//resId가져오기
+    }
 
     //homeTabActivity 연결
     override fun onAttach(context: Context) {
@@ -75,26 +125,111 @@ class WriteReviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.d("SdoLifeCycle","WriteReviewFragment onCreateView")
-        binding = FragmentWriteReviewBinding.inflate(layoutInflater,container,false)
+        binding = FragmentUpdateReviewBinding.inflate(layoutInflater,container,false)
 
-        // 이전 프래그먼트에서 전달된 resId 가져오기
-        val resId = arguments?.getLong("resId")
-        binding.userId.text = userId
-
-        //db에 저장하기 위해서 list생성
-        boardImgDtoList = mutableListOf<BoardImgDto>()
-        boardDtoMap = mutableMapOf<String,Any>()
-        uploadedImg = BoardImgDto(1,"abc","abc","abc","Y")
-
-        val loadingDialog = LoadingDialog(requireContext())
-
-        printCount()
-        // RecyclerView에 Adapter 연결하기
-        adapter = WriteReviewAdapter(requireContext(),uriList)
+        adapter = UpdateReviewAdapter(requireContext(),uriList)
         binding.recyclerview.adapter = adapter
         // LinearLayoutManager을 사용하여 수평으로 아이템을 배치한다.
         binding.recyclerview.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        val boardService = (context?.applicationContext as MyApplication).boardService
+        val updateBoard = arguments?.getString("boardId")?.let { boardService.getBoardDtl(it) }
+
+        updateBoard?.enqueue(object : Callback<BoardDtlDto>{
+            override fun onResponse(call: Call<BoardDtlDto>, response: Response<BoardDtlDto>) {
+                Log.d("kkt","데이터 도착 확인.")
+                val boardDto = response.body()
+                imgNameList = boardDto?.board?.boardImgDtoList?.map { it.imgName } ?: emptyList()
+                Log.d("TAG","파이어베이스에서 삭제할 이미지의 이름 리스트 imgNameList : $imgNameList")
+                Log.d("kkt","데이터 도착 확인1. : BoardDtlDto $boardDto")
+                Log.d("kkt","데이터 도착 확인2. : BoardDtlDto.board ${boardDto?.board}")
+                Log.d("kkt","데이터 도착 확인3. : BoardDtlDto.restaurant ${boardDto?.restaurant}")
+                Log.d("kkt","데이터 도착 확인4. : BoardDtlDto.users ${boardDto?.users}")
+
+                binding.userId.text = boardDto?.users?.userid.toString()
+                val boardTitle = boardDto?.board?.boardTitle ?: ""
+                binding.boardTitle.text = Editable.Factory.getInstance().newEditable(boardTitle)
+
+                val boardContent = boardDto?.board?.content ?: ""
+                binding.boardContent.text = Editable.Factory.getInstance().newEditable(boardContent)
+
+                val boardScore = boardDto?.board?.score?.toString() ?: ""
+                binding.boardScore.text = Editable.Factory.getInstance().newEditable(boardScore)
+
+                resId = boardDto?.restaurant?.res_id.toString()
+
+
+                // 기존 데이터를 업데이트한 후, 새로운 데이터를 얻었을 때 adapter에 설정하고 알립니다.
+                val imgUriList: List<Uri> = boardDto?.board?.boardImgDtoList?.mapNotNull { convertImageUrlToUri(it.imgUrl) } ?: emptyList()
+
+                uriList.clear()
+
+                // boardImgDtoList에서 imgUrl을 추출하여 Uri 리스트로 변환하여 반환하는 함수
+                fun extractUriListFromBoardDto(boardImgDtoList: List<BoardImgDto>): List<Uri> {
+                    return boardImgDtoList.mapNotNull { convertImageUrlToUri(it.imgUrl) }
+                }
+
+                // 이미지 URL 리스트를 Glide를 사용하여 비트맵으로 변환하고 Uri로 변환하여 uriList에 추가하는 함수
+                fun urlToUri(imageUrls: List<String>) {
+                    val requestOptions = RequestOptions()
+                        .format(DecodeFormat.PREFER_ARGB_8888)
+                        .fitCenter()
+
+                    imageUrls.forEach { imageUrl ->
+                        Glide.with(requireContext())
+                            .asBitmap()
+                            .load(imageUrl)
+                            .apply(requestOptions)
+                            .into(object : CustomTarget<Bitmap>() {
+                                override fun onResourceReady(
+                                    resource: Bitmap,
+                                    transition: Transition<in Bitmap>?
+                                ) {
+                                    val imageUri = getImageUriFromBitmap(requireContext(), resource)
+                                    imageUri?.let {
+//                                        uriList.add(it)
+//                                        adapter.notifyDataSetChanged()
+                                        addUriToList(it)
+                                    }
+                                }
+
+                                override fun onLoadCleared(placeholder: Drawable?) {
+                                    Log.d(TAG,"이미지로드가 취소됨.")
+                                }
+                            })
+                    }
+                }
+
+                // boardImgDtoList에서 imgUrl을 추출하여 Uri 리스트로 변환하여 uriList에 할당
+                val uriList: List<Uri> = extractUriListFromBoardDto(boardDto?.board?.boardImgDtoList ?: emptyList())
+
+                // 이미지 URL 리스트를 Glide를 사용하여 비트맵으로 변환하고 Uri로 변환하여 uriList에 추가
+                urlToUri(uriList.map { it.toString() })
+//                uriList.clear()
+//                uriList.addAll(imgUriList)
+
+                boardImgDtoList.clear()
+                boardImgDtoList.addAll(boardDto?.board?.boardImgDtoList ?: emptyList())
+
+
+                adapter.notifyDataSetChanged()
+                //이때
+                Log.d(TAG,"uriList : $uriList")
+                Log.d(TAG,"boardImgDtoList : $boardImgDtoList")
+                printCount()
+            }
+
+            override fun onFailure(call: Call<BoardDtlDto>, t: Throwable) {
+
+            }
+
+        })
+
+        boardDtoMap = mutableMapOf<String,Any>()
+        uploadedImg = BoardImgDto(1,"abc","abc","abc","Y")
+
+        val loadingDialog = LoadingDialog(requireContext())
 
         // ImageView를 클릭할 경우
         // 선택 가능한 이미지의 최대 개수를 초과하지 않았을 경우에만 앨범을 호출한다.
@@ -126,11 +261,11 @@ class WriteReviewFragment : Fragment() {
             }else if(score in 1..5){
 
                 Log.d("TAG","DB로 전달하는 boardDtoMap : $boardDtoMap")
-
+                Log.d("TAG","파이어베이스에서 삭제할 이미지의 이름 리스트 imgNameList : $imgNameList")
                 //파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
                 for (i in 0 until uriList.count()) {
-                    val fileName = "$userId-$resId-$uuid-$i"
-                    imageUpload(uriList.get(i), i)
+                    val fileName = "$loginuserId-$resId-$uuid-$i"
+                    imageUpload(uriList.get(i), i) //이걸로 파이어베이스에 업로드 끝
                     boardImgDtoList[i].imgName =
                         "$fileName"
                     boardImgDtoList[i].imgUrl =
@@ -152,9 +287,10 @@ class WriteReviewFragment : Fragment() {
 
                 }//파이어베이스에 이미지 업로드 + repImgYn 값 설정
                 //파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
-
+                Log.d(TAG,"파이어베이스에 이미지들 업로드 완료, 남아있던 이미지들 삭제")
+                deleteFirebaseImages(imgNameList)
                 //DB로 보낼 게시글 정보를 boardDtoMap에 담기
-                boardDtoMap["userId"] = userId
+                boardDtoMap["userId"] = loginuserId
                 boardDtoMap["boardViewStatus"] = "VIEW"
                 boardDtoMap["boardTitle"] = binding.boardTitle.text.toString()
                 boardDtoMap["content"] = binding.boardContent.text.toString()
@@ -163,7 +299,9 @@ class WriteReviewFragment : Fragment() {
                 Log.d("WriteReviewFragment","boardDtoMap의 내용 확인(다담은상태) : ${boardDtoMap} ")
 
                 val boardService = (context?.applicationContext as MyApplication).boardService
-                val call = resId?.let { it1 -> boardService.createBoard3(it1, boardDtoMap) }
+                //boardId가져와야함
+                val call = arguments?.getString("boardId")?.let { it1 -> boardService.editBoard(it1, boardDtoMap) }
+                Log.d("WriteReviewFragment"," 콜백으로 boardId 잘 보내는지 확인  : ${arguments?.getString("boardId")} ")
 
                 //DB로 전달하는 콜백함수==================================================================================
                 call?.enqueue(object : Callback<Unit> {
@@ -219,7 +357,7 @@ class WriteReviewFragment : Fragment() {
                 val fragment = NewHomeFragment()
                 parentFragmentManager.beginTransaction()
                     .add(R.id.fragmentContainer, fragment)
-                    .remove(this@WriteReviewFragment)
+                    .remove(this@UpdateReviewFragment)
                     .commit()
 
             } else{
@@ -230,7 +368,7 @@ class WriteReviewFragment : Fragment() {
         }// ★★★★등록 버튼눌렀을 때 ★★★★
         // ★★★★등록 버튼눌렀을 때 ★★★★
 
-        adapter.setItemClickListener(object : WriteReviewAdapter.onItemClickListener {
+        adapter.setItemClickListener(object : UpdateReviewAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
                 uriList.removeAt(position)
                 boardImgDtoList.removeAt(position)
@@ -251,7 +389,6 @@ class WriteReviewFragment : Fragment() {
                 AppCompatActivity.RESULT_OK -> {
 
                     val clipData = result.data?.clipData
-                    val resId = arguments?.getLong("resId")
 
                     if (clipData != null) { // 이미지를 여러 개 선택할 경우
                         val clipDataSize = clipData.itemCount
@@ -271,7 +408,7 @@ class WriteReviewFragment : Fragment() {
 //                                문제점 지금당장 fileName값을 할당받는 시점이 파이어베이스에 업로드를 할 시점인데
 //                                여기서 리스트를 담아버리면 fileName값이 2번 생성되어 주소가 달라지게 된다.
 //                                그렇다면 fileName을
-                                val fileName = "$userId-$resId-$uuid-$i"
+                                val fileName = "$loginuserId-$resId-$uuid-$i"
                                 val imgStorageUrl =
                                     "임시 이미지url"
                                 uploadedImg = BoardImgDto(
@@ -294,13 +431,21 @@ class WriteReviewFragment : Fragment() {
                         }
                     }
                     // notifyDataSetChanged()를 호출하여 adapter에게 값이 변경 되었음을 알려준다.
-                    adapter.notifyDataSetChanged()
+//                    adapter.notifyDataSetChanged()
                     printCount()
+                    Log.d(TAG,"uriList에 담긴 이미지 갯수 : ${uriList.count()}")
+                    Log.d(TAG,"uriList : $uriList")
+                    Log.d(TAG,"boardImgDtoList에 담긴 이미지 갯수 : ${boardImgDtoList.count()}")
+                    Log.d(TAG,"boardImgDtoList : $boardImgDtoList")
+//                    adapter.loadImages(uriList)
+                    adapter.notifyDataSetChanged()
                 }
             }
         }
 
     private fun printCount() {
+        Log.d(TAG,"프린트 카운트 uriList : $uriList")
+        Log.d(TAG,"프린트 카운트 boardImgDtoList : $boardImgDtoList")
         val text = "${uriList.count()}/${maxNumber}"
         binding.countArea.text = text
     }
@@ -312,14 +457,7 @@ class WriteReviewFragment : Fragment() {
         val storage = Firebase.storage
         // storage 참조
         val storageRef = storage.getReference("newboardimg")
-        // storage에 저장할 파일명 선언
-        // 파일명 생성 : uuid+현재시간
-//         val currentTime = System.currentTimeMillis().toString()
-//         val uuid = UUID.randomUUID().toString()
-        val resId = arguments?.getLong("resId")
-        val fileName = "$userId-$resId-$uuid-$count"
-//        Log.d("WriteReviewFragment", "로그인 된 유저 확인 resId : $resId")
-
+        val fileName = "$loginuserId-$resId-$uuid-$count"
 
         val mountainsRef = storageRef.child("${fileName}.png")
         val uploadTask = mountainsRef.putFile(uri)
@@ -332,6 +470,50 @@ class WriteReviewFragment : Fragment() {
 //            Toast.makeText(requireActivity(), "갤러리에서 이미지 가져오기 실패", Toast.LENGTH_SHORT).show();
         }
     }
+
+    //파이어베이스에서 이미지 삭제 로직
+//    private fun deleteFirebaseImages(imageUrls: List<String>) {
+//        val storage = Firebase.storage
+//        val storageRef = storage.reference
+//
+//        for (imageUrl in imageUrls) {
+//            val httpsReference = storage.getReferenceFromUrl(imageUrl)
+//
+//            // Delete the file
+//            httpsReference.delete()
+//                .addOnSuccessListener {
+//                    // 파일 삭제 성공
+//                    Log.d(TAG, "Firebase 이미지 삭제 성공: $imageUrl")
+//                }
+//                .addOnFailureListener { e ->
+//                    // 파일 삭제 실패
+//                    Log.e(TAG, "Firebase 이미지 삭제 실패: $imageUrl, Exception: $e")
+//                }
+//        }
+//    }
+    private fun deleteFirebaseImages(imageNames: List<String>) {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+
+        for (imageName in imageNames) {
+            // 삭제할 이미지에 대한 참조 생성
+            val imageRef = storageRef.child("newboardimg/$imageName.png")
+
+            // 이미지 삭제
+            imageRef.delete()
+                .addOnSuccessListener {
+                    // 이미지 삭제 성공
+                    Log.d(TAG, "Firebase 이미지 삭제됨: $imageName")
+                }
+                .addOnFailureListener { e ->
+                    // 이미지 삭제 실패
+                    Log.e(TAG, "Firebase 이미지 삭제 실패: $imageName", e)
+                }
+        }
+    }
+// 파이어베이스에서 이미지 삭제 로직
+
+
 
 
 }//프래그먼트의 끝
