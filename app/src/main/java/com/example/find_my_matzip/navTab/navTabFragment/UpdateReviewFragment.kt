@@ -140,7 +140,9 @@ class UpdateReviewFragment : Fragment() {
             override fun onResponse(call: Call<BoardDtlDto>, response: Response<BoardDtlDto>) {
                 Log.d("kkt","데이터 도착 확인.")
                 val boardDto = response.body()
-                imgNameList = boardDto?.board?.boardImgDtoList?.map { it.imgName } ?: emptyList()
+                imgNameList = boardDto?.board?.boardImgDtoList
+                    ?.map { it.imgName }
+                    ?.filter { it.isNotBlank() } ?: emptyList()
                 Log.d("TAG","파이어베이스에서 삭제할 이미지의 이름 리스트 imgNameList : $imgNameList")
                 Log.d("kkt","데이터 도착 확인1. : BoardDtlDto $boardDto")
                 Log.d("kkt","데이터 도착 확인2. : BoardDtlDto.board ${boardDto?.board}")
@@ -211,6 +213,16 @@ class UpdateReviewFragment : Fragment() {
 
                 boardImgDtoList.clear()
                 boardImgDtoList.addAll(boardDto?.board?.boardImgDtoList ?: emptyList())
+                Log.d(TAG,"boardImgDtoList중에 빈 요소 제거전 : $boardImgDtoList")
+                //boardImgDtoList중에 빈 요소를 찾아 리스트에서 제거.
+                for(i in 4 downTo 1){
+                    if (boardImgDtoList[i].imgUrl.isBlank()){
+                        boardImgDtoList.removeAt(i)
+                    } else{
+                        break
+                    }
+                }//boardImgDtoList중에 빈 요소를 찾아 리스트에서 제거.
+                Log.d(TAG,"boardImgDtoList중에 빈 요소 제거 완료 : $boardImgDtoList")
 
 
                 adapter.notifyDataSetChanged()
@@ -285,10 +297,27 @@ class UpdateReviewFragment : Fragment() {
                     }
                     Log.d(TAG,"")
 
-                }//파이어베이스에 이미지 업로드 + repImgYn 값 설정
-                //파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
+                } //파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
                 Log.d(TAG,"파이어베이스에 이미지들 업로드 완료, 남아있던 이미지들 삭제")
                 deleteFirebaseImages(imgNameList)
+
+                //이미지의 갯수가 5개가 안될 때 그 자리에 빈 데이터 넣기
+                if (boardImgDtoList.count() <5) {
+                    //들어가있는 갯수 ~ 5개 까지 반복한다
+                    for (i in boardImgDtoList.count() until 5) {
+                        uploadedImg = BoardImgDto(
+                            id = i.toLong(), // 이미지 ID는 서버에서 생성되므로 0으로 설정하거나 다른 값으로 임시 설정해주세요.
+                            imgName = "", // 이미지 파일명
+                            oriImgName = "", // 원본 이미지명
+                            imgUrl = "", // 이미지 URL
+                            repImgYn = "N"
+                        )
+                        boardImgDtoList.add(uploadedImg) // 이미지 정보를 리스트에 추가
+                        Log.d(TAG,"${boardImgDtoList.count()}번째 자리에, 빈 데이터 추가완료.")
+                    }
+
+                }//이미지의 갯수가 5개가 안될 때 그 자리에 빈 데이터 넣기
+
                 //DB로 보낼 게시글 정보를 boardDtoMap에 담기
                 boardDtoMap["userId"] = loginuserId
                 boardDtoMap["boardViewStatus"] = "VIEW"

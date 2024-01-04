@@ -16,6 +16,8 @@ import com.example.find_my_matzip.model.BoardDtlDto
 import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.navTab.adapter.BoardDtlViewPagerAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,6 +29,7 @@ class boardDtlFragment : Fragment() {
     private val TAG: String = "boardDtlFragment"
     private var myFeeling = 0
     private lateinit var AllComment: TextView
+    private lateinit var imgNameList : List<String>
 
     // 로그인한 사용자의 아이디를 가져와서 해당 사용자의 프로필 정보를 서버에서 조회
     val loginuserId = SharedPreferencesManager.getString("id","")
@@ -186,6 +189,36 @@ class boardDtlFragment : Fragment() {
                     navigateToUpdateBoard(boardId)
                 }
                 // toResDtl 클릭 이벤트 핸들러
+
+                binding.deleteReview.setOnClickListener {
+                    //파이어베이스에 이미지 삭제하기
+                    imgNameList = boardDto?.board?.boardImgDtoList
+                        ?.map { it.imgName }
+                        ?.filter { it.isNotBlank() } ?: emptyList()
+
+                    deleteFirebaseImages(imgNameList)
+                    Log.d(TAG,"게시글 이미지 파이어베이스에서 삭제완료.")
+
+                    val call = boardService.deleteBoard((boardDto?.board!!.id))
+                    call.enqueue(object : Callback<Void> {
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            if (response.isSuccessful) {
+                                Log.d(TAG,"게시글 삭제 완료")
+                                val fragment = NewHomeFragment()
+                                parentFragmentManager.beginTransaction()
+                                    .replace(R.id.fragmentContainer, fragment)
+                                    .addToBackStack(null)
+                                    .commit()
+                            } else {
+                                Log.d(TAG,"게시글 삭제 대 실 패")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Log.d(TAG,"통신 실패")
+                        }
+                    })
+                }
 
 
                 // 유저 프로필로 이동 로직
@@ -348,6 +381,27 @@ class boardDtlFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun deleteFirebaseImages(imageNames: List<String>) {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+
+        for (imageName in imageNames) {
+            // 삭제할 이미지에 대한 참조 생성
+            val imageRef = storageRef.child("newboardimg/$imageName.png")
+
+            // 이미지 삭제
+            imageRef.delete()
+                .addOnSuccessListener {
+                    // 이미지 삭제 성공
+                    Log.d(TAG, "Firebase 이미지 삭제됨: $imageName")
+                }
+                .addOnFailureListener { e ->
+                    // 이미지 삭제 실패
+                    Log.e(TAG, "Firebase 이미지 삭제 실패: $imageName", e)
+                }
+        }
     }
     @Override
     override fun onResume() {
