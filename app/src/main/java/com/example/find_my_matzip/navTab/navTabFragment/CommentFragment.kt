@@ -72,9 +72,6 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
         super.onCreate(savedInstanceState)
     }
 
-    //    private val userId: String
-//        get() = SharedPreferencesManager.getString("id", "")
-// 댓글 업데이트를 위한 함수
 
     override fun onReplyClick(comment: CommentDto, boardId: Long) {
         showReplyDialog(comment, boardId)

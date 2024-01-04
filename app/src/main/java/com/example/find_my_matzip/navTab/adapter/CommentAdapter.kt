@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,6 +19,7 @@ import com.example.find_my_matzip.databinding.ItemCommentBinding
 import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.navTabFragment.CommentFragment
+import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.google.firebase.storage.FirebaseStorage
 import retrofit2.Call
@@ -173,6 +175,20 @@ class CommentAdapter(
         }
         binding.root.layoutParams = layoutParams
 
+
+        val loginUserId = SharedPreferencesManager.getString("id", "")
+        // 댓글 작성자의 아이디
+        val commentWriterId = item?.commentWriter
+
+        if (loginUserId == commentWriterId) {
+            // 현재 로그인한 사용자와 댓글 작성자가 동일한 경우 삭제 버튼 표시
+            binding.deleteReply.visibility = View.VISIBLE
+        } else {
+            // 동일하지 않은 경우 삭제 버튼 숨김
+            binding.deleteReply.visibility = View.GONE
+        }
+
+
         // 삭제 버튼 클릭 이벤트 처리
         binding.deleteReply.setOnClickListener {
             val position = holder.adapterPosition
@@ -185,6 +201,7 @@ class CommentAdapter(
             }
         }
 
+
         val userImage = item?.userImage
 
         // 사용자 이미지 URL이 있다면 Glide로 이미지 로드
@@ -193,6 +210,37 @@ class CommentAdapter(
                 .load(userImage)
                 .override(900, 900) // 이미지 크기 설정 (원하는 크기로 수정)
                 .into(binding.userImage)
+        }
+
+        binding.userImage.setOnClickListener {
+            val position = holder.adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                val comment = datas[position]
+                val userId = comment.commentWriter // 여기서 사용자 아이디를 가져와야 함
+
+                if (!userId.isNullOrBlank()) {
+                    // requireContext()를 통해 현재 컨텍스트에서 FragmentManager를 얻어옵니다.
+                    val fragmentManager = context.requireActivity().supportFragmentManager
+
+                    // 이제 fragmentManager를 사용하여 프로필로 이동하는 코드를 작성할 수 있습니다.
+                    navigateToUserProfile(userId, fragmentManager)
+                }
+            }
+        }
+        binding.commentWriter.setOnClickListener {
+            val position = holder.adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                val comment = datas[position]
+                val userId = comment.commentWriter // 여기서 사용자 아이디를 가져와야 함
+
+                if (!userId.isNullOrBlank()) {
+                    // requireContext()를 통해 현재 컨텍스트에서 FragmentManager를 얻어옵니다.
+                    val fragmentManager = context.requireActivity().supportFragmentManager
+
+                    // 이제 fragmentManager를 사용하여 프로필로 이동하는 코드를 작성할 수 있습니다.
+                    navigateToUserProfile(userId, fragmentManager)
+                }
+            }
         }
 
         //현재 아이템의 위치를 확인하고,
@@ -206,6 +254,14 @@ class CommentAdapter(
                 context.showReplyDialog(parentComment, boardId)
             }
         }
+    }
+
+    private fun navigateToUserProfile(userId: String, fragmentManager: FragmentManager) {
+        val fragment = ProfileFragment.newInstance(userId)
+        val transaction = fragmentManager.beginTransaction()
+            .add(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun deleteComment(commentId: Long) {

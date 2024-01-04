@@ -1,6 +1,7 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
 import android.app.AlertDialog
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,9 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
+import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentRankingBinding
 import com.example.find_my_matzip.model.RankingDto
 import com.example.find_my_matzip.navTab.adapter.RankingRecyclerAdapter
@@ -58,11 +62,47 @@ class RankingFragment : Fragment() {
                     Log.d("RankingFragment", "restaurantList의 값: ${firstRestaurant.resThumbnail}")
                     Log.d("RankingFragment", "Full Response: $restaurantList")
 
-                    val layoutManager = LinearLayoutManager(requireContext())
+//                    val layoutManager = LinearLayoutManager(requireContext())
+//                    binding.rankingRecyclerView.layoutManager = layoutManager
+//                    adapter = RankingRecyclerAdapter(this@RankingFragment,restaurantList)
+//                    binding.rankingRecyclerView.adapter = adapter
+
+                    val spanCount = 2 // 그리드의 열 수를 지정합니다.
+                    val spacing = resources.getDimensionPixelSize(R.dimen.grid_spacing) // 간격 크기를 지정합니다.
+
+                    val layoutManager = GridLayoutManager(requireContext(), spanCount)
+                    layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                        override fun getSpanSize(position: Int): Int {
+                            return 1 // 각 아이템의 차지하는 span 크기를 지정
+                        }
+                    }
+
                     binding.rankingRecyclerView.layoutManager = layoutManager
-                    adapter = RankingRecyclerAdapter(this@RankingFragment,restaurantList)
-//                    binding.rankingRecyclerView.adapter = RankingRecyclerAdapter(requireContext(), restaurantList)
+                    binding.rankingRecyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+                        override fun getItemOffsets(
+                            outRect: Rect,
+                            view: View,
+                            parent: RecyclerView,
+                            state: RecyclerView.State
+                        ) {
+                            val position = parent.getChildAdapterPosition(view)
+                            if (position % spanCount == 0) {
+                                // 첫 번째 열의 아이템인 경우 왼쪽에 간격 추가
+                                outRect.left = spacing
+                            } else {
+                                // 나머지 열의 아이템인 경우 오른쪽에 간격 추가
+                                outRect.left = spacing
+                                outRect.right = spacing
+                            }
+
+                            // 모든 아이템 상단에 간격 추가
+                            outRect.top = spacing
+                        }
+                    })
+                    adapter = RankingRecyclerAdapter(this@RankingFragment, restaurantList)
                     binding.rankingRecyclerView.adapter = adapter
+
+
                 } else {
                     Log.e("RankingFragment", "Response body is null or empty.")
 

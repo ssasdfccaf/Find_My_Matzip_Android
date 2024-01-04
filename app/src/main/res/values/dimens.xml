@@ -5,5 +5,6 @@
     <dimen name="peek_height">100dp</dimen>
     <dimen name="comment_indent">16dp</dimen>
     <dimen name="fixed_comment_indent">0dp</dimen>
+    <dimen name="grid_spacing">7dp</dimen>
 
 </resources>

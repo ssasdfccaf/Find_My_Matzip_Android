@@ -177,7 +177,7 @@ class MyPageFragment : Fragment() {
                     if (newBoardList.isNotEmpty() && currentPage == 0) {
                     boardAdapter = BoardRecyclerAdapter(this@MyPageFragment, profileDto.boards.content)
                         currentPage++
-                        val spanCount = 3 // 원하는 열의 수 ㅋㅋ 생각보다 간단하네..
+                        val spanCount = 3
                     val gridLayoutManager = GridLayoutManager(requireContext(), spanCount)
                     binding.boardRecyclerView.layoutManager = gridLayoutManager
                     binding.boardRecyclerView.adapter = boardAdapter

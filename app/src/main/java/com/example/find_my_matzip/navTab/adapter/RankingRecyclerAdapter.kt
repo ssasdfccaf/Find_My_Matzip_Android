@@ -36,12 +36,20 @@ class RankingRecyclerAdapter(val context: RankingFragment, val datas: List<Ranki
         val binding = (holder as RankingViewHoder).binding
         val Item = datas?.get(position)
 
+
+
+
         // 번호 설정 (1부터 시작하도록 +1)
         binding.numberTextView.text = (position + 1).toString()
 
         binding.resId.text = Item?.resId.toString()
         binding.resName.text = Item?.resName
-        binding.avgScore.text = Item?.avgScore.toString()
+//        binding.avgScore.text = Item?.avgScore.toString()
+
+        //소수 둘째자리에서 반올림
+        val ratingUpScore = Item?.avgScore?.toFloat()?.let {
+            kotlin.math.round(it * 10) / 10.toFloat()}!!
+        binding.avgScore.text = ratingUpScore.toString()
 
         Glide.with(context)
             .load(Item?.resThumbnail)
