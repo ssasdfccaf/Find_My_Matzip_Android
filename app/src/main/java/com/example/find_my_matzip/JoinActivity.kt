@@ -230,27 +230,26 @@ class JoinActivity : AppCompatActivity() {
             if(inputUserPw == ""){
                 Toast.makeText(this@JoinActivity,"비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "회원가입 inputUserPw: null")
-
+                return@setOnClickListener
             }
 
             // Validation Check - UserPw
             else if ( inputUserPw.length < 6 ) {
                 Toast.makeText(this@JoinActivity, "비밀번호를 6자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
-            }
-
-            else {
                 return@setOnClickListener
             }
 
-             */
+            else {
 
-
+            }
 
             if (inputUserName == "") {
                 Toast.makeText(this@JoinActivity, "이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "회원가입 inputUserName: null")
                 return@setOnClickListener
             }
+
+             */
 
 
             // 로딩 창 띄우기

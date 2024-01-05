@@ -39,10 +39,6 @@ class MessageActivity : AppCompatActivity() {
     private var uid : String? = null
     private var recyclerView : RecyclerView? = null
 
-
-
-
-
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
 
