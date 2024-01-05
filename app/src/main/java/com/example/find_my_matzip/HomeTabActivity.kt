@@ -125,15 +125,7 @@ class HomeTabActivity : AppCompatActivity() {
                     showVertifyPw()
                 }
                 builder.show()
-            }  else if (it.title == "식당 추가") {
-                if (loginUserId == "admin") {
-                    val intent = Intent(this@HomeTabActivity, AddRestaurantActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    // User doesn't have access, show a toast message
-                    Toast.makeText(this@HomeTabActivity, "접근 권한이 없습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }else if(it.title == "검색"){
+            }  else if(it.title == "검색"){
                 val intent = Intent(this@HomeTabActivity, SearchActivity::class.java)
                 startActivity(intent)
             }
