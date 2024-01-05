@@ -104,7 +104,6 @@ class CommentAdapter(
             } else {
                 if (item?.children?.isNotEmpty() == true) {
 
-
                     val initialChildren =
                         if (item?.children?.isNotEmpty() == true) item?.children else null
                     val innerAdapter =
@@ -339,4 +338,5 @@ private fun getTimeAgoText(commentTime: String?): String {
         return "Unknown time"
     }
 }
+
 

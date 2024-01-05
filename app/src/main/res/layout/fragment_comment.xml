@@ -15,16 +15,16 @@
         tools:ignore="MissingConstraints"
         android:paddingBottom="50dp">
 
-    <TextView
-        android:id="@+id/bottomSheetTitleTextView"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:text="댓글"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:id="@+id/bottomSheetTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity="center"
+            android:text="댓글"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"/>
 
 
         <androidx.recyclerview.widget.RecyclerView
