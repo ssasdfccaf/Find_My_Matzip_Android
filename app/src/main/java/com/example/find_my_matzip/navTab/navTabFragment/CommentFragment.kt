@@ -133,6 +133,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                             commentCreatedTime = "",
                             userImage = userImage
                         )
+
                         val commentList =
                             commentService.saveReply(commentDto, parentComment.commentId)
 

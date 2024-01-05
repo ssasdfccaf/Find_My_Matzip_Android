@@ -113,6 +113,7 @@ class boardDtlFragment : Fragment() {
                 }
 
 
+
                 binding.resName.text = boardDto?.restaurant?.res_name.toString()
                 binding.resAddress.text = boardDto?.restaurant?.res_address.toString()
 
