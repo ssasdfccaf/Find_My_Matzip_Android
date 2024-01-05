@@ -333,7 +333,7 @@ class boardDtlFragment : Fragment() {
 //                    try {
 //                        showNearbyRestaurants(restaurantsInsideCircle)
 //                    }
-             // 코맨트 총 갯수 누르면 해당 댓글창으로 이동
+                // 코맨트 총 갯수 누르면 해당 댓글창으로 이동
 //
                 AllComment = binding.AllComment
                 AllComment.setOnClickListener {
