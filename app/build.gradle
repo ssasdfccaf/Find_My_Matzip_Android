@@ -47,6 +47,9 @@ android {
 }
 
 dependencies {
+    //커스텀 토스트 메시지
+    implementation 'com.github.GrenderG:Toasty:1.4.2'
+
     //뷰페이저2 인디케이터 추가
     implementation("com.tbuonomo:dotsindicator:5.0")
     // 지도 추가
