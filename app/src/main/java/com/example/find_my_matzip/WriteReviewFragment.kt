@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,14 +16,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.find_my_matzip.databinding.FragmentWriteReviewBinding
 import com.example.find_my_matzip.model.BoardImgDto
-import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.adapter.WriteReviewAdapter
 import com.example.find_my_matzip.navTab.navTabFragment.NewHomeFragment
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import es.dmoral.toasty.Toasty
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -99,8 +99,9 @@ class WriteReviewFragment : Fragment() {
         // ImageView를 클릭할 경우
         // 선택 가능한 이미지의 최대 개수를 초과하지 않았을 경우에만 앨범을 호출한다.
         binding.imageArea.setOnClickListener {
+            binding.imageArea.setBackgroundResource(R.drawable.radius3)
             if (uriList.count() == maxNumber) {
-                Toast.makeText(
+                Toasty.error(
                     requireActivity(),
                     "이미지는 최대 ${maxNumber}장까지 첨부할 수 있습니다.",
                     Toast.LENGTH_SHORT
@@ -113,18 +114,48 @@ class WriteReviewFragment : Fragment() {
             registerForActivityResult.launch(intent)
         }
 
+        binding.boardTitle.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                // 포커스가 있을 때의 배경 설정
+                view.setBackgroundResource(R.drawable.radius3)
+            } else {
+                // 포커스가 없을 때의 배경 설정
+                view.setBackgroundResource(R.drawable.radius3)
+            }
+        }
+        binding.boardScore.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                // 포커스가 있을 때의 배경 설정
+                view.setBackgroundResource(R.drawable.radius3)
+            } else {
+                // 포커스가 없을 때의 배경 설정
+                view.setBackgroundResource(R.drawable.radius3)
+            }
+        }
+
         // ★★★★등록 버튼눌렀을 때 ★★★★
         binding.submitBtn.setOnClickListener {
             Log.d("WriteReviewFragment", "=================로딩창 on===================================")
             loadingDialog.show()
             val scoreText = binding.boardScore.text.toString()
-            val score = scoreText.toIntOrNull()?:3
+            val score = scoreText.toIntOrNull()?:9
 
             if(uriList.size == 0){
                 loadingDialog.dismiss()
-                Toast.makeText(requireContext(), "이미지는 최소 1장 업로드가 필요합니다", Toast.LENGTH_SHORT).show()
-            }else if(score in 1..5){
-
+                Toasty.error(requireContext(), "이미지는 최소 1장 업로드가 필요합니다", Toast.LENGTH_SHORT).show()
+                binding.imageArea.setBackgroundResource(R.drawable.radius_edittext_red2)
+            }
+            else if(binding.boardTitle.text.isEmpty()){
+                loadingDialog.dismiss()
+                Toasty.error(requireContext(), "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                binding.boardTitle.setBackgroundResource(R.drawable.radius_edittext_red2)
+            }
+            else if(score !in 1..5){
+                loadingDialog.dismiss()
+                Toasty.error(requireContext(), "평점은 1~5 사이의 숫자만 입력할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                binding.boardScore.setBackgroundResource(R.drawable.radius_edittext_red2)
+            }
+            else {
                 Log.d("TAG","DB로 전달하는 boardDtoMap : $boardDtoMap")
 
                 //파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
@@ -135,11 +166,6 @@ class WriteReviewFragment : Fragment() {
                         "$fileName"
                     boardImgDtoList[i].imgUrl =
                         "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/newboardimg%2F${fileName}.png?alt=media"
-                    try {
-                        Thread.sleep(500)
-                    } catch (e: InterruptedException) {
-                        e.printStackTrace()
-                    }
 
                     //db에 전달하는 이미지데이터 repImgYn값 조정
                     // 첫 번째 이미지인 경우 repImgYn을 "Y"로 설정
@@ -195,9 +221,6 @@ class WriteReviewFragment : Fragment() {
                         if (response.isSuccessful) {
                             Log.d("WriteReviewFragment", "성공(Board) :  ${boardDtoMap}")
                             Log.d("WriteReviewFragment", "성공(createBoard_body) :  ${response.body().toString()}")
-                            Toast.makeText(requireContext(),"스토리지/DB 업로드 완료", Toast.LENGTH_SHORT).show()
-                            //로딩창 지우기
-                            loadingDialog.dismiss()
                         } else {
                             Log.d("WriteReviewFragment", "서버 응답 실패: ${response.code()}")
                             try {
@@ -212,8 +235,7 @@ class WriteReviewFragment : Fragment() {
                                 if (errorMessage.equals("게시글등록실패")) {
                                     //로딩창 지우기
                                     loadingDialog.dismiss()
-                                    Toast.makeText(requireContext(), "게시글등록실패.", Toast.LENGTH_SHORT)
-                                        .show()
+                                    Toasty.error(requireContext(),"게시글 작성 실패",Toast.LENGTH_SHORT).show()
                                 }
                             } catch (e: Exception) {
                                 e.printStackTrace()
@@ -222,7 +244,7 @@ class WriteReviewFragment : Fragment() {
                     }
 
                     override fun onFailure(call: Call<Unit>, t: Throwable) {
-                        Toast.makeText(requireContext(), "게시글등록실패onFailure.", Toast.LENGTH_SHORT).show()
+                        Toasty.error(requireContext(), "게시글등록실패onFailure.", Toast.LENGTH_SHORT).show()
                         Log.d("WriteReviewFragment", "실패 ${t.message}")
 
                         //로딩창 지우기
@@ -232,16 +254,15 @@ class WriteReviewFragment : Fragment() {
                 }) //DB로 전달하는 콜백함수
                 //DB로 전달하는 콜백함수==================================================================================
                 Log.d(TAG, "작업 완료후 게시글작성 프래그먼트 닫기")
-//                parentFragmentManager.beginTransaction().remove(this@WriteReviewFragment).commit()
-                val fragment = NewHomeFragment()
-                parentFragmentManager.beginTransaction()
-                    .add(R.id.fragmentContainer, fragment)
-                    .remove(this@WriteReviewFragment)
-                    .commit()
-
-            } else{
-                loadingDialog.dismiss()
-                Toast.makeText(requireContext(), "평점은 1~5 사이의 숫자만 입력할 수 있습니다", Toast.LENGTH_SHORT).show()
+                Handler().postDelayed({
+                    loadingDialog.dismiss()
+                    Toasty.success(requireContext(),"게시글 작성 완료했습니다",Toast.LENGTH_SHORT).show()
+                    val fragment = NewHomeFragment()
+                    parentFragmentManager.beginTransaction()
+                        .add(R.id.fragmentContainer, fragment)
+                        .remove(this@WriteReviewFragment)
+                        .commit()
+                }, 1500) // 2000 밀리초 (2초) 동안 기다린 후 실행
             }
             Log.d("TAG","DB로 전달하는 작업이 끝남  : $boardDtoMap")
         }// ★★★★등록 버튼눌렀을 때 ★★★★
@@ -274,7 +295,7 @@ class WriteReviewFragment : Fragment() {
                         val clipDataSize = clipData.itemCount
                         val selectableCount = maxNumber - uriList.count()
                         if (clipDataSize > selectableCount) { // 최대 선택 가능한 개수를 초과해서 선택한 경우
-                            Toast.makeText(
+                            Toasty.error(
                                 requireActivity(),
                                 "이미지는 최대 ${selectableCount}장까지 더 첨부할 수 있습니다.",
                                 Toast.LENGTH_SHORT
