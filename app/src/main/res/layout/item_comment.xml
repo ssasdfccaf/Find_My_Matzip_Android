@@ -20,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/commentContents"
-            android:layout_marginStart="0dp"
             android:src="@drawable/subdirectory_arrow_right24px"
             android:visibility="gone"
 
@@ -31,15 +30,15 @@
             android:id="@+id/depthIndicator"
             android:layout_width="10dp"
             android:layout_height="10dp"
-            android:layout_marginRight="5dp"
             android:background="@android:color/darker_gray"
             android:visibility="gone" />
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <androidx.cardview.widget.CardView
                 android:layout_width="35dp"
@@ -60,14 +59,14 @@
             <LinearLayout
                 android:layout_width="270dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+
                 android:orientation="vertical"
                 android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:paddingBottom="5dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     >
@@ -123,13 +122,15 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nexonmed"
                     android:text="댓글내용"
+                    android:paddingBottom="5dp"
                     android:textSize="13sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
+                    android:paddingBottom="5dp"
+                    >
 
 
                     <TextView
@@ -165,5 +166,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewChildren"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>
