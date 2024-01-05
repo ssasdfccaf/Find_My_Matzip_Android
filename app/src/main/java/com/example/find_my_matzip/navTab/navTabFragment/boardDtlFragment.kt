@@ -113,6 +113,7 @@ class boardDtlFragment : Fragment() {
                 }
 
 
+
                 binding.resName.text = boardDto?.restaurant?.res_name.toString()
                 binding.resAddress.text = boardDto?.restaurant?.res_address.toString()
 
@@ -332,31 +333,24 @@ class boardDtlFragment : Fragment() {
 //                    try {
 //                        showNearbyRestaurants(restaurantsInsideCircle)
 //                    }
+                // 코맨트 총 갯수 누르면 해당 댓글창으로 이동
+//
                 AllComment = binding.AllComment
-                binding.AllComment.setOnClickListener {
-                    val boardId = boardDto?.board?.id.toString() // 게시판 아이디 가져오기
+                AllComment.setOnClickListener {
+                    val boardId = boardDto?.board?.id.toString() // 게시판 ID 가져오기
                     Log.d(TAG, "AllComment 클릭! . boardId: $boardId")
 
-                    // 추가하기 전에 프래그먼트가 이미 추가되어 있는지 확인
+                    // 프래그먼트가 이미 추가되어 있는지 확인
                     val existingFragment = parentFragmentManager.findFragmentByTag(CommentFragment::class.java.simpleName)
 
+                    // 프래그먼트가 추가되지 않은 경우에만 실행
                     if (existingFragment == null) {
                         if (boardId != null) {
-                            // 프래그먼트가 추가되지 않은 경우, 추가합니다.
+                            // BottomSheetDialogFragment 인스턴스 생성
                             val commentFragment = CommentFragment.newInstance(boardId)
 
-                            // FragmentTransaction을 사용하여 CommentListFragment를 표시하는 코드를 작성
-                            val transaction = fragmentManager?.beginTransaction()
-
-                            // 현재 Fragment를 숨기고 CommentListFragment를 추가
-                            transaction?.hide(this@boardDtlFragment)
-                            transaction?.add(R.id.fragmentContainer, commentFragment)
-
-                            // addToBackStack을 사용하여 뒤로 가기 스택에 추가 (선택 사항)
-                            transaction?.addToBackStack(null)
-
-                            // 변경사항을 즉시 적용
-                            transaction?.commit()
+                            // BottomSheetDialogFragment 표시
+                            commentFragment.show(parentFragmentManager, commentFragment.tag)
                         }
                     }
                 }
