@@ -48,5 +48,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="333dp"
-        app:srcCompat="@drawable/baseline_edit_note_24" />
+        app:srcCompat="@drawable/baseline_restaurant_menu_24" />
 </FrameLayout>
