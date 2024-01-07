@@ -1,12 +1,17 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
@@ -16,7 +21,12 @@ import com.example.find_my_matzip.model.BoardDtlDto
 import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.navTab.adapter.BoardDtlViewPagerAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.ConfirmDialog
+import com.example.find_my_matzip.utils.CustomDialog
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +37,7 @@ class boardDtlFragment : Fragment() {
     private val TAG: String = "boardDtlFragment"
     private var myFeeling = 0
     private lateinit var AllComment: TextView
+    private lateinit var imgNameList : List<String>
 
     // 로그인한 사용자의 아이디를 가져와서 해당 사용자의 프로필 정보를 서버에서 조회
     val loginuserId = SharedPreferencesManager.getString("id","")
@@ -100,6 +111,7 @@ class boardDtlFragment : Fragment() {
                 if(boardDto?.board?.userId == loginuserId){
                     binding.manageReview.visibility = View.VISIBLE
                 }
+
 
 
                 binding.resName.text = boardDto?.restaurant?.res_name.toString()
@@ -188,6 +200,98 @@ class boardDtlFragment : Fragment() {
                 // toResDtl 클릭 이벤트 핸들러
 
 
+//                binding.deleteReview.setOnClickListener {
+//                    ConfirmDialog()
+//                    //파이어베이스에 이미지 삭제하기
+//                    imgNameList = boardDto?.board?.boardImgDtoList
+//                        ?.map { it.imgName }
+//                        ?.filter { it.isNotBlank() } ?: emptyList()
+//
+//                    deleteFirebaseImages(imgNameList)
+//                    Log.d(TAG,"게시글 이미지 파이어베이스에서 삭제완료.")
+//
+//                    val call = boardService.deleteBoard((boardDto?.board!!.id))
+//                    call.enqueue(object : Callback<Void> {
+//                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+//                            if (response.isSuccessful) {
+//                                Log.d(TAG,"게시글 삭제 완료")
+//                                Toasty.warning(requireContext(), "게시글이 삭제 되었습니다.", Toast.LENGTH_SHORT).show()
+//                                val fragment = NewHomeFragment()
+//                                parentFragmentManager.beginTransaction()
+//                                    .replace(R.id.fragmentContainer, fragment)
+//                                    .addToBackStack(null)
+//                                    .commit()
+//                            } else {
+//                                Log.d(TAG,"게시글 삭제 대 실 패")
+//                            }
+//                        }
+//
+//                        override fun onFailure(call: Call<Void>, t: Throwable) {
+//                            Log.d(TAG,"통신 실패")
+//                        }
+//                    })
+//                }
+
+                //다이얼로그에서 삭제를 눌렀을 때 실행될 함수
+                fun sureDelete() {
+                    //파이어베이스에 이미지 삭제하기
+                    imgNameList = boardDto?.board?.boardImgDtoList
+                        ?.map { it.imgName }
+                        ?.filter { it.isNotBlank() } ?: emptyList()
+
+                    deleteFirebaseImages(imgNameList)
+                    Log.d(TAG,"게시글 이미지 파이어베이스에서 삭제완료.")
+
+                    val call = boardService.deleteBoard((boardDto?.board!!.id))
+                    call.enqueue(object : Callback<Void> {
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            if (response.isSuccessful) {
+                                Log.d(TAG,"게시글 삭제 완료")
+                                Toasty.warning(requireContext(), "게시글이 삭제 되었습니다.", Toast.LENGTH_SHORT).show()
+                                val fragment = NewHomeFragment()
+                                parentFragmentManager.beginTransaction()
+                                    .replace(R.id.fragmentContainer, fragment)
+                                    .addToBackStack(null)
+                                    .commit()
+                            } else {
+                                Log.d(TAG,"게시글 삭제 대 실 패")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Log.d(TAG,"통신 실패")
+                        }
+                    })
+                }
+
+                binding.deleteReview.setOnClickListener{
+                    val confirmDialog = ConfirmDialog(requireContext())
+
+                    val parentLayout = requireActivity().findViewById<ViewGroup>(android.R.id.content)
+                    val darkView = View(requireContext())
+                    darkView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                    darkView.setBackgroundColor(Color.parseColor("#80000000")) // 어두운 배경색 지정 (이 경우는 50%의 검은색)
+
+                    confirmDialog.findViewById<TextView>(R.id.cancel_button).setOnClickListener {
+                        confirmDialog.dismiss()
+                        parentLayout.removeView(darkView)
+                    }
+
+                    confirmDialog.findViewById<TextView>(R.id.confirm_button).setOnClickListener {
+                        sureDelete()
+                        confirmDialog.dismiss()
+                        parentLayout.removeView(darkView)
+                    }
+                    // 다이얼로그 외부를 터치하여 닫을 때 어두운 배경 뷰 제거
+                    confirmDialog.setOnCancelListener {
+                        parentLayout.removeView(darkView)
+                    }
+                    parentLayout.addView(darkView)
+                    confirmDialog.show()
+                }
+
+
+
                 // 유저 프로필로 이동 로직
                 fun navigateToUserProfile(userId: String?) {
                     //만약 유저정보 없다면
@@ -229,31 +333,24 @@ class boardDtlFragment : Fragment() {
 //                    try {
 //                        showNearbyRestaurants(restaurantsInsideCircle)
 //                    }
+                // 코맨트 총 갯수 누르면 해당 댓글창으로 이동
+//
                 AllComment = binding.AllComment
-                binding.AllComment.setOnClickListener {
-                    val boardId = boardDto?.board?.id.toString() // 게시판 아이디 가져오기
+                AllComment.setOnClickListener {
+                    val boardId = boardDto?.board?.id.toString() // 게시판 ID 가져오기
                     Log.d(TAG, "AllComment 클릭! . boardId: $boardId")
 
-                    // 추가하기 전에 프래그먼트가 이미 추가되어 있는지 확인
+                    // 프래그먼트가 이미 추가되어 있는지 확인
                     val existingFragment = parentFragmentManager.findFragmentByTag(CommentFragment::class.java.simpleName)
 
+                    // 프래그먼트가 추가되지 않은 경우에만 실행
                     if (existingFragment == null) {
                         if (boardId != null) {
-                            // 프래그먼트가 추가되지 않은 경우, 추가합니다.
+                            // BottomSheetDialogFragment 인스턴스 생성
                             val commentFragment = CommentFragment.newInstance(boardId)
 
-                            // FragmentTransaction을 사용하여 CommentListFragment를 표시하는 코드를 작성
-                            val transaction = fragmentManager?.beginTransaction()
-
-                            // 현재 Fragment를 숨기고 CommentListFragment를 추가
-                            transaction?.hide(this@boardDtlFragment)
-                            transaction?.add(R.id.fragmentContainer, commentFragment)
-
-                            // addToBackStack을 사용하여 뒤로 가기 스택에 추가 (선택 사항)
-                            transaction?.addToBackStack(null)
-
-                            // 변경사항을 즉시 적용
-                            transaction?.commit()
+                            // BottomSheetDialogFragment 표시
+                            commentFragment.show(parentFragmentManager, commentFragment.tag)
                         }
                     }
                 }
@@ -348,6 +445,27 @@ class boardDtlFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun deleteFirebaseImages(imageNames: List<String>) {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+
+        for (imageName in imageNames) {
+            // 삭제할 이미지에 대한 참조 생성
+            val imageRef = storageRef.child("newboardimg/$imageName.png")
+
+            // 이미지 삭제
+            imageRef.delete()
+                .addOnSuccessListener {
+                    // 이미지 삭제 성공
+                    Log.d(TAG, "Firebase 이미지 삭제됨: $imageName")
+                }
+                .addOnFailureListener { e ->
+                    // 이미지 삭제 실패
+                    Log.e(TAG, "Firebase 이미지 삭제 실패: $imageName", e)
+                }
+        }
     }
     @Override
     override fun onResume() {

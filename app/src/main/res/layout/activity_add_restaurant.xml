@@ -109,10 +109,11 @@
                 android:background="@drawable/radius"
                 android:fontFamily="@font/nexonlight"
                 android:paddingLeft="30dp"
-                android:hint="ResName"
+                android:hint="가게 이름"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:ems="10"
+                android:textStyle="bold"
                 ></EditText>
 
             <EditText
@@ -124,10 +125,11 @@
                 android:background="@drawable/radius"
                 android:fontFamily="@font/nexonlight"
                 android:paddingLeft="30dp"
-                android:hint="Menu"
+                android:hint="메뉴"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:ems="10"
+                android:textStyle="bold"
                 ></EditText>
 
             <EditText
@@ -139,10 +141,11 @@
                 android:background="@drawable/radius"
                 android:fontFamily="@font/nexonlight"
                 android:paddingLeft="30dp"
-                android:hint="OperateTime"
+                android:hint="영업 시간"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:ems="10"
+                android:textStyle="bold"
                 ></EditText>
 
             <EditText
@@ -154,10 +157,11 @@
                 android:background="@drawable/radius"
                 android:fontFamily="@font/nexonlight"
                 android:paddingLeft="30dp"
-                android:hint="Intro"
+                android:hint="소개"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:ems="10"
+                android:textStyle="bold"
                 ></EditText>
 
             <EditText
@@ -169,10 +173,11 @@
                 android:background="@drawable/radius"
                 android:fontFamily="@font/nexonlight"
                 android:paddingLeft="30dp"
-                android:hint="Phone"
+                android:hint="연락처"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:ems="10"
+                android:textStyle="bold"
                 ></EditText>
 
             <EditText
@@ -188,7 +193,9 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:ems="10"
-                ></EditText>
+                android:editable="false"
+                android:focusable="false"
+                android:textStyle="bold"></EditText>
 
             <EditText
                 android:id="@+id/resAddress_Detail"
@@ -203,6 +210,7 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:ems="10"
+                android:textStyle="bold"
                 ></EditText>
 
             <EditText
@@ -214,40 +222,43 @@
                 android:background="@drawable/radius"
                 android:fontFamily="@font/nexonlight"
                 android:paddingLeft="30dp"
-                android:hint="District"
+                android:hint="구/군"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:ems="10"
+                android:textStyle="bold"
                 ></EditText>
 
             <EditText
                 android:id="@+id/resLat"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/radius"
                 android:fontFamily="@font/nexonlight"
                 android:paddingLeft="30dp"
-                android:hint="Lat"
+                android:hint="위도"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:ems="10"
+                android:visibility="invisible"
                 ></EditText>
 
             <EditText
                 android:id="@+id/resLng"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/radius"
                 android:fontFamily="@font/nexonlight"
                 android:paddingLeft="30dp"
-                android:hint="Lng"
+                android:hint="경도"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:ems="10"
+                android:visibility="invisible"
                 ></EditText>
 
             <LinearLayout

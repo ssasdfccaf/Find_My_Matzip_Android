@@ -38,8 +38,10 @@ class MyApplication : MultiDexApplication() {
 
     //통신할 서버의 URL주소 등록
     val retrofit = Retrofit.Builder()
-        // 학원 ip?
+    
+        // 학원 ip
         .baseUrl("http://10.100.103.53:80/")
+        
         //인터셉터 적용
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())

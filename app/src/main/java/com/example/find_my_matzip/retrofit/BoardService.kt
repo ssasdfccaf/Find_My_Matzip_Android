@@ -1,12 +1,11 @@
 package com.example.find_my_matzip.retrofit
 
 import com.example.find_my_matzip.model.BoardDtlDto
-import com.example.find_my_matzip.model.BoardFormDto
 import com.example.find_my_matzip.model.MainBoardDto
 import com.example.find_my_matzip.model.NewMainBoardDto
-import com.example.find_my_matzip.model.ProfileDto
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -61,6 +60,7 @@ interface BoardService {
         @Path("boardId") id: String, @Body boardDtoMap: MutableMap<String, Any>
     ): Call<Unit>
 
-
+    @DELETE("/board/{boardId}")
+    fun deleteBoard(@Path("boardId") boardId: Long): Call<Void>
 
 }

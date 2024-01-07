@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.system.Os.remove
 import android.text.Editable
 import android.util.Log
@@ -36,6 +37,7 @@ import com.example.find_my_matzip.utils.LoadingDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import es.dmoral.toasty.Toasty
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -140,7 +142,9 @@ class UpdateReviewFragment : Fragment() {
             override fun onResponse(call: Call<BoardDtlDto>, response: Response<BoardDtlDto>) {
                 Log.d("kkt","데이터 도착 확인.")
                 val boardDto = response.body()
-                imgNameList = boardDto?.board?.boardImgDtoList?.map { it.imgName } ?: emptyList()
+                imgNameList = boardDto?.board?.boardImgDtoList
+                    ?.map { it.imgName }
+                    ?.filter { it.isNotBlank() } ?: emptyList()
                 Log.d("TAG","파이어베이스에서 삭제할 이미지의 이름 리스트 imgNameList : $imgNameList")
                 Log.d("kkt","데이터 도착 확인1. : BoardDtlDto $boardDto")
                 Log.d("kkt","데이터 도착 확인2. : BoardDtlDto.board ${boardDto?.board}")
@@ -211,6 +215,16 @@ class UpdateReviewFragment : Fragment() {
 
                 boardImgDtoList.clear()
                 boardImgDtoList.addAll(boardDto?.board?.boardImgDtoList ?: emptyList())
+                Log.d(TAG,"boardImgDtoList중에 빈 요소 제거전 : $boardImgDtoList")
+                //boardImgDtoList중에 빈 요소를 찾아 리스트에서 제거.
+                for(i in 4 downTo 1){
+                    if (boardImgDtoList[i].imgUrl.isBlank()){
+                        boardImgDtoList.removeAt(i)
+                    } else{
+                        break
+                    }
+                }//boardImgDtoList중에 빈 요소를 찾아 리스트에서 제거.
+                Log.d(TAG,"boardImgDtoList중에 빈 요소 제거 완료 : $boardImgDtoList")
 
 
                 adapter.notifyDataSetChanged()
@@ -234,8 +248,9 @@ class UpdateReviewFragment : Fragment() {
         // ImageView를 클릭할 경우
         // 선택 가능한 이미지의 최대 개수를 초과하지 않았을 경우에만 앨범을 호출한다.
         binding.imageArea.setOnClickListener {
+            binding.imageArea.setBackgroundResource(R.drawable.radius3)
             if (uriList.count() == maxNumber) {
-                Toast.makeText(
+                Toasty.error(
                     requireActivity(),
                     "이미지는 최대 ${maxNumber}장까지 첨부할 수 있습니다.",
                     Toast.LENGTH_SHORT
@@ -247,18 +262,48 @@ class UpdateReviewFragment : Fragment() {
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             registerForActivityResult.launch(intent)
         }
+        binding.boardTitle.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                // 포커스가 있을 때의 배경 설정
+                view.setBackgroundResource(R.drawable.radius3)
+            } else {
+                // 포커스가 없을 때의 배경 설정
+                view.setBackgroundResource(R.drawable.radius3)
+            }
+        }
+        binding.boardScore.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                // 포커스가 있을 때의 배경 설정
+                view.setBackgroundResource(R.drawable.radius3)
+            } else {
+                // 포커스가 없을 때의 배경 설정
+                view.setBackgroundResource(R.drawable.radius3)
+            }
+        }
 
         // ★★★★등록 버튼눌렀을 때 ★★★★
         binding.submitBtn.setOnClickListener {
             Log.d("WriteReviewFragment", "=================로딩창 on===================================")
             loadingDialog.show()
             val scoreText = binding.boardScore.text.toString()
-            val score = scoreText.toIntOrNull()?:3
+            val score = scoreText.toIntOrNull()?:9
 
             if(uriList.size == 0){
                 loadingDialog.dismiss()
-                Toast.makeText(requireContext(), "이미지는 최소 1장 업로드가 필요합니다", Toast.LENGTH_SHORT).show()
-            }else if(score in 1..5){
+                Toasty.error(requireContext(), "이미지는 최소 1장 업로드가 필요합니다", Toast.LENGTH_SHORT).show()
+                binding.imageArea.setBackgroundResource(R.drawable.radius_edittext_red2)
+            }
+            else if(binding.boardTitle.text.isEmpty()){
+                loadingDialog.dismiss()
+                Toasty.error(requireContext(), "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                binding.boardTitle.setBackgroundResource(R.drawable.radius_edittext_red2)
+            }
+            else if(score !in 1..5){
+                loadingDialog.dismiss()
+                Toasty.error(requireContext(), "평점은 1~5 사이의 숫자만 입력할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                binding.boardScore.setBackgroundResource(R.drawable.radius_edittext_red2)
+            }
+            else {
 
                 Log.d("TAG","DB로 전달하는 boardDtoMap : $boardDtoMap")
                 Log.d("TAG","파이어베이스에서 삭제할 이미지의 이름 리스트 imgNameList : $imgNameList")
@@ -270,12 +315,6 @@ class UpdateReviewFragment : Fragment() {
                         "$fileName"
                     boardImgDtoList[i].imgUrl =
                         "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/newboardimg%2F${fileName}.png?alt=media"
-                    try {
-                        Thread.sleep(500)
-                    } catch (e: InterruptedException) {
-                        e.printStackTrace()
-                    }
-
                     // 첫 번째 이미지인 경우 repImgYn을 "Y"로 설정
                     if (i == 0) {
                         boardImgDtoList[0].repImgYn = "Y"
@@ -285,10 +324,27 @@ class UpdateReviewFragment : Fragment() {
                     }
                     Log.d(TAG,"")
 
-                }//파이어베이스에 이미지 업로드 + repImgYn 값 설정
-                //파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
+                } //파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
                 Log.d(TAG,"파이어베이스에 이미지들 업로드 완료, 남아있던 이미지들 삭제")
                 deleteFirebaseImages(imgNameList)
+
+                //이미지의 갯수가 5개가 안될 때 그 자리에 빈 데이터 넣기
+                if (boardImgDtoList.count() <5) {
+                    //들어가있는 갯수 ~ 5개 까지 반복한다
+                    for (i in boardImgDtoList.count() until 5) {
+                        uploadedImg = BoardImgDto(
+                            id = i.toLong(), // 이미지 ID는 서버에서 생성되므로 0으로 설정하거나 다른 값으로 임시 설정해주세요.
+                            imgName = "", // 이미지 파일명
+                            oriImgName = "", // 원본 이미지명
+                            imgUrl = "", // 이미지 URL
+                            repImgYn = "N"
+                        )
+                        boardImgDtoList.add(uploadedImg) // 이미지 정보를 리스트에 추가
+                        Log.d(TAG,"${boardImgDtoList.count()}번째 자리에, 빈 데이터 추가완료.")
+                    }
+
+                }//이미지의 갯수가 5개가 안될 때 그 자리에 빈 데이터 넣기
+
                 //DB로 보낼 게시글 정보를 boardDtoMap에 담기
                 boardDtoMap["userId"] = loginuserId
                 boardDtoMap["boardViewStatus"] = "VIEW"
@@ -316,9 +372,6 @@ class UpdateReviewFragment : Fragment() {
                         if (response.isSuccessful) {
                             Log.d("WriteReviewFragment", "성공(Board) :  ${boardDtoMap}")
                             Log.d("WriteReviewFragment", "성공(createBoard_body) :  ${response.body().toString()}")
-                            Toast.makeText(requireContext(),"스토리지/DB 업로드 완료", Toast.LENGTH_SHORT).show()
-                            //로딩창 지우기
-                            loadingDialog.dismiss()
                         } else {
                             Log.d("WriteReviewFragment", "서버 응답 실패: ${response.code()}")
                             try {
@@ -333,7 +386,7 @@ class UpdateReviewFragment : Fragment() {
                                 if (errorMessage.equals("게시글등록실패")) {
                                     //로딩창 지우기
                                     loadingDialog.dismiss()
-                                    Toast.makeText(requireContext(), "게시글등록실패.", Toast.LENGTH_SHORT)
+                                    Toasty.error(requireContext(), "게시글등록실패.", Toast.LENGTH_SHORT)
                                         .show()
                                 }
                             } catch (e: Exception) {
@@ -343,7 +396,7 @@ class UpdateReviewFragment : Fragment() {
                     }
 
                     override fun onFailure(call: Call<Unit>, t: Throwable) {
-                        Toast.makeText(requireContext(), "게시글등록실패onFailure.", Toast.LENGTH_SHORT).show()
+                        Toasty.error(requireContext(), "게시글등록실패onFailure.", Toast.LENGTH_SHORT).show()
                         Log.d("WriteReviewFragment", "실패 ${t.message}")
 
                         //로딩창 지우기
@@ -353,16 +406,15 @@ class UpdateReviewFragment : Fragment() {
                 }) //DB로 전달하는 콜백함수
                 //DB로 전달하는 콜백함수==================================================================================
                 Log.d(TAG, "작업 완료후 게시글작성 프래그먼트 닫기")
-//                parentFragmentManager.beginTransaction().remove(this@WriteReviewFragment).commit()
-                val fragment = NewHomeFragment()
-                parentFragmentManager.beginTransaction()
-                    .add(R.id.fragmentContainer, fragment)
-                    .remove(this@UpdateReviewFragment)
-                    .commit()
-
-            } else{
-                loadingDialog.dismiss()
-                Toast.makeText(requireContext(), "평점은 1~5 사이의 숫자만 입력할 수 있습니다", Toast.LENGTH_SHORT).show()
+                Handler().postDelayed({
+                    loadingDialog.dismiss()
+                    Toasty.success(requireContext(),"게시글 수정 완료했습니다",Toast.LENGTH_SHORT).show()
+                    val fragment = NewHomeFragment()
+                    parentFragmentManager.beginTransaction()
+                        .add(R.id.fragmentContainer, fragment)
+                        .remove(this@UpdateReviewFragment)
+                        .commit()
+                }, 1500) // 2000 밀리초 (2초) 동안 기다린 후 실행
             }
             Log.d("TAG","DB로 전달하는 작업이 끝남  : $boardDtoMap")
         }// ★★★★등록 버튼눌렀을 때 ★★★★
@@ -394,7 +446,7 @@ class UpdateReviewFragment : Fragment() {
                         val clipDataSize = clipData.itemCount
                         val selectableCount = maxNumber - uriList.count()
                         if (clipDataSize > selectableCount) { // 최대 선택 가능한 개수를 초과해서 선택한 경우
-                            Toast.makeText(
+                            Toasty.error(
                                 requireActivity(),
                                 "이미지는 최대 ${selectableCount}장까지 더 첨부할 수 있습니다.",
                                 Toast.LENGTH_SHORT

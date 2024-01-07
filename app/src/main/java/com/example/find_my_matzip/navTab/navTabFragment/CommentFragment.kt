@@ -22,6 +22,7 @@ import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.adapter.CommentAdapter
 import com.example.find_my_matzip.navTab.adapter.CommentAdapterListener
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,9 +31,6 @@ import retrofit2.Response
 
 class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
 
-    //    private var boardId: Long = 0L
-//    private var commentId: Long = 0L
-//    private var parentId: Long = 0L
     lateinit var binding: FragmentCommentBinding
     lateinit var adapter: CommentAdapter
     private var loginUserId: String = ""
@@ -40,6 +38,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
     var saveBtn: Button? = null
     private val TAG: String = "CommentFragment"
     private var userImage: String = ""
+
     companion object {
 
         fun newInstance(boardId: String?): CommentFragment {
@@ -55,29 +54,18 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
             fragment.arguments = args
             return fragment
         }
-
-        // 유저 아이디를 전달하는 newInstance2 메서드
-        fun newInstance2(userId: String): CommentFragment {
-            val fragment = CommentFragment()
-            val args = Bundle()
-            args.putString("userId", userId)
-            fragment.arguments = args
-            return fragment
-        }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("SdoLifeCycle", "boardDtlFragment onCreate")
         super.onCreate(savedInstanceState)
+
     }
 
-    //    private val userId: String
-//        get() = SharedPreferencesManager.getString("id", "")
-// 댓글 업데이트를 위한 함수
 
     override fun onReplyClick(comment: CommentDto, boardId: Long) {
         showReplyDialog(comment, boardId)
+        adapter.notifyDataSetChanged()
     }
 
     fun showReplyDialog(parentComment: CommentDto, boardId: Long) {
@@ -109,6 +97,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
         alertDialogBuilder.setPositiveButton("답글 작성") { dialog, which ->
             val replyText = input.text.toString()
             saveReplyComment(parentComment, replyText)
+            adapter.notifyDataSetChanged()
         }
 
         alertDialogBuilder.setNegativeButton("취소") { dialog, which ->
@@ -118,6 +107,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
     }
+
 
     private fun saveReplyComment(parentComment: CommentDto, replyText: String) {
         val boardService = (context?.applicationContext as MyApplication).boardService
@@ -141,7 +131,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                             parentId = parentComment.commentId ?: 0,
                             depth = parentComment.depth + 1,
                             commentCreatedTime = "",
-                            userImage = ""
+                            userImage = userImage
                         )
                         val commentList =
                             commentService.saveReply(commentDto, parentComment.commentId)
@@ -157,24 +147,15 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                                         "대댓글작성되었습니다요^ㅡㅡ^",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    adapter.addComment(commentDto)
 
-                                    // 현재의 프래그먼트를 제거
-                                    val transaction =
-                                        requireActivity().supportFragmentManager.beginTransaction()
-                                    transaction.remove(this@CommentFragment)
-                                        .commit()
+//                                    // 어댑터에게 데이터 세트가 변경되었음을 알림
+//                                    adapter.notifyDataSetChanged()
+//
+//                                    // BottomSheet 상태를 COLLAPSED로 변경
+//                                    val bottomSheetBehavior = BottomSheetBehavior.from(requireView().parent as View)
+//                                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
-                                    // 새로운 인스턴스를 생성하여 추가
-                                    val newFragment =
-                                        CommentFragment.newInstance(boardId.toString())
-                                    val newTransaction =
-                                        requireActivity().supportFragmentManager.beginTransaction()
-                                    newTransaction.add(
-                                        R.id.fragmentContainer,
-                                        newFragment
-                                    )
-                                    newTransaction.addToBackStack(null)
-                                    newTransaction.commit()
                                 } else {
                                     val errorBody = response?.errorBody()?.string()
 
@@ -214,6 +195,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
 //        boardId = arguments?.getLong("boardId") ?: 0L
         val boardId = arguments?.getLong("boardId") ?: 0L
 
+
         // 로그인한 사용자의 아이디를 가져와서 해당 사용자의 프로필 정보를 서버에서 조회
         val userId = SharedPreferencesManager.getString("id", "")
         val userService = (context?.applicationContext as MyApplication).userService
@@ -221,6 +203,8 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
         val profileList = userService.getProfile(userId, 5)
 
         Log.d("CommentFragment", "profileList.enqueue 호출전 : ")
+
+
 
 
         profileList.enqueue(object : Callback<ProfileDto> {
@@ -273,6 +257,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                     Log.e("CommentFragment", "유저 정보를 받아오지 못했습니다.")
                 }
             }
+
             // 통신 실패 시 로그 출력
             override fun onFailure(call: Call<ProfileDto>, t: Throwable) {
                 t.printStackTrace()
@@ -312,12 +297,18 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
 
                     // CommentFragment에서 CommentAdapter2 초기화 부분
                     // 어댑터를 생성할 때 OnReplyClickListener를 전달
-                    adapter =
-                        CommentAdapter(this@CommentFragment, boardId, commentList)
+                    adapter = CommentAdapter(
+                        this@CommentFragment,
+                        boardId,
+                        commentList,
+                        null
+                    )
+
                     binding.commentRecyclerView.adapter = adapter
 
 
                     binding.saveBtn.setOnClickListener {
+
 
                         if (boardDto != null) {
                             val boardId = boardDto.board?.id!!
@@ -337,7 +328,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                                 // parentId = parentId, // parentId는 대댓글을 작성할 때 사용
                                 depth = 0, // 댓글 깊이, 일반 댓글은 0
                                 commentCreatedTime = "",
-                                userImage = ""
+                                userImage = this@CommentFragment.userImage
                             )
 
                             // userImage = userImage, // CommentDto 전체에 대한 사용자 이미지 (선택적)
@@ -364,25 +355,10 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                                             "댓글작성되었습니다요^ㅡㅡ^",
                                             Toast.LENGTH_SHORT
                                         ).show()
+                                        adapter.addComment(commentDto)
 
-                                        // 현재의 프래그먼트를 제거
-                                        val transaction =
-                                            requireActivity().supportFragmentManager.beginTransaction()
-                                        transaction.remove(this@CommentFragment)
-                                            .commit()
 
-                                        // 새로운 인스턴스를 생성하여 추가
-                                        val newFragment =
-                                            CommentFragment.newInstance(boardId.toString())
-                                        val newTransaction =
-                                            requireActivity().supportFragmentManager.beginTransaction()
-                                        newTransaction.add(
-                                            R.id.fragmentContainer,
-                                            newFragment
-                                        )
-                                        newTransaction.addToBackStack(null)
-                                        newTransaction.commit()
-                                        // TODO: 댓글 작성 성공 시의 추가 처리
+
                                     } else {
                                         val errorBody = response?.errorBody()?.string()
                                         Log.e("CommentFragment", "댓글 작성 실패. 에러 메시지: $errorBody")
@@ -449,7 +425,46 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
 
         return binding.root
     }
+    //바텀 뷰
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        // BottomSheet의 레이아웃을 가져오기
+        val bottomSheet =
+            dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+
+        // BottomSheetBehavior 가져오기
+        val bottomSheetBehavior = bottomSheet?.let { BottomSheetBehavior.from(it) }
+
+        // 최초에 보여지는 높이 설정 200p
+        bottomSheetBehavior?.peekHeight = resources.getDimensionPixelSize(R.dimen.peek_height2)
+
+        // 최대 확장 높이 설정
+        bottomSheetBehavior?.isFitToContents = true
+        bottomSheetBehavior?.isHideable = true
+        bottomSheetBehavior?.expandedOffset =
+            resources.getDimensionPixelSize(R.dimen.expanded_offset)
+
+        // BottomSheet 상태 변경 리스너 등록
+        bottomSheetBehavior?.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                // 상태 변경에 따른 동작 처리
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        // BottomSheet가 축소된 상태
+                    }
+
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        // BottomSheet가 확장된 상태
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // 슬라이드 중일 때의 동작 처리
+            }
+        })
+    }
 }
-
-
-

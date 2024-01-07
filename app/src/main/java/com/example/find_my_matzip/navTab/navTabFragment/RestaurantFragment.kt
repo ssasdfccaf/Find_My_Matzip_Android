@@ -1,6 +1,7 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,12 +11,14 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.find_my_matzip.AddRestaurantActivity
 import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentRestaurantBinding
 import com.example.find_my_matzip.model.RestaurantDto
 import com.example.find_my_matzip.navTab.adapter.RestaurantRecyclerAdapter
+import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,11 +28,13 @@ class RestaurantFragment : Fragment() {
     lateinit var binding: FragmentRestaurantBinding
     lateinit var adapter: RestaurantRecyclerAdapter
     lateinit var restaurantList: Call<List<RestaurantDto>>
-    lateinit var avgScoreList: Call<List<RestaurantDto>>
+   //  lateinit var avgScoreList: Call<List<RestaurantDto>>
     private var text:String? = null
     var isLoading = false
     var isLastPage = false
     var currentPage = 0
+
+    private var loginUserId:String = ""
 
     companion object {
         fun newInstance(text: String): RestaurantFragment {
@@ -53,6 +58,21 @@ class RestaurantFragment : Fragment() {
     ): View? {
         Log.d("SdoLifeCycle","RestaurantFragment onCreateView")
         binding = FragmentRestaurantBinding.inflate(layoutInflater, container, false)
+
+        loginUserId = SharedPreferencesManager.getString("id","")
+
+
+
+        // 버튼에 클릭 리스너를 추가하세요
+        binding.addRestaurant.visibility = if (loginUserId == "admin") View.VISIBLE else View.INVISIBLE
+        binding.addRestaurant.setOnClickListener {
+            // 새로운 액티비티를 시작하는 인텐트를 생성하세요
+            val intent = Intent(requireContext(), AddRestaurantActivity::class.java)
+
+            // 생성한 인텐트를 사용하여 액티비티를 시작하세요
+            startActivity(intent)
+        }
+
 
         //검색창에서 넘어왔다면 text넣어줌
         val newText = arguments?.getString("text")
@@ -110,7 +130,6 @@ class RestaurantFragment : Fragment() {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                 && firstVisibleItemPosition >= 0
             ) {
-                currentPage++
                 Log.d("MyPageFragment", "33 currentPage 전 :$currentPage ")
                 Log.d("MyPageFragment", "스크롤 리스닝 확인 3")
                 loadNextPageData(currentPage)
@@ -129,13 +148,13 @@ class RestaurantFragment : Fragment() {
             //검색 단어가 있을 때
             Log.d("RestaurantFragment", "검색중 $text")
             restaurantList = restaurantService.getSearchRestaurantsByAvgScore(text!!,page)
-            avgScoreList = restaurantService.getSearchRestaurantsByAvgScore(text!!,page)
+         //    avgScoreList = restaurantService.getSearchRestaurantsByAvgScore(text!!,page)
 
         } else {
             //전체 조회
             Log.d("RestaurantFragment", "전체 조회")
             restaurantList = restaurantService.getAllPageRestaurantsByAvgScore(page)
-            avgScoreList = restaurantService.getAllPageRestaurantsByAvgScore(page)
+        //     avgScoreList = restaurantService.getAllPageRestaurantsByAvgScore(page)
         }
 
 

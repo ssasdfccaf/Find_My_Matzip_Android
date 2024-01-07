@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,16 +16,16 @@ import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.ItemCommentBinding
 import com.example.find_my_matzip.model.CommentDto
-import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.navTabFragment.CommentFragment
+import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
-import com.google.firebase.storage.FirebaseStorage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.Duration
+import java.time.format.DateTimeParseException
 
 // 뷰와 데이터 연결 한다.
 interface CommentAdapterListener {
@@ -41,19 +41,24 @@ class CommentAdapter(
     val context: CommentFragment, // Pass CommentFragment instance
     val boardId: Long,
     var datas: List<CommentDto>,
-    val listener: CommentAdapterListener? = null
+    val listener: CommentAdapterListener? = null,
 ) : RecyclerView.Adapter<CommentViewHolder>() {
     // 대댓글 더 보기 여부를 저장하는 맵
     private val showMoreMap: MutableMap<Long, Boolean> = mutableMapOf()
     var onReplyClick: ((CommentDto, Long) -> Unit)? = null
-//    init {
-//        // 최초에 디폴트로 보여줄 부모 댓글의 ID를 showMoreMap에 추가
-//        datas.firstOrNull()?.let { showMoreMap[it.commentId] = false }
+//    fun updateData(newCommentList: List<CommentDto>) {
+//        commentList = newCommentList
+//        notifyDataSetChanged()
 //    }
 
     init {
-        // 최초에 디폴트로 모든 부모 댓글을 보이게 설정
-        datas.forEach { showMoreMap[it.commentId] = true }
+        // 최초에 디폴트로 모든 댓글을 보이게 설정
+        datas.forEach { comment ->
+            showMoreMap[comment.commentId] = true
+            comment.children?.forEach { childComment ->
+                showMoreMap[childComment.commentId] = true
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -64,6 +69,12 @@ class CommentAdapter(
 
         return CommentViewHolder(binding)
     }
+
+    fun addComment(newComment: CommentDto) {
+        datas += newComment
+        notifyDataSetChanged()
+    }
+
 
     // 데이터 세트의 총 아이템 수 반환
     override fun getItemCount(): Int {
@@ -92,9 +103,13 @@ class CommentAdapter(
                 binding.showMoreReplies.text = "댓글숨기기"
             } else {
                 if (item?.children?.isNotEmpty() == true) {
+
                     val initialChildren =
-                        if (item.children.size > 1) item.children.take(1) else item.children
-                    val innerAdapter = CommentAdapter(context, boardId, initialChildren, listener)
+                        if (item?.children?.isNotEmpty() == true) item?.children else null
+                    val innerAdapter =
+                        CommentAdapter(context, boardId, initialChildren ?: emptyList(), listener)
+
+
                     binding.recyclerViewChildren.layoutManager =
                         LinearLayoutManager(context?.requireContext()?.applicationContext)
                     binding.recyclerViewChildren.adapter = innerAdapter
@@ -112,8 +127,6 @@ class CommentAdapter(
                     binding.showMoreReplies.visibility = View.VISIBLE
                 }
             }
-
-            // 이 부분을 추가해서 갱신된 정보를 반영하도록 합니다.
             notifyItemChanged(position)
         }
         // 초기에 댓글이 숨겨져 있을 때
@@ -122,9 +135,8 @@ class CommentAdapter(
             binding.showMoreReplies.text = "댓글더보기"
             binding.showMoreReplies.visibility = View.VISIBLE
         } else {
-            // 최초에는 부모 댓글과 2개의 자식 댓글을 보여줌
-            val initialChildren =
-                if (item?.children?.isNotEmpty() == true) item?.children?.take(1) else null
+            // 최초에는 부모 댓글과 모든 자식 댓글을 보여줌
+            val initialChildren = item?.children
             val innerAdapter =
                 CommentAdapter(context, boardId, initialChildren ?: emptyList(), listener)
             binding.recyclerViewChildren.layoutManager =
@@ -158,20 +170,30 @@ class CommentAdapter(
             context.resources.getDimensionPixelSize(R.dimen.fixed_comment_indent) // 일정한 들여쓰기 값
         val layoutParams = binding.root.layoutParams as ViewGroup.MarginLayoutParams
 
-        layoutParams.marginStart = if (isParentComment) {
-            if (item!!.depth >= 3) {
-                fixedIndentSize
-            } else {
-                indentSize * item.depth
-            }
+        layoutParams.marginStart = if (item!!.depth >= 1) {
+            fixedIndentSize
         } else {
-            if (item!!.depth >= 3) {
-                fixedIndentSize
+            if (isParentComment) {
+                indentSize * item.depth
             } else {
                 indentSize * (item.depth + 1)
             }
         }
         binding.root.layoutParams = layoutParams
+
+
+        val loginUserId = SharedPreferencesManager.getString("id", "")
+        // 댓글 작성자의 아이디
+        val commentWriterId = item?.commentWriter
+
+        if (loginUserId == commentWriterId) {
+            // 현재 로그인한 사용자와 댓글 작성자가 동일한 경우 삭제 버튼 표시
+            binding.deleteReply.visibility = View.VISIBLE
+        } else {
+            // 동일하지 않은 경우 삭제 버튼 숨김
+            binding.deleteReply.visibility = View.GONE
+        }
+
 
         // 삭제 버튼 클릭 이벤트 처리
         binding.deleteReply.setOnClickListener {
@@ -185,6 +207,7 @@ class CommentAdapter(
             }
         }
 
+
         val userImage = item?.userImage
 
         // 사용자 이미지 URL이 있다면 Glide로 이미지 로드
@@ -193,6 +216,37 @@ class CommentAdapter(
                 .load(userImage)
                 .override(900, 900) // 이미지 크기 설정 (원하는 크기로 수정)
                 .into(binding.userImage)
+        }
+
+        binding.userImage.setOnClickListener {
+            val position = holder.adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                val comment = datas[position]
+                val userId = comment.commentWriter // 여기서 사용자 아이디를 가져와야 함
+
+                if (!userId.isNullOrBlank()) {
+                    // requireContext()를 통해 현재 컨텍스트에서 FragmentManager를 얻어옵니다.
+                    val fragmentManager = context.requireActivity().supportFragmentManager
+
+                    // 이제 fragmentManager를 사용하여 프로필로 이동하는 코드를 작성할 수 있습니다.
+                    navigateToUserProfile(userId, fragmentManager)
+                }
+            }
+        }
+        binding.commentWriter.setOnClickListener {
+            val position = holder.adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                val comment = datas[position]
+                val userId = comment.commentWriter // 여기서 사용자 아이디를 가져와야 함
+
+                if (!userId.isNullOrBlank()) {
+                    // requireContext()를 통해 현재 컨텍스트에서 FragmentManager를 얻어옵니다.
+                    val fragmentManager = context.requireActivity().supportFragmentManager
+
+                    // 이제 fragmentManager를 사용하여 프로필로 이동하는 코드를 작성할 수 있습니다.
+                    navigateToUserProfile(userId, fragmentManager)
+                }
+            }
         }
 
         //현재 아이템의 위치를 확인하고,
@@ -204,8 +258,17 @@ class CommentAdapter(
                 val parentComment = datas[position]
                 listener?.onReplyClick(parentComment, boardId)
                 context.showReplyDialog(parentComment, boardId)
+
             }
         }
+    }
+
+    private fun navigateToUserProfile(userId: String, fragmentManager: FragmentManager) {
+        val fragment = ProfileFragment.newInstance(userId)
+        val transaction = fragmentManager.beginTransaction()
+            .add(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun deleteComment(commentId: Long) {
@@ -252,18 +315,28 @@ class CommentAdapter(
     }
 
 }
-
-// 댓글 작성 시간을 기반으로 "얼마 전" 형식의 텍스트 계산
 @RequiresApi(Build.VERSION_CODES.O)
 private fun getTimeAgoText(commentTime: String?): String {
-    val commentDateTime = LocalDateTime.parse(commentTime, DateTimeFormatter.ISO_DATE_TIME)
-    val now = LocalDateTime.now()
-    val duration = Duration.between(commentDateTime, now)
+    if (commentTime.isNullOrBlank()) {
+        Log.e("CommentAdapter", "Comment time is null or blank")
+        return "Unknown time"
+    }
 
-    return when {
-        duration.toMinutes() < 1 -> "Just now"
-        duration.toHours() < 1 -> "${duration.toMinutes()} minutes ago"
-        duration.toDays() < 1 -> "${duration.toHours()} hours ago"
-        else -> "${duration.toDays()} days ago"
+    try {
+        val commentDateTime = LocalDateTime.parse(commentTime, DateTimeFormatter.ISO_DATE_TIME)
+        val now = LocalDateTime.now()
+        val duration = Duration.between(commentDateTime, now)
+
+        return when {
+            duration.toMinutes() < 1 -> "Just now"
+            duration.toHours() < 1 -> "${duration.toMinutes()} minutes ago"
+            duration.toDays() < 1 -> "${duration.toHours()} hours ago"
+            else -> "${duration.toDays()} days ago"
+        }
+    } catch (e: DateTimeParseException) {
+        Log.e("CommentAdapter", "Error parsing comment time: $commentTime", e)
+        return "Unknown time"
     }
 }
+
+
