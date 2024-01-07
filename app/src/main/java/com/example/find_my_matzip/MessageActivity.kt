@@ -13,7 +13,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -163,9 +165,12 @@ class MessageActivity : AppCompatActivity() {
         }
         @SuppressLint("RtlHardcoded")
         override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
+
             holder.textView_message.textSize = 20F
             holder.textView_message.text = comments[position].message
+            Toast.makeText(this@MessageActivity, comments[position].toString() +"    ", Toast.LENGTH_SHORT).show()
             holder.textView_time.text = comments[position].time
+
             if(comments[position].uid.equals(uid)){
 
                 // 본인 채팅

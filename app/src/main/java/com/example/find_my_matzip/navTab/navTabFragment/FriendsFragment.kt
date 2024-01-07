@@ -61,8 +61,10 @@ class FriendsFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         database = Firebase.database.reference
+
         val view = inflater.inflate(R.layout.fragment_friends, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_recycler)
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = RecyclerViewAdapter()
 
@@ -70,42 +72,44 @@ class FriendsFragment : Fragment() {
     }
 
     inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.CustomViewHolder>() {
-        var mylist: MutableList<String> = mutableListOf()
+
         init {
             val myUid = Firebase.auth.currentUser?.uid.toString()
             val myid = Firebase.auth.currentUser?.email.toString().split('@')[0]
-            //var mylist: MutableList<String> = mutableListOf()
-            //Toast.makeText(requireContext(), myid, Toast.LENGTH_SHORT).show()
-
+//            val mylist: MutableList<String> = mutableListOf()
             FirebaseDatabase.getInstance().reference.child("following").child(myid).addValueEventListener(object :
                 ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                 }
-                override fun onDataChange(snapshot: DataSnapshot){
-                    val item = snapshot.getValue()
-                    //Toast.makeText(requireContext(), item.toString(), Toast.LENGTH_SHORT).show()
-                    mylist.add(item.toString())
-                    //notifyDataSetChanged()
+                override fun onDataChange(snapshot: DataSnapshot) {
+//                    Toast.makeText(requireContext(), snapshot.value.toString(), Toast.LENGTH_SHORT).show()
+                    val flowinglist = snapshot.value
+//                    mylist.add(item.toString())
+//                    Toast.makeText(requireContext(), mylist[0], Toast.LENGTH_SHORT).show()
+                    notifyDataSetChanged()
+
+                    FirebaseDatabase.getInstance().reference.child("users").addValueEventListener(object :
+                        ValueEventListener {
+                        override fun onCancelled(error: DatabaseError) {
+                        }
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            friend.clear()
+                            for(data in snapshot.children){
+                                val item = data.getValue<Friend>()
+                                Log.d("Friend", "$item")
+                                if(item?.uid.equals(myUid)) { continue } // 본인은 친구창에서 제외
+                                if(!(item?.name.toString() in flowinglist.toString())) { continue }
+                                friend.add(item!!)
+                            }
+                            notifyDataSetChanged()
+                        }
+                    })
                 }
             })
 
-            //Toast.makeText(requireContext(), mylist[0], Toast.LENGTH_SHORT).show()
-            FirebaseDatabase.getInstance().reference.child("users").addValueEventListener(object :
-                ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {
-                }
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    friend.clear()
-                    for(data in snapshot.children){
-                        val item = data.getValue<Friend>()
-                        Log.d("Friend", "$item")
-                        if(item?.uid.equals(myUid)) { continue } // 본인은 친구 창에서 제외
-                        friend.add(item!!)
-                    }
-                    notifyDataSetChanged()
-                }
-            })
+
         }
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
             return CustomViewHolder(LayoutInflater.from(context).inflate(R.layout.item_friends, parent, false))
         }
@@ -118,7 +122,7 @@ class FriendsFragment : Fragment() {
 
         override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
             // 유저 정보 + 확장자 불러오기
-             Glide.with(holder.itemView.context).load(friend[position].email + ".jpg")
+            Glide.with(holder.itemView.context).load(friend[position].email + ".jpg")
                 .apply(RequestOptions().circleCrop())
                 .into(holder.imageView)
             holder.textView.text = friend[position].name
