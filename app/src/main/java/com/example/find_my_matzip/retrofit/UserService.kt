@@ -35,7 +35,7 @@ interface UserService {
 
     //회원 삭제
     @DELETE("users/delete/{userid}")
-    fun deleteById(@Path("userid") userid: String?): Call<Unit>
+    fun deleteById(@Path("userid") userid: String?): Call<UsersFormDto>
 
 
 //    @GET("users/profile/{pageUserid}")

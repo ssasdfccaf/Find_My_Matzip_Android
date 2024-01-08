@@ -1,6 +1,5 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
@@ -36,151 +33,31 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
     private var loginUserId: String = ""
     var commentContents: EditText? = null
     var saveBtn: Button? = null
-    private val TAG: String = "CommentFragment"
     private var userImage: String = ""
+    var comment: List<CommentDto> = emptyList() // 이 부분을 추가하고 초기화
 
-    companion object {
 
-        fun newInstance(boardId: String?): CommentFragment {
-            Log.d("CommentFragment", "게시판 아이디 잘받았나욥  . boardId: $boardId")
-            val fragment = CommentFragment()
-            val args = Bundle()
-            if (boardId != null) {
-                args.putString("boardId", boardId)
-            } else {
-                // boardId가 null인 경우에 대한 처리
-                Log.e("CommentFragment", "boardId 없음!")
+        companion object {
+            const val TAG = "BottomSheetDialogFragment"
+
+            private const val ARG_BOARD_ID = "boardId"
+            private const val ARG_COMMENTS = "comments"
+
+            fun newInstance(boardId: String?, comments: List<CommentDto> = emptyList()): CommentFragment {
+                val fragment = CommentFragment()
+                val args = Bundle()
+                args.putString(ARG_BOARD_ID, boardId)
+                args.putSerializable("comments", ArrayList(comments))
+                fragment.arguments = args
+                return fragment
             }
-            fragment.arguments = args
-            return fragment
         }
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("SdoLifeCycle", "boardDtlFragment onCreate")
         super.onCreate(savedInstanceState)
 
-    }
-
-
-    override fun onReplyClick(comment: CommentDto, boardId: Long) {
-        showReplyDialog(comment, boardId)
-        adapter.notifyDataSetChanged()
-    }
-
-    fun showReplyDialog(parentComment: CommentDto, boardId: Long) {
-
-
-        val isParentComment = parentComment.depth == 0
-        val commentWriterText = parentComment.commentWriter
-        Log.d("CommentFragment", "commentWriterText: $commentWriterText")
-        val boardIdText = parentComment.boardId.toString()
-        val titleText = if (isParentComment) "$commentWriterText 에 대한 답글 작성" else {
-            if (commentWriterText.isNotEmpty()) {
-                "$commentWriterText 에 대한 답글 작성"
-            } else {
-                "댓글 작성 $boardIdText"
-            }
-        }
-        Log.d("CommentFragment", "titleText: $titleText")
-        val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setTitle(titleText)
-        alertDialogBuilder.setMessage("${loginUserId} 님 답글을 입력하세요:")
-        val input = EditText(requireContext())
-        val layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.MATCH_PARENT
-        )
-        input.layoutParams = layoutParams
-        alertDialogBuilder.setView(input)
-
-        alertDialogBuilder.setPositiveButton("답글 작성") { dialog, which ->
-            val replyText = input.text.toString()
-            saveReplyComment(parentComment, replyText)
-            adapter.notifyDataSetChanged()
-        }
-
-        alertDialogBuilder.setNegativeButton("취소") { dialog, which ->
-            dialog.dismiss()
-        }
-
-        val alertDialog = alertDialogBuilder.create()
-        alertDialog.show()
-    }
-
-
-    private fun saveReplyComment(parentComment: CommentDto, replyText: String) {
-        val boardService = (context?.applicationContext as MyApplication).boardService
-        val boardDtl = arguments?.getString("boardId")?.let { boardService.getBoardDtl(it) }
-
-        boardDtl?.enqueue(object : Callback<BoardDtlDto> {
-            override fun onResponse(call: Call<BoardDtlDto>, response: Response<BoardDtlDto>) {
-                if (response.isSuccessful) {
-                    val boardDto = response.body()
-
-                    val commentService =
-                        (context?.applicationContext as MyApplication).commentService
-
-                    if (boardDto != null) {
-                        val boardId = boardDto.board.id
-                        val commentWriter = loginUserId
-                        val commentDto = CommentDto(
-                            commentWriter = loginUserId,
-                            commentContents = replyText,
-                            boardId = boardId,
-                            parentId = parentComment.commentId ?: 0,
-                            depth = parentComment.depth + 1,
-                            commentCreatedTime = "",
-                            userImage = userImage
-                        )
-                        val commentList =
-                            commentService.saveReply(commentDto, parentComment.commentId)
-
-                        commentList.enqueue(object : Callback<Unit> {
-                            override fun onResponse(
-                                call: Call<Unit?>,
-                                response: Response<Unit?>
-                            ) {
-                                if (response.isSuccessful) {
-                                    Toast.makeText(
-                                        requireContext().applicationContext,
-                                        "대댓글작성되었습니다요^ㅡㅡ^",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    adapter.addComment(commentDto)
-
-//                                    // 어댑터에게 데이터 세트가 변경되었음을 알림
-//                                    adapter.notifyDataSetChanged()
-//
-//                                    // BottomSheet 상태를 COLLAPSED로 변경
-//                                    val bottomSheetBehavior = BottomSheetBehavior.from(requireView().parent as View)
-//                                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-
-                                } else {
-                                    val errorBody = response?.errorBody()?.string()
-
-                                    Toast.makeText(
-                                        requireContext().applicationContext,
-                                        "대댓글 작성 실패. 에러 메시지: $errorBody",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    Log.e("CommentFragment", "대댓글 작성 실패. 에러 메시지: $errorBody")
-                                }
-                            }
-
-                            override fun onFailure(call: Call<Unit?>, t: Throwable) {
-                                // TODO: 실패 처리 코드 추가
-                            }
-                        })
-
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<BoardDtlDto>, t: Throwable) {
-                // TODO: 실패 처리 코드 추가
-            }
-        })
     }
 
 
@@ -190,8 +67,8 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
     ): View? {
         binding = FragmentCommentBinding.inflate(layoutInflater, container, false)
         loginUserId = SharedPreferencesManager.getString("id", "")
-        commentContents = binding.commentContents
-        saveBtn = binding.saveBtn
+//        commentContents = binding.commentContents
+//        saveBtn = binding.saveBtn
 //        boardId = arguments?.getLong("boardId") ?: 0L
         val boardId = arguments?.getLong("boardId") ?: 0L
 
@@ -205,8 +82,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
         Log.d("CommentFragment", "profileList.enqueue 호출전 : ")
 
 
-
-
+        // 유저 이미지를 위한 enqueue
         profileList.enqueue(object : Callback<ProfileDto> {
             override fun onResponse(
                 call: Call<ProfileDto>,
@@ -272,7 +148,6 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
         Log.d(TAG, "잘받았나욥 레트로핏 . boardDtl: $boardDtl")
 
 
-
         boardDtl?.enqueue(object : Callback<BoardDtlDto> {
             override fun onResponse(
                 call: Call<BoardDtlDto>,
@@ -297,19 +172,12 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
 
                     // CommentFragment에서 CommentAdapter2 초기화 부분
                     // 어댑터를 생성할 때 OnReplyClickListener를 전달
-                    adapter = CommentAdapter(
-                        this@CommentFragment,
-                        boardId,
-                        commentList,
-                        null
-                    )
+                    adapter = CommentAdapter(this@CommentFragment, boardId, commentList.toMutableList(), null)
 
                     binding.commentRecyclerView.adapter = adapter
 
-
+                    //댓글작성 이벤트
                     binding.saveBtn.setOnClickListener {
-
-
                         if (boardDto != null) {
                             val boardId = boardDto.board?.id!!
                             val commentWriter =
@@ -325,7 +193,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                                 commentWriter = commentWriter, // 작성자 아이디 또는 다른 정보
                                 commentContents = commentContents, // 댓글 내용
                                 boardId = boardId, // 게시글 ID
-                                // parentId = parentId, // parentId는 대댓글을 작성할 때 사용
+                                parentId = null,
                                 depth = 0, // 댓글 깊이, 일반 댓글은 0
                                 commentCreatedTime = "",
                                 userImage = this@CommentFragment.userImage
@@ -336,75 +204,57 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
 
                             val commentList = commentService.save(commentDto)
 
-                            commentList.enqueue(object : Callback<Unit> {
+                            commentList.enqueue(object : Callback<CommentDto> {
                                 override fun onResponse(
-                                    call: Call<Unit?>,
-                                    response: Response<Unit?>
+                                    call: Call<CommentDto>,
+                                    response: Response<CommentDto>
                                 ) {
-
-
-                                    Log.d(
-                                        "CommentFragment",
-                                        "Unit아래응답코드: ${response.code()}"
-                                    )
                                     if (response.isSuccessful) {
-                                        val save = response.body()
-                                        Log.e("CommentFragment", "savedComment: ${save}")
-                                        Toast.makeText(
-                                            requireContext().applicationContext,
-                                            "댓글작성되었습니다요^ㅡㅡ^",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        adapter.addComment(commentDto)
+                                        val commentDto = response.body()
+                                        if (commentDto != null) {
+                                            Toast.makeText(
+                                                requireContext().applicationContext,
+                                                "댓글작성되었습니다요^ㅡㅡ^",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
 
+                                            Log.d("CommentFragment", "댓글 commentDto.성공 : $commentDto")
+                                            // 서버에서 받아온 commentId를 사용하여 CommentDto를 생성
+                                            commentDto.commentId?.let { commentId ->
+                                                val newCommentDto = CommentDto(
+                                                    commentId = commentId,
+                                                    commentWriter = commentDto.commentWriter,
+                                                    commentContents = commentDto.commentContents,
+                                                    boardId = commentDto.boardId,
+                                                    parentId = commentDto.parentId,
+                                                    depth = commentDto.depth,
+                                                    commentCreatedTime = commentDto.commentCreatedTime,
+                                                    userImage = commentDto.userImage
+                                                )
+                                                adapter.updateData(mutableListOf(commentDto))
+                                                binding.commentContents.text.clear()
 
-
+                                                Log.e("CommentFragment", "댓글 commentDto.성공 : $newCommentDto")
+                                            }
+                                        }
                                     } else {
                                         val errorBody = response?.errorBody()?.string()
-                                        Log.e("CommentFragment", "댓글 작성 실패. 에러 메시지: $errorBody")
                                         Toast.makeText(
                                             requireContext().applicationContext,
                                             "댓글 작성 실패. 에러 메시지: $errorBody",
                                             Toast.LENGTH_SHORT
                                         ).show()
-                                        Toast.makeText(
-                                            requireContext().applicationContext,
-                                            "댓글 작성 실패",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        Log.e(
-                                            "CommentFragment",
-                                            "댓글 작성 실패: ${response.errorBody()}"
-                                        )
-                                        Log.e(
-                                            "CommentFragment",
-                                            "댓글 작성 실패: ${
-                                                response.errorBody().toString()
-                                            }"
-                                        )
-                                        Log.d(TAG, "댓글 작성 실패. 에러 메시지:  $errorBody.")
-
+                                        Log.e("CommentFragment", "댓글 작성 실패. 에러 메시지: $errorBody")
                                     }
                                 }
 
-                                override fun onFailure(
-                                    call: Call<Unit?>,
-                                    t: Throwable
-                                ) {
-                                    // TODO: 네트워크 오류 또는 예외 발생 시의 처리
-                                    Toast.makeText(
-                                        requireContext().applicationContext,
-                                        "댓글 작성 실패",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    Log.e(TAG, "댓글 작성 실패: ${t.message}", t)
+                                override fun onFailure(call: Call<CommentDto>, t: Throwable) {
+                                    // TODO: 실패 처리 코드 추가
                                 }
 
                             })
                         }
-
                     }
-
                 }
             }
 
@@ -425,26 +275,172 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
 
         return binding.root
     }
-    //바텀 뷰
+
+
+    override fun onReplyClick(comment: CommentDto, boardId: Long) {
+        Log.d(TAG, "onReplyClick called for comment: $comment")
+
+        // 댓글 작성자 태그 추가 부분을 동적으로 처리
+        val commentWriterTag = if (!comment.commentWriter.isNullOrEmpty()) {
+            "@${comment.commentWriter} "
+        } else {
+            ""
+        }
+        binding.commentContents.setText(commentWriterTag)
+        binding.commentContents.setSelection(binding.commentContents.text.length)
+
+        binding.saveBtn.setOnClickListener {
+
+
+
+            // 사용자가 작성한 댓글 내용
+            val replyText = binding.commentContents.text.toString()
+
+            // 작성자 태그 확인
+            val isAuthorTagPresent = replyText.contains("@${comment.commentWriter}")
+
+            // 대댓글 작성 처리
+            if (isAuthorTagPresent) {
+                saveReplyComment(comment, replyText)
+            } else {
+
+            }
+        }
+    }
+
+
+    private fun saveReplyComment(commentDto: CommentDto, replyText: String) {
+        val boardService = (context?.applicationContext as MyApplication).boardService
+        val boardDtl = arguments?.getString("boardId")?.let { boardService.getBoardDtl(it) }
+
+        boardDtl?.enqueue(object : Callback<BoardDtlDto> {
+            override fun onResponse(call: Call<BoardDtlDto>, response: Response<BoardDtlDto>) {
+                if (response.isSuccessful) {
+                    val boardDto = response.body()
+
+                    val commentService =
+                        (context?.applicationContext as MyApplication).commentService
+
+                    if (boardDto != null) {
+                        val boardId = boardDto.board.id
+
+
+                        val newCommentDto = CommentDto(
+                            commentWriter = loginUserId,
+                            commentContents = replyText,
+                            boardId = boardId,
+                            parentId = commentDto.commentId, // 수정된 부분
+                            depth = commentDto.depth + 1,
+                            commentCreatedTime = "",
+                            userImage = userImage
+                        )
+
+
+                        val commentList = commentService.saveReply(newCommentDto, newCommentDto.commentId)
+                        // commentList.enqueue에서 서버 응답으로 받은 CommentDto의 ID를 사용하여 commentDto.commentId를 업데이트
+                        commentList.enqueue(object : Callback<CommentDto> {
+                            override fun onResponse(call: Call<CommentDto>, response: Response<CommentDto>) {
+                                if (response.isSuccessful) {
+                                    val createdCommentDto = response.body()
+                                    if (createdCommentDto != null) {
+                                        newCommentDto.commentId = createdCommentDto.commentId
+
+                                        // 이후의 로직은 그대로 유지
+                                        Toast.makeText(
+                                            requireContext().applicationContext,
+                                            "대댓글작성되었습니다요^ㅡㅡ^",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        commentDto.commentId?.let { commentId ->
+                                            val newCommentDto = CommentDto(
+                                                commentId = commentId,
+                                                commentWriter = commentDto.commentWriter,
+                                                commentContents = commentDto.commentContents,
+                                                boardId = commentDto.boardId,
+                                                parentId = commentDto.parentId,
+                                                depth = commentDto.depth,
+                                                commentCreatedTime = commentDto.commentCreatedTime,
+                                                userImage = commentDto.userImage
+                                            )
+
+                                            // 어댑터에 데이터 추가
+                                            adapter.updateData(mutableListOf(newCommentDto))
+
+                                            // 댓글 내용 초기화
+                                            binding.commentContents.text.clear()
+
+                                            // 어댑터에게 데이터 변경을 알림
+                                            adapter.notifyDataSetChanged()
+
+                                            // 프래그먼트를 새로고침합니다.
+                                            refreshFragment()
+                                        }
+                                    }
+                                } else {
+                                    // 실패 처리 로직은 그대로 유지
+                                    val errorBody = response?.errorBody()?.string()
+                                    Toast.makeText(
+                                        requireContext().applicationContext,
+                                        "대댓글 작성 실패. 에러 메시지: $errorBody",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    Log.e("CommentFragment", "대댓글 작성 실패. 에러 메시지: $errorBody")
+                                    Log.e("CommentFragment", "대댓글 commentDto. 에러 메시지: $commentDto")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<CommentDto>, t: Throwable) {
+                                // 실패 처리 코드 추가
+                            }
+                        })
+
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BoardDtlDto>, t: Throwable) {
+                // TODO: 실패 처리 코드 추가
+            }
+        })
+    }
+    private fun refreshFragment() {
+        // 프래그먼트 트랜잭션 시작
+        val transaction = requireFragmentManager().beginTransaction()
+
+        // 현재의 프래그먼트를 제거
+        transaction.remove(this)
+
+        // 새로운 BottomSheetDialogFragment를 생성
+        val newFragment = CommentFragment.newInstance(arguments?.getString("boardId") ?: "")
+
+
+        // 전환 효과를 제거
+//        newFragment.enterTransition = null
+//        newFragment.exitTransition = null
+
+        // 생성된 BottomSheetDialogFragment를 보여줌
+        newFragment.show(requireFragmentManager(), CommentFragment.TAG)
+
+        // 트랜잭션 커밋
+        transaction.commit()
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+
         // BottomSheet의 레이아웃을 가져오기
-        val bottomSheet =
-            dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        val bottomSheet = dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
 
         // BottomSheetBehavior 가져오기
         val bottomSheetBehavior = bottomSheet?.let { BottomSheetBehavior.from(it) }
 
-        // 최초에 보여지는 높이 설정 200p
+        // 최초에 보여지는 높이 설정
         bottomSheetBehavior?.peekHeight = resources.getDimensionPixelSize(R.dimen.peek_height2)
 
-        // 최대 확장 높이 설정
-        bottomSheetBehavior?.isFitToContents = true
-        bottomSheetBehavior?.isHideable = true
-        bottomSheetBehavior?.expandedOffset =
-            resources.getDimensionPixelSize(R.dimen.expanded_offset)
+        // BottomSheetBehavior 설정
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+
 
         // BottomSheet 상태 변경 리스너 등록
         bottomSheetBehavior?.addBottomSheetCallback(object :

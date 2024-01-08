@@ -14,13 +14,13 @@ import retrofit2.http.Path
 interface CommentService {
 
     @POST("comment/save")
-    fun save(@Body commentDto: CommentDto?): Call<Unit>
+    fun save(@Body commentDto: CommentDto?): Call<CommentDto>
 
     @POST("comment/saveReply/{parentId}")
     fun saveReply(
         @Body commentDto: CommentDto?,
         @Path("parentId") parentId: Long?
-    ): Call<Unit>
+    ): Call<CommentDto>
 
     @DELETE("comment/delete/{commentId}")
     fun deleteComment(@Path("commentId") commentId: Long): Call<Unit>

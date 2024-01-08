@@ -1,43 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/top_radius_white_background"
     >
 
 
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/bottomSheetTitleTextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:text="댓글"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
         tools:ignore="MissingConstraints"
-        android:paddingBottom="50dp">
-
-        <TextView
-            android:id="@+id/bottomSheetTitleTextView"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:gravity="center"
-            android:text="댓글"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/commentRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bottomSheetTitleTextView"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="0dp" />
-    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/commentRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/bottomSheetTitleTextView"
+        android:layout_marginBottom="67dp"
+        android:paddingBottom="67dp"/>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/saveComment"
         android:layout_width="match_parent"
         android:layout_height="67dp"
@@ -45,12 +46,15 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            app:cardCornerRadius="75dp">
+            app:cardCornerRadius="75dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/userImage"
@@ -64,15 +68,18 @@
             android:id="@+id/userId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""></TextView>
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="@+id/cardView"
+            android:text="" />
 
         <EditText
             android:id="@+id/commentContents"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/radius"
             android:ems="10"
             android:fontFamily="@font/nexonlight"
@@ -80,7 +87,9 @@
             android:paddingLeft="30dp"
             android:textColor="#5E5D5D"
             android:textSize="15sp"
-            app:layout_constraintTop_toBottomOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/userId"
+            app:layout_constraintTop_toTopOf="@+id/cardView" />
 
         <Button
             android:id="@+id/saveBtn"
@@ -88,9 +97,7 @@
             android:layout_height="60dp"
             android:backgroundTint="@color/design_default_color_primary"
             android:text="작성"
-
-            />
-    </LinearLayout>
-
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cardView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

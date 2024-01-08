@@ -26,9 +26,8 @@ class ResSearchFragment : Fragment() {
     lateinit var binding: FragmentResSearchBinding
     lateinit var adapter: ResSearchResultRecyclerAdapter
     lateinit var restaurantList: Call<List<RestaurantDto>>
-    lateinit var avgScoreList: Call<List<RestaurantDto>>
+    //lateinit var avgScoreList: Call<List<RestaurantDto>>
 
-    private var text:String? = null
     var isLoading = false
     var isLastPage = false
     var currentPage = 0
@@ -93,7 +92,6 @@ class ResSearchFragment : Fragment() {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                 && firstVisibleItemPosition >= 0
             ) {
-                currentPage++
                 Log.d("MyPageFragment", "33 currentPage 전 :$currentPage ")
                 Log.d("MyPageFragment", "스크롤 리스닝 확인 3")
                 loadNextPageData(currentPage,newText)
@@ -107,20 +105,7 @@ class ResSearchFragment : Fragment() {
         isLoading = true
 
         val restaurantService = (context?.applicationContext as MyApplication).restaurantService
-
-        if (text != null) {
-            //검색 단어가 있을 때
-            Log.d("RestaurantFragment", "검색중 $text")
-            restaurantList = restaurantService.getSearchRestaurantsByAvgScore(text!!,page)
-            avgScoreList = restaurantService.getSearchRestaurantsByAvgScore(text!!,page)
-
-        } else {
-            //전체 조회
-            Log.d("RestaurantFragment", "전체 조회")
-            restaurantList = restaurantService.getAllPageRestaurantsByAvgScore(page)
-            avgScoreList = restaurantService.getAllPageRestaurantsByAvgScore(page)
-        }
-
+        restaurantList = restaurantService.getSearchRestaurantsByAvgScore(newText,page)
 
         restaurantList.enqueue(object : Callback<List<RestaurantDto>> {
             override fun onResponse(
@@ -186,19 +171,6 @@ class ResSearchFragment : Fragment() {
     override fun onDestroy() {
         Log.d("SdoLifeCycle","RestaurantFragment onDestroy")
         super.onDestroy()
-    }
-    fun showExitDialog() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Exit?")
-        builder.setMessage("앱을 종료하시겠습니까?")
-        builder.setNegativeButton("아니오") { dialog, which ->
-            // 아무 작업도 수행하지 않음
-        }
-        builder.setPositiveButton("예") { dialog, which ->
-            // 프래그먼트가 호스트하는 액티비티의 onBackPressed() 호출
-            (requireActivity() as? HomeTabActivity)?.onBackPressed2()
-        }
-        builder.show()
     }
 
 

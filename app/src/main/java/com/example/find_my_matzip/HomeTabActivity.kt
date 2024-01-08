@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.find_my_matzip.databinding.ActivityHomeTabBinding
+import com.example.find_my_matzip.model.UsersFormDto
 import com.example.find_my_matzip.navTab.navTabFragment.HomeFollowFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MapFragment
 import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
@@ -251,8 +252,8 @@ class HomeTabActivity : AppCompatActivity() {
                     val userService = (applicationContext as MyApplication).userService
                     val call = userService.deleteById(loginUserId)
 
-                    call.enqueue(object: Callback<Unit> {
-                        override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                    call.enqueue(object: Callback<UsersFormDto> {
+                        override fun onResponse(call: Call<UsersFormDto>, response: Response<UsersFormDto>) {
 
                             Log.d(TAG, "Request URL: ${call.request().url()}")
                             Log.d(TAG, "Request Body: ${call.request().body()}")
@@ -260,39 +261,46 @@ class HomeTabActivity : AppCompatActivity() {
                             if(response.isSuccessful) {
                                 Log.d(TAG, "삭제 성공")
 
-                                //2.firebase에서 이미지삭제
-                                // 스토리지 접근 도구 ,인스턴스
-                                val storage = MyApplication.storage
-                                // 스토리지에 저장할 인스턴스
-                                val storageRef = storage.reference
+                                if(response.body() != null){
+                                    //2.firebase에서 이미지삭제
+                                    // 스토리지 접근 도구 ,인스턴스
+                                    val storage = MyApplication.storage
+                                    // 스토리지에 저장할 인스턴스
+                                    val storageRef = storage.reference
 
-                                // 이미지 저장될 위치 및 파일명(파이어베이스)
-                                val imgRef = storageRef.child("users_img/${loginUserId}.jpg")
+                                    //이미지 경로
+                                    val imageUrl = response.body()!!.user_image
+                                    val imageName = getImageName(imageUrl)
+                                    // 이미지 저장될 위치 및 파일명(파이어베이스)
+                                    val imgRef = storageRef.child("users_img/${imageName}")
 
+                                    imgRef.delete().addOnCompleteListener {
+                                        // 파일 삭제 성공
+                                        Log.d(TAG, " firestore 파일 삭제 성공")
 
-                                imgRef.delete().addOnCompleteListener {
-                                    // 파일 삭제 성공
-                                    Log.d(TAG, " firestore 파일 삭제 성공")
+                                        //모든 SharedPreference 삭제
+                                        SharedPreferencesManager.clearAllPreferences()
+                                        // BackStack의 fragment전부 삭제
+                                        clearBackStack()
 
-                                    //모든 SharedPreference 삭제
-                                    SharedPreferencesManager.clearAllPreferences()
-                                    // BackStack의 fragment전부 삭제
-                                    clearBackStack()
+                                        //로딩창 지우기
+                                        loadingDialog.dismiss()
 
+                                        val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
+                                        startActivity(intent)
+
+                                    }.addOnFailureListener {
+                                        //로딩창 지우기
+                                        loadingDialog.dismiss()
+
+                                        // 파일 삭제 실패
+                                        Log.d(TAG, "firestore 파일 삭제 실패")
+                                    }
+                                }else{
+                                    //이미지가 없다면
                                     //로딩창 지우기
                                     loadingDialog.dismiss()
-
-                                    val intent = Intent(this@HomeTabActivity, LoginActivity::class.java)
-                                    startActivity(intent)
-
-                                }.addOnFailureListener {
-                                    //로딩창 지우기
-                                    loadingDialog.dismiss()
-
-                                    // 파일 삭제 실패
-                                    Log.d(TAG, "firestore 파일 삭제 실패")
                                 }
-
 
                             }else {
                                 Log.d(TAG, "서버 응답 실패: ${response.code()}")
@@ -302,7 +310,7 @@ class HomeTabActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun onFailure(call: Call<Unit>, t: Throwable) {
+                        override fun onFailure(call: Call<UsersFormDto>, t: Throwable) {
                             Log.d(TAG, "실패 ${t.message}")
 
                             //로딩창 지우기
@@ -340,6 +348,21 @@ class HomeTabActivity : AppCompatActivity() {
         }
 
         passwordBuilder.show()
+    }
+
+    //파이어베이스 주소에서 이미지이름만 구하기
+    fun getImageName(text:String) : String? {
+        val regex = Regex("users_img%2F(.*?\\.jpg)\\?alt=media")
+        val matchResult = regex.find(text)
+        val fileName = matchResult?.groupValues?.get(1)
+
+        if (fileName != null) {
+            println("Extracted FileName: $fileName")
+        } else {
+            println("No match found.")
+        }
+
+        return fileName
     }
 
 
