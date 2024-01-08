@@ -253,6 +253,12 @@ class JoinActivity : AppCompatActivity() {
 
              */
 
+            if(!("@" in inputUserId)){
+                Toast.makeText(this@JoinActivity, "이메일 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
 
             // 로딩 창 띄우기
             loadingDialog.show()
