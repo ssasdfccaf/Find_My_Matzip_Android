@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
+import com.example.find_my_matzip.database
 import com.example.find_my_matzip.databinding.FragmentProfileBinding
 import com.example.find_my_matzip.model.FollowDto
 import com.example.find_my_matzip.model.ProfileDto
@@ -25,6 +26,7 @@ import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter2
 import com.example.find_my_matzip.navTab.adapter.ProfileAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.CustomDialog
+import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,7 +58,7 @@ class ProfileFragment : Fragment() {
     var isLoading = false
     var isLastPage = false
     var currentPage = 0
-
+    private val fireDatabase = FirebaseDatabase.getInstance().reference
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -185,6 +187,8 @@ class ProfileFragment : Fragment() {
                                                     newTransaction.add(R.id.fragmentContainer, newFragment)
                                                     newTransaction.addToBackStack(null)
                                                     newTransaction.commit()
+
+                                                    fireDatabase.child("following").child(loginUserId.split('@')[0]).setValue(pageUserId)
                                                 } else {
                                                     Log.d("ProfileFragment", "팔로우 요청 실패 - Code: ${response.code()}, Message: ${response.message()}")
                                                 }
@@ -206,7 +210,7 @@ class ProfileFragment : Fragment() {
                                 pageUserId?.let { toUserId ->
                                     userService.deleteFollow(toUserId)
                                         .enqueue(object : Callback<Unit> {
-                                            override fun onResponse(
+                                             override fun onResponse(
                                                 call: Call<Unit>,
                                                 response: Response<Unit>
                                             ) {

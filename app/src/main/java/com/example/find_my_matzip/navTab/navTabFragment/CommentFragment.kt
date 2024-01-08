@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
@@ -17,7 +16,6 @@ import com.example.find_my_matzip.databinding.FragmentCommentBinding
 import com.example.find_my_matzip.model.BoardDtlDto
 import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.model.ProfileDto
-import com.example.find_my_matzip.model.RestaurantDto
 import com.example.find_my_matzip.navTab.adapter.CommentAdapter
 import com.example.find_my_matzip.navTab.adapter.CommentAdapterListener
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
@@ -36,41 +34,27 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
     var commentContents: EditText? = null
     var saveBtn: Button? = null
     private var userImage: String = ""
-    var comment: List<CommentDto> = emptyList()
 
 
     companion object {
 
         const val TAG = "BottomSheetDialogFragment"
-        private const val ARG_BOARD_ID = "boardId"
-        private const val ARG_COMMENTS = "comments"
 
-        fun newInstance(
-            boardId: String?,
-            comments: List<CommentDto> = emptyList()
-        ): CommentFragment {
+        fun newInstance(boardId: String?): CommentFragment {
+            Log.d("CommentFragment", "게시판 아이디 잘받았나욥  . boardId: $boardId")
             val fragment = CommentFragment()
             val args = Bundle()
-            args.putString(ARG_BOARD_ID, boardId)
-            args.putSerializable("comments", ArrayList(comments))
+            if (boardId != null) {
+                args.putString("boardId", boardId)
+            } else {
+                // boardId가 null인 경우에 대한 처리
+                Log.e("CommentFragment", "boardId 없음!")
+            }
             fragment.arguments = args
             return fragment
         }
-
-//        fun newInstance(boardId: String): CommentFragment {
-//            Log.d("CommentFragment", "게시판 아이디 잘받았나욥  . boardId: $boardId")
-//            val fragment = CommentFragment()
-//            val args = Bundle()
-//            if (boardId != null) {
-//                args.putString("boardId", boardId)
-//            } else {
-//                // boardId가 null인 경우에 대한 처리
-//                Log.e("CommentFragment", "boardId 없음!")
-//            }
-//            fragment.arguments = args
-//            return fragment
-//        }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("SdoLifeCycle", "boardDtlFragment onCreate")
         super.onCreate(savedInstanceState)
@@ -379,18 +363,30 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                                                 commentCreatedTime = commentDto.commentCreatedTime,
                                                 userImage = commentDto.userImage
                                             )
-
-                                            // 어댑터에 데이터 추가
+                                            adapter.updateData(mutableListOf(newCommentDto))
+                                            // 어댑터에 새로운 아이템이 삽입되었음을 알립니다.
+//                                            adapter.notifyItemInserted(adapter.itemCount - 1)
+//                                            adapter.addComment(commentDto)
 //                                            adapter.updateData(mutableListOf(newCommentDto))
 
-                                            // 댓글 내용 초기화
-//                                            binding.commentContents.text.clear()
+//                                            adapter.updateData(mutableListOf(newCommentDto))
+//                                            adapter.addComment(newCommentDto)
+                                            binding.commentContents.text.clear()
+                                            // 트랜잭션 시작
+                                            val transaction = requireFragmentManager().beginTransaction()
 
-                                            // 어댑터에게 데이터 변경을 알림
-                                            adapter.notifyDataSetChanged()
+// 이전에 추가된 프래그먼트를 찾아서 제거
+                                            val existingFragment = requireFragmentManager().findFragmentByTag("commentFragmentTag")
+                                            if (existingFragment != null) {
+                                                transaction.remove(existingFragment)
+                                            }
 
-                                            // 프래그먼트를 새로고침합니다.
-                                            refreshFragment()
+                                            transaction.commit()
+
+                                            // 새로운 프레그먼트 인스턴스를 생성하여 추가
+                                            val newFragment = CommentFragment.newInstance(boardId.toString())
+                                            newFragment.show(requireFragmentManager(), "commentFragmentTag")
+
                                         }
                                     }
                                 } else {
@@ -420,64 +416,45 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
             }
         })
     }
-
-override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-
-        // BottomSheet의 레이아웃을 가져오기
-        val bottomSheet = dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-
-        // BottomSheetBehavior 가져오기
-        val bottomSheetBehavior = bottomSheet?.let { BottomSheetBehavior.from(it) }
-
-        // 최초에 보여지는 높이 설정
-        bottomSheetBehavior?.peekHeight = resources.getDimensionPixelSize(R.dimen.peek_height2)
-
-        // BottomSheetBehavior 설정
-        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
-
-
-        // BottomSheet 상태 변경 리스너 등록
-        bottomSheetBehavior?.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                // 상태 변경에 따른 동작 처리
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        // BottomSheet가 축소된 상태
-                    }
-
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        // BottomSheet가 확장된 상태
-                    }
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // 슬라이드 중일 때의 동작 처리
-            }
-        })
-    }
-    private fun refreshFragment() {
-        // 프래그먼트 트랜잭션 시작
-        val transaction = requireFragmentManager().beginTransaction()
-
-        // 현재의 프래그먼트를 제거
-        transaction.remove(this)
-
-        // 새로운 BottomSheetDialogFragment를 생성
-        val newFragment = CommentFragment.newInstance(arguments?.getString("boardId") ?: "")
-
-
-        // 전환 효과를 제거
-//        newFragment.enterTransition = null
-//        newFragment.exitTransition = null
-
-        // 생성된 BottomSheetDialogFragment를 보여줌
-        newFragment.show(requireFragmentManager(), CommentFragment.TAG)
-
-        // 트랜잭션 커밋
-        transaction.commit()
-    }
-}
+     }
+    //바텀 뷰
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//
+//
+//        // BottomSheet의 레이아웃을 가져오기
+//        val bottomSheet = dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+//
+//        // BottomSheetBehavior 가져오기
+//        val bottomSheetBehavior = bottomSheet?.let { BottomSheetBehavior.from(it) }
+//
+//        // 최초에 보여지는 높이 설정
+//        bottomSheetBehavior?.peekHeight = resources.getDimensionPixelSize(R.dimen.peek_height2)
+//
+//        // BottomSheetBehavior 설정
+//        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+//
+//
+//        // BottomSheet 상태 변경 리스너 등록
+//        bottomSheetBehavior?.addBottomSheetCallback(object :
+//            BottomSheetBehavior.BottomSheetCallback() {
+//            override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                // 상태 변경에 따른 동작 처리
+//                when (newState) {
+//                    BottomSheetBehavior.STATE_COLLAPSED -> {
+//                        // BottomSheet가 축소된 상태
+//                    }
+//
+//                    BottomSheetBehavior.STATE_EXPANDED -> {
+//                        // BottomSheet가 확장된 상태
+//                    }
+//                }
+//            }
+//
+//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//                // 슬라이드 중일 때의 동작 처리
+//            }
+//        })
+//    }
+//}
+//

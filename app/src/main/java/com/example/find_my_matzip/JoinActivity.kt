@@ -34,6 +34,7 @@ import retrofit2.Response
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.UUID
 
 // sy FB
 private lateinit var auth: FirebaseAuth
@@ -57,6 +58,7 @@ class JoinActivity : AppCompatActivity() {
 
     // 파이어베이스 사진 저장 경로
     lateinit var imgStorageUrl: String
+    private var uuid = UUID.randomUUID().toString()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -230,27 +232,26 @@ class JoinActivity : AppCompatActivity() {
             if(inputUserPw == ""){
                 Toast.makeText(this@JoinActivity,"비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "회원가입 inputUserPw: null")
-
+                return@setOnClickListener
             }
 
             // Validation Check - UserPw
             else if ( inputUserPw.length < 6 ) {
                 Toast.makeText(this@JoinActivity, "비밀번호를 6자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
-            }
-
-            else {
                 return@setOnClickListener
             }
 
-             */
+            else {
 
-
+            }
 
             if (inputUserName == "") {
                 Toast.makeText(this@JoinActivity, "이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "회원가입 inputUserName: null")
                 return@setOnClickListener
             }
+
+             */
 
 
             // 로딩 창 띄우기
@@ -263,19 +264,17 @@ class JoinActivity : AppCompatActivity() {
             val storageRef = storage.reference
 
 
-            // 파일명 생성 : userid+현재시간
-            val uuid = binding.userId.text.toString() + Date() + System.currentTimeMillis();
-
-
             // 이미지 저장될 위치 및 파일명(파이어베이스)
-            val imgRef = storageRef.child("users_img/${binding.userId.text}.jpg")
+            val fileName = "${inputUserId}-$uuid"
+            val imgRef = storageRef.child("users_img/${fileName}.jpg")
+
 
 
             //입력된 이미지 있을때만 db에 이미지 경로 저장
             if (filePath != null) {
                 //이미지 url
                 imgStorageUrl =
-                    "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/users_img%2F${binding.userId.text}.jpg?alt=media"
+                    "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/users_img%2F${fileName}.jpg?alt=media"
             } else {
                 imgStorageUrl = ""
             }
