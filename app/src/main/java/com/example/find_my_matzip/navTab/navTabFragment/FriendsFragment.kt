@@ -32,6 +32,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
+
 class FriendsFragment : Fragment() {
     companion object{
         fun newInstance() : FriendsFragment {
@@ -83,7 +84,7 @@ class FriendsFragment : Fragment() {
                 }
                 override fun onDataChange(snapshot: DataSnapshot) {
 //                    Toast.makeText(requireContext(), snapshot.value.toString(), Toast.LENGTH_SHORT).show()
-                    val flowinglist = snapshot.value
+                    val followinglist = snapshot.value
 //                    mylist.add(item.toString())
 //                    Toast.makeText(requireContext(), mylist[0], Toast.LENGTH_SHORT).show()
                     notifyDataSetChanged()
@@ -98,7 +99,7 @@ class FriendsFragment : Fragment() {
                                 val item = data.getValue<Friend>()
                                 Log.d("Friend", "$item")
                                 if(item?.uid.equals(myUid)) { continue } // 본인은 친구창에서 제외
-                                if(!(item?.name.toString() in flowinglist.toString())) { continue }
+                                if(!(item?.name.toString() in followinglist.toString())) { continue }
                                 friend.add(item!!)
                             }
                             notifyDataSetChanged()
