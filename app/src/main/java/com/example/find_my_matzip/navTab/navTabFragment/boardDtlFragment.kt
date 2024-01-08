@@ -1,17 +1,14 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
@@ -22,7 +19,6 @@ import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.navTab.adapter.BoardDtlViewPagerAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.ConfirmDialog
-import com.example.find_my_matzip.utils.CustomDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
@@ -38,6 +34,7 @@ class boardDtlFragment : Fragment() {
     private var myFeeling = 0
     private lateinit var AllComment: TextView
     private lateinit var imgNameList : List<String>
+    var comment: List<CommentDto> = emptyList()
 
     // 로그인한 사용자의 아이디를 가져와서 해당 사용자의 프로필 정보를 서버에서 조회
     val loginuserId = SharedPreferencesManager.getString("id","")
@@ -325,6 +322,7 @@ class boardDtlFragment : Fragment() {
                         }
                     }
                     return totalCount
+
                 }
                 binding.AllComment.text = "댓글 (${getTotalCommentCount(boardDto?.commentsPage?.content ?: emptyList())}개) 모두보기"
 
@@ -347,7 +345,7 @@ class boardDtlFragment : Fragment() {
                     if (existingFragment == null) {
                         if (boardId != null) {
                             // BottomSheetDialogFragment 인스턴스 생성
-                            val commentFragment = CommentFragment.newInstance(boardId)
+                            val commentFragment = CommentFragment.newInstance(boardId, comment)
 
                             // BottomSheetDialogFragment 표시
                             commentFragment.show(parentFragmentManager, commentFragment.tag)
