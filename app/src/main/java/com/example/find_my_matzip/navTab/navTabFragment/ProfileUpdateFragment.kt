@@ -30,6 +30,8 @@ import com.example.find_my_matzip.databinding.FragmentProfileUpdateBinding
 import com.example.find_my_matzip.model.UsersFormDto
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -231,7 +233,25 @@ class ProfileUpdateFragment : Fragment() {
                                     //firebase에 이미지 저장
                                     val file = Uri.fromFile(File(filePath))
 
-                                    //TODO : 파이어베이스 스토리지에서 originUserImg삭제
+                                    //기존 이미지 이름
+                                    val imageName = getImageName(originUserImg)
+
+                                    //파이어베이스 스토리지에서 originUserImg삭제
+                                    val deleteImgRef = storageRef.child("users_img/${imageName}")
+
+                                    if (imageName != null) {
+                                        //이미지가 존재할 때
+                                        Log.d(TAG,"imageName = $imageName")
+                                        deleteImgRef.delete()
+                                            .addOnSuccessListener {
+                                                // 이미지 삭제 성공
+                                                Log.d(TAG, "Firebase 이미지 삭제됨: $imageName")
+                                            }
+                                            .addOnFailureListener { e ->
+                                                // 이미지 삭제 실패
+                                                Log.e(TAG, "Firebase 이미지 삭제 실패: $imageName", e)
+                                            }
+                                    }
 
 
 
@@ -455,6 +475,7 @@ class ProfileUpdateFragment : Fragment() {
 
         return binding.root
     }
+
 
     //성별
     fun getValue(v: View?): String? {

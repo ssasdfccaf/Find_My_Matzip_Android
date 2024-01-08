@@ -165,8 +165,8 @@ class MyPageFragment : Fragment() {
                     if(profileDto.pageUserDto.user_image != ""){
                         Glide.with(requireContext())
                             .load(profileDto.pageUserDto.user_image)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
-                            .skipMemoryCache(true)// 메모리 캐시 저장 off
+                            //.diskCacheStrategy(DiskCacheStrategy.NONE)// 디스크 캐시 저장 off
+                            //.skipMemoryCache(true)// 메모리 캐시 저장 off
                             .override(900, 900)
                             .into(binding.userImage)
                     }
