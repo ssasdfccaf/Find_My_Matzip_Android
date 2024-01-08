@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentNewHomeBinding
 import com.example.find_my_matzip.databinding.FragmentNewHomeFollowBinding
 import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.model.NewMainBoardDto
@@ -123,8 +122,8 @@ class NewHomeFollowFragment : Fragment() {
         return binding.root
     }//온크리트뷰의 끝
 
-    private fun navigateToCommentDetail(boardId: String, commentList: List<CommentDto>) {
-        val commentFragment = CommentFragment.newInstance(boardId,commentList)
+    private fun navigateToCommentDetail(boardId: String, comment: List<CommentDto>) {
+        val commentFragment = CommentFragment.newInstance(boardId,comment)
         val transaction = fragmentManager?.beginTransaction()
         transaction?.commitNow()
         commentFragment.show(parentFragmentManager, commentFragment.tag)

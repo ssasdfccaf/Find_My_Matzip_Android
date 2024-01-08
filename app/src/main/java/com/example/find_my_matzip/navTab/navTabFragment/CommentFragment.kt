@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentCommentBinding
 import com.example.find_my_matzip.model.BoardDtlDto
 import com.example.find_my_matzip.model.CommentDto
@@ -19,7 +18,6 @@ import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.adapter.CommentAdapter
 import com.example.find_my_matzip.navTab.adapter.CommentAdapterListener
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,13 +32,13 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
     var commentContents: EditText? = null
     var saveBtn: Button? = null
     private var userImage: String = ""
-
+    var comment: List<CommentDto> = emptyList()
 
     companion object {
 
         const val TAG = "BottomSheetDialogFragment"
 
-        fun newInstance(boardId: String?): CommentFragment {
+        fun newInstance(boardId: String?, comment: List<CommentDto>): CommentFragment {
             Log.d("CommentFragment", "게시판 아이디 잘받았나욥  . boardId: $boardId")
             val fragment = CommentFragment()
             val args = Bundle()
@@ -384,7 +382,9 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                                             transaction.commit()
 
                                             // 새로운 프레그먼트 인스턴스를 생성하여 추가
-                                            val newFragment = CommentFragment.newInstance(boardId.toString())
+                                            val newFragment = CommentFragment.newInstance(
+                                                boardId.toString(), comment
+                                            )
                                             newFragment.show(requireFragmentManager(), "commentFragmentTag")
 
                                         }
