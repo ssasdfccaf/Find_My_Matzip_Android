@@ -30,16 +30,25 @@ import com.example.find_my_matzip.databinding.FragmentProfileUpdateBinding
 import com.example.find_my_matzip.model.UsersFormDto
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.UUID
 
 
 class ProfileUpdateFragment : Fragment() {
     lateinit var binding: FragmentProfileUpdateBinding
+    lateinit var originUserImg:String
+
+    // 파이어베이스 사진 저장 경로
+    lateinit var imgStorageUrl: String
+    private var uuid = UUID.randomUUID().toString()
+
 
     // 갤러리에서 선택된 , 파일의 위치(로컬)
     private var filePath : String? = null
@@ -97,7 +106,7 @@ class ProfileUpdateFragment : Fragment() {
                     val originUserAddr = userFormDto.user_address
                     //val originUserRole = userFormDto.user_role
                     val originUserPhone = userFormDto.userphone
-                    val originUserImg = userFormDto.user_image
+                    originUserImg = userFormDto.user_image
                     val originUserGender = userFormDto.gender
 
 
@@ -167,11 +176,20 @@ class ProfileUpdateFragment : Fragment() {
                 // 스토리지에 저장할 인스턴스
                 val storageRef = storage.reference
 
-                // 이미지 저장될 위치 및 파일명(파이어베이스)
-                val imgRef = storageRef.child("users_img/${userId}.jpg")
 
-                //이미지 url
-                val imgStorageUrl = "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/users_img%2F${userId}.jpg?alt=media"
+                // 이미지 저장될 위치 및 파일명(파이어베이스)
+                val fileName = "${binding.userId.text}-$uuid"
+                val imgRef = storageRef.child("users_img/${fileName}.jpg")
+
+                //입력된 이미지 있을때만 db에 이미지 경로 저장
+                if (filePath != null) {
+                    //이미지가 바뀌었다면
+                    imgStorageUrl = "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/users_img%2F${fileName}.jpg?alt=media"
+                } else {
+                    //바뀌지 않았다면
+                    imgStorageUrl = originUserImg
+                }
+
 
                 // 변경된 회원정보 변수에 저장
                 val editUsername = binding.userName.text.toString()
@@ -214,6 +232,28 @@ class ProfileUpdateFragment : Fragment() {
                                 if(filePath != null){
                                     //firebase에 이미지 저장
                                     val file = Uri.fromFile(File(filePath))
+
+                                    //기존 이미지 이름
+                                    val imageName = getImageName(originUserImg)
+
+                                    //파이어베이스 스토리지에서 originUserImg삭제
+                                    val deleteImgRef = storageRef.child("users_img/${imageName}")
+
+                                    if (imageName != null) {
+                                        //이미지가 존재할 때
+                                        Log.d(TAG,"imageName = $imageName")
+                                        deleteImgRef.delete()
+                                            .addOnSuccessListener {
+                                                // 이미지 삭제 성공
+                                                Log.d(TAG, "Firebase 이미지 삭제됨: $imageName")
+                                            }
+                                            .addOnFailureListener { e ->
+                                                // 이미지 삭제 실패
+                                                Log.e(TAG, "Firebase 이미지 삭제 실패: $imageName", e)
+                                            }
+                                    }
+
+
 
                                     // 파이어베이스 스토리지에 업로드하는 함수.
                                     imgRef.putFile(file)
@@ -436,6 +476,7 @@ class ProfileUpdateFragment : Fragment() {
         return binding.root
     }
 
+
     //성별
     fun getValue(v: View?): String? {
         val male = binding.radio1
@@ -447,6 +488,21 @@ class ProfileUpdateFragment : Fragment() {
             pickValue = female.text.toString()
         }
         return pickValue
+    }
+
+    //파이어베이스 주소에서 이미지이름만 구하기
+    fun getImageName(text:String) : String? {
+        val regex = Regex("users_img%2F(.*?\\.jpg)\\?alt=media")
+        val matchResult = regex.find(text)
+        val fileName = matchResult?.groupValues?.get(1)
+
+        if (fileName != null) {
+            println("Extracted FileName: $fileName")
+        } else {
+            println("No match found.")
+        }
+
+        return fileName
     }
 
     @Override
