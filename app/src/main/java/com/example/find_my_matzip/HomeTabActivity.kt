@@ -39,9 +39,6 @@ class HomeTabActivity : AppCompatActivity() {
         binding = ActivityHomeTabBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
-
         // 툴바 , 업버튼
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
