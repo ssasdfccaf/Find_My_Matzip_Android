@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentNewHomeBinding
+import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.model.NewMainBoardDto
 import com.example.find_my_matzip.navTab.adapter.NewHomeRecyclerAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
@@ -43,6 +45,14 @@ class NewHomeFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+        fun newInstance(boardId: String, comments: List<CommentDto>): CommentFragment {
+            val fragment = CommentFragment()
+            val args = Bundle()
+            args.putString("boardId", boardId)
+            args.putSerializable("comments", ArrayList(comments))
+            fragment.arguments = args
+            return fragment
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +66,8 @@ class NewHomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAG,"NewHomeFragment onCreateView")
+        val boardId = arguments?.getString("boardId")
+        val comments = arguments?.getSerializable("comments") as ArrayList<CommentDto>?
 
         binding = FragmentNewHomeBinding.inflate(layoutInflater,container,false)
 //        val view = binding.root
@@ -68,7 +80,11 @@ class NewHomeFragment : Fragment() {
             setOnUserClickListener { userId ->
                 navigateToUserProfile(userId)
             }
-        }
+            setOnCommentClickListener { boardId, comments ->
+                    navigateToCommentDetail(boardId, comments)
+                }
+            }
+
 
         adapter.setOnItemClickListener {boardId ->
             navigateToBoardDetail(boardId)
@@ -112,6 +128,26 @@ class NewHomeFragment : Fragment() {
 
         return binding.root
     }//온크리트뷰의 끝
+
+
+//    private fun navigateToCommentDetail(boardId: String, comments: List<CommentDto>) {
+//        val commentFragment = CommentFragment.newInstance(boardId,comments)
+//        parentFragmentManager.beginTransaction()
+//            .replace(R.id.fragmentContainer, commentFragment)
+//            .addToBackStack(null)
+//            .commit()
+//    }//navigateToCommentDetail 끝
+//
+
+    private fun navigateToCommentDetail(boardId: String, comments: List<CommentDto>) {
+        val commentFragment = CommentFragment.newInstance(boardId,comments)
+        val transaction = fragmentManager?.beginTransaction()
+        transaction?.commitNow()
+        commentFragment.show(parentFragmentManager, commentFragment.tag)
+    }//navigateToCommentDetail 끝
+    var comment: List<CommentDto> = emptyList() // 이 부분을 추가하고 초기화
+
+
 
     private fun navigateToBoardDetail(boardId: String) {
         val fragment = boardDtlFragment.newInstance(boardId)

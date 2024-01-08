@@ -15,6 +15,7 @@ import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentNewHomeBinding
 import com.example.find_my_matzip.databinding.FragmentNewHomeFollowBinding
+import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.model.NewMainBoardDto
 import com.example.find_my_matzip.navTab.adapter.NewHomeRecyclerAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
@@ -27,6 +28,8 @@ class NewHomeFollowFragment : Fragment() {
     lateinit var adapter: NewHomeRecyclerAdapter
     lateinit var boardList: Call<List<NewMainBoardDto>>
     private val TAG : String = "NewHomeFollowFragment"
+//    var comment: List<CommentDto> = emptyList()
+
     //페이징처리 1
     var currentPage = 0
 
@@ -39,6 +42,14 @@ class NewHomeFollowFragment : Fragment() {
             args.putString("resId", resId)
             Log.d("HomeFollowFragment", "내가 newInstance에서 넣은 text : $text")
             Log.d("HomeFollowFragment", "내가 newInstance에서 넣은 resId : $resId")
+            fragment.arguments = args
+            return fragment
+        }
+        fun newInstance(boardId: String, comments: List<CommentDto>): CommentFragment {
+            val fragment = CommentFragment()
+            val args = Bundle()
+            args.putString("boardId", boardId)
+            args.putSerializable("comments", ArrayList(comments))
             fragment.arguments = args
             return fragment
         }
@@ -64,10 +75,14 @@ class NewHomeFollowFragment : Fragment() {
             setOnUserClickListener { userId ->
                 navigateToUserProfile(userId)
             }
+            setOnCommentClickListener { boardId, comments ->
+                navigateToCommentDetail(boardId, comments)
+            }
         }
         adapter.setOnItemClickListener {boardId ->
             navigateToBoardDetail(boardId)
         }
+
 
         binding.toHome.setOnClickListener {
             // 클릭 시 HomeFragment로 이동하는 코드
@@ -107,6 +122,14 @@ class NewHomeFollowFragment : Fragment() {
 
         return binding.root
     }//온크리트뷰의 끝
+
+    private fun navigateToCommentDetail(boardId: String, commentList: List<CommentDto>) {
+        val commentFragment = CommentFragment.newInstance(boardId,commentList)
+        val transaction = fragmentManager?.beginTransaction()
+        transaction?.commitNow()
+        commentFragment.show(parentFragmentManager, commentFragment.tag)
+    }//navigateToCommentDetail 끝
+
     private fun navigateToBoardDetail(boardId: String) {
         val fragment = boardDtlFragment.newInstance(boardId)
         parentFragmentManager.beginTransaction()

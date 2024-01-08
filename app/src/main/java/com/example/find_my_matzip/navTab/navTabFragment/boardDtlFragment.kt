@@ -325,6 +325,7 @@ class boardDtlFragment : Fragment() {
                         }
                     }
                     return totalCount
+
                 }
                 binding.AllComment.text = "댓글 (${getTotalCommentCount(boardDto?.commentsPage?.content ?: emptyList())}개) 모두보기"
 

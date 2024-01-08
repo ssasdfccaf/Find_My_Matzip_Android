@@ -1,5 +1,7 @@
 package com.example.find_my_matzip.model
 
+import java.io.Serializable
+
 //댓글 리스트를 갖는 데이터 클래스입니다. children 속성은 해당 댓글의 하위 댓글들을 나타냄
 data class CommentDto(
     var commentId: Long = 0, // 기본값 0으로 설정
@@ -11,5 +13,5 @@ data class CommentDto(
     val userImage: String?,
     val commentCreatedTime: String,
     var children: MutableList<CommentDto> = mutableListOf()
-)
+): Serializable
 
