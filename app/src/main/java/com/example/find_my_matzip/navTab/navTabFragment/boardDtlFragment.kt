@@ -321,7 +321,7 @@ class boardDtlFragment : Fragment() {
                     var totalCount = comments.size
                     for (comment in comments) {
                         if (comment.children != null) {
-                            totalCount += getTotalCommentCount(comment.children)
+                            totalCount += getTotalCommentCount(comment.children!!)
                         }
                     }
                     return totalCount

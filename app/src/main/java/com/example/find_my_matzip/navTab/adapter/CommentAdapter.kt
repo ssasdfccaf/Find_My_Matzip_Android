@@ -19,6 +19,7 @@ import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.navTab.navTabFragment.CommentFragment
 import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,12 +41,14 @@ class CommentViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHold
 class CommentAdapter(
     val context: CommentFragment, // Pass CommentFragment instance
     val boardId: Long,
-    var datas: List<CommentDto>,
+    var datas: MutableList<CommentDto>,
     val listener: CommentAdapterListener? = null,
 ) : RecyclerView.Adapter<CommentViewHolder>() {
     // 대댓글 더 보기 여부를 저장하는 맵
     private val showMoreMap: MutableMap<Long, Boolean> = mutableMapOf()
     var onReplyClick: ((CommentDto, Long) -> Unit)? = null
+
+
 //    fun updateData(newCommentList: List<CommentDto>) {
 //        commentList = newCommentList
 //        notifyDataSetChanged()
@@ -70,9 +73,10 @@ class CommentAdapter(
         return CommentViewHolder(binding)
     }
 
-    fun addComment(newComment: CommentDto) {
-        datas += newComment
+    fun updateData(newCommentList: List<CommentDto>) {
+        datas += newCommentList
         notifyDataSetChanged()
+
     }
 
 
@@ -86,15 +90,21 @@ class CommentAdapter(
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         val binding = holder.binding
         val item = datas?.get(position)
-// 대댓글 더 보기 텍스트 처리
+
+        // 대댓글 더 보기 텍스트 처리
         binding.showMoreReplies.setOnClickListener {
             val commentId = item?.commentId ?: -1
             showMoreMap[commentId] = !showMoreMap.getOrDefault(commentId, false)
 
             // 클릭 시 해당 자식 댓글을 보여주거나 숨기는 로직 추가
             if (showMoreMap[commentId] == true) {
-                val innerAdapter =
-                    CommentAdapter(context, boardId, item?.children ?: emptyList(), listener)
+                val innerAdapter = CommentAdapter(
+                    context,
+                    boardId,
+                    item?.children?.toMutableList() ?: mutableListOf(),
+                    listener
+                )
+
                 binding.recyclerViewChildren.layoutManager =
                     LinearLayoutManager(context?.requireContext()?.applicationContext)
                 binding.recyclerViewChildren.adapter = innerAdapter
@@ -106,9 +116,12 @@ class CommentAdapter(
 
                     val initialChildren =
                         if (item?.children?.isNotEmpty() == true) item?.children else null
-                    val innerAdapter =
-                        CommentAdapter(context, boardId, initialChildren ?: emptyList(), listener)
-
+                    val innerAdapter = CommentAdapter(
+                        context,
+                        boardId,
+                        initialChildren?.toMutableList() ?: mutableListOf(),
+                        listener
+                    )
 
                     binding.recyclerViewChildren.layoutManager =
                         LinearLayoutManager(context?.requireContext()?.applicationContext)
@@ -137,8 +150,12 @@ class CommentAdapter(
         } else {
             // 최초에는 부모 댓글과 모든 자식 댓글을 보여줌
             val initialChildren = item?.children
-            val innerAdapter =
-                CommentAdapter(context, boardId, initialChildren ?: emptyList(), listener)
+            val innerAdapter = CommentAdapter(
+                context,
+                boardId,
+                initialChildren?.toMutableList() ?: mutableListOf(),
+                listener
+            )
             binding.recyclerViewChildren.layoutManager =
                 LinearLayoutManager(context?.requireContext()?.applicationContext)
             binding.recyclerViewChildren.adapter = innerAdapter
@@ -230,6 +247,8 @@ class CommentAdapter(
 
                     // 이제 fragmentManager를 사용하여 프로필로 이동하는 코드를 작성할 수 있습니다.
                     navigateToUserProfile(userId, fragmentManager)
+
+
                 }
             }
         }
@@ -252,24 +271,73 @@ class CommentAdapter(
         //현재 아이템의 위치를 확인하고,
         //해당 위치의 댓글에 대한 정보를 가져와 onReplyClick 메서드를 호출
         //그리고 showReplyDialog 메서드를 호출하여 답글 작성 다이얼로그를 표시
+//        binding.saveReply.setOnClickListener {
+//            val position = holder.adapterPosition
+//            if (position != RecyclerView.NO_POSITION) {
+//                val parentComment = datas[position]
+//                listener?.onReplyClick(parentComment, boardId)
+//                listener?.onReplyClick(parentComment, boardId)
+//                context.showReplyDialog(parentComment, boardId)
+//
+//            }
+//        }
+
+
         binding.saveReply.setOnClickListener {
             val position = holder.adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 val parentComment = datas[position]
                 listener?.onReplyClick(parentComment, boardId)
-                context.showReplyDialog(parentComment, boardId)
+                context.onReplyClick(parentComment, boardId)
+                Log.d("CommentAdapter", "parentComment${parentComment}")
+                Log.d("CommentAdapter", "onReplyClick 호출. position: $position, parentComment: $parentComment, boardId: $boardId")
 
             }
         }
+
     }
 
+    //    private fun navigateToUserProfile(userId: String, fragmentManager: FragmentManager) {
+//        val fragment = ProfileFragment.newInstance(userId)
+//        val transaction = fragmentManager.beginTransaction()
+//            .add(R.id.fragmentContainer, fragment)
+//            .addToBackStack(null)
+//            .commit()
+//    }
+//private fun navigateToUserProfile(userId: String, fragmentManager: FragmentManager) {
+//    val fragment = ProfileFragment.newInstance(userId)
+//    val transaction = fragmentManager.beginTransaction()
+//        .replace(R.id.fragmentContainer, fragment)
+//        .addToBackStack(null)
+//        .commit()
+//}
+//private fun navigateToUserProfile(userId: String, fragmentManager: FragmentManager) {
+//    val fragment = ProfileFragment.newInstance(userId)
+//    val transaction = fragmentManager.beginTransaction()
+//        .replace(R.id.fragmentContainer, fragment) // replace로 수정
+//        .addToBackStack(null)
+//        .commit()
+//}
     private fun navigateToUserProfile(userId: String, fragmentManager: FragmentManager) {
+        // 뒷쪽의 BottomSheetDialogFragment를 찾음
+        val bottomSheetFragment = fragmentManager.findFragmentByTag(CommentFragment.TAG)
+        if (bottomSheetFragment is BottomSheetDialogFragment && bottomSheetFragment.isVisible) {
+            // 현재 보여지고 있는 경우에만 dismiss 호출
+            bottomSheetFragment.dismiss()
+        }
+
+// 현재의 프래그먼트를 제거
+        val currentFragment = fragmentManager.findFragmentById(R.id.fragmentContainer)
+        if (currentFragment != null) {
+            fragmentManager.beginTransaction().remove(currentFragment).commitAllowingStateLoss()
+        }
+
+// 앞쪽에 새로운 프래그먼트 추가
         val fragment = ProfileFragment.newInstance(userId)
         val transaction = fragmentManager.beginTransaction()
-            .add(R.id.fragmentContainer, fragment)
+            .replace(R.id.fragmentContainer, fragment)
             .addToBackStack(null)
-            .commit()
-    }
+            .commitAllowingStateLoss()}
 
     private fun deleteComment(commentId: Long) {
         val commentService =
@@ -288,7 +356,7 @@ class CommentAdapter(
                     ).show()
 
                     // 삭제 후 해당 댓글을 리스트에서 제거
-                    datas = datas.filterNot { it.commentId == commentId }
+                    datas = datas.filterNot { it.commentId == commentId }.toMutableList()
                     notifyDataSetChanged()
                 } else {
                     val errorBody = response?.errorBody()?.string()
@@ -299,7 +367,7 @@ class CommentAdapter(
                         "댓글 삭제에 실패했습니다 $errorBody.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    Log.e("CommentAdapter", "댓글 작성 실패. 에러 메시지: $errorBody")
+                    Log.e("CommentAdapter", "삭제 실패. 에러 메시지: $errorBody")
                 }
             }
 
@@ -314,6 +382,16 @@ class CommentAdapter(
         })
     }
 
+}
+// 댓글을 평탄화하는 함수
+fun flattenComments(comments: List<CommentDto>): List<CommentDto> {
+    val result = mutableListOf<CommentDto>()
+    for (comment in comments) {
+        result.add(comment)
+        // 대댓글이 있다면 재귀적으로 추가
+        comment.children?.let { result.addAll(flattenComments(it)) }
+    }
+    return result
 }
 @RequiresApi(Build.VERSION_CODES.O)
 private fun getTimeAgoText(commentTime: String?): String {
@@ -338,5 +416,6 @@ private fun getTimeAgoText(commentTime: String?): String {
         return "Unknown time"
     }
 }
+
 
 

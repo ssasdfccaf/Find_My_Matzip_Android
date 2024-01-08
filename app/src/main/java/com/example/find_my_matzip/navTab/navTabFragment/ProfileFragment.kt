@@ -35,6 +35,8 @@ import retrofit2.Response
 class ProfileFragment : Fragment() {
 
     companion object {
+        const val TAG = "ProfileFragment"
+
         // ProfileFragment의 인스턴스를 생성하고, 전달할 데이터를 설정하는 메서드?
         fun newInstance(userId: String): ProfileFragment {
             // 1. ProfileFragment의 새로운 인스턴스를 생성합니다.
