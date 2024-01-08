@@ -363,30 +363,18 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
                                                 commentCreatedTime = commentDto.commentCreatedTime,
                                                 userImage = commentDto.userImage
                                             )
+
+                                            // 어댑터에 데이터 추가
                                             adapter.updateData(mutableListOf(newCommentDto))
-                                            // 어댑터에 새로운 아이템이 삽입되었음을 알립니다.
-//                                            adapter.notifyItemInserted(adapter.itemCount - 1)
-//                                            adapter.addComment(commentDto)
-//                                            adapter.updateData(mutableListOf(newCommentDto))
 
-//                                            adapter.updateData(mutableListOf(newCommentDto))
-//                                            adapter.addComment(newCommentDto)
+                                            // 댓글 내용 초기화
                                             binding.commentContents.text.clear()
-                                            // 트랜잭션 시작
-                                            val transaction = requireFragmentManager().beginTransaction()
 
-// 이전에 추가된 프래그먼트를 찾아서 제거
-                                            val existingFragment = requireFragmentManager().findFragmentByTag("commentFragmentTag")
-                                            if (existingFragment != null) {
-                                                transaction.remove(existingFragment)
-                                            }
+                                            // 어댑터에게 데이터 변경을 알림
+                                            adapter.notifyDataSetChanged()
 
-                                            transaction.commit()
-
-                                            // 새로운 프레그먼트 인스턴스를 생성하여 추가
-                                            val newFragment = CommentFragment.newInstance(boardId.toString())
-                                            newFragment.show(requireFragmentManager(), "commentFragmentTag")
-
+                                            // 프래그먼트를 새로고침합니다.
+                                            refreshFragment()
                                         }
                                     }
                                 } else {
@@ -416,7 +404,27 @@ class CommentFragment : BottomSheetDialogFragment(), CommentAdapterListener {
             }
         })
     }
-     }
+    private fun refreshFragment() {
+        // 프래그먼트 트랜잭션 시작
+        val transaction = requireFragmentManager().beginTransaction()
+
+        // 현재의 프래그먼트를 제거
+        transaction.remove(this)
+
+        // 새로운 BottomSheetDialogFragment를 생성
+        val newFragment = CommentFragment.newInstance(arguments?.getString("boardId"))
+
+        // 전환 효과를 제거
+//        newFragment.enterTransition = null
+//        newFragment.exitTransition = null
+
+        // 생성된 BottomSheetDialogFragment를 보여줌
+        newFragment.show(requireFragmentManager(), CommentFragment.TAG)
+
+        // 트랜잭션 커밋
+        transaction.commit()
+    }
+}
     //바텀 뷰
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
 //        super.onActivityCreated(savedInstanceState)
