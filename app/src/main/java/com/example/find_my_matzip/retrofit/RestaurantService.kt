@@ -6,6 +6,7 @@ import com.example.find_my_matzip.model.RestaurantDto
 import com.example.find_my_matzip.model.RestaurantFormDto
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -44,6 +45,9 @@ interface RestaurantService {
 
     @POST("restaurant/new")
     fun newRestaurant(@Body restaurant: RestaurantFormDto) : Call<Unit>
+
+    @DELETE("restaurant/{resId}")
+    fun deleteRestaurant(@Path("resId") resId: Long): Call<Void>
 
 
 }

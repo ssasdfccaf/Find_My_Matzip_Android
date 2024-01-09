@@ -64,10 +64,8 @@ class boardDtlFragment : Fragment() {
 
         val boardService = (context?.applicationContext as MyApplication).boardService
         val boardDtl = arguments?.getString("boardId")?.let { boardService.getBoardDtl(it) }
-//        val boardId = arguments?.getString("boardId")
-        Log.d("boardDtlFragment", "boardDtl.enqueue 호출전 $boardDtl")
 
-//        val boardDetail = boardService.getBoardDtl(boardId)
+        Log.d("boardDtlFragment", "boardDtl.enqueue 호출전 $boardDtl")
 
         boardDtl?.enqueue(object : Callback<BoardDtlDto> {
             override fun onResponse(call: Call<BoardDtlDto>, response: Response<BoardDtlDto>) {
@@ -120,11 +118,6 @@ class boardDtlFragment : Fragment() {
 
                 Log.d("kkt","바인딩완료")
 
-                // 기존 게시물이미지 그려주던 글라이드
-//                Glide.with(requireContext())
-//                    .load(boardDto?.board?.boardImgDtoList?.get(0)?.imgUrl)
-//                    .override(900, 900)
-//                    .into(binding.boardThumbnail)
                 val viewPager = binding.DtlViewPager
                 // 이미지 리사이클러뷰 어댑터 초기화
                 val viewPagerAdapter =
@@ -196,39 +189,6 @@ class boardDtlFragment : Fragment() {
                 }
                 // toResDtl 클릭 이벤트 핸들러
 
-
-//                binding.deleteReview.setOnClickListener {
-//                    ConfirmDialog()
-//                    //파이어베이스에 이미지 삭제하기
-//                    imgNameList = boardDto?.board?.boardImgDtoList
-//                        ?.map { it.imgName }
-//                        ?.filter { it.isNotBlank() } ?: emptyList()
-//
-//                    deleteFirebaseImages(imgNameList)
-//                    Log.d(TAG,"게시글 이미지 파이어베이스에서 삭제완료.")
-//
-//                    val call = boardService.deleteBoard((boardDto?.board!!.id))
-//                    call.enqueue(object : Callback<Void> {
-//                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
-//                            if (response.isSuccessful) {
-//                                Log.d(TAG,"게시글 삭제 완료")
-//                                Toasty.warning(requireContext(), "게시글이 삭제 되었습니다.", Toast.LENGTH_SHORT).show()
-//                                val fragment = NewHomeFragment()
-//                                parentFragmentManager.beginTransaction()
-//                                    .replace(R.id.fragmentContainer, fragment)
-//                                    .addToBackStack(null)
-//                                    .commit()
-//                            } else {
-//                                Log.d(TAG,"게시글 삭제 대 실 패")
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<Void>, t: Throwable) {
-//                            Log.d(TAG,"통신 실패")
-//                        }
-//                    })
-//                }
-
                 //다이얼로그에서 삭제를 눌렀을 때 실행될 함수
                 fun sureDelete() {
                     //파이어베이스에 이미지 삭제하기
@@ -286,7 +246,6 @@ class boardDtlFragment : Fragment() {
                     parentLayout.addView(darkView)
                     confirmDialog.show()
                 }
-
 
 
                 // 유저 프로필로 이동 로직
