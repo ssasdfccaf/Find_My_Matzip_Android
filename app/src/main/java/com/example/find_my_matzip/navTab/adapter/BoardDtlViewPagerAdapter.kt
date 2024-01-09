@@ -1,18 +1,17 @@
 package com.example.find_my_matzip.navTab.adapter
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.R
-import com.example.find_my_matzip.model.BoardDto
 import com.example.find_my_matzip.model.BoardImgDto
-import com.example.find_my_matzip.model.NewImgDto
+import com.example.find_my_matzip.navTab.navTabFragment.boardDtlFullScreenImageFragment
 
 class BoardDtlViewPagerAdapter(private val context: Context, private val boardImgDtoList: List<BoardImgDto>) :
     RecyclerView.Adapter<BoardDtlViewPagerAdapter.ImageViewHolder>() {
@@ -54,6 +53,27 @@ class BoardDtlViewPagerAdapter(private val context: Context, private val boardIm
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.viewPagerImageView)
+
+        // 이미지 뷰가 클릭됐을 때의 동작 설정
+        init {
+            itemView.setOnClickListener {
+                val imageUrlList = boardImgDtoList.mapNotNull { it.imgUrl } // BoardImgDto에서 이미지 URL만 추출하여 리스트로 만듭니다.
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val fragment = boardDtlFullScreenImageFragment()
+                    val bundle = Bundle()
+                    bundle.putStringArrayList("image_urls", ArrayList(imageUrlList))
+                    bundle.putInt("selected_position", position)
+                    fragment.arguments = bundle
+
+                    val activity = itemView.context as AppCompatActivity
+                    activity.supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, fragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+            }
+        }
 
         fun loadImage(imageUrl: String) {
             Glide.with(context)
