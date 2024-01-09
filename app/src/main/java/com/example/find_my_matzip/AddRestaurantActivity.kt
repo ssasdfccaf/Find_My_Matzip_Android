@@ -217,13 +217,14 @@ class AddRestaurantActivity : AppCompatActivity() {
 
 
             // 이미지 저장될 위치 및 파일명(파이어베이스)
-            val imgRef = storageRef.child("restaurant_img/${binding.resName.text}${binding.searchAddress.text}.jpg")
+            val fileName = "${binding.resName.text}${binding.searchAddress.text}${binding.resAddressDetail.text}"
+            val imgRef = storageRef.child("restaurant_img/${fileName}.jpg")
 
 
             //입력된 이미지 있을때만 db에 이미지 경로 저장
             if(filePath != null){
                 //이미지 url
-                imgStorageUrl = "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/restaurant_img%2F${binding.searchAddress.text}${binding.resAddressDetail.text}.jpg?alt=media"
+                imgStorageUrl = "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/restaurant_img%2F${fileName}.jpg?alt=media"
             }else{
                 imgStorageUrl = ""
             }
