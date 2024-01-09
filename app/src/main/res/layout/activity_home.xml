@@ -14,6 +14,7 @@
         tools:context=".HomeActivity">
 
 
+
         <!--    툴바 뷰 붙이기 -->
 <!--        <androidx.appcompat.widget.Toolbar-->
 <!--            android:id="@+id/toolbar"-->

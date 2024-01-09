@@ -53,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
         //설정 2)
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
+
         // 툴바 붙이기
 //        setSupportActionBar(binding.toolbar)
 
