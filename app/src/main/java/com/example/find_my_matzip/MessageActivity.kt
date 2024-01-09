@@ -23,15 +23,18 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.databinding.ActivityMesssageBinding
 import com.example.find_my_matzip.model.Friend
 import com.example.find_my_matzip.model.MessageModel
-import com.google.firebase.auth.ktx.auth
+
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
+// ktx 부분 수정
+import com.google.firebase.auth.auth
+import com.google.firebase.database.getValue
+import com.google.firebase.Firebase
 import java.text.SimpleDateFormat
 import java.util.Date
+
 
 class MessageActivity : AppCompatActivity() {
 
@@ -66,14 +69,14 @@ class MessageActivity : AppCompatActivity() {
 
         imageView.setOnClickListener {
             Log.d("클릭 시 dest", "$destinationUid")
-            val messagemodel = MessageModel()
-            messagemodel.users.put(uid.toString(), true)
-            messagemodel.users.put(destinationUid!!, true)
+            val messageModel = MessageModel()
+            messageModel.users.put(uid.toString(), true)
+            messageModel.users.put(destinationUid!!, true)
 
             val comment = MessageModel.Comment(uid, editText.text.toString(), curTime)
             if(chatRoomUid == null){
                 imageView.isEnabled = false
-                fireDatabase.child("chatrooms").push().setValue(messagemodel).addOnSuccessListener {
+                fireDatabase.child("chatrooms").push().setValue(messageModel).addOnSuccessListener {
                     // 채팅방 생성
                     checkChatRoom()
                     // 메시지 보내기
@@ -105,8 +108,8 @@ class MessageActivity : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (item in snapshot.children){
                         println(item)
-                        val MessageModel = item.getValue<MessageModel>()
-                        if(MessageModel?.users!!.containsKey(destinationUid)){
+                        val messageModel = item.getValue<MessageModel>()
+                        if(messageModel?.users!!.containsKey(destinationUid)){
                             chatRoomUid = item.key
                             val messageActivity_ImageView = findViewById<ImageView>(R.id.messageActivity_ImageView)
                             messageActivity_ImageView.isEnabled = true

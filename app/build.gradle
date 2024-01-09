@@ -44,9 +44,27 @@ android {
     buildFeatures {
         dataBinding true
     }
+
+    /*
+    buildscript {
+        repositories {
+            jcenter() // 기본 레파지토리: jcenter repository 사용 출처 (https://bintray.com/bintray/jcenter)
+        }
+
+    }
+    */
+
+
+
 }
 
 dependencies {
+
+    /*
+    // '그룹 : 이름 : 버전' 순으로 작성 by sy
+    classpath group:'org.akhikhl.gretty', name:'gretty-plugin', version:'+'
+    testCompile group:'junit', name:'junit', version:'4.12' */
+
     //커스텀 토스트 메시지
     implementation 'com.github.GrenderG:Toasty:1.4.2'
 
@@ -82,7 +100,6 @@ dependencies {
     //로딩 이미지
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
-
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.10.0'
@@ -92,13 +109,40 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
 
-    // sy Firebase Storage
+    /* sy Firebase Storage */
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-auth-ktx:21.0.1")
     implementation("com.google.firebase:firebase-database-ktx:20.0.1")
     implementation("com.google.firebase:firebase-storage-ktx:20.0.0")
-    implementation(platform("com.google.firebase:firebase-bom:28.3.0"))
+    //implementation(platform("com.google.firebase:firebase-bom:28.3.0"))
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("com.github.bumptech.glide:glide:4.11.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
+
+    // KTX API: KTX 모듈 대신 기본 모듈의 API 사용 - Import the Firebase BoM as usual: Make sure to use Firebase BoM v32.5.0 or higher
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    //implementation(platform("com.google.firebase:firebase-bom:28.3.0"))
+    // Everything is now in the main module ( No need to use the KTX libraries )
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+
+    /*
+    // sy Las
+    //implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.10.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1") */
+
+    //implementation(platform("com.google.firebase:firebase-bom:28.3.0"))
+    //implementation("com.google.firebase:firebase-analytics-ktx")
+    //implementation("com.google.firebase:firebase-auth-ktx:21.0.1")
+    //implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    //implementation("com.google.firebase:firebase-database-ktx:20.0.1")
+    //implementation("com.github.bumptech.glide:glide:4.11.0")
+    //implementation("com.google.firebase:firebase-storage-ktx:20.0.0")
+    //annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
+
 }

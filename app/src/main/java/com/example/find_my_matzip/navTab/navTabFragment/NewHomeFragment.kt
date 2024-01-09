@@ -14,26 +14,28 @@ import com.example.find_my_matzip.HomeTabActivity
 import com.example.find_my_matzip.MyApplication
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentNewHomeBinding
+import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.model.NewMainBoardDto
 import com.example.find_my_matzip.navTab.adapter.NewHomeRecyclerAdapter
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 class NewHomeFragment : Fragment() {
-    lateinit var binding : FragmentNewHomeBinding
+    lateinit var binding: FragmentNewHomeBinding
     lateinit var adapter: NewHomeRecyclerAdapter
     lateinit var boardList: Call<List<NewMainBoardDto>>
-    private val TAG : String = "NewHomeFragment"
+    private val TAG: String = "NewHomeFragment"
+
     //페이징처리 1
     var currentPage = 0
 
     //식당의 게시글 띄우는 로직
-    private var resId:String? = null
+    private var resId: String? = null
+
     companion object {
         // HomeFragment 인스턴스 생성
-        fun newInstance(text: String, resId:String): NewHomeFragment {
+        fun newInstance(text: String, resId: String): NewHomeFragment {
             val fragment = NewHomeFragment()
             val args = Bundle()
             args.putString("text", text)
@@ -43,10 +45,19 @@ class NewHomeFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+
+        fun newInstance(boardId: String, comments: List<CommentDto>): CommentFragment {
+            val fragment = CommentFragment()
+            val args = Bundle()
+            args.putString("boardId", boardId)
+            args.putSerializable("comments", ArrayList(comments))
+            fragment.arguments = args
+            return fragment
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG,"NewHomeFragment onCreate")
+        Log.d(TAG, "NewHomeFragment onCreate")
         super.onCreate(savedInstanceState)
         binding = FragmentNewHomeBinding.inflate(layoutInflater)
     }// 온크리트의 끝
@@ -55,9 +66,11 @@ class NewHomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG,"NewHomeFragment onCreateView")
+        Log.d(TAG, "NewHomeFragment onCreateView")
+        val boardId = arguments?.getString("boardId")
+        val comments = arguments?.getSerializable("comments") as ArrayList<CommentDto>?
 
-        binding = FragmentNewHomeBinding.inflate(layoutInflater,container,false)
+        binding = FragmentNewHomeBinding.inflate(layoutInflater, container, false)
 //        val view = binding.root
 
 
@@ -68,9 +81,13 @@ class NewHomeFragment : Fragment() {
             setOnUserClickListener { userId ->
                 navigateToUserProfile(userId)
             }
+            setOnCommentClickListener { boardId, comments ->
+                navigateToCommentDetail(boardId, comments)
+            }
         }
 
-        adapter.setOnItemClickListener {boardId ->
+
+        adapter.setOnItemClickListener { boardId ->
             navigateToBoardDetail(boardId)
         }
 
@@ -85,7 +102,10 @@ class NewHomeFragment : Fragment() {
                 .commit()
 
             // 현재의 HomeFragment를 백 스택에서 제거
-            parentFragmentManager.popBackStack("NewHomeFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            parentFragmentManager.popBackStack(
+                "NewHomeFragment",
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
+            )
         }
 
 
@@ -94,7 +114,7 @@ class NewHomeFragment : Fragment() {
 
         binding.newHomeRecyclerView.adapter = adapter
 
-        binding.newHomeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.newHomeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
@@ -112,6 +132,26 @@ class NewHomeFragment : Fragment() {
 
         return binding.root
     }//온크리트뷰의 끝
+
+
+//    private fun navigateToCommentDetail(boardId: String, comments: List<CommentDto>) {
+//        val commentFragment = CommentFragment.newInstance(boardId,comments)
+//        parentFragmentManager.beginTransaction()
+//            .replace(R.id.fragmentContainer, commentFragment)
+//            .addToBackStack(null)
+//            .commit()
+//    }//navigateToCommentDetail 끝
+//
+
+    private fun navigateToCommentDetail(boardId: String, comments: List<CommentDto>) {
+        val commentFragment = CommentFragment.newInstance(boardId, comments)
+        val transaction = fragmentManager?.beginTransaction()
+        transaction?.commitNow()
+        commentFragment.show(parentFragmentManager, commentFragment.tag)
+    }//navigateToCommentDetail 끝
+
+    var comment: List<CommentDto> = emptyList() // 이 부분을 추가하고 초기화
+
 
     private fun navigateToBoardDetail(boardId: String) {
         val fragment = boardDtlFragment.newInstance(boardId)
@@ -138,11 +178,15 @@ class NewHomeFragment : Fragment() {
         transaction.addToBackStack(null)
         transaction.commit()
     }
+
     private fun loadNextPageData(page: Int) {
         val boardService = (context?.applicationContext as MyApplication).boardService
         boardList = boardService.getNewAllBoardsPager(page)
         boardList.enqueue(object : Callback<List<NewMainBoardDto>> {
-            override fun onResponse(call: Call<List<NewMainBoardDto>>, response: Response<List<NewMainBoardDto>>) {
+            override fun onResponse(
+                call: Call<List<NewMainBoardDto>>,
+                response: Response<List<NewMainBoardDto>>
+            ) {
                 if (response.isSuccessful) {
                     val newBoardList = response.body()
                     newBoardList?.let {
@@ -158,6 +202,7 @@ class NewHomeFragment : Fragment() {
             }
         })
     } //loadNextPageData의 끝
+
     fun showExitDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Exit?")
@@ -171,5 +216,4 @@ class NewHomeFragment : Fragment() {
         }
         builder.show()
     }
-
-}//프래그먼트의 끝
+}

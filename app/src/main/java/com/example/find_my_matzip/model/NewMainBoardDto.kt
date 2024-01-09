@@ -13,5 +13,6 @@ data class NewMainBoardDto (
     val boardTitle : String,
     val content : String,
     val score : Int,
-    val boardImgDtoList : List<NewImgDto>
+    val boardImgDtoList : List<NewImgDto>,
+    val comments : List<CommentDto>,
 )

@@ -6,11 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.find_my_matzip.databinding.ItemNewmainboardBinding
+import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.model.NewMainBoardDto
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 
 
-class NewMainBoardViewHolder(private val binding :ItemNewmainboardBinding,private val onItemClick: (String) -> Unit,private val onUserClick: (String) -> Unit ) : RecyclerView.ViewHolder(binding.root) {
+class NewMainBoardViewHolder(
+    private val binding: ItemNewmainboardBinding,
+    private val onItemClick: (String) -> Unit,
+    private val onUserClick: (String) -> Unit,
+    private val onCommentClick: (String, List<CommentDto>) -> Unit
+) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: NewMainBoardDto) {
         //유저프로필이미지
         Glide.with(binding.root)
@@ -42,16 +48,35 @@ class NewMainBoardViewHolder(private val binding :ItemNewmainboardBinding,privat
         binding.userLinearLayout.setOnClickListener {
             onUserClick(item.user.userId) // 유저 아이디 클릭 이벤트 핸들링
         }
-    }
-}
-class NewHomeRecyclerAdapter(context : Context) : RecyclerView.Adapter<NewMainBoardViewHolder>() {
 
-    private val datas : MutableList<NewMainBoardDto> = mutableListOf()
+        binding.AllComment.setOnClickListener { onCommentClick(item.id.toString(), item.comments) }
+
+        binding.AllComment.text = "댓글 (${getTotalCommentCount(item.comments)}개) 모두보기"
+    }
+
+    private fun getTotalCommentCount(comments: List<CommentDto>?): Int {
+        return comments?.let {
+            var totalCount = it.size
+            for (comment in it) {
+                if (comment.children != null) {
+                    totalCount += getTotalCommentCount(comment.children)
+                }
+            }
+            totalCount
+        } ?: 0
+    }
+
+
+}
+class NewHomeRecyclerAdapter(context: Context) : RecyclerView.Adapter<NewMainBoardViewHolder>() {
+
+    private val datas: MutableList<NewMainBoardDto> = mutableListOf()
 
     fun addData(newBoardList: List<NewMainBoardDto>) {
         datas.addAll(newBoardList)
         notifyDataSetChanged()
     }
+
     // 클릭 리스너 설정
     private var onItemClickListener: ((String) -> Unit)? = null
 
@@ -65,14 +90,26 @@ class NewHomeRecyclerAdapter(context : Context) : RecyclerView.Adapter<NewMainBo
         onUserClickListener = listener
     }
 
+    private var onCommentClickListener: ((String, List<CommentDto>) -> Unit)? = null
+
+    fun setOnCommentClickListener(listener: (String, List<CommentDto>) -> Unit) {
+        onCommentClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewMainBoardViewHolder {
-        val itemBinding = ItemNewmainboardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding =
+            ItemNewmainboardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return NewMainBoardViewHolder(itemBinding,
             { boardId ->
                 onItemClickListener?.invoke(boardId)
             },
             { userId ->
-                onUserClickListener?.invoke(userId) // 유저 클릭 리스너 호출
+                onUserClickListener?.invoke(userId) // User click listener
+            },
+            { boardId, comments ->
+                val currentItem = datas.find { it.id.toString() == boardId }
+                val commentList = currentItem?.comments ?: emptyList()
+                onCommentClickListener?.invoke(boardId, commentList)
             }
         )
     }
@@ -85,7 +122,6 @@ class NewHomeRecyclerAdapter(context : Context) : RecyclerView.Adapter<NewMainBo
         val item = datas[position]
         holder.bind(item)
     }
-
 
 
 }
