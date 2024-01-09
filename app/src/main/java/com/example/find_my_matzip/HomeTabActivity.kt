@@ -41,8 +41,8 @@ class HomeTabActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 툴바 , 업버튼
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        setSupportActionBar(binding.toolbar)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         toggle = ActionBarDrawerToggle(
             this@HomeTabActivity, binding.drawer, R.string.open, R.string.close
