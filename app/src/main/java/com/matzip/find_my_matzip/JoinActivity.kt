@@ -35,6 +35,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.UUID
+import java.util.regex.Pattern
 
 // sy FB
 private lateinit var auth: FirebaseAuth
@@ -217,41 +218,41 @@ class JoinActivity : AppCompatActivity() {
             val inputUserId = binding.userId.text.toString()
             val inputUserPw = binding.userPwd.text.toString()
             val inputUserName = binding.userName.text.toString()
-            val profileCheck = true
+            //val profileCheck = true
 
             Log.d(TAG, "회원가입 inputUserId: ${inputUserId}")
             Log.d(TAG, "회원가입 inputUserPw: ${inputUserPw}")
             Log.d(TAG, "회원가입 inputUserName: ${inputUserName}")
 
-            /*
-            if(inputUserId == ""){
-                Toast.makeText(this@JoinActivity,"아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
-                Log.d(TAG, "회원가입 inputUserId: null")
+            if(!checkEmail(inputUserId)){
+                Toast.makeText(this@JoinActivity,"아이디는 이메일 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "회원가입 inputUserId: not email format")
+                binding.userId.setBackgroundResource(R.drawable.radius_edittext_red)
                 return@setOnClickListener
-            }
-            if(inputUserPw == ""){
-                Toast.makeText(this@JoinActivity,"비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
-                Log.d(TAG, "회원가입 inputUserPw: null")
-                return@setOnClickListener
+            }else{
+                binding.userId.setBackgroundResource(R.drawable.radius_edittext_green)
             }
 
             // Validation Check - UserPw
-            else if ( inputUserPw.length < 6 ) {
+            if ( inputUserPw.length < 6 ) {
                 Toast.makeText(this@JoinActivity, "비밀번호를 6자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "회원가입 inputUserPw: 6자 이하")
+                binding.userPwd.setBackgroundResource(R.drawable.radius_edittext_red)
                 return@setOnClickListener
-            }
-
-            else {
-
+            }else{
+                binding.userPwd.setBackgroundResource(R.drawable.radius_edittext_green)
             }
 
             if (inputUserName == "") {
-                Toast.makeText(this@JoinActivity, "이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@JoinActivity, "닉네임을 입력해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "회원가입 inputUserName: null")
+                binding.userName.setBackgroundResource(R.drawable.radius_edittext_red)
                 return@setOnClickListener
+            }else{
+                binding.userName.setBackgroundResource(R.drawable.radius_edittext_green)
             }
 
-             */
+
 
 
             // 로딩 창 띄우기
@@ -282,53 +283,54 @@ class JoinActivity : AppCompatActivity() {
 
             /* sy FB */
             // if (inputUserId.isEmpty() && inputUserPw.isEmpty() && inputUserName.isEmpty() && profileCheck) {
-            if (inputUserId.isEmpty() && inputUserPw.isEmpty() && inputUserName.isEmpty()) {
+//            if (inputUserId.isEmpty() && inputUserPw.isEmpty() && inputUserName.isEmpty()) {
+//
+//                    Toast.makeText(this, "아이디와 비밀번호, 프로필 사진을 다시 입력해주세요.", Toast.LENGTH_SHORT).show()
+//                    Log.d("Email", "$inputUserId, $inputUserPw")
+//                } else {
+//                    if (!profileCheck) {
+//                        Toast.makeText(this, "프로필 사진을 등록해주세요.", Toast.LENGTH_SHORT).show()
+//                    } else {
+//                        auth.createUserWithEmailAndPassword(
+//                            inputUserId.toString(),
+//                            inputUserPw.toString()
+//                        )
+//                            .addOnCompleteListener(this) { task ->
+//                                if (task.isSuccessful) {
+//                                    val user = Firebase.auth.currentUser
+//                                    val userId = user?.uid
+//                                    val userIdSt = userId.toString()
+//
+//                                    val friend = Friend(inputUserId, inputUserPw, userIdSt)
+//                                    database.child("users").child(userId.toString())
+//                                        .setValue(friend)
+//
+//
+//                                    /*
+//                                FirebaseStorage.getInstance()
+//                                    .reference.child("userImages").child("$userIdSt/photo").putFile(imageUri!!).addOnSuccessListener {
+//                                        var userProfile: Uri? = null
+//                                        FirebaseStorage.getInstance().reference.child("userImages").child("$userIdSt/photo").downloadUrl
+//                                            .addOnSuccessListener {
+//                                                userProfile = it
+//                                                Log.d("이미지 URL", "$userProfile")
+//                                                val friend = Friend(inputUserId.toString(), inputUserPw.toString(), userProfile.toString(), userIdSt)
+//                                                database.child("users").child(userId.toString()).setValue(friend)
+//                                            }
+//                                    }
+//                                */
+//                                    Toast.makeText(this, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT)
+//                                        .show()
+//                                    Log.e(TAG, "$userId")
+//                                    startActivity(intent)
+//                                } else {
+//                                    Log.e(TAG, "Registration failed", task.exception)
+//                                    Toast.makeText(this, "등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
+//                                }
+//                            }
+//                    }
+//                }
 
-                    Toast.makeText(this, "아이디와 비밀번호, 프로필 사진을 다시 입력해주세요.", Toast.LENGTH_SHORT).show()
-                    Log.d("Email", "$inputUserId, $inputUserPw")
-                } else {
-                    if (!profileCheck) {
-                        Toast.makeText(this, "프로필 사진을 등록해주세요.", Toast.LENGTH_SHORT).show()
-                    } else {
-                        auth.createUserWithEmailAndPassword(
-                            inputUserId.toString(),
-                            inputUserPw.toString()
-                        )
-                            .addOnCompleteListener(this) { task ->
-                                if (task.isSuccessful) {
-                                    val user = Firebase.auth.currentUser
-                                    val userId = user?.uid
-                                    val userIdSt = userId.toString()
-
-                                    val friend = Friend(inputUserId, inputUserPw, userIdSt)
-                                    database.child("users").child(userId.toString())
-                                        .setValue(friend)
-
-
-                                    /*
-                                FirebaseStorage.getInstance()
-                                    .reference.child("userImages").child("$userIdSt/photo").putFile(imageUri!!).addOnSuccessListener {
-                                        var userProfile: Uri? = null
-                                        FirebaseStorage.getInstance().reference.child("userImages").child("$userIdSt/photo").downloadUrl
-                                            .addOnSuccessListener {
-                                                userProfile = it
-                                                Log.d("이미지 URL", "$userProfile")
-                                                val friend = Friend(inputUserId.toString(), inputUserPw.toString(), userProfile.toString(), userIdSt)
-                                                database.child("users").child(userId.toString()).setValue(friend)
-                                            }
-                                    }
-                                */
-                                    Toast.makeText(this, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT)
-                                        .show()
-                                    Log.e(TAG, "$userId")
-                                    startActivity(intent)
-                                } else {
-                                    Log.e(TAG, "Registration failed", task.exception)
-                                    Toast.makeText(this, "등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                    }
-                }
 
 
 
@@ -390,6 +392,45 @@ class JoinActivity : AppCompatActivity() {
 
 
                         Toast.makeText(this@JoinActivity,"회원가입 되었습니다.",Toast.LENGTH_SHORT).show()
+
+                        //DB에 유저 정보 입력 된 후 -> 메신저 등록
+                        auth.createUserWithEmailAndPassword(
+                            inputUserId,
+                            inputUserPw
+                        )
+                            .addOnCompleteListener(this@JoinActivity) { task ->
+                                if (task.isSuccessful) {
+                                    val user = Firebase.auth.currentUser
+                                    val userId = user?.uid
+                                    val userIdSt = userId.toString()
+
+                                    val friend = Friend(inputUserId, inputUserPw, userIdSt)
+                                    database.child("users").child(userId.toString())
+                                        .setValue(friend)
+
+
+                                    /*
+                                FirebaseStorage.getInstance()
+                                    .reference.child("userImages").child("$userIdSt/photo").putFile(imageUri!!).addOnSuccessListener {
+                                        var userProfile: Uri? = null
+                                        FirebaseStorage.getInstance().reference.child("userImages").child("$userIdSt/photo").downloadUrl
+                                            .addOnSuccessListener {
+                                                userProfile = it
+                                                Log.d("이미지 URL", "$userProfile")
+                                                val friend = Friend(inputUserId.toString(), inputUserPw.toString(), userProfile.toString(), userIdSt)
+                                                database.child("users").child(userId.toString()).setValue(friend)
+                                            }
+                                    }
+                                */
+                                    Log.e(TAG, "$userId")
+                                    Toast.makeText(this@JoinActivity,"메신저 회원가입 완료", Toast.LENGTH_SHORT).show()
+
+                                    //startActivity(intent)
+                                } else {
+                                    Log.e(TAG, "Registration failed", task.exception)
+                                    Toast.makeText(this@JoinActivity,"메신저 회원가입 실패", Toast.LENGTH_SHORT).show()
+                                }
+                            }
 
                         val intent = Intent(this@JoinActivity, LoginActivity::class.java)
                         startActivity(intent)
@@ -477,6 +518,16 @@ class JoinActivity : AppCompatActivity() {
             }
             return pickValue
         }
+
+        //email형식 검사
+        fun checkEmail(id : String):Boolean{
+            //이메일 형식 검사 정규식
+            val emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+            val check = Pattern.matches(emailValidation, id.trim()) // 서로 패턴이 맞니?
+            return check
+        }
+
+
 
 
     }
