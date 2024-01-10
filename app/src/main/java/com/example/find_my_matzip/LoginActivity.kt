@@ -53,8 +53,9 @@ class LoginActivity : AppCompatActivity() {
         //설정 2)
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
+
         // 툴바 붙이기
-        setSupportActionBar(binding.toolbar)
+//        setSupportActionBar(binding.toolbar)
 
         //시스템에 있는 액션바에 업버튼 붙이기
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
