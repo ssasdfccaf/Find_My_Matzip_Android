@@ -21,14 +21,17 @@ import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
 import com.example.find_my_matzip.navTab.navTabFragment.NewHomeFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RankingFragment
 import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
+import com.example.find_my_matzip.navTab.navTabFragment.boardDtlFullScreenImageFragment
 import com.example.find_my_matzip.search.SearchActivity
 import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.BottomBarVisibilityListener
 import com.example.find_my_matzip.utils.LoadingDialog
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeTabActivity : AppCompatActivity() {
+class HomeTabActivity : AppCompatActivity(), BottomBarVisibilityListener {
     lateinit var binding: ActivityHomeTabBinding
     lateinit var toggle: ActionBarDrawerToggle
 
@@ -138,9 +141,23 @@ class HomeTabActivity : AppCompatActivity() {
         val header: View? = binding.mainDrawerView.getHeaderView(0)
         val text:TextView = header?.findViewById(R.id.userIdTextView) as TextView
         text.text = "$loginUserId 님"
+
+        val fragment = boardDtlFullScreenImageFragment()
+        fragment.setBottomBarVisibilityListener(this)
+
+        // 프래그먼트를 로드하는 등의 작업
+
     }
 
+    override fun hideBottomBar() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = View.GONE
+    }
 
+    override fun showBottomBar() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = View.VISIBLE
+    }
 
 
     //비밀번호 확인
