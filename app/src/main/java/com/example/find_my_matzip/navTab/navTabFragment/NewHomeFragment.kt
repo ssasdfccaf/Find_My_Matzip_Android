@@ -157,7 +157,7 @@ class NewHomeFragment : Fragment() {
         val fragment = boardDtlFragment.newInstance(boardId)
         parentFragmentManager.beginTransaction()
             .add(R.id.fragmentContainer, fragment)
-            .addToBackStack("HomeFragment")
+            .addToBackStack("NewHomeFragment")
             .commit()
     }//navigateToBoardDetail 끝
 

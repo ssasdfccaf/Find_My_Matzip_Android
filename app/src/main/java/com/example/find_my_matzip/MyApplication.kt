@@ -40,7 +40,7 @@ class MyApplication : MultiDexApplication() {
     val retrofit = Retrofit.Builder()
     
         // 학원 ip
-        .baseUrl("http://10.100.103.53:80/")
+        .baseUrl("http://10.100.103.30:80/")
         
         //인터셉터 적용
         .client(client)
