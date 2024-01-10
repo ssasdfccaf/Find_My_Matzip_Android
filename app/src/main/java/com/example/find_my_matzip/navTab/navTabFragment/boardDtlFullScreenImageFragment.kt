@@ -1,5 +1,6 @@
 package com.example.find_my_matzip.navTab.navTabFragment
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.example.find_my_matzip.R
 import com.example.find_my_matzip.navTab.adapter.FullScreenImageAdapter
+import com.example.find_my_matzip.utils.BottomBarVisibilityListener
 
 
 class boardDtlFullScreenImageFragment : Fragment() {
@@ -18,6 +20,20 @@ class boardDtlFullScreenImageFragment : Fragment() {
     private var imageUrls: ArrayList<String>? = null
     private var selectedPosition: Int = 0
     private lateinit var darkView: View
+
+    private var bottomBarVisibilityListener: BottomBarVisibilityListener? = null
+
+    fun setBottomBarVisibilityListener(listener: BottomBarVisibilityListener) {
+        Log.d("setBottomBarVisibilityListener", "setBottomBarVisibilityListener 호출됨")
+        bottomBarVisibilityListener = listener
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is BottomBarVisibilityListener) {
+            setBottomBarVisibilityListener(context)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,12 +87,16 @@ class boardDtlFullScreenImageFragment : Fragment() {
         super.onStart()
         Log.d("KKT","onStart")
         addDarkBackgroundToRootView() // Fragment가 화면에 보일 때 루트 뷰만 어둡게 처리
+        // 어딘가에서 하단 바를 숨길 때
+        bottomBarVisibilityListener?.hideBottomBar()
     }
 
     override fun onStop() {
         super.onStop()
         Log.d("KKT","onStop")
         removeDarkBackgroundFromRootView() // Fragment가 화면에서 사라질 때 루트 뷰에서 어둡게 처리된 배경을 제거
+        // 어딘가에서 하단 바를 보일 때
+        bottomBarVisibilityListener?.showBottomBar()
     }
 
     private fun addDarkBackgroundToRootView() {
