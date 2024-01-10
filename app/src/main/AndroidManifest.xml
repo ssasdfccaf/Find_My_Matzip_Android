@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.find_my_matzip">
+    package="com.matzip.find_my_matzip">
 
     <uses-feature
         android:name="android.hardware.telephony"
@@ -45,7 +45,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.find_my_matzip"
+            android:authorities="com.matzip.find_my_matzip"
             android:enabled="true"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -65,7 +65,7 @@
             android:name=".navTab.navTabFragment.ResInfoActivity"
             android:theme="@style/Apptheme.Custom" />
         <activity
-            android:name=".AddRestaurantActivity"
+            android:name="com.matzip.find_my_matzip.AddRestaurantActivity"
             android:exported="true" />
         <activity
             android:name=".NaverMapActivity"
