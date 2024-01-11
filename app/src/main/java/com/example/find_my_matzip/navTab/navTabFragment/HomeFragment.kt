@@ -22,7 +22,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class     HomeFragment : Fragment() {
+class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     lateinit var adapter : HomeRecyclerAdapter
     lateinit var boardList: Call<List<MainBoardDto>>

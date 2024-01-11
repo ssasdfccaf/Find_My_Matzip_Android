@@ -18,7 +18,7 @@ import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.FragmentRestaurantBinding
 import com.example.find_my_matzip.model.RestaurantDto
 import com.example.find_my_matzip.navTab.adapter.RestaurantRecyclerAdapter
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

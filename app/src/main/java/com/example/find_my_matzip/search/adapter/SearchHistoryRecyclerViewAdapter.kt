@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.find_my_matzip.databinding.ItemSearchHistoryBinding
 import com.example.find_my_matzip.model.SearchDto
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import java.text.SimpleDateFormat
 import java.util.Locale
 

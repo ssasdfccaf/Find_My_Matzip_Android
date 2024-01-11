@@ -1,6 +1,6 @@
 package com.example.find_my_matzip.retrofit
 
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import okhttp3.Interceptor
 import okhttp3.Response
 

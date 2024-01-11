@@ -17,7 +17,7 @@ import com.example.find_my_matzip.databinding.FragmentBoardDtlBinding
 import com.example.find_my_matzip.model.BoardDtlDto
 import com.example.find_my_matzip.model.CommentDto
 import com.example.find_my_matzip.navTab.adapter.BoardDtlViewPagerAdapter
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import com.example.find_my_matzip.utils.ConfirmDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage

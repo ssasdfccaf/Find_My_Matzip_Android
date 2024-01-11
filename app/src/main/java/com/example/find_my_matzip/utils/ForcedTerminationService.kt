@@ -4,7 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.widget.Toast
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 
 //백그라운드에서, 앱 종료 시점 파악하여 onTaskRemoved()호출
 class ForcedTerminationService : Service() {

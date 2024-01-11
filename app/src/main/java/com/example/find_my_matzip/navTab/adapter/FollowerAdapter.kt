@@ -13,7 +13,7 @@ import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.ItemDialogBinding
 import com.example.find_my_matzip.model.FollowDto
 import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

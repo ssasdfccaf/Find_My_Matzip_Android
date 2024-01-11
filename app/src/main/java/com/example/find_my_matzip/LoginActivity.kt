@@ -16,7 +16,7 @@ import com.example.find_my_matzip.databinding.ActivityLoginBinding
 import com.example.find_my_matzip.model.LoginDto
 import com.example.find_my_matzip.model.ResultDto
 import com.example.find_my_matzip.retrofit.UserService
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

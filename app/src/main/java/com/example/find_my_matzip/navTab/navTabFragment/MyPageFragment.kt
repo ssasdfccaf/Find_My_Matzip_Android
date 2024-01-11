@@ -27,7 +27,7 @@ import com.example.find_my_matzip.model.FollowingDto
 import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
 import com.example.find_my_matzip.navTab.adapter.MyPageAdapter
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import com.example.find_my_matzip.utils.CustomDialog
 import retrofit2.Call
 import retrofit2.Callback

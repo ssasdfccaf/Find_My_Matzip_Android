@@ -19,8 +19,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.ChatActivity
 import com.example.find_my_matzip.MessageActivity
 import com.example.find_my_matzip.R
-import com.example.find_my_matzip.model.FollowDto
 import com.example.find_my_matzip.model.Friend
+import com.example.find_my_matzip.utils.SharedPreferencesManager
+
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -30,8 +31,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-
-
 
 class FriendsFragment : Fragment() {
     companion object{
@@ -76,8 +75,10 @@ class FriendsFragment : Fragment() {
 
         init {
             val myUid = Firebase.auth.currentUser?.uid.toString()
-            val myid = Firebase.auth.currentUser?.email.toString().split('@')[0]
+            val myid = SharedPreferencesManager.getString("id", "").split('@')[0]
+//            Toast.makeText(requireContext(), myid, Toast.LENGTH_SHORT).show()
 //            val mylist: MutableList<String> = mutableListOf()
+
             FirebaseDatabase.getInstance().reference.child("following").child(myid).addValueEventListener(object :
                 ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -86,7 +87,9 @@ class FriendsFragment : Fragment() {
 //                    Toast.makeText(requireContext(), snapshot.value.toString(), Toast.LENGTH_SHORT).show()
                     val followinglist = snapshot.value
 //                    mylist.add(item.toString())
-//                    Toast.makeText(requireContext(), mylist[0], Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(), myid, Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(), SharedPreferencesManager.getString("id", ""), Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(), followinglist.toString(), Toast.LENGTH_SHORT).show()
                     notifyDataSetChanged()
 
                     FirebaseDatabase.getInstance().reference.child("users").addValueEventListener(object :
@@ -131,7 +134,7 @@ class FriendsFragment : Fragment() {
 
             holder.itemView.setOnClickListener{
                 val intent = Intent(context, MessageActivity::class.java)
-                intent.putExtra("destinationUid", friend[position].uid)
+                intent.putExtra("destinationUid", friend[position].name)
                 context?.startActivity(intent)
             }
         }

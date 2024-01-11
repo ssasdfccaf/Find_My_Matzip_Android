@@ -24,7 +24,7 @@ import com.example.find_my_matzip.model.FollowDto
 import com.example.find_my_matzip.model.ProfileDto
 import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter2
 import com.example.find_my_matzip.navTab.adapter.ProfileAdapter
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import com.example.find_my_matzip.utils.CustomDialog
 import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
@@ -188,7 +188,7 @@ class ProfileFragment : Fragment() {
                                                     newTransaction.addToBackStack(null)
                                                     newTransaction.commit()
 
-                                                    fireDatabase.child("following").child(loginUserId.split('@')[0]).setValue(pageUserId)
+                                                    fireDatabase.child("following").child(loginUserId.split('@')[0]).child(loginUserId.split('@')[0]+pageUserId.split('@')[0]).setValue(pageUserId.split('@')[0])
                                                 } else {
                                                     Log.d("ProfileFragment", "팔로우 요청 실패 - Code: ${response.code()}, Message: ${response.message()}")
                                                 }

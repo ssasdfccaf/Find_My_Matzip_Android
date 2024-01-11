@@ -12,7 +12,7 @@ import com.example.find_my_matzip.R
 import com.example.find_my_matzip.databinding.ActivitySearchBinding
 import com.example.find_my_matzip.model.SearchDto
 import com.example.find_my_matzip.search.adapter.SearchHistoryRecyclerViewAdapter
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import com.google.android.material.tabs.TabLayout
 import java.text.SimpleDateFormat
 import java.util.Locale

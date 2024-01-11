@@ -18,7 +18,7 @@ import com.example.find_my_matzip.databinding.FragmentWriteReviewBinding
 import com.example.find_my_matzip.model.BoardImgDto
 import com.example.find_my_matzip.navTab.adapter.WriteReviewAdapter
 import com.example.find_my_matzip.navTab.navTabFragment.NewHomeFragment
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage

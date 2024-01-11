@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.find_my_matzip.databinding.ActivityMesssageBinding
 import com.example.find_my_matzip.model.Friend
 import com.example.find_my_matzip.model.MessageModel
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -64,7 +65,8 @@ class MessageActivity : AppCompatActivity() {
         val curTime = dateFormat.format(Date(time)).toString()
 
         destinationUid = intent.getStringExtra("destinationUid")
-        uid = Firebase.auth.currentUser?.uid.toString()
+        // uid = Firebase.auth.currentUser?.uid.toString()
+        uid = SharedPreferencesManager.getString("id", "").split("@")[0]
         recyclerView = findViewById(R.id.messageActivity_recyclerview)
 
         imageView.setOnClickListener {
@@ -184,11 +186,12 @@ class MessageActivity : AppCompatActivity() {
             }else{
 
 
+                /*
                 // 상대방 채팅
                 Glide.with(holder.itemView.context)
                     .load(friend?.profileImageUrl)
                     .apply(RequestOptions().circleCrop())
-                    .into(holder.imageView_profile)
+                    .into(holder.imageView_profile) */ 
 
                 holder.textView_name.text = friend?.name
                 holder.layout_destination.visibility = View.VISIBLE

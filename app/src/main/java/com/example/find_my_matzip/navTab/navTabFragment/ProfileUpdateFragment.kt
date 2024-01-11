@@ -28,7 +28,7 @@ import com.example.find_my_matzip.R
 import com.example.find_my_matzip.SearchAddressActivity
 import com.example.find_my_matzip.databinding.FragmentProfileUpdateBinding
 import com.example.find_my_matzip.model.UsersFormDto
-import com.example.find_my_matzip.utiles.SharedPreferencesManager
+import com.example.find_my_matzip.utils.SharedPreferencesManager
 import com.example.find_my_matzip.utils.LoadingDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
