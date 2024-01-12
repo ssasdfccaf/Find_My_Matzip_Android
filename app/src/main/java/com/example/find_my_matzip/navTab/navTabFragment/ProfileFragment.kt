@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.annotation.SuppressLint
 //import android.os.Build.VERSION_CODES.R
@@ -16,16 +16,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.database
-import com.example.find_my_matzip.databinding.FragmentProfileBinding
-import com.example.find_my_matzip.model.FollowDto
-import com.example.find_my_matzip.model.ProfileDto
-import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter2
-import com.example.find_my_matzip.navTab.adapter.ProfileAdapter
-import com.example.find_my_matzip.utils.SharedPreferencesManager
-import com.example.find_my_matzip.utils.CustomDialog
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.database
+import com.matzip.find_my_matzip.databinding.FragmentProfileBinding
+import com.matzip.find_my_matzip.model.FollowDto
+import com.matzip.find_my_matzip.model.ProfileDto
+import com.matzip.find_my_matzip.navTab.adapter.BoardRecyclerAdapter2
+import com.matzip.find_my_matzip.navTab.adapter.ProfileAdapter
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.utils.CustomDialog
 import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
 import retrofit2.Callback
@@ -454,6 +454,7 @@ class ProfileFragment : Fragment() {
         // 현재의 HomeFragment를 백 스택에서 제거
         // parentFragmentManager.popBackStack("Profile", FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
+
 
     @Override
     override fun onResume() {

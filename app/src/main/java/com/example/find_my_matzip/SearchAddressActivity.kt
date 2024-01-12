@@ -1,4 +1,4 @@
-package com.example.find_my_matzip
+package com.matzip.find_my_matzip
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,9 +9,9 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.example.find_my_matzip.databinding.ActivitySearchAddressBinding
+import com.matzip.find_my_matzip.databinding.ActivitySearchAddressBinding
 
-//firebase서버에 hosting된 address 검색 api 호출
+// firebase서버에 hosting된 address 검색 api 호출
 class SearchAddressActivity : AppCompatActivity() {
     lateinit var binding : ActivitySearchAddressBinding
     private val TAG: String = "SearchAddressActivity"
@@ -20,15 +20,15 @@ class SearchAddressActivity : AppCompatActivity() {
         binding = ActivitySearchAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //자바스크립트 사용 허용
+        // 자바스크립트 사용 허용
         val webView = binding.webView
         webView.settings.javaScriptEnabled = true
 
         webView.addJavascriptInterface(BridgeInterface(),"Android")
 
 
-        //Javascript의 sample2_execDaumPostcode() 메서드가 실행되고,
-        //결과값은 BridgeInterface통해서 전달받음
+        // Javascript의 sample2_execDaumPostcode() 메서드가 실행되고,
+        // 결과값은 BridgeInterface 통해서 전달받음
         webView.webViewClient = object : WebViewClient() {
             //2) 웹뷰 로드가 모두 끝나면 호출되는 메서드
             override fun onPageFinished(view: WebView, url: String?) {
@@ -41,13 +41,13 @@ class SearchAddressActivity : AppCompatActivity() {
             }
         }
 
-        //1) 최초 웹뷰 로드(firebase의 hostUrl)
+        // 1) 최초 웹뷰 로드(firebase의 hostUrl)
         webView.loadUrl("https://searchaddress-7d401.web.app/")
     }
 
 
-    //3) 다음(카카오) 주소 검색 API의 결과 값을 여기를 통해 전달받음
-    //해당 코드는 호스팅서버에 올라와있음.(JavaScript)
+    // 3) 다음(카카오) 주소 검색 API의 결과 값을 여기를 통해 전달받음
+    // 해당 코드는 호스팅 서버에 올라와있음.(JavaScript)
     inner class BridgeInterface {
         @JavascriptInterface
         fun processDATA(data: String) {

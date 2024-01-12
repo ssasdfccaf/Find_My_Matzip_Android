@@ -1,4 +1,4 @@
-package com.example.find_my_matzip
+package com.matzip.find_my_matzip
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,17 +13,17 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.find_my_matzip.databinding.ActivityHomeTabBinding
-import com.example.find_my_matzip.model.UsersFormDto
-import com.example.find_my_matzip.navTab.navTabFragment.HomeFollowFragment
-import com.example.find_my_matzip.navTab.navTabFragment.MapFragment
-import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
-import com.example.find_my_matzip.navTab.navTabFragment.NewHomeFragment
-import com.example.find_my_matzip.navTab.navTabFragment.RankingFragment
-import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
-import com.example.find_my_matzip.search.SearchActivity
-import com.example.find_my_matzip.utils.SharedPreferencesManager
-import com.example.find_my_matzip.utils.LoadingDialog
+import com.matzip.find_my_matzip.databinding.ActivityHomeTabBinding
+import com.matzip.find_my_matzip.model.UsersFormDto
+import com.matzip.find_my_matzip.navTab.navTabFragment.HomeFollowFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.MapFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.MyPageFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.NewHomeFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.RankingFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.RestaurantFragment
+import com.matzip.find_my_matzip.search.SearchActivity
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.utils.LoadingDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

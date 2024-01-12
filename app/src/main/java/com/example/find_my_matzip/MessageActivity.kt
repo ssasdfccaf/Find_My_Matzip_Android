@@ -1,4 +1,4 @@
-package com.example.find_my_matzip
+package com.matzip.find_my_matzip
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -20,10 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.find_my_matzip.databinding.ActivityMesssageBinding
-import com.example.find_my_matzip.model.Friend
-import com.example.find_my_matzip.model.MessageModel
-import com.example.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.databinding.ActivityMesssageBinding
+import com.matzip.find_my_matzip.model.Friend
+import com.matzip.find_my_matzip.model.MessageModel
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

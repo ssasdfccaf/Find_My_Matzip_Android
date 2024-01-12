@@ -1,9 +1,9 @@
-package com.example.find_my_matzip.retrofit
+package com.matzip.find_my_matzip.retrofit
 
-import com.example.find_my_matzip.model.RankingDto
-import com.example.find_my_matzip.model.ResListModel
-import com.example.find_my_matzip.model.RestaurantDto
-import com.example.find_my_matzip.model.RestaurantFormDto
+import com.matzip.find_my_matzip.model.RankingDto
+import com.matzip.find_my_matzip.model.ResListModel
+import com.matzip.find_my_matzip.model.RestaurantDto
+import com.matzip.find_my_matzip.model.RestaurantFormDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

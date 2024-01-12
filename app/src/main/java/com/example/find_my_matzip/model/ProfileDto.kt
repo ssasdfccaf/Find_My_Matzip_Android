@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.model
+package com.matzip.find_my_matzip.model
 
 data class ProfileDto(
     val boards : BoardsDto,
@@ -10,5 +10,4 @@ data class ProfileDto(
     val countFromUser: Int,
     val countToUser: Int,
     val followcheck: Boolean,
-
     )

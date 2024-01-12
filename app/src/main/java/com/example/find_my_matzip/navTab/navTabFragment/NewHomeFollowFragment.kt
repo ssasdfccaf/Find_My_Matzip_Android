@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -10,14 +10,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.find_my_matzip.HomeTabActivity
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentNewHomeFollowBinding
-import com.example.find_my_matzip.model.CommentDto
-import com.example.find_my_matzip.model.NewMainBoardDto
-import com.example.find_my_matzip.navTab.adapter.NewHomeRecyclerAdapter
-import com.example.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.HomeTabActivity
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.FragmentNewHomeFollowBinding
+import com.matzip.find_my_matzip.model.CommentDto
+import com.matzip.find_my_matzip.model.NewMainBoardDto
+import com.matzip.find_my_matzip.navTab.adapter.NewHomeRecyclerAdapter
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

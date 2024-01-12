@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.app.AlertDialog
 import android.graphics.Rect
@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.find_my_matzip.HomeTabActivity
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentRankingBinding
-import com.example.find_my_matzip.model.RankingDto
-import com.example.find_my_matzip.navTab.adapter.RankingRecyclerAdapter
+import com.matzip.find_my_matzip.HomeTabActivity
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.FragmentRankingBinding
+import com.matzip.find_my_matzip.model.RankingDto
+import com.matzip.find_my_matzip.navTab.adapter.RankingRecyclerAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

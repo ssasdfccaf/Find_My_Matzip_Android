@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.search
+package com.matzip.find_my_matzip.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,12 +7,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.find_my_matzip.HomeTabActivity
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.ActivitySearchBinding
-import com.example.find_my_matzip.model.SearchDto
-import com.example.find_my_matzip.search.adapter.SearchHistoryRecyclerViewAdapter
-import com.example.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.HomeTabActivity
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.ActivitySearchBinding
+import com.matzip.find_my_matzip.model.SearchDto
+import com.matzip.find_my_matzip.search.adapter.SearchHistoryRecyclerViewAdapter
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
 import com.google.android.material.tabs.TabLayout
 import java.text.SimpleDateFormat
 import java.util.Locale

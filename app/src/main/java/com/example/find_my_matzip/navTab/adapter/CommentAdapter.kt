@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.adapter
+package com.matzip.find_my_matzip.navTab.adapter
 
 import android.os.Build
 import android.util.Log
@@ -12,13 +12,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.ItemCommentBinding
-import com.example.find_my_matzip.model.CommentDto
-import com.example.find_my_matzip.navTab.navTabFragment.CommentFragment
-import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
-import com.example.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.ItemCommentBinding
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.model.CommentDto
+import com.matzip.find_my_matzip.navTab.navTabFragment.CommentFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.ProfileFragment
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import retrofit2.Call
 import retrofit2.Callback

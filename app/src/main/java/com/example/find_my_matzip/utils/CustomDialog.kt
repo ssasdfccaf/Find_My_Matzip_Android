@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.utils
+package com.matzip.find_my_matzip.utils
 
 import android.app.Dialog
 import android.content.Context
@@ -9,9 +9,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.model.FollowDto
-import com.example.find_my_matzip.navTab.adapter.FollowerAdapter
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.model.FollowDto
+import com.matzip.find_my_matzip.navTab.adapter.FollowerAdapter
 
 class CustomDialog(
     context: Context, private val datas: List<FollowDto>, private val dialogType: DialogType

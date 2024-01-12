@@ -1,13 +1,11 @@
-package com.example.find_my_matzip.navTab.adapter
+package com.matzip.find_my_matzip.navTab.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.find_my_matzip.databinding.FragmentMyPageBinding
-import com.example.find_my_matzip.model.PageUserDto
-
-import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
-
+import com.matzip.find_my_matzip.databinding.FragmentMyPageBinding
+import com.matzip.find_my_matzip.model.PageUserDto
+import com.matzip.find_my_matzip.navTab.navTabFragment.MyPageFragment
 
 class MyPageViewHoder(val binding: FragmentMyPageBinding) : RecyclerView.ViewHolder(binding.root)
 //class ProfileAdapter(private val fragment: MyPageFragment, private val profileList

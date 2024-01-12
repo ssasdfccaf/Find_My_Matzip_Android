@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.Manifest
 import android.app.AlertDialog
@@ -13,11 +13,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.example.find_my_matzip.HomeTabActivity
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentMapBinding
-import com.example.find_my_matzip.model.RestaurantDto
+import com.matzip.find_my_matzip.HomeTabActivity
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.FragmentMapBinding
+import com.matzip.find_my_matzip.model.RestaurantDto
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
@@ -70,9 +70,9 @@ class MapFragment : Fragment() , OnMapReadyCallback {
     }
     private fun initMapView() {
         val fm = childFragmentManager
-        val mapFragment = fm.findFragmentById(com.example.find_my_matzip.R.id.map) as MapFragment?
+        val mapFragment = fm.findFragmentById(com.matzip.find_my_matzip.R.id.map) as MapFragment?
             ?: MapFragment.newInstance().also {
-                fm.beginTransaction().add(com.example.find_my_matzip.R.id.map, it).commit()
+                fm.beginTransaction().add(com.matzip.find_my_matzip.R.id.map, it).commit()
             }
         // fragment의 getMapAsync() 메서드로 OnMapReadyCallback 콜백을 등록하면 비동기로 NaverMap 객체를 얻을 수 있다.
         mapFragment.getMapAsync(this)
@@ -246,7 +246,7 @@ class MapFragment : Fragment() , OnMapReadyCallback {
             val newPerimeterOverlay = com.naver.maps.map.overlay.PolylineOverlay()
             newPerimeterOverlay.coords = perimeterPoints
             newPerimeterOverlay.color =
-                ContextCompat.getColor(requireContext(), com.example.find_my_matzip.R.color.black) // 원하는 색상으로 변경
+                ContextCompat.getColor(requireContext(), com.matzip.find_my_matzip.R.color.black) // 원하는 색상으로 변경
             newPerimeterOverlay.width = 5 // 테두리 두께 조절
 
             // 이전에 생성된 PolylineOverlay 제거

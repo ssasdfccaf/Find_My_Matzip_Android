@@ -1,11 +1,11 @@
-package com.example.find_my_matzip.retrofit
+package com.matzip.find_my_matzip.retrofit
 
-import com.example.find_my_matzip.model.LoginDto
-import com.example.find_my_matzip.model.MainBoardUserDto
-import com.example.find_my_matzip.model.ProfileDto
-import com.example.find_my_matzip.model.ResultDto
-import com.example.find_my_matzip.model.UserListModel
-import com.example.find_my_matzip.model.UsersFormDto
+import com.matzip.find_my_matzip.model.LoginDto
+import com.matzip.find_my_matzip.model.MainBoardUserDto
+import com.matzip.find_my_matzip.model.ProfileDto
+import com.matzip.find_my_matzip.model.ResultDto
+import com.matzip.find_my_matzip.model.UserListModel
+import com.matzip.find_my_matzip.model.UsersFormDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE

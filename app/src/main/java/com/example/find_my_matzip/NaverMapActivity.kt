@@ -1,4 +1,4 @@
-package com.example.find_my_matzip
+package com.matzip.find_my_matzip
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.example.find_my_matzip.databinding.ActivityNaverMapBinding
+import com.matzip.find_my_matzip.databinding.ActivityNaverMapBinding
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.LocationTrackingMode

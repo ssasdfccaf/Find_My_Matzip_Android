@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.search
+package com.matzip.find_my_matzip.search
 
 import android.os.Bundle
 import android.util.Log
@@ -8,15 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentUserSearchBinding
-import com.example.find_my_matzip.model.MainBoardUserDto
-import com.example.find_my_matzip.model.UsersFormDto
-import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
-import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
-import com.example.find_my_matzip.search.adapter.UserSearchResultRecyclerViewAdapter
-import com.example.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.FragmentUserSearchBinding
+import com.matzip.find_my_matzip.model.MainBoardUserDto
+import com.matzip.find_my_matzip.model.UsersFormDto
+import com.matzip.find_my_matzip.navTab.navTabFragment.MyPageFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.ProfileFragment
+import com.matzip.find_my_matzip.search.adapter.UserSearchResultRecyclerViewAdapter
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

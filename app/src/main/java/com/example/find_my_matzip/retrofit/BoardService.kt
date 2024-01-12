@@ -1,8 +1,8 @@
-package com.example.find_my_matzip.retrofit
+package com.matzip.find_my_matzip.retrofit
 
-import com.example.find_my_matzip.model.BoardDtlDto
-import com.example.find_my_matzip.model.MainBoardDto
-import com.example.find_my_matzip.model.NewMainBoardDto
+import com.matzip.find_my_matzip.model.BoardDtlDto
+import com.matzip.find_my_matzip.model.MainBoardDto
+import com.matzip.find_my_matzip.model.NewMainBoardDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE

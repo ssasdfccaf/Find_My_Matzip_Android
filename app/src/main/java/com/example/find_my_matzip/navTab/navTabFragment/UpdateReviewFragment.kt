@@ -1,4 +1,4 @@
-package com.example.find_my_matzip
+package com.matzip.find_my_matzip
 
 import android.content.Context
 import android.content.Intent
@@ -25,15 +25,15 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.example.find_my_matzip.databinding.FragmentUpdateReviewBinding
-import com.example.find_my_matzip.databinding.FragmentWriteReviewBinding
-import com.example.find_my_matzip.model.BoardDtlDto
-import com.example.find_my_matzip.model.BoardImgDto
-import com.example.find_my_matzip.model.ProfileDto
-import com.example.find_my_matzip.navTab.adapter.UpdateReviewAdapter
-import com.example.find_my_matzip.navTab.navTabFragment.NewHomeFragment
-import com.example.find_my_matzip.utils.SharedPreferencesManager
-import com.example.find_my_matzip.utils.LoadingDialog
+import com.matzip.find_my_matzip.databinding.FragmentUpdateReviewBinding
+import com.matzip.find_my_matzip.databinding.FragmentWriteReviewBinding
+import com.matzip.find_my_matzip.model.BoardDtlDto
+import com.matzip.find_my_matzip.model.BoardImgDto
+import com.matzip.find_my_matzip.model.ProfileDto
+import com.matzip.find_my_matzip.navTab.adapter.UpdateReviewAdapter
+import com.matzip.find_my_matzip.navTab.navTabFragment.NewHomeFragment
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.utils.LoadingDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage

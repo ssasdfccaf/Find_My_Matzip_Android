@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.os.Bundle
 import android.util.Log
@@ -10,15 +10,15 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentCommentBinding
-import com.example.find_my_matzip.model.BoardDtlDto
-import com.example.find_my_matzip.model.CommentDto
-import com.example.find_my_matzip.model.ProfileDto
-import com.example.find_my_matzip.navTab.adapter.CommentAdapter
-import com.example.find_my_matzip.navTab.adapter.CommentAdapterListener
-import com.example.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.FragmentCommentBinding
+import com.matzip.find_my_matzip.model.BoardDtlDto
+import com.matzip.find_my_matzip.model.CommentDto
+import com.matzip.find_my_matzip.model.ProfileDto
+import com.matzip.find_my_matzip.navTab.adapter.CommentAdapter
+import com.matzip.find_my_matzip.navTab.adapter.CommentAdapterListener
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import retrofit2.Call

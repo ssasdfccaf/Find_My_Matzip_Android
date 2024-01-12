@@ -1,4 +1,4 @@
-package com.example.find_my_matzip
+package com.matzip.find_my_matzip
 
 import android.R
 import android.content.Intent
@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.find_my_matzip.databinding.ActivityMainBinding
-import com.example.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.databinding.ActivityMainBinding
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
 import com.google.firebase.database.FirebaseDatabase
 
 

@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.search
+package com.matzip.find_my_matzip.search
 
 import android.os.Bundle
 import android.text.Editable
@@ -9,18 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentBoardSearchBinding
-import com.example.find_my_matzip.databinding.FragmentNewHomeBinding
-import com.example.find_my_matzip.databinding.FragmentProfileUpdateBinding
-import com.example.find_my_matzip.model.NewMainBoardDto
-import com.example.find_my_matzip.navTab.adapter.NewHomeRecyclerAdapter
-import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
-import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
-import com.example.find_my_matzip.navTab.navTabFragment.boardDtlFragment
-import com.example.find_my_matzip.search.adapter.BoardSearchResultRecyclerAdapter
-import com.example.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.FragmentBoardSearchBinding
+import com.matzip.find_my_matzip.databinding.FragmentNewHomeBinding
+import com.matzip.find_my_matzip.databinding.FragmentProfileUpdateBinding
+import com.matzip.find_my_matzip.model.NewMainBoardDto
+import com.matzip.find_my_matzip.navTab.adapter.NewHomeRecyclerAdapter
+import com.matzip.find_my_matzip.navTab.navTabFragment.MyPageFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.ProfileFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.boardDtlFragment
+import com.matzip.find_my_matzip.search.adapter.BoardSearchResultRecyclerAdapter
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

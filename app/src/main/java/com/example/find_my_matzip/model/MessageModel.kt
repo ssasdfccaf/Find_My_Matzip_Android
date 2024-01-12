@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.model
+package com.matzip.find_my_matzip.model
 
 import kotlin.collections.HashMap
 class MessageModel (val users: HashMap<String, Boolean> = HashMap(),

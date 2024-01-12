@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.adapter
+package com.matzip.find_my_matzip.navTab.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.ItemMainboardBinding
-import com.example.find_my_matzip.model.MainBoardDto
-import com.example.find_my_matzip.navTab.navTabFragment.HomeFragment
-import com.example.find_my_matzip.navTab.navTabFragment.boardDtlFragment
+import com.matzip.find_my_matzip.databinding.ItemMainboardBinding
+import com.matzip.find_my_matzip.model.MainBoardDto
+import com.matzip.find_my_matzip.navTab.navTabFragment.HomeFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.boardDtlFragment
 
 class MainBoardViewHolder(private val binding: ItemMainboardBinding, private val onItemClick: (String) -> Unit) : RecyclerView.ViewHolder(binding.root) {
     init {

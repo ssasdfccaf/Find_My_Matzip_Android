@@ -1,14 +1,14 @@
-package com.example.find_my_matzip.navTab.adapter
+package com.matzip.find_my_matzip.navTab.adapter
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.databinding.NearRestaurantListBinding
-import com.example.find_my_matzip.model.RestaurantDto
-import com.example.find_my_matzip.navTab.navTabFragment.NearRestaurantFragment
-import com.example.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
+import com.matzip.find_my_matzip.databinding.NearRestaurantListBinding
+import com.matzip.find_my_matzip.model.RestaurantDto
+import com.matzip.find_my_matzip.navTab.navTabFragment.NearRestaurantFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
 
 
 class NearRestaurantViewHolder(val binding: NearRestaurantListBinding) : RecyclerView.ViewHolder(binding.root)
@@ -73,7 +73,7 @@ class NearRestaurantRecyclerAdapter(
                         // MapFragment 위에 RestaurantDtlFragment를 추가하고 백 스택에 추가하지 않음
                         fragmentManager.beginTransaction()
                                 .remove(fragment)
-                                .add(com.example.find_my_matzip.R.id.fragmentContainer, restaurantDtlFragment)
+                                .add(com.matzip.find_my_matzip.R.id.fragmentContainer, restaurantDtlFragment)
                                 .addToBackStack(null)
                                 .commit()
 

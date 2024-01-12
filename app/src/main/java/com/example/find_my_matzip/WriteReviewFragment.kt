@@ -1,4 +1,4 @@
-package com.example.find_my_matzip
+package com.matzip.find_my_matzip
 
 import android.content.Context
 import android.content.Intent
@@ -14,14 +14,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.find_my_matzip.databinding.FragmentWriteReviewBinding
-import com.example.find_my_matzip.model.BoardImgDto
-import com.example.find_my_matzip.navTab.adapter.WriteReviewAdapter
-import com.example.find_my_matzip.navTab.navTabFragment.NewHomeFragment
-import com.example.find_my_matzip.utils.SharedPreferencesManager
-import com.example.find_my_matzip.utils.LoadingDialog
+import com.matzip.find_my_matzip.databinding.FragmentWriteReviewBinding
+import com.matzip.find_my_matzip.model.BoardImgDto
+import com.matzip.find_my_matzip.navTab.adapter.WriteReviewAdapter
+import com.matzip.find_my_matzip.navTab.navTabFragment.NewHomeFragment
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.utils.LoadingDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.matzip.find_my_matzip.MyApplication
 import es.dmoral.toasty.Toasty
 import org.json.JSONObject
 import retrofit2.Call
@@ -50,7 +51,7 @@ class WriteReviewFragment : Fragment() {
     lateinit var boardDtoMap : MutableMap<String,Any>
     lateinit var uploadedImg : BoardImgDto
 
-    //resId가져오기
+    // resId 가져오기
     companion object {
         fun newInstance(resId: Long?): WriteReviewFragment {
             Log.d("SdoLifeCycle","WriteReviewFragment newInstance")
@@ -60,9 +61,9 @@ class WriteReviewFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
-    }//resId가져오기
+    }// resId 가져오기
 
-    //homeTabActivity 연결
+    // homeTabActivity 연결
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -81,7 +82,7 @@ class WriteReviewFragment : Fragment() {
         val resId = arguments?.getLong("resId")
         binding.userId.text = userId
 
-        //db에 저장하기 위해서 list생성
+        //db에 저장하기 위해서 list 생성
         boardImgDtoList = mutableListOf<BoardImgDto>()
         boardDtoMap = mutableMapOf<String,Any>()
         uploadedImg = BoardImgDto(1,"abc","abc","abc","Y")
@@ -133,7 +134,7 @@ class WriteReviewFragment : Fragment() {
             }
         }
 
-        // ★★★★등록 버튼눌렀을 때 ★★★★
+        // ★★★★ 등록 버튼 눌렀을 때 ★★★★
         binding.submitBtn.setOnClickListener {
             Log.d("WriteReviewFragment", "=================로딩창 on===================================")
             loadingDialog.show()
@@ -158,7 +159,7 @@ class WriteReviewFragment : Fragment() {
             else {
                 Log.d("TAG","DB로 전달하는 boardDtoMap : $boardDtoMap")
 
-                //파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
+                // 파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
                 for (i in 0 until uriList.count()) {
                     val fileName = "$userId-$resId-$uuid-$i"
                     imageUpload(uriList.get(i), i)
@@ -167,7 +168,7 @@ class WriteReviewFragment : Fragment() {
                     boardImgDtoList[i].imgUrl =
                         "https://firebasestorage.googleapis.com/v0/b/findmymatzip.appspot.com/o/newboardimg%2F${fileName}.png?alt=media"
 
-                    //db에 전달하는 이미지데이터 repImgYn값 조정
+                    // db에 전달하는 이미지 데이터 repImgYn값 조정
                     // 첫 번째 이미지인 경우 repImgYn을 "Y"로 설정
                     if (i == 0) {
                         boardImgDtoList[0].repImgYn = "Y"
@@ -177,11 +178,11 @@ class WriteReviewFragment : Fragment() {
                     }
                     Log.d(TAG,"")
 
-                }//파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
+                }// 파이어베이스에 이미지 업로드 + repImgYn 값 설정==================================================================================
 
-                //이미지의 갯수가 5개가 안될 때 그 자리에 빈 데이터 넣기
+                // 이미지의 갯수가 5개가 안될 때 그 자리에 빈 데이터 넣기
                 if (boardImgDtoList.count() <5) {
-                    //들어가있는 갯수 ~ 5개 까지 반복한다
+                    // 들어가있는 갯수 ~ 5개 까지 반복
                     for (i in boardImgDtoList.count() until 5) {
                         uploadedImg = BoardImgDto(
                             id = i.toLong(), // 이미지 ID는 서버에서 생성되므로 0으로 설정하거나 다른 값으로 임시 설정해주세요.
@@ -194,9 +195,9 @@ class WriteReviewFragment : Fragment() {
                         Log.d(TAG,"${boardImgDtoList.count()}번째 자리에, 빈 데이터 추가완료.")
                     }
 
-                }//이미지의 갯수가 5개가 안될 때 그 자리에 빈 데이터 넣기
+                }// 이미지의 갯수가 5개가 안될 때 그 자리에 빈 데이터 넣기
 
-                //DB로 보낼 게시글 정보를 boardDtoMap에 담기
+                // DB로 보낼 게시글 정보를 boardDtoMap에 담기
                 boardDtoMap["userId"] = userId
                 boardDtoMap["boardViewStatus"] = "VIEW"
                 boardDtoMap["boardTitle"] = binding.boardTitle.text.toString()
@@ -208,7 +209,7 @@ class WriteReviewFragment : Fragment() {
                 val boardService = (context?.applicationContext as MyApplication).boardService
                 val call = resId?.let { it1 -> boardService.createBoard3(it1, boardDtoMap) }
 
-                //DB로 전달하는 콜백함수==================================================================================
+                // DB로 전달하는 콜백함수==================================================================================
                 call?.enqueue(object : Callback<Unit> {
                     override fun onResponse(
                         call: Call<Unit>,
@@ -247,12 +248,12 @@ class WriteReviewFragment : Fragment() {
                         Toasty.error(requireContext(), "게시글등록실패onFailure.", Toast.LENGTH_SHORT).show()
                         Log.d("WriteReviewFragment", "실패 ${t.message}")
 
-                        //로딩창 지우기
+                        // 로딩창 지우기
                         loadingDialog.dismiss()
                         call.cancel()
                     }
-                }) //DB로 전달하는 콜백함수
-                //DB로 전달하는 콜백함수==================================================================================
+                }) // DB로 전달하는 콜백함수
+                // DB로 전달하는 콜백함수==================================================================================
                 Log.d(TAG, "작업 완료후 게시글작성 프래그먼트 닫기")
                 Handler().postDelayed({
                     loadingDialog.dismiss()
@@ -265,8 +266,8 @@ class WriteReviewFragment : Fragment() {
                 }, 1500) // 2000 밀리초 (2초) 동안 기다린 후 실행
             }
             Log.d("TAG","DB로 전달하는 작업이 끝남  : $boardDtoMap")
-        }// ★★★★등록 버튼눌렀을 때 ★★★★
-        // ★★★★등록 버튼눌렀을 때 ★★★★
+        }// ★★★★ 등록 버튼눌렀을 때 ★★★★
+        // ★★★★ 등록 버튼눌렀을 때 ★★★★
 
         adapter.setItemClickListener(object : WriteReviewAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
@@ -305,7 +306,7 @@ class WriteReviewFragment : Fragment() {
                             for (i in 0 until clipDataSize) {
                                 uriList.add(clipData.getItemAt(i).uri)
 
-//                                //여기다가 이걸해주고
+//                                // 여기다가 이걸해주고
 //                                문제점 지금당장 fileName값을 할당받는 시점이 파이어베이스에 업로드를 할 시점인데
 //                                여기서 리스트를 담아버리면 fileName값이 2번 생성되어 주소가 달라지게 된다.
 //                                그렇다면 fileName을
@@ -320,7 +321,7 @@ class WriteReviewFragment : Fragment() {
 //                                  repImgYn = if (boardImgDtoList.isEmpty()) "Y" else "N" // 첫 번째 이미지인 경우 'Y', 그 외에는 'N'으로 설정
                                     repImgYn = "N"
 
-                                )//일단 여기까지 완료
+                                )// 일단 여기까지 완료
 //
                                 boardImgDtoList.add(uploadedImg) // 이미지 정보를 리스트에 추가
                             }
@@ -372,4 +373,4 @@ class WriteReviewFragment : Fragment() {
     }
 
 
-}//프래그먼트의 끝
+}// 프래그먼트의 끝

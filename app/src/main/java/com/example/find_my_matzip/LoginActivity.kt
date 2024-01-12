@@ -1,4 +1,4 @@
-package com.example.find_my_matzip
+package com.matzip.find_my_matzip
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,12 +12,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.find_my_matzip.databinding.ActivityLoginBinding
-import com.example.find_my_matzip.model.LoginDto
-import com.example.find_my_matzip.model.ResultDto
-import com.example.find_my_matzip.retrofit.UserService
-import com.example.find_my_matzip.utils.SharedPreferencesManager
-import com.example.find_my_matzip.utils.LoadingDialog
+import com.matzip.find_my_matzip.databinding.ActivityLoginBinding
+import com.matzip.find_my_matzip.model.LoginDto
+import com.matzip.find_my_matzip.model.ResultDto
+import com.matzip.find_my_matzip.retrofit.UserService
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.utils.LoadingDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth

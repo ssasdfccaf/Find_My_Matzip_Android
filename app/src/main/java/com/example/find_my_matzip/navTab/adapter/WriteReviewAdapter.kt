@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.adapter
+package com.matzip.find_my_matzip.navTab.adapter
 
 import android.content.Context
 import android.net.Uri
@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.R
+import com.matzip.find_my_matzip.R
 
 class WriteReviewAdapter(val context: Context, val items: ArrayList<Uri>) :
     RecyclerView.Adapter<WriteReviewAdapter.ViewHolder>() {

@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.app.Activity
 import android.content.Context
@@ -23,13 +23,13 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.SearchAddressActivity
-import com.example.find_my_matzip.databinding.FragmentProfileUpdateBinding
-import com.example.find_my_matzip.model.UsersFormDto
-import com.example.find_my_matzip.utils.SharedPreferencesManager
-import com.example.find_my_matzip.utils.LoadingDialog
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.SearchAddressActivity
+import com.matzip.find_my_matzip.databinding.FragmentProfileUpdateBinding
+import com.matzip.find_my_matzip.model.UsersFormDto
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.utils.LoadingDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import retrofit2.Call
@@ -154,7 +154,7 @@ class ProfileUpdateFragment : Fragment() {
             //pw가 로그인된 사용자 정보와 일치하다면
             if(inputPw.toString()==userPwd){
                 pwCheck = true
-                binding.userPwd.setBackgroundResource(com.example.find_my_matzip.R.drawable.radius_edittext_green)
+                binding.userPwd.setBackgroundResource(com.matzip.find_my_matzip.R.drawable.radius_edittext_green)
                 Toast.makeText(requireContext(),"비밀번호 확인되었습니다..", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(requireContext(),"잘못된 비밀번호입니다.", Toast.LENGTH_SHORT).show()
@@ -459,7 +459,7 @@ class ProfileUpdateFragment : Fragment() {
             // 매니페스트 파일에 가서,
             var photoURI:Uri = FileProvider.getUriForFile(
                 requireContext(),
-                "com.example.find_my_matzip",
+                "com.matzip.find_my_matzip",
                 file
             )
             // 카메라를 촬영하는 정해진 액션 문자열

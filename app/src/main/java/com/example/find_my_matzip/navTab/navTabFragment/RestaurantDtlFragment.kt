@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.content.Intent
 import android.net.Uri
@@ -9,11 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.WriteReviewFragment
-import com.example.find_my_matzip.databinding.FragmentRestaurantDtlBinding
-import com.example.find_my_matzip.model.RestaurantDto
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.WriteReviewFragment
+import com.matzip.find_my_matzip.databinding.FragmentRestaurantDtlBinding
+import com.matzip.find_my_matzip.model.RestaurantDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -93,7 +93,7 @@ class RestaurantDtlFragment : Fragment() {
                     }else{
                         val fragment = WriteReviewFragment.newInstance(resId)
                         parentFragmentManager.beginTransaction()
-                            .replace(com.example.find_my_matzip.R.id.fragmentContainer, fragment)
+                            .replace(com.matzip.find_my_matzip.R.id.fragmentContainer, fragment)
                             .addToBackStack(null)
                             .commit()
                     }
@@ -119,7 +119,7 @@ class RestaurantDtlFragment : Fragment() {
                     // MapCardViewFragment의 크기를 지정하여 추가
                     val transaction = parentFragmentManager.beginTransaction()
                     transaction.add(
-                        com.example.find_my_matzip.R.id.fragmentContainer, // 프래그먼트를 표시할 레이아웃 ID
+                        com.matzip.find_my_matzip.R.id.fragmentContainer, // 프래그먼트를 표시할 레이아웃 ID
                         mapCardViewFragment,
                         "MapCardViewFragment"
                     )

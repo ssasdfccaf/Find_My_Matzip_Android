@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.search.adapter
+package com.matzip.find_my_matzip.search.adapter
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.RestaurantListBinding
-import com.example.find_my_matzip.model.RestaurantDto
-import com.example.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
-import com.example.find_my_matzip.search.ResSearchFragment
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.RestaurantListBinding
+import com.matzip.find_my_matzip.model.RestaurantDto
+import com.matzip.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
+import com.matzip.find_my_matzip.search.ResSearchFragment
 
 
 class ResSearchResultViewHolder(val binding: RestaurantListBinding) : RecyclerView.ViewHolder(binding.root)

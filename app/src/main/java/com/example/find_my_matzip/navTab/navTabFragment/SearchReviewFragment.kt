@@ -1,13 +1,13 @@
-package com.example.find_my_matzip.NavTab.NavTabFragment
+package com.matzip.find_my_matzip.NavTab.NavTabFragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentMatZalalBinding
-import com.example.find_my_matzip.databinding.FragmentSearchReviewBinding
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.FragmentMatZalalBinding
+import com.matzip.find_my_matzip.databinding.FragmentSearchReviewBinding
 
 
 class SearchReviewFragment : Fragment() {

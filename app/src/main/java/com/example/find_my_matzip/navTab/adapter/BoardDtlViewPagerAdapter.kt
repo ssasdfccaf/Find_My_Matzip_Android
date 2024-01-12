@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.adapter
+package com.matzip.find_my_matzip.navTab.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,10 +9,10 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.model.BoardDto
-import com.example.find_my_matzip.model.BoardImgDto
-import com.example.find_my_matzip.model.NewImgDto
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.model.BoardDto
+import com.matzip.find_my_matzip.model.BoardImgDto
+import com.matzip.find_my_matzip.model.NewImgDto
 
 class BoardDtlViewPagerAdapter(private val context: Context, private val boardImgDtoList: List<BoardImgDto>) :
     RecyclerView.Adapter<BoardDtlViewPagerAdapter.ImageViewHolder>() {

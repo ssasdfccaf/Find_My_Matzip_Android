@@ -1,8 +1,8 @@
-package com.example.find_my_matzip.model
+package com.matzip.find_my_matzip.model
 
 import com.google.gson.annotations.SerializedName
 
-//게시글작성
+// 게시글 작성
 data class BoardFormDto(
     @SerializedName("user_id")
     val userId:String,

@@ -1,15 +1,15 @@
-package com.example.find_my_matzip.navTab
+package com.matzip.find_my_matzip.navTab
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.example.find_my_matzip.navTab.navTabFragment.HomeFragment
-import com.example.find_my_matzip.navTab.navTabFragment.MapFragment
-import com.example.find_my_matzip.navTab.navTabFragment.MyPageFragment
-import com.example.find_my_matzip.navTab.navTabFragment.RankingFragment
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.ActivityTabBinding
-import com.example.find_my_matzip.navTab.navTabFragment.RestaurantFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.HomeFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.MapFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.MyPageFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.RankingFragment
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.ActivityTabBinding
+import com.matzip.find_my_matzip.navTab.navTabFragment.RestaurantFragment
 
 class TabActivity : AppCompatActivity() {
     lateinit var binding: ActivityTabBinding

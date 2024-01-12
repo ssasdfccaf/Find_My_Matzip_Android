@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.adapter
+package com.matzip.find_my_matzip.navTab.adapter
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.ItemRankingBinding
-import com.example.find_my_matzip.model.RankingDto
-import com.example.find_my_matzip.navTab.navTabFragment.RankingFragment
-import com.example.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.ItemRankingBinding
+import com.matzip.find_my_matzip.model.RankingDto
+import com.matzip.find_my_matzip.navTab.navTabFragment.RankingFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.RestaurantDtlFragment
 
 
 //item_ranking

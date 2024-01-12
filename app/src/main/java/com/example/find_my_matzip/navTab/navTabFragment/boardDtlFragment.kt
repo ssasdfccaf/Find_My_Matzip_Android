@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.graphics.Color
 import android.os.Bundle
@@ -10,15 +10,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.UpdateReviewFragment
-import com.example.find_my_matzip.databinding.FragmentBoardDtlBinding
-import com.example.find_my_matzip.model.BoardDtlDto
-import com.example.find_my_matzip.model.CommentDto
-import com.example.find_my_matzip.navTab.adapter.BoardDtlViewPagerAdapter
-import com.example.find_my_matzip.utils.SharedPreferencesManager
-import com.example.find_my_matzip.utils.ConfirmDialog
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.UpdateReviewFragment
+import com.matzip.find_my_matzip.databinding.FragmentBoardDtlBinding
+import com.matzip.find_my_matzip.model.BoardDtlDto
+import com.matzip.find_my_matzip.model.CommentDto
+import com.matzip.find_my_matzip.navTab.adapter.BoardDtlViewPagerAdapter
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.utils.ConfirmDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator

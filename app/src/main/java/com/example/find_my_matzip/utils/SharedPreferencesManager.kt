@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.utils
+package com.matzip.find_my_matzip.utils
 
 import android.content.Context
 import android.content.SharedPreferences

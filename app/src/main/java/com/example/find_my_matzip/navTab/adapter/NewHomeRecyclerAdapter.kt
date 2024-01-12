@@ -1,13 +1,13 @@
-package com.example.find_my_matzip.navTab.adapter
+package com.matzip.find_my_matzip.navTab.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.databinding.ItemNewmainboardBinding
-import com.example.find_my_matzip.model.CommentDto
-import com.example.find_my_matzip.model.NewMainBoardDto
+import com.matzip.find_my_matzip.databinding.ItemNewmainboardBinding
+import com.matzip.find_my_matzip.model.CommentDto
+import com.matzip.find_my_matzip.model.NewMainBoardDto
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 
 

@@ -1,11 +1,11 @@
-package com.example.find_my_matzip
+package com.matzip.find_my_matzip
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.find_my_matzip.navTab.navTabFragment.FriendsFragment
-import com.example.find_my_matzip.navTab.navTabFragment.MessageFragment
-import com.example.find_my_matzip.navTab.navTabFragment.ProfileFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.FriendsFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.MessageFragment
+import com.matzip.find_my_matzip.navTab.navTabFragment.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth

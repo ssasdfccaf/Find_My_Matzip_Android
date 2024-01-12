@@ -1,11 +1,11 @@
-package com.example.find_my_matzip.utils
+package com.matzip.find_my_matzip.utils
 
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.widget.TextView
-import com.example.find_my_matzip.R
+import com.matzip.find_my_matzip.R
 
 class ConfirmDialog(context: Context): Dialog(context) {
     private lateinit var onClickListener: OnDialogClickListener

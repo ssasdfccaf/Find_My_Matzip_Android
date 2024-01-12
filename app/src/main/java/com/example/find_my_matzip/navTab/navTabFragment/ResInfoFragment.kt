@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -19,8 +19,8 @@ import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentResInfoBinding
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.FragmentResInfoBinding
 import kotlin.math.roundToInt
 
 class ResInfoFragment : Fragment() {

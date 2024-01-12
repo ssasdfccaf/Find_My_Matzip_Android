@@ -1,7 +1,6 @@
-package com.example.find_my_matzip.model
+package com.matzip.find_my_matzip.model
 
 import com.google.gson.annotations.SerializedName
-
 data class PageUserDto(
     val userid: String,
     val username: String,

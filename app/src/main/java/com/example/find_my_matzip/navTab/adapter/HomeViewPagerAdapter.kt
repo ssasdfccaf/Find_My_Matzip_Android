@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.adapter
+package com.matzip.find_my_matzip.navTab.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
-import com.example.find_my_matzip.databinding.ViewPagerHomeColorBinding
+import com.matzip.find_my_matzip.databinding.ViewPagerHomeColorBinding
 
 class HomeViewPagerAdapter  : RecyclerView.Adapter<HomeViewPagerAdapter.ViewHolder>() {
 

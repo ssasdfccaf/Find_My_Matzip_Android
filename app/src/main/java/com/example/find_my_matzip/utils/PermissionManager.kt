@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.utils
+package com.matzip.find_my_matzip.utils
 
 import android.Manifest
 import android.content.pm.PackageManager

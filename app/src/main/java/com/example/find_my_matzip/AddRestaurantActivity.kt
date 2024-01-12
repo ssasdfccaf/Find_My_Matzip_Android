@@ -1,4 +1,4 @@
-package com.example.find_my_matzip
+package com.matzip.find_my_matzip
 
 import android.app.Activity
 import android.content.Context
@@ -18,10 +18,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.find_my_matzip.databinding.ActivityAddRestaurantBinding
-import com.example.find_my_matzip.model.RestaurantFormDto
-import com.example.find_my_matzip.utils.LoadingDialog
-import com.example.find_my_matzip.utils.PermissionManager
+import com.matzip.find_my_matzip.databinding.ActivityAddRestaurantBinding
+import com.matzip.find_my_matzip.model.RestaurantFormDto
+import com.matzip.find_my_matzip.utils.LoadingDialog
+import com.matzip.find_my_matzip.utils.PermissionManager
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -172,7 +172,7 @@ class AddRestaurantActivity : AppCompatActivity() {
             // 매니페스트 파일에 가서,
             var photoURI:Uri = FileProvider.getUriForFile(
                 this@AddRestaurantActivity,
-                "com.example.find_my_matzip",
+                "com.matzip.find_my_matzip",
                 file
             )
             // 카메라를 촬영하는 정해진 액션 문자열

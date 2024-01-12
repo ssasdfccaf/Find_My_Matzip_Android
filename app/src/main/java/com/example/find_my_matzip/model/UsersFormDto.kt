@@ -1,7 +1,7 @@
-package com.example.find_my_matzip.model
+package com.matzip.find_my_matzip.model
 
 import com.google.gson.annotations.SerializedName
-//가져오는 데이터 타입
+// 가져오는 데이터 타입
 //{
 //    "userid": "1234",
 //    "user_pwd": null,

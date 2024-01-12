@@ -1,6 +1,6 @@
-package com.example.find_my_matzip.retrofit
+package com.matzip.find_my_matzip.retrofit
 
-import com.example.find_my_matzip.model.CommentDto
+import com.matzip.find_my_matzip.model.CommentDto
 import org.checkerframework.checker.units.qual.C
 import retrofit2.Call
 import retrofit2.http.Body

@@ -1,13 +1,13 @@
-package com.example.find_my_matzip.search.adapter
+package com.matzip.find_my_matzip.search.adapter
 
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.find_my_matzip.databinding.ItemSearchHistoryBinding
-import com.example.find_my_matzip.model.SearchDto
-import com.example.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.databinding.ItemSearchHistoryBinding
+import com.matzip.find_my_matzip.model.SearchDto
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
 import java.text.SimpleDateFormat
 import java.util.Locale
 

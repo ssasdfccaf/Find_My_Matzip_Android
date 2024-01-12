@@ -1,11 +1,11 @@
-package com.example.find_my_matzip.utils
+package com.matzip.find_my_matzip.utils
 
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.databinding.DataBindingUtil.setContentView
-import com.example.find_my_matzip.R
+import com.matzip.find_my_matzip.R
 
 //커스텀 로딩 dialog
 class LoadingDialog

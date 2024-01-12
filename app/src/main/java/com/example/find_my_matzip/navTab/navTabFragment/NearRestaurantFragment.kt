@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.os.Bundle
 import android.util.Log
@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.databinding.FragmentNearRestaurantBinding
-import com.example.find_my_matzip.model.RestaurantDto
-import com.example.find_my_matzip.navTab.adapter.NearRestaurantRecyclerAdapter
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.databinding.FragmentNearRestaurantBinding
+import com.matzip.find_my_matzip.model.RestaurantDto
+import com.matzip.find_my_matzip.navTab.adapter.NearRestaurantRecyclerAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.model
+package com.matzip.find_my_matzip.model
 
 data class ContentDto(
     val id: String,

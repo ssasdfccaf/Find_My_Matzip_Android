@@ -1,4 +1,4 @@
-package com.example.find_my_matzip
+package com.matzip.find_my_matzip
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,8 @@ import android.os.Handler
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.databinding.ActivityIntroBinding
-import com.example.find_my_matzip.utils.ForcedTerminationService
+import com.matzip.find_my_matzip.databinding.ActivityIntroBinding
+import com.matzip.find_my_matzip.utils.ForcedTerminationService
 
 class IntroActivity : AppCompatActivity() {
     lateinit var binding:ActivityIntroBinding

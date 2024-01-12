@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.navTab.navTabFragment
+package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -17,18 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.find_my_matzip.HomeTabActivity
-import com.example.find_my_matzip.MyApplication
-import com.example.find_my_matzip.R
-import com.example.find_my_matzip.WriteReviewFragment
-import com.example.find_my_matzip.databinding.FragmentMyPageBinding
-import com.example.find_my_matzip.model.FollowDto
-import com.example.find_my_matzip.model.FollowingDto
-import com.example.find_my_matzip.model.ProfileDto
-import com.example.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
-import com.example.find_my_matzip.navTab.adapter.MyPageAdapter
-import com.example.find_my_matzip.utils.SharedPreferencesManager
-import com.example.find_my_matzip.utils.CustomDialog
+import com.matzip.find_my_matzip.HomeTabActivity
+import com.matzip.find_my_matzip.MyApplication
+import com.matzip.find_my_matzip.R
+import com.matzip.find_my_matzip.WriteReviewFragment
+import com.matzip.find_my_matzip.databinding.FragmentMyPageBinding
+import com.matzip.find_my_matzip.model.FollowDto
+import com.matzip.find_my_matzip.model.FollowingDto
+import com.matzip.find_my_matzip.model.ProfileDto
+import com.matzip.find_my_matzip.navTab.adapter.BoardRecyclerAdapter
+import com.matzip.find_my_matzip.navTab.adapter.MyPageAdapter
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
+import com.matzip.find_my_matzip.utils.CustomDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

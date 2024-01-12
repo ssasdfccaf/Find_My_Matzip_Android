@@ -1,13 +1,13 @@
-package com.example.find_my_matzip.search.adapter
+package com.matzip.find_my_matzip.search.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.find_my_matzip.databinding.ItemSearchUserBinding
-import com.example.find_my_matzip.model.MainBoardUserDto
-import com.example.find_my_matzip.model.UsersFormDto
+import com.matzip.find_my_matzip.databinding.ItemSearchUserBinding
+import com.matzip.find_my_matzip.model.MainBoardUserDto
+import com.matzip.find_my_matzip.model.UsersFormDto
 
 private val TAG: String = "UserSearchResultRecyclerViewAdapter"
 

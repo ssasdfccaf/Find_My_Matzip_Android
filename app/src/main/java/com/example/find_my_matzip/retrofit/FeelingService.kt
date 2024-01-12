@@ -1,4 +1,4 @@
-package com.example.find_my_matzip.retrofit
+package com.matzip.find_my_matzip.retrofit
 
 import retrofit2.Call
 import retrofit2.http.GET
