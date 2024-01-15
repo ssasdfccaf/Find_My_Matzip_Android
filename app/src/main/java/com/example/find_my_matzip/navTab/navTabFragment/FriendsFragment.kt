@@ -103,6 +103,8 @@ class FriendsFragment : Fragment() {
                                 Log.d("Friend", "$item")
                                 if(item?.uid.equals(myUid)) { continue } // 본인은 친구창에서 제외
                                 if(!(item?.name.toString() in followinglist.toString())) { continue }
+//                                Toast.makeText(requireContext(), item?.name.toString(), Toast.LENGTH_SHORT).show()
+//                                Toast.makeText(requireContext(), followinglist.toString(), Toast.LENGTH_SHORT).show()
                                 friend.add(item!!)
                             }
                             notifyDataSetChanged()

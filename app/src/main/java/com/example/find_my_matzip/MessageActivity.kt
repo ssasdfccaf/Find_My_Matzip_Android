@@ -63,6 +63,7 @@ class MessageActivity : AppCompatActivity() {
         val time = System.currentTimeMillis()
         val dateFormat = SimpleDateFormat("MM월 dd일 hh:mm")
         val curTime = dateFormat.format(Date(time)).toString()
+        val readable = false
 
         destinationUid = intent.getStringExtra("destinationUid")
         // uid = Firebase.auth.currentUser?.uid.toString()
@@ -75,7 +76,8 @@ class MessageActivity : AppCompatActivity() {
             messageModel.users.put(uid.toString(), true)
             messageModel.users.put(destinationUid!!, true)
 
-            val comment = MessageModel.Comment(uid, editText.text.toString(), curTime)
+            val comment = MessageModel.Comment(uid, editText.text.toString(), curTime, readable.toString())
+
             if(chatRoomUid == null){
                 imageView.isEnabled = false
                 fireDatabase.child("chatrooms").push().setValue(messageModel).addOnSuccessListener {
@@ -173,8 +175,14 @@ class MessageActivity : AppCompatActivity() {
 
             holder.textView_message.textSize = 20F
             holder.textView_message.text = comments[position].message
-            Toast.makeText(this@MessageActivity, comments[position].toString() +"    ", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this@MessageActivity, comments[position].toString() +"    ", Toast.LENGTH_SHORT).show()
             holder.textView_time.text = comments[position].time
+
+            if (comments[position].readable == false){
+                holder.read_counter.text = "1"
+            }else{
+                holder.read_counter.text = ""
+            }
 
             if(comments[position].uid.equals(uid)){
 
@@ -183,6 +191,8 @@ class MessageActivity : AppCompatActivity() {
                 holder.textView_name.visibility = View.INVISIBLE
                 holder.layout_destination.visibility = View.INVISIBLE
                 holder.layout_main.gravity = Gravity.RIGHT
+//                holder.read_counter.text = ""
+
             }else{
 
 
@@ -198,6 +208,26 @@ class MessageActivity : AppCompatActivity() {
                 holder.textView_name.visibility = View.VISIBLE
                 holder.textView_message.setBackgroundResource(R.drawable.leftbubble)
                 holder.layout_main.gravity = Gravity.LEFT
+
+                // uid 채팅방 내의 메시지 모두 불러오기 -> 해당 메시지 중, 메시지 정보에 있는 유저 아이디와 현재 아이디 비교
+                fireDatabase.child("chatrooms").child(chatRoomUid.toString()).child("comments").addValueEventListener(object : ValueEventListener{
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for(data in snapshot.children){
+                            val item = data.getValue<MessageModel.Comment>()
+                            if (item != null) {
+                                if(item.uid != uid) {
+                                    if (item.readable == false) {
+                                        // 상대방 채팅 중, 해당 채팅의 readable 정보가 false 이면 -> 읽음 수헹, item.readable == true로 바뀜
+                                        fireDatabase.child("chatrooms").child(chatRoomUid.toString()).child("comments").child(data.key.toString()).child("readable").setValue(true)
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                })
             }
         }
 
@@ -209,6 +239,7 @@ class MessageActivity : AppCompatActivity() {
             val layout_destination: LinearLayout = view.findViewById(R.id.messageItem_layout_destination)
             val layout_main: LinearLayout = view.findViewById(R.id.messageItem_linearlayout_main)
             val textView_time : TextView = view.findViewById(R.id.messageItem_textView_time)
+            val read_counter : TextView = view.findViewById(R.id.read_counter)
         }
 
         override fun getItemCount(): Int {

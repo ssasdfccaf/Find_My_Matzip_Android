@@ -25,6 +25,7 @@ import com.matzip.find_my_matzip.utils.PermissionManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import org.json.JSONObject
@@ -39,6 +40,7 @@ import java.util.UUID
 // sy FB
 private lateinit var auth: FirebaseAuth
 lateinit var database: DatabaseReference
+private val fireDatabase = FirebaseDatabase.getInstance().reference
 
 @Suppress("DEPRECATION")
 class JoinActivity : AppCompatActivity() {
@@ -293,22 +295,22 @@ class JoinActivity : AppCompatActivity() {
                     Toast.makeText(this, "아이디와 비밀번호, 프로필 사진을 다시 입력해주세요.", Toast.LENGTH_SHORT).show()
                     Log.d("Email", "$inputUserId, $inputUserPw")
                 } else {
-                    if (!profileCheck) {
+//                    Toast.makeText(this@JoinActivity,"회원가입 롼료",Toast.LENGTH_SHORT).show()
+                if (!profileCheck) {
                         Toast.makeText(this, "프로필 사진을 등록해주세요.", Toast.LENGTH_SHORT).show()
-                    } else {
-                        auth.createUserWithEmailAndPassword(
-                            inputUserId.toString(),
-                            inputUserPw.toString()
-                        )
-                            .addOnCompleteListener(this) { task ->
-                                if (task.isSuccessful) {
-                                    val user = Firebase.auth.currentUser
-                                    val userId = user?.uid
-                                    val userIdSt = userId.toString()
+                }
+                else{
+                    //Toast.makeText(this@JoinActivity,"회원가입 롼료",Toast.LENGTH_SHORT).show()
+                    auth.createUserWithEmailAndPassword(inputUserId.toString(), inputUserPw.toString())
+                        .addOnCompleteListener(this@JoinActivity) { task ->
+                            Toast.makeText(this@JoinActivity,"회원가입 롼료",Toast.LENGTH_SHORT).show()
+                            if (task.isSuccessful) {
+                                val user = Firebase.auth.currentUser
+                                val userId = user?.uid
+                                val userIdSt = userId.toString()
 
-                                    val friend = Friend(inputUserId, inputUserPw, userIdSt)
-                                    database.child("users").child(userId.toString())
-                                        .setValue(friend)
+                                val friend = Friend(inputUserId, inputUserPw, userIdSt)
+                                database.child("users").child(userId.toString()).setValue(friend)
 
 
                                     /*
@@ -324,15 +326,14 @@ class JoinActivity : AppCompatActivity() {
                                             }
                                     }
                                 */
-                                    Toast.makeText(this, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT)
-                                        .show()
-                                    Log.e(TAG, "$userId")
-                                    startActivity(intent)
-                                } else {
-                                    Log.e(TAG, "Registration failed", task.exception)
-                                    Toast.makeText(this, "등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                                }
+                                Toast.makeText(this, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                                Log.e(TAG, "$userId")
+                                startActivity(intent)
+                            } else {
+                                Log.e(TAG, "Registration failed", task.exception)
+                                Toast.makeText(this, "등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
                             }
+                        }
                     }
                 }
 
