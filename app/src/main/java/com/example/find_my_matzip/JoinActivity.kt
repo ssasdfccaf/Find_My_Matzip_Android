@@ -36,6 +36,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.UUID
+import kotlin.math.log
 
 // sy FB
 private lateinit var auth: FirebaseAuth
@@ -297,35 +298,18 @@ class JoinActivity : AppCompatActivity() {
                 } else {
 //                    Toast.makeText(this@JoinActivity,"회원가입 롼료",Toast.LENGTH_SHORT).show()
                 if (!profileCheck) {
-                        Toast.makeText(this, "프로필 사진을 등록해주세요.", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    //Toast.makeText(this@JoinActivity,"회원가입 롼료",Toast.LENGTH_SHORT).show()
-                    auth.createUserWithEmailAndPassword(inputUserId.toString(), inputUserPw.toString())
-                        .addOnCompleteListener(this@JoinActivity) { task ->
-                            Toast.makeText(this@JoinActivity,"회원가입 롼료",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "프로필 사진을 등록해주세요.", Toast.LENGTH_SHORT).show()
+                } else {
+                    auth.createUserWithEmailAndPassword(inputUserId, inputUserPw)
+                        .addOnCompleteListener(this) { task ->
+                            Toast.makeText(this, task.isSuccessful.toString(), Toast.LENGTH_SHORT).show()
                             if (task.isSuccessful) {
                                 val user = Firebase.auth.currentUser
                                 val userId = user?.uid
                                 val userIdSt = userId.toString()
-
+                                Toast.makeText(this, userId, Toast.LENGTH_SHORT).show()
                                 val friend = Friend(inputUserId, inputUserPw, userIdSt)
                                 database.child("users").child(userId.toString()).setValue(friend)
-
-
-                                    /*
-                                FirebaseStorage.getInstance()
-                                    .reference.child("userImages").child("$userIdSt/photo").putFile(imageUri!!).addOnSuccessListener {
-                                        var userProfile: Uri? = null
-                                        FirebaseStorage.getInstance().reference.child("userImages").child("$userIdSt/photo").downloadUrl
-                                            .addOnSuccessListener {
-                                                userProfile = it
-                                                Log.d("이미지 URL", "$userProfile")
-                                                val friend = Friend(inputUserId.toString(), inputUserPw.toString(), userProfile.toString(), userIdSt)
-                                                database.child("users").child(userId.toString()).setValue(friend)
-                                            }
-                                    }
-                                */
                                 Toast.makeText(this, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                                 Log.e(TAG, "$userId")
                                 startActivity(intent)
@@ -334,8 +318,14 @@ class JoinActivity : AppCompatActivity() {
                                 Toast.makeText(this, "등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
                             }
                         }
-                    }
+                    val user = Firebase.auth.currentUser
+                    val userId = user?.uid
+                    val userIdSt = userId.toString()
+                    val friend = Friend(inputUserId, inputUserPw, userIdSt)
+                    database.child("users").child(userId.toString()).setValue(friend)
+                    Toast.makeText(this, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 }
+            }
 
 
 
