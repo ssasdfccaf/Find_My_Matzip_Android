@@ -56,7 +56,7 @@
   
   | 회원가입 |
   | :---: |
-  |  |
+  | ![회원가입](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/c4ed80af-c05d-4bb5-baec-60ec133d5343) |
 
   <br>
 
@@ -66,51 +66,114 @@
   
   | 로그인(자동로그인x) |
   | :---: |
-  |  |
+  | ![로그인_자동저장x_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/04f373e9-24e2-4596-a1ca-e360aeba3cde)
+ |
 
   <br>
 
   | 로그인(자동로그인ㅇ) |
   | :---: |
-  | ![초기화면](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/57f3d1c2-085c-41c1-8d22-a7fb97ba3529) |
+  | ![로그인_자동저장_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/86ee9e06-4ed8-4d44-9a61-e5cf625627dd)|
 
   <br>
   
 ### \[프로필\]
 <br>
-| 내 프로필(+수정) |
-  | :---: |
-  | ![초기화면](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/57f3d1c2-085c-41c1-8d22-a7fb97ba3529) |
 
+| 내 프로필(+수정) |
+| :---: |
+| ![프로필](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/2bd64943-8637-4a66-b774-3accacf035bb)|
+<br>
+
+| 다른 사람 프로필(+팔로우) |
+| :---: |
+| ![다른사람프로필_팔로우_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/8fc3680a-183a-466f-bbb9-11d7248ee230) |
 <br>
 
 ### \[홈\]
 <br>
+
 | 게시글 목록(팔로우한 유저 없을 때) |
-  | :---: |
-  | ![초기화면](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/57f3d1c2-085c-41c1-8d22-a7fb97ba3529) |
+| :---: |
+| ![홈](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/a66bb134-cfeb-4560-9c49-5074d1bf6bb6) |
 
 <br>
 
 | 게시글 목록(팔로우한 유저 있을 때) |
+| :---: |
+| ![팔로잉한사람 게시글](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/db71ea86-9e6b-47ad-9334-6a09056f43bb) |
+
+<br>
+
+### \[게시글\]
+- 
+  <br>
+
+| 게시글 상세 |
   | :---: |
-  | ![초기화면](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/57f3d1c2-085c-41c1-8d22-a7fb97ba3529) |
+  | ![게시글상세_댓글-_online-video-cutter com_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/9e4e69fd-95f8-42df-ab14-1bf79c87ac3c) |
+
+<br>
+
+| 게시글 수정 |
+  | :---: |
+  | ![게시글수정-_online-video-cutter com_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/a6f8298b-a886-4897-a7c4-1388f83c304b) |
+
+<br>
+
+| 게시글 삭제 |
+  | :---: |
+  | ![게시글삭제-_online-video-cutter com_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/c3c31ef2-f8c0-4a2d-88b5-13c0bc52370c) |
+
+<br>
+
+### \[검색\]
+- 
+  <br>
+
+| 검색 |
+  | :---: |
+  | ![검색_최근검색어_3배속_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/2da32318-aea7-409d-bb78-3fb2e69d5867) |
 
 <br>
 
 
+### \[식당\]
+- 
+  <br>
 
-- 프로필
-- 프로필 수정
-- 타 유저의 프로필(팔로우,언팔로우)
-- 드로워 메뉴(회원탈퇴,로그아웃,검색,채팅)
-- 홈(게시글 목록, 팔로우한 유저의 게시글 목록)
-- 게시글 상세(댓글,좋아요싫어요)
+| 식당 목록 |
+  | :---: |
+  | ![식당목록](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/93e9d8e2-125a-4d78-accc-ea1e0255267e) |
+
+<br>
 - 식당(식당 상세,리뷰보기)
-- 게시글 작성
+
+| 식당 상세 |
+  | :---: |
+  | ![식당상세](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/1a5798d3-95a0-43f3-9710-ad2757fadb95) |
+
+<br>
+
+### \[내 주변 식당 찾기\]
+- 
+  <br>
+
 - 내 주변 식당 찾기(반경 설정, 반경내 식당 리스트)
 - 식당등록(수정)
-- 채팅
+
+| 내 주변 식당 찾기 |
+  | :---: |
+  | ![내근처맛집](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/30bf3ceb-ae63-4685-b187-25575fd2185f)|
+  
+<br>
+
+| 범위 변경 |
+  | :---: |
+  | ![내근처맛집(범위변경) (1)](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/a003272d-edff-4622-bec2-9de4f0e72cbc)|
+
+<br>
+
 <br><br>
 
 ## 5. 역할 분담
