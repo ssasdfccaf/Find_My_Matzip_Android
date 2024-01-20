@@ -21,6 +21,27 @@
 | [@jurwon](https://github.com/jurwon) | [@RomanticToad](https://github.com/RomanticToad) | [@eastok](https://github.com/eastok) | [@sonyuyoung](https://github.com/sonyuyoung) | [@Sophie](https://github.com/ssasdfccaf) |
 <br>
 
+## 역할 분담
+### :tangerine: 손주원
+- 기능 : 회원가입(유효성검사,firebase이미지서버,주소검색), jwt 토큰 로그인, 회원정보수정, 검색, 좋아요/싫어요, 회원탈퇴, 로그아웃
+<br>
+
+### :apple: 김경태
+- 기능 : 게시글 작성(다중 이미지),게시글 수정&삭제, 게시글목록, 상세 게시글, 팔로우한 유저의 게시글목록
+<br>
+
+### :melon: 서동옥
+- 기능 : 식당목록 ,식당 추가&삭제(관리자계정), 식당상세페이지, 내근처식당조회, 현 지도에서 재검색(반경설정), 지도에 좌표표시
+<br>
+
+### :grapes: 손유영
+- 기능 : 내 프로필, 타인 프로필, 팔로우&언팔로우, 랭킹게시판, UI디자인&레이아웃 설계, 로고 splash, 댓글&대댓글
+<br>
+
+### :lemon: 최수연
+- 기능 : 채팅(읽음표시, 사용자 좌우 분리, 팔로우한 유저 채팅목록, firebase 채팅서버와 db계정 연동)
+<br>
+
 ## 1. 개발 환경
 - Frontend : Android
 - Backend : SpringBoot, MySQL, Firebase
@@ -184,17 +205,13 @@
 
 <br><br>
 
-## 5. 역할 분담
+## 5. 코드 리뷰(개인 작성 부분)
 <br>
 
-## 6. 코드 리뷰(개인 작성 부분)
-
+## 6. 트러블 슈팅(개인 작성 부분)
 <br>
 
-## 7. 트러블 슈팅(개인 작성 부분)
-<br>
-
-## 8. 개선 목표
+## 7. 개선 목표
 
 
 
