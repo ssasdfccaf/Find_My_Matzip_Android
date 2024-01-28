@@ -7,6 +7,7 @@ import com.matzip.find_my_matzip.navTab.navTabFragment.FriendsFragment
 import com.matzip.find_my_matzip.navTab.navTabFragment.MessageFragment
 import com.matzip.find_my_matzip.navTab.navTabFragment.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.play.integrity.internal.ac
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -30,8 +31,16 @@ class ChatActivity : AppCompatActivity() {
         val bottom_nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottom_nav.setOnNavigationItemSelectedListener(BottomNavItemSelectedListener)
 
-        friendsFragment = FriendsFragment.newInstance()
-        supportFragmentManager.beginTransaction().add(R.id.fragments_frame, friendsFragment).commit()
+        // 넘어온 인텐트에서 액티비티 종류 확인
+        val activityname = intent.getStringExtra("activityname")
+        if (activityname == "MyPage"){
+            messageFragment = MessageFragment.newInstance()
+            supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, messageFragment).commit()
+        }
+        else {
+            friendsFragment = FriendsFragment.newInstance()
+            supportFragmentManager.beginTransaction().add(R.id.fragments_frame, friendsFragment).commit()
+        }
     }
 
     private val BottomNavItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener{

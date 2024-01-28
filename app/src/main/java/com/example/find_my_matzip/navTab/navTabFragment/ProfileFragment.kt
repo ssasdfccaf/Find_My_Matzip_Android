@@ -1,6 +1,7 @@
 package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 //import android.os.Build.VERSION_CODES.R
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,8 @@ import com.matzip.find_my_matzip.navTab.adapter.ProfileAdapter
 import com.matzip.find_my_matzip.utils.SharedPreferencesManager
 import com.matzip.find_my_matzip.utils.CustomDialog
 import com.google.firebase.database.FirebaseDatabase
+import com.matzip.find_my_matzip.ChatActivity
+import com.matzip.find_my_matzip.MessageActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -248,6 +251,12 @@ class ProfileFragment : Fragment() {
                             // MessageFragment로 이동
                             val messageBtn: ImageView = binding.messageBtn
                             messageBtn.setOnClickListener {
+
+                                val intent = Intent(requireContext(), MessageActivity::class.java)
+                                intent.putExtra("activityname", pageUserId.split('@')[0])
+                                startActivity(intent)
+
+                                /*
                                 Log.d("MessageFragment", "메시지 버튼 클릭")
 
                                 pageUserId?.let { toUserId ->
@@ -284,8 +293,10 @@ class ProfileFragment : Fragment() {
                                                 // 네트워크 오류 등 예외 처리
                                             }
                                         })
-                                }
+                                } */
+
                             }
+
 
 
 

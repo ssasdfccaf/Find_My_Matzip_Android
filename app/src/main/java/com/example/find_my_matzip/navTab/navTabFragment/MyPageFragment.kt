@@ -1,6 +1,7 @@
 package com.matzip.find_my_matzip.navTab.navTabFragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.matzip.find_my_matzip.ChatActivity
 import com.matzip.find_my_matzip.HomeTabActivity
 import com.matzip.find_my_matzip.MyApplication
 import com.matzip.find_my_matzip.R
@@ -76,13 +78,19 @@ class MyPageFragment : Fragment() {
         }
 
         binding.writeBoardBtn.setOnClickListener {
-//            게시글 작성 창으로 이동
-            val writeReviewFragment = WriteReviewFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.add(R.id.fragmentContainer, writeReviewFragment)
-            transaction.addToBackStack(null)  // 백 스택에 현재 프래그먼트 추가
-            transaction.commit()
+//            DM 목록으로 이동
+            val intent = Intent(requireContext(), ChatActivity::class.java)
+            intent.putExtra("activityname", "MyPage")
+            startActivity(intent)
+
+
+//            val writeReviewFragment = WriteReviewFragment()
+//            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//            transaction.add(R.id.fragmentContainer, writeReviewFragment)
+//            transaction.addToBackStack(null)  // 백 스택에 현재 프래그먼트 추가
+//            transaction.commit()
         }
+
 
 
 

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import com.google.firebase.ktx.Firebase
+import com.matzip.find_my_matzip.utils.SharedPreferencesManager
+import java.util.TreeMap
 
 class MessageFragment : Fragment() {
     companion object{
@@ -61,8 +64,10 @@ class MessageFragment : Fragment() {
         private val destinationUsers : ArrayList<String> = arrayListOf()
 
         init {
-            uid = Firebase.auth.currentUser?.uid.toString()
+//            uid = Firebase.auth.currentUser?.uid.toString()
+            uid = SharedPreferencesManager.getString("id", "").split('@')[0]
             println(uid)
+//            Toast.makeText(requireContext(), uid, Toast.LENGTH_SHORT).show()
 
             fireDatabase.child("chatrooms").orderByChild("users/$uid").equalTo(true).addListenerForSingleValueEvent(object :
                 ValueEventListener {
@@ -101,6 +106,7 @@ class MessageFragment : Fragment() {
                     destinationUsers.add(destinationUid)
                 }
             }
+//            Toast.makeText(requireContext(), destinationUid.toString(), Toast.LENGTH_SHORT).show()
             fireDatabase.child("users").child("$destinationUid").addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -108,26 +114,28 @@ class MessageFragment : Fragment() {
 
 
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val friend = snapshot.getValue<Friend>()
+                    val friend = snapshot.key
+//                    Toast.makeText(requireContext(), friend.toString(), Toast.LENGTH_SHORT).show()
+
                     /*
                     Glide.with(holder.itemView.context).load(friend?.profileImageUrl)
                         .apply(RequestOptions().circleCrop())
                         .into(holder.imageView) */
-                    holder.textView_title.text = friend?.name
+                    holder.textView_title.text = friend.toString()
 
                 }
             })
 
-            /*
-            // 메시지 내림차순 정렬 후, 마지막 메세지의 키값 가지기
-            val commentMap = TreeMap<String, MesssageModel.Comment>(reverseOrder())
+
+            // 메시지 내림차순 정렬 후, 마지막 메시지의 키값 가지기
+            val commentMap = TreeMap<String, MessageModel.Comment>(reverseOrder())
             commentMap.putAll(MessageModel[position].comments)
             val lastMessageKey = commentMap.keys.toTypedArray()[0]
             holder.textView_lastMessage.text = MessageModel[position].comments[lastMessageKey]?.message
 
-             */
 
-            // 채팅창 선책 시 이동
+
+            // 채팅창 선택 시 이동
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, MessageActivity::class.java)
                 intent.putExtra("destinationUid", destinationUsers[position])
