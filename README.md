@@ -88,14 +88,14 @@
   
   | 자동 로그인 체크한 경우 |
   | :---: |
-  | ![로그인_자동저장x_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/04f373e9-24e2-4596-a1ca-e360aeba3cde)
- |
+  | ![로그인_자동저장_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/86ee9e06-4ed8-4d44-9a61-e5cf625627dd)|
 
   <br>
 
   | 자동 로그인 체크하지 않은 경우 |
   | :---: |
-  | ![로그인_자동저장_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/86ee9e06-4ed8-4d44-9a61-e5cf625627dd)|
+  | ![로그인_자동저장x_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/04f373e9-24e2-4596-a1ca-e360aeba3cde)|
+
 
   <br>
   
