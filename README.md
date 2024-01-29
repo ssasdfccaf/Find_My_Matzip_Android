@@ -1,7 +1,7 @@
 # <img src="https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/b319291f-ec97-419b-949f-c6a7e3834c32" width="50" height="50"/> 맛.ZIP (위치기반 부산 맛집 공유 커뮤니티 앱)
 ![image](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/f65ff2dc-eddb-4f19-89d2-9a2e2cfdcca4)
-- 일정 : 2023.11.17.~ 2023.12.01 (업데이트중)
-- 배포 URL : (출시 진행중)
+- 일정 : 2023.11.17.~ 업데이트중
+- 배포 URL : (출시 진행중-배포테스트중)https://play.google.com/store/apps/details?id=com.matzip.find_my_matzip
 - Test ID : ooo@naver.com
 - Test PW : 1234
 <br>
