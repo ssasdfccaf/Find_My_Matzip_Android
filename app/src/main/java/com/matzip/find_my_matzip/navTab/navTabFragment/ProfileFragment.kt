@@ -246,49 +246,49 @@ class ProfileFragment : Fragment() {
 
 
                             // MessageFragment로 이동
-                            val messageBtn: ImageView = binding.messageBtn
-                            messageBtn.setOnClickListener {
-                                Log.d("MessageFragment", "메시지 버튼 클릭")
-
-                                pageUserId?.let { toUserId ->
-                                    userService.deleteFollow(toUserId)
-                                        .enqueue(object : Callback<Unit> {
-                                            override fun onResponse(
-                                                call: Call<Unit>,
-                                                response: Response<Unit>
-                                            ) {
-                                                Log.d("MessageFragment", "메시지 onResponse: ${response.code()}")
-                                                if (response.isSuccessful) {
-                                                    // 성공한 경우
-                                                    followBtn.visibility = View.VISIBLE
-                                                    unfollowBtn.visibility = View.GONE
-                                                    // 현재의 프래그먼트 제거
-                                                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                                                    transaction.remove(this@ProfileFragment).commit()
-
-                                                    // 새로운 인스턴스 생성 및 추가
-                                                    val newFragment = MessageFragment.newInstance()
-                                                    val newTransaction = requireActivity().supportFragmentManager.beginTransaction()
-                                                    newTransaction.add(R.id.fragmentContainer, newFragment)
-                                                    newTransaction.addToBackStack(null)
-                                                    newTransaction.commit()
-                                                } else {
-                                                    Log.d("MessageFragment", "메시지 요청 실패")
-                                                }
-                                            }
-
-                                            override fun onFailure(
-                                                call: Call<Unit>,
-                                                t: Throwable?
-                                            ) {
-                                                // 네트워크 오류 등 예외 처리
-                                            }
-                                        })
-                                }
-                            }
-
-
-
+//                            val messageBtn: ImageView = binding.messageBtn
+//                            messageBtn.setOnClickListener {
+//                                Log.d("MessageFragment", "메시지 버튼 클릭")
+//
+//                                pageUserId?.let { toUserId ->
+//                                    userService.deleteFollow(toUserId)
+//                                        .enqueue(object : Callback<Unit> {
+//                                            override fun onResponse(
+//                                                call: Call<Unit>,
+//                                                response: Response<Unit>
+//                                            ) {
+//                                                Log.d("MessageFragment", "메시지 onResponse: ${response.code()}")
+//                                                if (response.isSuccessful) {
+//                                                    // 성공한 경우
+//                                                    followBtn.visibility = View.VISIBLE
+//                                                    unfollowBtn.visibility = View.GONE
+//                                                    // 현재의 프래그먼트 제거
+//                                                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//                                                    transaction.remove(this@ProfileFragment).commit()
+//
+//                                                    // 새로운 인스턴스 생성 및 추가
+//                                                    val newFragment = MessageFragment.newInstance()
+//                                                    val newTransaction = requireActivity().supportFragmentManager.beginTransaction()
+//                                                    newTransaction.add(R.id.fragmentContainer, newFragment)
+//                                                    newTransaction.addToBackStack(null)
+//                                                    newTransaction.commit()
+//                                                } else {
+//                                                    Log.d("MessageFragment", "메시지 요청 실패")
+//                                                }
+//                                            }
+//
+//                                            override fun onFailure(
+//                                                call: Call<Unit>,
+//                                                t: Throwable?
+//                                            ) {
+//                                                // 네트워크 오류 등 예외 처리
+//                                            }
+//                                        })
+//                                }
+//                            }
+//
+//
+//
 
 
                             // 팔로워 팔로우수
