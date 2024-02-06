@@ -21,10 +21,6 @@
         android:title="회원 탈퇴">
     </item>
     <item
-        android:icon="@drawable/baseline_mood_bad_24"
-        android:title="식당 추가">
-    </item>
-    <item
         android:id="@+id/endBtn"
         android:icon="@drawable/baseline_close_24"
         android:title="앱 종료">
