@@ -157,7 +157,7 @@ class NewHomeFragment : Fragment() {
         val fragment = boardDtlFragment.newInstance(boardId)
         parentFragmentManager.beginTransaction()
             .add(R.id.fragmentContainer, fragment)
-            .addToBackStack("HomeFragment")
+            .addToBackStack("NewHomeFragment")
             .commit()
     }//navigateToBoardDetail 끝
 
@@ -202,6 +202,21 @@ class NewHomeFragment : Fragment() {
             }
         })
     } //loadNextPageData의 끝
+    @Override
+    override fun onResume() {
+        Log.d("SdoLifeCycle","NewHomeFragment onResume")
+        super.onResume()
+    }
+    @Override
+    override fun onPause() {
+        Log.d("SdoLifeCycle","NewHomeFragment onPause")
+        super.onPause()
+    }
+    @Override
+    override fun onDestroy() {
+        Log.d("SdoLifeCycle","NewHomeFragment onDestroy")
+        super.onDestroy()
+    }
 
     fun showExitDialog() {
         val builder = AlertDialog.Builder(requireContext())

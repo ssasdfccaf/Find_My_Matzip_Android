@@ -2,7 +2,9 @@ package com.matzip.find_my_matzip.navTab.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.matzip.find_my_matzip.databinding.ItemNewmainboardBinding
@@ -31,6 +33,10 @@ class NewMainBoardViewHolder(
         binding.boardTitle.text = item.boardTitle
         //게시글평점
         binding.boardScore.rating = item.score.toFloat()
+        //게시글내용
+        binding.boardContent.text = item.content
+        //게시글더보기처리
+        setViewMore(binding.boardContent, binding.viewMore)
 
         val viewPager = binding.ImgViewPager
         // 이미지 리사이클러뷰 어댑터 초기화
@@ -53,6 +59,25 @@ class NewMainBoardViewHolder(
 
         binding.AllComment.text = "댓글 (${getTotalCommentCount(item.comments)}개) 모두보기"
     }
+
+    private fun setViewMore(contentTextView: TextView, viewMoreTextView: TextView) {
+        contentTextView.post {
+            val lineCount = contentTextView.layout.lineCount
+            if (lineCount > 0) {
+                if (contentTextView.layout.getEllipsisCount(lineCount - 1) > 0) {
+                    // 더보기 표시
+                    viewMoreTextView.visibility = View.VISIBLE
+
+                    // 더보기 클릭 이벤트
+                    viewMoreTextView.setOnClickListener {
+                        contentTextView.maxLines = Int.MAX_VALUE
+                        viewMoreTextView.visibility = View.GONE
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun getTotalCommentCount(comments: List<CommentDto>?): Int {
         return comments?.let {
