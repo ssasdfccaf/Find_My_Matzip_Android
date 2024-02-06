@@ -3,7 +3,10 @@
     <dimen name="indicator_size">10dp</dimen>
     <dimen name="indicator_margin">5dp</dimen>
     <dimen name="peek_height">100dp</dimen>
-    <dimen name="comment_indent">16dp</dimen>
-    <dimen name="fixed_comment_indent">0dp</dimen>
+    <dimen name="peek_height2">500dp</dimen>
+    <dimen name="expanded_offset">500dp</dimen>
+    <dimen name="comment_indent">10dp</dimen>
+    <dimen name="fixed_comment_indent">10dp</dimen>
+    <dimen name="grid_spacing">7dp</dimen>
 
 </resources>
