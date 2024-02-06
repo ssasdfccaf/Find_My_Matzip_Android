@@ -6,15 +6,17 @@ import android.os.Handler
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+
 import com.matzip.find_my_matzip.databinding.ActivityIntroBinding
+
 import com.matzip.find_my_matzip.utils.ForcedTerminationService
 
 class IntroActivity : AppCompatActivity() {
-    lateinit var binding:ActivityIntroBinding
+    lateinit var binding: ActivityIntroBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityIntroBinding.inflate(layoutInflater)
+        binding= ActivityIntroBinding.inflate(layoutInflater)
 
         //백그라운드 서비스 start
         //이 서비스가 앱 강제종료여부 확인하고 같이 종료될것임.
