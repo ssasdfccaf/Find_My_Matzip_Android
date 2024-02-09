@@ -65,7 +65,7 @@
             android:name=".navTab.navTabFragment.ResInfoActivity"
             android:theme="@style/Apptheme.Custom" />
         <activity
-            android:name="com.matzip.find_my_matzip.AddRestaurantActivity"
+            android:name=".AddRestaurantActivity"
             android:exported="true" />
         <activity
             android:name=".NaverMapActivity"

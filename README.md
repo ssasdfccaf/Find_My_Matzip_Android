@@ -1,7 +1,7 @@
 # <img src="https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/b319291f-ec97-419b-949f-c6a7e3834c32" width="50" height="50"/> 맛.ZIP (위치기반 부산 맛집 공유 커뮤니티 앱)
 ![image](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/f65ff2dc-eddb-4f19-89d2-9a2e2cfdcca4)
-- 일정 : 2023.11.17.~ 업데이트중
-- 배포 URL : (출시 진행중-배포테스트중)https://play.google.com/store/apps/details?id=com.matzip.find_my_matzip
+- 일정 : 2023.11.17.~ 2023.12.01 (업데이트중)
+- 배포 URL : (출시 진행중)
 - Test ID : ooo@naver.com
 - Test PW : 1234
 <br>
@@ -88,14 +88,14 @@
   
   | 자동 로그인 체크한 경우 |
   | :---: |
-  | ![로그인_자동저장_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/86ee9e06-4ed8-4d44-9a61-e5cf625627dd)|
+  | ![로그인_자동저장x_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/04f373e9-24e2-4596-a1ca-e360aeba3cde)
+ |
 
   <br>
 
   | 자동 로그인 체크하지 않은 경우 |
   | :---: |
-  | ![로그인_자동저장x_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/04f373e9-24e2-4596-a1ca-e360aeba3cde)|
-
+  | ![로그인_자동저장_](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/86ee9e06-4ed8-4d44-9a61-e5cf625627dd)|
 
   <br>
   
@@ -183,7 +183,6 @@
 | 식당 상세 |
   | :---: |
   | ![식당상세](https://github.com/jurwon/Find_My_Matzip_Android/assets/35756071/1a5798d3-95a0-43f3-9710-ad2757fadb95) |
-  
 
 <br>
 
@@ -206,7 +205,13 @@
 
 <br><br>
 
-## 5. 개선 목표
+## 5. 코드 리뷰(개인 작성 부분)
+<br>
+
+## 6. 트러블 슈팅(개인 작성 부분)
+<br>
+
+## 7. 개선 목표
 
 
 
